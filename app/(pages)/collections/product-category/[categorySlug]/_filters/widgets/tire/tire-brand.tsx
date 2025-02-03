@@ -1,0 +1,34 @@
+"use client";
+import { TSingleFilter } from "@/app/types/filter";
+import { useState } from "react";
+import FilterHeading from "../../template/filter-heading";
+import SelectFilterTemplate from "../../template/select-filter-template";
+
+const TireBrand = ({
+  brand,
+  filterKey,
+}: {
+  filterKey: string;
+  brand: TSingleFilter[];
+}) => {
+  const [showFilter, setshowFilter] = useState(false);
+
+  const toggleFilter = () => {
+    setshowFilter(!showFilter);
+  };
+
+  return (
+    <>
+      <FilterHeading
+        showFilter={showFilter}
+        toggleFilter={toggleFilter}
+        title="Brand"
+      />
+      {showFilter && (
+        <SelectFilterTemplate filterKey={filterKey} filterData={brand} />
+      )}
+    </>
+  );
+};
+
+export default TireBrand;
