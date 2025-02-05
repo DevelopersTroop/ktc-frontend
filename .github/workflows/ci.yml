@@ -102,7 +102,7 @@ jobs:
             rm -rf .next/ &&
             npm install --legacy-peer-deps &&
             npm run build &&
-            pm2 restart amani-forged-prod-web &&
+            pm2 restart ktc-frontend &&
             pm2 save
           "
           rm private_key.pem
