@@ -26,7 +26,7 @@ export default function Footer() {
                 <div>
                   <p className="text-gray-600">Email Address</p>
                   <p className="text-gray-700 font-semibold">
-                    khalik.aymen@gmail.com
+                    info@ktcaudio.com
                   </p>
                 </div>
               </div>

@@ -41,7 +41,7 @@ const Contact: React.FC = () => {
             <div className="bg-red-500 w-8 h-8 md:w-6 md:h-6 lg:w-6 lg:h-6 rounded-full"></div>
             <div>
               <h4 className="font-normal">Email address</h4>
-              <p className="text-gray-500">khalik.aymen@gmail.com</p>
+              <p className="text-gray-500">info@ktcaudio.com</p>
             </div>
           </div>
           <div className="flex flex-col md:flex-row items-center text-center md:text-start gap-3 border-b pb-4">

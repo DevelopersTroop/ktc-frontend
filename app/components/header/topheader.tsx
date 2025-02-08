@@ -70,7 +70,7 @@ export default function TopHeader() {
                 href="tel:(920) 806-0024"
                 className="text-sm font-medium hover:text-blue-600"
               >
-                (920) 806-0024
+                +1 (303) 695-6305
               </a>
               <p className="text-xs text-gray-500">Need Help?</p>
             </div>
