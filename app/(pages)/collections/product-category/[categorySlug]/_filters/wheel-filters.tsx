@@ -5,6 +5,7 @@ import WheelDiameter from "./widgets/wheels/wheel-diameter";
 import WheelFinish from "./widgets/wheels/wheel-finish";
 import WheelModel from "./widgets/wheels/wheel-model";
 import PriceRange from "./widgets/wheels/wheel-price-range";
+import { useAppDispatch } from "@/app/globalRedux/store";
 
 const diameter: TSingleFilter[] = [
   { value: 14, count: 10 },

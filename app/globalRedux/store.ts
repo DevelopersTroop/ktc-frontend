@@ -14,50 +14,63 @@ import tirePackageReducer from "@/app/globalRedux/features/tire-package/tire-pac
 import checkoutReducer from "@/app/globalRedux/features/checkout/checkout-slice";
 import userReducer from "@/app/globalRedux/features/user/user-slice";
 import customSteeringWheelReducer from "@/app/globalRedux/features/custom-steering-wheel/custom-steering-wheel-slice";
-import { persistReducer, persistStore } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
-
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import {
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import wheelReducer from "./features/wheel";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 const rootPersistConfig = {
-    key: 'ktc-audio-store',
-    storage,
-}
+  key: "ktc-audio-store",
+  storage,
+};
 
 const presistingReducer = combineReducers({
-    yearMakeModel: yearMakeModelReducer,
-    cart: cartReducer,
-    customProduct: customProductReducer,
-    customSteeringWheel: customSteeringWheelReducer,
-    tirePackage: tirePackageReducer,
-    user: userReducer,
-    checkout: checkoutReducer,
-})
+  yearMakeModel: yearMakeModelReducer,
+  cart: cartReducer,
+  customProduct: customProductReducer,
+  customSteeringWheel: customSteeringWheelReducer,
+  tirePackage: tirePackageReducer,
+  user: userReducer,
+  checkout: checkoutReducer,
+});
 
 const persistedReducer = persistReducer(rootPersistConfig, presistingReducer);
 
 const rootReducer = combineReducers({
-    persisted: persistedReducer,
-    searchRouter: searchRouterSlice,
-    filterHeight: filterHeightReducer,
-    yearMakeModelModal: yearMakeModelModalReducer,
-    inStockProduct: inStockProductReducer,
-    menu: menuReducer,
-    newsletterModal: newsletterModalReducer,
-    saveEmail: cartProductSaveEmailReducer,
-})
-
-const store = configureStore({
-    reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            },
-        }),
+  persisted: persistedReducer,
+  searchRouter: searchRouterSlice,
+  filterHeight: filterHeightReducer,
+  yearMakeModelModal: yearMakeModelModalReducer,
+  inStockProduct: inStockProductReducer,
+  menu: menuReducer,
+  newsletterModal: newsletterModalReducer,
+  saveEmail: cartProductSaveEmailReducer,
+  wheel: wheelReducer,
 });
 
-export const persistor = persistStore(store)
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 export default store;
+
+export const useTypedSelector = <TypedUseSelectorHook<RootState>>useSelector;
+export const useAppDispatch = () => useDispatch<AppDispatch>();

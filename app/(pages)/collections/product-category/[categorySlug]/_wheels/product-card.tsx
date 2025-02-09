@@ -20,8 +20,8 @@ const ProductCard = ({ product }: { product: TInventoryItem }) => {
             width={238}
             alt="product image"
             src={
-              product.item_image !== ""
-                ? product.item_image
+              product.thumbnail.length
+                ? product.thumbnail
                 : "/not-available.webp"
             }
           ></Image>
