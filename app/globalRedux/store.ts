@@ -20,7 +20,7 @@ import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist
 
 
 const rootPersistConfig = {
-    key: 'amani-forged-store',
+    key: 'ktc-audio-store',
     storage,
 }
 

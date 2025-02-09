@@ -5,9 +5,11 @@ import { Phone, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import MobileMenu from "./menu/mobile-menu/mobile-menu";
+import useAuth from "@/app/(pages)/_hooks/useAuth";
 
 export default function TopHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const {user} = useAuth();
 
   return (
     <div className="bg-white border-b">
@@ -77,11 +79,11 @@ export default function TopHeader() {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/dashboard" className="flex items-center gap-2">
+            <Link href={user?.email ? "/dashboard" : "/login"} className="flex items-center gap-2">
               <User className="h-5 w-5 text-gray-600" />
               <div>
                 <p className="text-sm font-medium">MY ACCOUNT</p>
-                <p className="text-xs text-gray-500">Hello, Sign In</p>
+                <p className="text-xs text-gray-500">Hello, {user?.email ? user.email : "Login"} </p>
               </div>
             </Link>
 

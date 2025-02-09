@@ -1,13 +1,13 @@
 "use client";
+import useAuth from "@/app/(pages)/_hooks/useAuth";
 import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const Logout = () => {
-  const router = useRouter();
+  const {logout} = useAuth();
   useEffect(() => {
     setTimeout(() => {
-      router.push("/login");
+      logout(true);
     }, 1000);
   }, []);
   return (

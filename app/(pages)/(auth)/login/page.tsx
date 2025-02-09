@@ -1,12 +1,17 @@
 "use client";
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import useAuth from "../../_hooks/useAuth";
+import { userLogin } from "./login";
+import { setAccessToken, setRefreshToken, setUserDetails } from "@/app/globalRedux/features/user/user-slice";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -16,6 +21,39 @@ const validationSchema = Yup.object().shape({
 const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+
+  const [errors, setErrors] = useState<
+    {
+      name: string;
+      message: string;
+    }[]
+  >([]);
+  const [success, setSuccess] = useState<{
+    isSuccess: boolean;
+    message: string;
+  }>({
+    message: "",
+    isSuccess: false,
+  });
+
+  const dispatch = useDispatch();
+  const {user} = useAuth();
+
+  // const form = useForm({
+  //   defaultValues: {
+  //     email: '',
+  //     password: '',
+  //     rememberMe: true
+  //   }
+  // })
+
+  useEffect(() => {
+    if (user) {
+
+
+      router.push("/dashboard/orders");
+    }
+  }, [user, router]);
 
   const banner = {
     backgroundImage: `url('/images/loginhero.jpeg')`,
@@ -37,22 +75,47 @@ const Page = () => {
           </h1>
           <div className="w-full h-2 bg-primary"></div>
         </div>
+        
         <div className="md:bg-gray-400 md:bg-opacity-90 w-full md:w-[40%] flex justify-center items-center">
           <div className="w-full shadow-[0_1px_3px_0_rgba(0,0,0,0.09)] pt-2 md:px-12 md:py-20">
             <h2 className="text-2xl font-bold pb-4 border-b border-gray-200 text-white uppercase">
               Login
             </h2>
-
+              {errors.length > 0 &&
+                  errors.map((error) => (
+                    <Alert variant="destructive" key={error.message} className="mt-4">
+                      <AlertDescription>{error.message}</AlertDescription>
+                    </Alert>
+                  ))}
+                {success.isSuccess && (
+                  <Alert className="mt-4">
+                    <AlertDescription>{success.message}</AlertDescription>
+                  </Alert>
+                )}
             <Formik
               initialValues={{ email: "", password: "" }}
               validationSchema={validationSchema}
               onSubmit={(values) => {
                 setIsSubmitting(true);
-                console.log("values = ", values);
-                if (values.email && values.password) {
-                  router.push("/");
-                }
-                setIsSubmitting(false);
+                userLogin({ email: values.email, password: values.password })
+            .then(async (data) => {
+              if (Array.isArray(data)) {
+                setSuccess({ isSuccess: false, message: "" });
+                return setErrors(data);
+              }
+              setErrors([]);
+              setSuccess({ isSuccess: true, message: "Login successful" });
+              dispatch(setAccessToken({ accessToken: data.token.accessToken }));
+              dispatch(
+                setRefreshToken({ refreshToken: data.token.refreshToken })
+              );
+              dispatch(setUserDetails({ userDetails: data.user }));
+
+              router.push("/dashboard");
+            })
+            .finally(() => {
+              setIsSubmitting(false);
+            });
               }}
             >
               {({ errors: formErrors, touched }) => (

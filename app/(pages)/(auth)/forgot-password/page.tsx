@@ -2,9 +2,10 @@
 import { Field, Form, Formik } from "formik";
 import { useState } from "react";
 
+import { Alert } from "@/app/ui/alert/alert";
+import { apiBaseUrl } from "@/app/utils/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
@@ -14,7 +15,10 @@ const validationSchema = Yup.object().shape({
 const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const router = useRouter();
+  const [status, setStatus] = useState({
+    error: "",
+    success: "",
+  });
 
   const banner = {
     backgroundImage: `url('/images/forgothero.jpeg')`,
@@ -42,16 +46,56 @@ const Page = () => {
               </p>
             </div>
 
+            {status.error.length ? (
+              <Alert type="failed">{status.error}</Alert>
+            ) : (
+              ""
+            )}
+            {status.success.length ? (
+              <Alert type="success">{status.success}</Alert>
+            ) : (
+              ""
+            )}
+
             <Formik
               initialValues={{ email: "" }}
               validationSchema={validationSchema}
-              onSubmit={(values) => {
+              onSubmit={async (values) => {
                 setIsSubmitting(true);
-                console.log("values = ", values);
-                if (values.email) {
-                  router.push("/login");
+
+                try {
+                  const response = await fetch(
+                    `${apiBaseUrl}/auth/forgot-password`,
+                    {
+                      method: "POST",
+                      body: JSON.stringify({ email: values.email }),
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                    }
+                  );
+
+                  if (!response.ok) {
+                    setStatus({
+                      error: response.statusText,
+                      success: "",
+                    });
+                  } else {
+                    setStatus({
+                      error: "",
+                      success: "Password reset link sent to your email",
+                    });
+                  }
+                } catch (error) {
+                  setStatus({
+                    error:
+                      "Something went wrong. Please try again." ||
+                      error.message,
+                    success: "",
+                  });
+                } finally {
+                  setIsSubmitting(false);
                 }
-                setIsSubmitting(false);
               }}
             >
               {({ errors: formErrors, touched }) => (

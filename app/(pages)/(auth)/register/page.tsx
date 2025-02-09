@@ -5,18 +5,36 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { setAccessToken, setRefreshToken, setUserDetails } from "@/app/globalRedux/features/user/user-slice";
+import { userRegister } from "./register";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const validationSchema = Yup.object().shape({
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string().required("Password is required"),
-  confirmPassword: Yup.string().required("Confirm Password is required"),
 });
 
 const Page = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState<
+    {
+      message: string;
+      field: string;
+      location: string;
+    }[]
+  >([]);
+  const [success, setSuccess] = useState<{
+    isSuccess: boolean;
+    message: string;
+  }>({
+    message: "",
+    isSuccess: false,
+  });
+  const [isLoadingRegister, setIsLoadingRegister] = useState(false);
 
   const banner = {
     backgroundImage: `url('/images/registerhero.jpeg')`,
@@ -43,24 +61,101 @@ const Page = () => {
             <h2 className="text-2xl font-bold pb-4 border-b border-gray-200 text-white uppercase">
               Register
             </h2>
+
+            {errors.length > 0 &&
+              errors.map((error) => (
+                <Alert variant="destructive" key={error.message} className="mt-4">
+                  <AlertDescription>{error.message}</AlertDescription>
+                </Alert>
+              ))}
+            {success.isSuccess && (
+              <Alert className="mt-4">
+                <AlertDescription>{success.message}</AlertDescription>
+              </Alert>
+            )}
+
             <Formik
-              initialValues={{ email: "", password: "", confirmPassword: "" }}
+              initialValues={{ firstName: "", lastName: "", email: "", password: "" }}
               validationSchema={validationSchema}
               onSubmit={(values) => {
-                setIsSubmitting(true);
-                console.log("values = ", values);
-                if (
-                  values.email &&
-                  values.password &&
-                  values.password === values.confirmPassword
-                ) {
-                  router.push("/");
-                }
-                setIsSubmitting(false);
+                setIsLoadingRegister(true);
+                userRegister({
+                  firstName: values.firstName,
+                  lastName: values.lastName,
+                  email: values.email,
+                  password: values.password,
+                  role: 2,
+                })
+                  .then((response) => {
+                    const { statusCode, data, errors } = response;
+                    if (data && statusCode === 201) {
+                      setSuccess({
+                        isSuccess: true,
+                        message: "Please check your email to verify your account",
+                      });
+                      setErrors([]);
+                      dispatch(setAccessToken({ accessToken: data.accessToken }));
+                      dispatch(setRefreshToken({ refreshToken: data.refreshToken }));
+                      dispatch(setUserDetails({ userDetails: data.user }));
+                    } else if (errors) {
+                      setErrors(errors);
+                      setSuccess({ isSuccess: false, message: "" });
+                    }
+                  })
+                  .finally(() => {
+                    window.scrollTo(0, 0);
+                    setIsLoadingRegister(false);
+                  });
               }}
             >
               {({ errors: formErrors, touched }) => (
                 <Form className="mt-6 space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block font-semibold mb-1 text-white" htmlFor="firstName">
+                        First Name
+                      </label>
+                      <Field name="firstName">
+                        {({ field }: any) => (
+                          <Input
+                            {...field}
+                            className={`bg-white ${
+                              formErrors.firstName && touched.firstName
+                                ? "border-primary"
+                                : ""
+                            }`}
+                          />
+                        )}
+                      </Field>
+                      {formErrors.firstName && touched.firstName && (
+                        <p className="mt-1 text-sm text-red-500">
+                          {formErrors.firstName}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="block font-semibold mb-1 text-white" htmlFor="lastName">
+                        Last Name
+                      </label>
+                      <Field name="lastName">
+                        {({ field }: any) => (
+                          <Input
+                            {...field}
+                            className={`bg-white ${
+                              formErrors.lastName && touched.lastName
+                                ? "border-primary"
+                                : ""
+                            }`}
+                          />
+                        )}
+                      </Field>
+                      {formErrors.lastName && touched.lastName && (
+                        <p className="mt-1 text-sm text-red-500">
+                          {formErrors.lastName}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                   <div>
                     <label
                       className="block font-semibold mb-1 text-white"
@@ -114,40 +209,12 @@ const Page = () => {
                       </p>
                     )}
                   </div>
-
-                  <div>
-                    <label
-                      className="block font-semibold mb-1 text-white "
-                      htmlFor="password"
-                    >
-                      Confirm Password
-                    </label>
-                    <Field name="confirmPassword">
-                      {({ field }: any) => (
-                        <Input
-                          {...field}
-                          type="password"
-                          className={`bg-white ${
-                            formErrors.confirmPassword &&
-                            touched.confirmPassword
-                              ? "border-primary"
-                              : ""
-                          }`}
-                        />
-                      )}
-                    </Field>
-                    {formErrors.confirmPassword && touched.confirmPassword && (
-                      <p className="mt-1 text-sm text-primary">
-                        {formErrors.confirmPassword}
-                      </p>
-                    )}
-                  </div>
                   <Button
                     type="submit"
                     className="w-full uppercase bg-primary"
-                    disabled={isSubmitting}
+                    disabled={isLoadingRegister}
                   >
-                    {isSubmitting ? "Please wait..." : "Create Account"}
+                    {isLoadingRegister ? "Please wait..." : "Create Account"}
                   </Button>
                 </Form>
               )}
