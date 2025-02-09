@@ -21,7 +21,7 @@ const ImageGallery = ({ product }: { product: TInventoryItem }) => {
 
   // add gallery Images
   useEffect(() => {
-    const galleryImages = product.gallery_images || [];
+    const galleryImages = product.galleryImages || [];
     if (galleryImages?.length > 0) {
       interface Image {
         original: string;
@@ -39,23 +39,25 @@ const ImageGallery = ({ product }: { product: TInventoryItem }) => {
       });
       setGalleryImages(images);
     }
-  }, [product.gallery_images]);
+  }, [product.galleryImages]);
 
   // add thumbnail
   useEffect(() => {
-    if (product.item_image !== "") {
+    if (product.thumbnail !== "") {
       setThumbnail([
         {
-          original: isCustomProduct
-            ? `${s3BucketUrl}/${product.item_image}`
-            : product.item_image,
-          thumbnail: isCustomProduct
-            ? `${s3BucketUrl}/${product.item_image}`
-            : product.item_image,
+          original: product.thumbnail,
+          thumbnail: product.thumbnail,
+          // isCustomProduct
+          //   ? `${s3BucketUrl}/${product.thumbnail}`
+          //   : product.thumbnail,
+          // thumbnail: isCustomProduct
+          //   ? `${s3BucketUrl}/${product.thumbnail}`
+          //   : product.thumbnail,
         },
       ]);
     }
-  }, [product.item_image]);
+  }, [product.thumbnail]);
 
   return (
     <div className="flex justify-center">

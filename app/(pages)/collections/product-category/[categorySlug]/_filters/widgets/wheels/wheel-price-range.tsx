@@ -2,50 +2,60 @@
 
 import { TPriceFilter } from "@/app/types/filter";
 import MultiRangeSlider from "@/app/ui/multi-range-slider/multi-range-slider";
-import { useState } from "react";
+import debounce from "debounce";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useRef, useState } from "react";
+import useFilterSync from "../../store";
 import FilterHeading from "../../template/filter-heading";
 
 const PriceRange = ({ price }: { price: TPriceFilter }) => {
-  // const { filters, toggleFilterValue } = useFilter()
+  const { filters, toggleFilterValue } = useFilterSync()
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [showFilter, setShowFilter] = useState(true);
+  const minPriceRef = useRef(price.min);
+  const maxPriceRef = useRef(price.max);
+  const currentLowPriceRef = useRef(Number(filters.minPrice) || searchParams.get('minPrice') || price.min);
+  const currentHighPriceRef = useRef(Number(filters.maxPrice) || searchParams.get('maxPrice') || price.max);
 
-  const [minPrice, setMinPrice] = useState(price.min);
-  const [maxPrice, setMaxPrice] = useState(price.max);
+  const createQueryString = useCallback(
+    (minPrice: number, maxPrice: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      minPrice !== price.min ? params.set("minPrice", String(minPrice)) : params.delete("minPrice");
+      maxPrice !== price.max ? params.set("maxPrice", String(maxPrice)) : params.delete("maxPrice");
+      return params.toString();
+    },
+    [searchParams, price.min, price.max]
+  );
 
-  const [currentLowPrice, setCurrentLowPrice] = useState(price.min);
-  const [currentHighPrice, setCurrentHighPrice] = useState(price.max);
-  const [showFilter, setshowFilter] = useState(true);
+  const debouncedUpdate = useRef(
+    debounce((minPrice: number, maxPrice: number) => {
+      const queryString = createQueryString(minPrice, maxPrice);
+      if (minPrice !== price.min || maxPrice !== price.max) {
+        router.push(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false });
+      }
+      toggleFilterValue("minPrice", String(minPrice), false);
+      toggleFilterValue("maxPrice", String(maxPrice), false);
+    }, 500)
+  ).current;
 
-  const toggleFilter = () => {
-    setshowFilter(!showFilter);
-  };
+  const toggleFilter = () => setShowFilter((prev) => !prev);
 
-  const getMinMax = ({
-    min,
-    max,
-    currentLow,
-    currentHigh,
-  }: {
-    min: number;
-    max: number;
-    currentLow: number;
-    currentHigh: number;
-  }) => {
-    setMinPrice(min);
-    setMaxPrice(max);
-    setCurrentLowPrice(currentLow);
-    setCurrentHighPrice(currentHigh);
-  };
+  const getMinMax = useCallback(({ min, max, currentLow, currentHigh }: { min: number; max: number; currentLow: number; currentHigh: number }) => {
+    if (min !== minPriceRef.current || max !== maxPriceRef.current) {
+      minPriceRef.current = min;
+      maxPriceRef.current = max;
+    }
 
-  const onClick = () => {
-    // toggleFilterValue("minPrice", currentLowPrice.toString(), false)
-    // toggleFilterValue("maxPrice", currentHighPrice.toString(), false)
-    console.log("currentLowPrice = ", currentLowPrice);
-    console.log("currentHighPrice = ", currentHighPrice);
-  };
+    if (currentLow !== currentLowPriceRef.current || currentHigh !== currentHighPriceRef.current) {
+      currentLowPriceRef.current = currentLow;
+      currentHighPriceRef.current = currentHigh;
+      debouncedUpdate(currentLow, currentHigh);
+    }
+  }, []);
 
-  if (maxPrice === minPrice) {
-    return <></>;
-  }
+  if (maxPriceRef.current === minPriceRef.current) return null;
 
   return (
     <div className="px-5 py-3 border-y">
@@ -57,17 +67,17 @@ const PriceRange = ({ price }: { price: TPriceFilter }) => {
       {showFilter && (
         <div className="mt-3">
           <MultiRangeSlider
-            min={minPrice}
-            max={maxPrice}
-            currentLow={currentLowPrice}
-            currentHigh={currentHighPrice}
+            min={minPriceRef.current}
+            max={maxPriceRef.current}
+            currentLow={parseInt(currentLowPriceRef.current.toString())}
+            currentHigh={parseInt(currentHighPriceRef.current.toString())}
             onChange={getMinMax}
           />
-          <div>
+          {/* <div>
             <button onClick={onClick} className={"box-button mt-3"}>
               Filter Price
             </button>
-          </div>
+          </div> */}
         </div>
       )}
     </div>

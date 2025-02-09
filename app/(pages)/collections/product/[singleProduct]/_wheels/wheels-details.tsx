@@ -23,7 +23,7 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
           <AiOutlineDollarCircle className={"text-white"} />
         </div>
         <p className="text-base uppercase text-gray-600">
-          {product.item_promo}
+          {product.price}
         </p>
       </div>
 
@@ -43,10 +43,10 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
           <MdOutlineShoppingCart className={"text-white"} />
         </div>
         <div className="text-base uppercase">
-          <p className="text-gray-600">{product.item_shipping}</p>
+          <p className="text-gray-600">{product.price}</p>
           <p className="text-gray-600">
             <span className="text-black font-semibold">
-              {product.delivery_date}
+              {/* {product.} */}
             </span>{" "}
             to the lower 48
           </p>
