@@ -1,19 +1,17 @@
-import { useSearchParams, useRouter } from "next/navigation";
+"use client";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import debounce from "lodash/debounce"; // Use lodash for better debounce handling
-import { useAppDispatch, useTypedSelector } from "@/app/globalRedux/store";
-import { updateFilters } from "@/app/globalRedux/features/wheel";
 
 // Define filter type
 type Filters = Record<string, string>;
 
-const useFilterSync = () => {
+export const useFilterSync = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const dispatch = useAppDispatch();
+    const pathname = usePathname();
 
-    const { filters: reduxFilters } = useTypedSelector((state) => state.wheel);
-    const [localFilters, setLocalFilters] = useState<Filters>(reduxFilters as any);
+    const [localFilters, setLocalFilters] = useState<Filters>({});
 
     // Convert searchParams to an object
     const parsedFilters = useMemo<Filters>(() => {
@@ -24,15 +22,10 @@ const useFilterSync = () => {
         return params;
     }, [searchParams]);
 
-    // Merge Redux filters with URL filters (URL filters take priority)
+    // Sync state with URL parameters
     useEffect(() => {
-        const mergedFilters = { ...reduxFilters, ...parsedFilters };
-        // Prevent unnecessary updates
-        if (JSON.stringify(localFilters) !== JSON.stringify(mergedFilters)) {
-            setLocalFilters(mergedFilters as any);
-            dispatch(updateFilters(mergedFilters));
-        }
-    }, [dispatch, parsedFilters, reduxFilters, localFilters]);
+        setLocalFilters(parsedFilters);
+    }, [parsedFilters]);
 
     // Toggle filter value (handles multiple selections)
     const toggleFilterValue = useCallback(
@@ -51,7 +44,14 @@ const useFilterSync = () => {
                     finalValue = value;
                 }
 
-                return { ...prev, [key]: finalValue };
+                const updatedFilters = { ...prev, [key]: finalValue };
+
+                // Remove empty filters
+                if (!finalValue) {
+                    delete updatedFilters[key];
+                }
+
+                return updatedFilters;
             });
         },
         []
@@ -63,11 +63,12 @@ const useFilterSync = () => {
             const query = new URLSearchParams();
 
             Object.entries(filters).forEach(([key, value]) => {
-                if (value) query.append(key, value);
+                if (value) query.set(key, value); // Use set() instead of append() for unique keys
             });
-            router.push(`?${query.toString()}`, { scroll: false });
+
+            router.replace(`${pathname}?${decodeURIComponent(query.toString())}`, { scroll: false });
         }, 500),
-        [router]
+        [router, pathname]
     );
 
     // Update query params when filters change
@@ -78,5 +79,3 @@ const useFilterSync = () => {
 
     return { filters: localFilters, toggleFilterValue };
 };
-
-export default useFilterSync;

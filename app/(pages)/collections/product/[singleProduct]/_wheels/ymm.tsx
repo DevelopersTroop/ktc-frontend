@@ -1,9 +1,6 @@
 import { useState } from "react";
 
 import {
-    FormControl
-} from "@/components/ui/form";
-import {
     Select,
     SelectContent,
     SelectItem,
@@ -18,6 +15,8 @@ export const YmmSelector: React.FC<{
         model: string;
         trim: string;
         showError?: boolean
+        finish: string
+        levelingKit: string
     }>>,
     ymm: {
         year: string;
@@ -25,6 +24,8 @@ export const YmmSelector: React.FC<{
         model: string;
         trim: string;
         showError?: boolean
+        finish: string
+        levelingKit: string
     }
 }> = ({
     setYmm,
@@ -39,6 +40,8 @@ export const YmmSelector: React.FC<{
         const [loadingModels, setLoadingModels] = useState(false);
         const [loadingTrims, setLoadingTrims] = useState(false);
         const [loadingDrives, setLoadingDrives] = useState(false);
+        const [levelingKit, setLevelingKit] = useState(["Stock", "Leveling kit"])
+        const [finish, setFinish] = useState(["Stock", "Chrome"])
 
 
         const onYearChange = (value: string) => {
@@ -179,6 +182,46 @@ export const YmmSelector: React.FC<{
                         (ymm.showError && !ymm.trim.length) ? <p className="text-primary">Required</p> : null
                     }
                 </div>
+
+                <Select
+                    onValueChange={(value) => setYmm(prev => ({ ...prev, levelingKit: value }))}
+                    value={ymm.levelingKit}
+                >
+                    <SelectTrigger>
+                        <SelectValue
+                            placeholder={
+                                "Leveling Kit"
+                            }
+                        />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {levelingKit.map((trim) => (
+                            <SelectItem key={`trim-${trim}`} value={trim}>
+                                {trim}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+
+                <Select
+                    onValueChange={(value) => setYmm(prev => ({ ...prev, finish: value }))}
+                    value={ymm.finish}
+                >
+                    <SelectTrigger>
+                        <SelectValue
+                            placeholder={
+                                "Gloss Black with Milled Spoke Edges"
+                            }
+                        />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {finish.map((trim) => (
+                            <SelectItem key={`trim-${trim}`} value={trim}>
+                                {trim}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
             </div>
         );
     };

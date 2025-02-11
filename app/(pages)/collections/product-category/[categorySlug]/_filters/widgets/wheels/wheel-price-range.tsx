@@ -5,8 +5,8 @@ import MultiRangeSlider from "@/app/ui/multi-range-slider/multi-range-slider";
 import debounce from "debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
-import useFilterSync from "../../store";
 import FilterHeading from "../../template/filter-heading";
+import { useFilterSync } from "../../store";
 
 const PriceRange = ({ price }: { price: TPriceFilter }) => {
   const { filters, toggleFilterValue } = useFilterSync()

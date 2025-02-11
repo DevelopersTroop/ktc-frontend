@@ -3,7 +3,7 @@ import { TSingleFilter } from "@/app/types/filter";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useRef } from "react";
-import useFilterSync from "../store";
+import { useFilterSync } from "../store";
 // import useFilter from "../filter-store/useFilter";
 
 type SelectFilterTemplateProps = {
@@ -20,8 +20,8 @@ const SelectFilterTemplate = ({
   acceptMultipleValues = true,
 }: SelectFilterTemplateProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { filters, toggleFilterValue } = useFilterSync();
-  const currentSelectedValues = filters[filterKey]?.split(",") ?? [];
+  const { filters, toggleFilterValue } = useFilterSync()
+  const currentSelectedValues = filters[filterKey]?.split(",") ?? []
 
   const onCheckboxChange = (checked: boolean, value: string) => {
     toggleFilterValue(filterKey, value, acceptMultipleValues);
@@ -59,9 +59,9 @@ const SelectFilterTemplate = ({
                 <Checkbox
                   id={data.value.toString()}
                   disabled={disabled}
-                  //   checked={currentSelectedValues?.includes(
-                  //     data.value.toString()
-                  //   )}
+                  checked={currentSelectedValues?.includes(
+                    data.value.toString()
+                  )}
                   onCheckedChange={(checked) =>
                     onCheckboxChange(checked as boolean, data.value.toString())
                   }
