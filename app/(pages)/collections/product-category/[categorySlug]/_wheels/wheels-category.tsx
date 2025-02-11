@@ -9,13 +9,23 @@ import WheelFilters from "../_filters/wheel-filters";
 import WheelYMMFilters from "../_filters/widgets/wheels/wheel-ymm-filter";
 import NoProductsFound from "../no-products-found";
 import ProductCard from "./product-card";
+import Loading from '../../../product/[singleProduct]/loading';
 const WheelsCategory: React.FC = () => {
   const dispatch = useAppDispatch()
-  const { data, filters } = useTypedSelector(state => state.wheel)
+  const { data, filters, loading } = useTypedSelector(state => state.wheel)
 
   useEffect(() => {
     fetchWheelData(dispatch, filters)
   }, [filters, dispatch])
+
+  if (loading) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="w-full max-w-[1450px] flex flex-col md:flex-row gap-6 px-4 py-6 mx-auto">

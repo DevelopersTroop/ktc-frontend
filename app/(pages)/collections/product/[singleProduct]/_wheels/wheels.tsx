@@ -1,3 +1,4 @@
+"use client"
 import { TInventoryItem } from "@/app/types/product";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";

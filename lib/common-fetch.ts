@@ -10,7 +10,7 @@ type RequestOptions<M extends HttpMethod> = {
   ? { body: Record<string, any> } // Require body for these methods
   : { body?: never }); // Disallow body for GET, DELETE
 
-export async function customFetch<T>(
+export async function customFetch<T extends unknown>(
   url: string,
   method: HttpMethod = "GET",
   options?: RequestOptions<HttpMethod>
@@ -33,7 +33,7 @@ export async function customFetch<T>(
   });
 
   if (!response.ok) {
-    console.error(`API Error: ${response.status} ${response.statusText}`);
+    throw new Error(`API Error: ${response.status} ${response.statusText}`);
   }
 
   return response.json();

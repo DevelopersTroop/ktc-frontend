@@ -5,6 +5,7 @@ import DiscountBanner from "./components/header/discount-banner";
 import Header from "./components/header/header";
 import TopHeader from "./components/header/topheader";
 import StoreProvider from "./globalRedux/store-provider";
+import { Toaster } from 'sonner'
 import "./globals.css";
 
 const geistSans = Geist({
@@ -38,6 +39,7 @@ export default function RootLayout({
           <DiscountBanner />
           <main className="flex-1">{children}</main>
           <Footer />
+          <Toaster richColors />
         </StoreProvider>
       </body>
     </html>

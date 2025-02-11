@@ -1,7 +1,4 @@
-import Breadcrumb from '@/app/ui/breadcrumb/breadcrumb';
-import Item from '@/app/ui/breadcrumb/item';
 import Container from '@/app/ui/container/container';
-import React from 'react';
 
 const Loading = () => {
 
