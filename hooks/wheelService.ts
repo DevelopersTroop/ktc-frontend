@@ -26,6 +26,8 @@ export const fetchWheelData = async (
             }),
           }
         : {};
+    console.log(filters);
+
     const response = await customFetch<IApiRes<TInventoryItem[], "products">>(
       "products/list",
       "POST",
@@ -36,7 +38,6 @@ export const fetchWheelData = async (
         },
       }
     );
-    console.log("🚀 ~ response:", response);
     dispatch(fetchWheelSuccess(response.data));
   } catch (error: any) {
     dispatch(fetchWheelFailure(error.message));

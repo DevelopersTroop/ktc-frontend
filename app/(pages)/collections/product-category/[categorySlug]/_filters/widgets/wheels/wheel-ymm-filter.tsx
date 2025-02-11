@@ -83,11 +83,11 @@ const WheelYMMFilters = () => {
 
   const onSubmit = (values: any) => {
     console.log(values);
-    setYears(values.year);
-    setMakes(values.make);
-    setModels(values.model);
-    setTrims(values.trim);
-    setDrives(values.drive);
+    setYears([values.year]);
+    setMakes([values.make]);
+    setModels([values.model]);
+    setTrims([values.trim]);
+    setDrives([values.drive]);
   };
 
   return (
@@ -122,7 +122,7 @@ const WheelYMMFilters = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {years.map((year) => (
+                      {years?.map((year) => (
                         <SelectItem key={`year-${year}`} value={year}>
                           {year}
                         </SelectItem>

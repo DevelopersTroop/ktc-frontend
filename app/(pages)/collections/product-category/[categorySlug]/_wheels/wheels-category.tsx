@@ -3,7 +3,7 @@ import { useAppDispatch, useTypedSelector } from '@/app/globalRedux/store';
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
 import { fetchWheelData } from "@/hooks/wheelService";
-import React, { useEffect } from "react";
+import React, { JSX, useEffect } from "react";
 import SidebarFilters from "../_filters/mobile-filters/sidebar-filters";
 import WheelFilters from "../_filters/wheel-filters";
 import WheelYMMFilters from "../_filters/widgets/wheels/wheel-ymm-filter";
@@ -13,30 +13,32 @@ import ProductCard from "./product-card";
 import ProductCardSkeleton from '../_loading/product-card-skeleton';
 import Container from '@/app/ui/container/container';
 import FilterLoadingSkeleton from '../_loading/filter-loading-skeleton';
+import { useFilterSync } from '../_filters/store';
 const WheelsCategory: React.FC = () => {
   const dispatch = useAppDispatch()
-  const { data, filters, loading } = useTypedSelector(state => state.wheel)
+  const { data, loading } = useTypedSelector(state => state.wheel)
+  const { filters } = useFilterSync()
 
   useEffect(() => {
     fetchWheelData(dispatch, filters)
   }, [filters, dispatch])
 
-  if (loading) {
-    return (
-      <Container>
-      <div className="flex w-full gap-6 pt-6">
-                <div className={'hidden lg:block lg:w-1/4'}>
-                    <FilterLoadingSkeleton />
-                </div>
-                <div className={'w-full lg:w-3/4 grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 auto-rows-min'}>
-                    {
-                        Array(12).fill(0).map((_, index) => <ProductCardSkeleton key={`product-card-loading-${index}`} />)
-                    }
-                </div>
-            </div>
-      </Container>
-    )
-  }
+  // if (loading) {
+  //   return (
+  //     <Container>
+  //       <div className="flex w-full gap-6 pt-6">
+  //         <div className={'hidden lg:block lg:w-1/4'}>
+  //           <FilterLoadingSkeleton />
+  //         </div>
+  //         <div className={'w-full lg:w-3/4 grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 auto-rows-min'}>
+  //           {
+  //             Array(12).fill(0).map((_, index) => <ProductCardSkeleton key={`product-card-loading-${index}`} />)
+  //           }
+  //         </div>
+  //       </div>
+  //     </Container>
+  //   )
+  // }
 
   return (
     <>
@@ -50,34 +52,43 @@ const WheelsCategory: React.FC = () => {
           <WheelYMMFilters />
           <WheelFilters />
         </div>
-        {data?.products.length === 0 ? (
-          <>
-            <NoProductsFound />
-          </>
-        ) : (
-          <>
-            <div className="w-full flex flex-col">
-              <div className="p-2">
-                <Breadcrumb>
-                  <Item href={"/"}>Home</Item>
-                  <Item href={"/"}>Collections</Item>
-                  <Item href={"/collections/product-category/wheels"}>
-                    Wheels
-                  </Item>
-                </Breadcrumb>
-              </div>
-              <div
-                className={
-                  "w-full flex flex-row flex-wrap gap-4 justify-center"
-                }
-              >
-                {data?.products.map((product) => (
-                  <ProductCard product={product} key={product._id} />
-                ))}
-              </div>
+        {
+          loading ? (
+            <div className={'w-full grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'}>
+              {
+                Array(12).fill(0).map((_, index) => <ProductCardSkeleton key={`product-card-loading-${index}`} />)
+              }
             </div>
-          </>
-        )}
+          ) :
+            data?.products.length === 0 ? (
+              <>
+                <NoProductsFound />
+              </>
+            ) : (
+              <>
+                <div className="w-full flex flex-col">
+                  <div className="p-2">
+                    <Breadcrumb>
+                      <Item href={"/"}>Home</Item>
+                      <Item href={"/"}>Collections</Item>
+                      <Item href={"/collections/product-category/wheels"}>
+                        Wheels
+                      </Item>
+                    </Breadcrumb>
+                  </div>
+                  <div
+                    className={
+                      "w-full flex flex-row flex-wrap gap-4 justify-center"
+                    }
+                  >
+                    {data?.products.map((product) => (
+                      <ProductCard product={product} key={product._id} />
+                    ))}
+                  </div>
+                </div>
+              </>
+            )
+        }
       </div>
     </>
   );
