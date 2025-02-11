@@ -1,8 +1,7 @@
 import { TInventoryItem } from "@/app/types/product";
 import Link from "next/link";
-import { AiOutlineDollarCircle } from "react-icons/ai";
 import { LiaShippingFastSolid } from "react-icons/lia";
-import { MdOutlineLocalPhone, MdOutlineShoppingCart } from "react-icons/md";
+import { MdOutlineLocalPhone } from "react-icons/md";
 import { PiHandCoinsDuotone } from "react-icons/pi";
 
 const WheelDetails = ({ product }: { product: TInventoryItem }) => {
@@ -18,14 +17,14 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
         </p>
       </div>
 
-      <div className=" flex items-center gap-2">
+      {/* <div className=" flex items-center gap-2">
         <div className={"rounded-full p-1 inline-block bg-primary"}>
           <AiOutlineDollarCircle className={"text-white"} />
         </div>
         <p className="text-base uppercase text-gray-600">
           {product.price}
         </p>
-      </div>
+      </div> */}
 
       <div className=" flex items-center gap-2">
         <div className={"rounded-full p-1 inline-block bg-primary"}>
@@ -38,7 +37,7 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
         </div>
       </div>
 
-      <div className=" flex items-center gap-2">
+      {/* <div className=" flex items-center gap-2">
         <div className={"rounded-full p-1 inline-block bg-primary"}>
           <MdOutlineShoppingCart className={"text-white"} />
         </div>
@@ -46,12 +45,11 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
           <p className="text-gray-600">{product.price}</p>
           <p className="text-gray-600">
             <span className="text-black font-semibold">
-              {/* {product.} */}
             </span>{" "}
             to the lower 48
           </p>
         </div>
-      </div>
+      </div> */}
 
       <div className=" flex items-center gap-2">
         <div className={"rounded-full p-1 inline-block bg-primary"}>

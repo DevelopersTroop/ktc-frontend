@@ -5,6 +5,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import MenuItemHasChildren from "./menu/menu-item-has-children/menu-item-has-children";
 
 const MainMenu = () => {
+ 
   return (
     <nav className={"w-full flex justify-between h-full"}>
       <ul className={"flex items-center h-full"}>

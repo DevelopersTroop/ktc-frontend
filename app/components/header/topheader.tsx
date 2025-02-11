@@ -3,13 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Phone, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import MobileMenu from "./menu/mobile-menu/mobile-menu";
 import useAuth from "@/app/(pages)/_hooks/useAuth";
+import { useTypedSelector } from "@/app/globalRedux/store";
 
 export default function TopHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const {user} = useAuth();
+  const { user } = useAuth();
+  const { products } = useTypedSelector(state => state.persisted.cart)
+
+  const cartQuantity = useMemo(() => {
+    return Object.values(products).reduce((acc, product) => acc + product.quantity, 0)
+  }, [JSON.stringify(products)])
 
   return (
     <div className="bg-white border-b">
@@ -91,7 +97,7 @@ export default function TopHeader() {
               <div className="relative">
                 <ShoppingCart className="h-5 w-5 text-gray-600" />
                 <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                  0
+                  {cartQuantity}
                 </span>
               </div>
               <div className="hidden md:block">
@@ -108,7 +114,7 @@ export default function TopHeader() {
             <Link href="/cart" className="relative">
               <ShoppingCart className="h-6 w-6" />
               <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                0
+                {cartQuantity}
               </span>
             </Link>
           </div>
