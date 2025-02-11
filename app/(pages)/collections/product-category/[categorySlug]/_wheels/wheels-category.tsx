@@ -9,7 +9,10 @@ import WheelFilters from "../_filters/wheel-filters";
 import WheelYMMFilters from "../_filters/widgets/wheels/wheel-ymm-filter";
 import NoProductsFound from "../no-products-found";
 import ProductCard from "./product-card";
-import Loading from '../../../product/[singleProduct]/loading';
+// import Loading from '../../../product/[singleProduct]/loading';
+import ProductCardSkeleton from '../_loading/product-card-skeleton';
+import Container from '@/app/ui/container/container';
+import FilterLoadingSkeleton from '../_loading/filter-loading-skeleton';
 const WheelsCategory: React.FC = () => {
   const dispatch = useAppDispatch()
   const { data, filters, loading } = useTypedSelector(state => state.wheel)
@@ -20,9 +23,18 @@ const WheelsCategory: React.FC = () => {
 
   if (loading) {
     return (
-      <div>
-        <Loading />
-      </div>
+      <Container>
+      <div className="flex w-full gap-6 pt-6">
+                <div className={'hidden lg:block lg:w-1/4'}>
+                    <FilterLoadingSkeleton />
+                </div>
+                <div className={'w-full lg:w-3/4 grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 auto-rows-min'}>
+                    {
+                        Array(12).fill(0).map((_, index) => <ProductCardSkeleton key={`product-card-loading-${index}`} />)
+                    }
+                </div>
+            </div>
+      </Container>
     )
   }
 
