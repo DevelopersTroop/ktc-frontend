@@ -91,13 +91,13 @@ const WheelFilters = () => {
         <PriceRange price={priceRange} />
       </div>
       <div className={"px-5 py-3 border-y border-gray-300"}>
-        <WheelDiameter filterKey={"wheel_diameter"} diameter={diameter} />
+        <WheelDiameter filterKey={"diameter"} diameter={diameter} />
       </div>
       <div className={"px-5 py-3 border-b border-gray-300"}>
-        <WheelModel filterKey={"model_group"} model={model} />
+        <WheelModel filterKey={"model"} model={model} />
       </div>
       <div className={"px-5 py-3 border-b border-gray-300"}>
-        <WheelFinish filterKey={"finish"} finish={finish} />
+        <WheelFinish filterKey={"color"} finish={finish} />
       </div>
     </div>
   );

@@ -18,7 +18,6 @@ export async function customFetch<T extends unknown>(
   const { queryParams = {}, headers = {} } = options || {};
   const body =
     options && "body" in options ? JSON.stringify(options.body) : undefined;
-
   // Construct query string from queryParams object
   const queryString = new URLSearchParams(queryParams).toString();
   const fullUrl = `${apiBaseUrl}/${url}${queryString ? `?${queryString}` : ""}`;

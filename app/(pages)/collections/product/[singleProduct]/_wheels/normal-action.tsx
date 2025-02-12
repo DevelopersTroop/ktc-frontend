@@ -1,22 +1,19 @@
-import { useState } from "react";
-import { YmmSelector } from "./ymm";
-import wait from "wait";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { setYearMakeModel } from "@/app/globalRedux/features/year-make-model/year-make-model-slice";
-import { TInventoryItem } from "@/app/types/product";
-import { v4 as uuidv4 } from 'uuid'
-import store, { useAppDispatch } from "@/app/globalRedux/store";
 import { addToCart } from "@/app/globalRedux/features/cart/cart-slice";
+import store, { useAppDispatch } from "@/app/globalRedux/store";
+import { TInventoryItem } from "@/app/types/product";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
-import { metadata } from "@/app/layout";
+import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+import { YmmSelector } from "./ymm";
 
 type NormalActionButtonProps = {
     setIsStaggered: React.Dispatch<React.SetStateAction<boolean>>
     product: TInventoryItem
 }
 
-interface CartData {
+export interface CartData {
     cartSerial: string;
     cartPackage: string;
 }
@@ -30,12 +27,16 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({ setIsSta
         model: string
         trim: string
         showError?: boolean
+        levelingKit: string
+        finish: string
     }>({
         year: "",
         make: "",
         model: "",
         trim: "",
-        showError: false
+        showError: false,
+        finish: "",
+        levelingKit: ""
     })
     const [isFitmentNeeded, setIsFitmentNeeded] = useState(false)
     const [openFitmentModal, setOpenFitmentModal] = useState(false)
