@@ -1,0 +1,44 @@
+import { changeItemQuantity } from "@/app/globalRedux/features/cart/cart-slice";
+import { TCartProduct } from "@/app/types/cart";
+import CartQuantityInputBox from "@/app/ui/quantity-input-box/cart-quantity-input-box";
+import { useDispatch } from "react-redux";
+
+const Quantity = ({
+  cartProduct,
+}: {
+  cartProduct: TCartProduct;
+}) => {
+  const dispatch = useDispatch();
+  return (
+    <CartQuantityInputBox
+      borderColor={" border-[#cfcfcf]"}
+      className="scale-90"
+      id={cartProduct.cartPackage}
+      inputName={cartProduct.cartPackage}
+      inputValue={cartProduct.quantity}
+      maxInputValue={cartProduct.stockQuantity}
+      quantityStep={Math.abs(4)}
+      onDecrease={() => {
+        dispatch(
+          changeItemQuantity({
+            cartSerial: cartProduct.cartSerial,
+            quantity: cartProduct.quantity > 4 ? cartProduct.quantity - 4 : 4,
+          })
+        );
+      }}
+      onIncrease={() => {
+        dispatch(
+          changeItemQuantity({
+            cartSerial: cartProduct.cartSerial,
+            quantity: cartProduct.stockQuantity - cartProduct.quantity > 4
+                ? cartProduct.quantity + 4
+                : cartProduct.stockQuantity,
+          })
+        );
+      }}
+      onInputChange={() => {}}
+    />
+  );
+};
+
+export default Quantity;

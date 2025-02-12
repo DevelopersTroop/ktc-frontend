@@ -35,6 +35,16 @@ const DashbaordTopbar = () => {
       </li>
       <li>
         <Link
+          href={"/dashboard/save-product"}
+          className={`cursor-pointer py-4 block font-semibold text-nowrap border-r ${
+            selectedNav === "downloads" ? "text-primary " : "text-black"
+          } px-2 sm:px-5 py-2 hover:text-primary`}
+        >
+          Wishlist
+        </Link>
+      </li>
+      {/* <li>
+        <Link
           href={"/dashboard/downloads"}
           className={`cursor-pointer py-4 block font-semibold text-nowrap border-r ${
             selectedNav === "downloads" ? "text-primary " : "text-black"
@@ -42,7 +52,7 @@ const DashbaordTopbar = () => {
         >
           Downloads{" "}
         </Link>
-      </li>
+      </li> */}
       <li>
         <Link
           href={"/dashboard/addresses"}

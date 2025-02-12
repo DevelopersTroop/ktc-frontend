@@ -52,6 +52,21 @@ const cartSlice = createSlice({
         return;
       }
 
+
+      const { category, cartPackage, item_class } = state.products[cartSerial];
+
+      const removeItemsByCondition = (condition: (product: any) => boolean) => {
+        Object.keys(state.products).forEach((serial) => {
+          if (condition(state.products[serial])) {
+            delete state.products[serial];
+          }
+        });
+      };
+
+      removeItemsByCondition(
+        (product) => product.cartPackage === cartPackage
+      );
+
       // if (state.products[cartSerial].category === "Tire") {
       //     // delete all `tire` of same package id
       //     const cartPackage = state.products[cartSerial].cartPackage;

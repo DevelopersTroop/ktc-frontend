@@ -26,7 +26,8 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
           slug: product?.slug,
           data: {
             title: product?.title,
-            thumnail: product?.thumbnail
+            item_image: product?.thumbnail,
+            category: "wheels"
           },
         }
       })
