@@ -4,9 +4,13 @@ import { TInventoryItem } from "@/app/types/product";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { YmmSelector } from "./ymm";
+import Quantity from "@/app/(pages)/cart/_components/quantity";
+import { PiShoppingCartLight } from 'react-icons/pi';
+import QuantityInput from "./quantity-input";
+import { WheelContext } from "./context/WheelProvider";
 
 type NormalActionButtonProps = {
     setIsStaggered: React.Dispatch<React.SetStateAction<boolean>>
@@ -40,6 +44,8 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({ setIsSta
     })
     const [isFitmentNeeded, setIsFitmentNeeded] = useState(false)
     const [openFitmentModal, setOpenFitmentModal] = useState(false)
+    const {quantity} = useContext(WheelContext);
+    console.log("quantity === ", quantity);
     const handleBuyWheels = () => {
         if (!isFitmentNeeded && (!ymm.year.length || !ymm.make.length || !ymm.model.length || !ymm.trim.length)) {
             setOpenFitmentModal(true)
@@ -82,9 +88,43 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({ setIsSta
         })
         return data
     };
-    const [addToCartText, setAddToCartText] = useState(
-        "Add Tires & Save up to $81!"
-    );
+
+    const addProductToCartQuantity = async (meta?: any) => {
+        const data = await new Promise<CartData>((resolve, reject) => {
+            try {
+                const packageId = uuidv4();
+                const cartSerial = uuidv4();
+                const metaData = meta || {}
+                dispatch(
+                    addToCart({
+                        product: {
+                            ...product,
+                            slug: product.slug,
+                            title: product.title,
+                            cartPackage: packageId,
+                            cartSerial: cartSerial,
+                            quantity: quantity,
+                            metaData
+                        },
+                    })
+                );
+                setTimeout(() => {
+                    const updatedProducts = store.getState().persisted.cart.products;
+                    const addedProduct = Object.values(updatedProducts).find(
+                        (p) => p._id === product._id && JSON.stringify(p.metaData) === JSON.stringify(metaData)
+                    );
+                    resolve({ cartSerial: addedProduct?.cartSerial || cartSerial, cartPackage: addedProduct?.cartPackage || packageId })
+                }, 1000)
+            } catch (error) {
+                reject(error)
+            }
+        })
+        return data
+    };
+    // const [addToCartText, setAddToCartText] = useState(
+    //     "Add Tires & Save up to $81!"
+    // );
+    const [addToCartText, setAddToCartText] = useState('Add To Cart');
     return (
         <div className="flex flex-col gap-y-4">
             <YmmSelector setYmm={setYmm} ymm={ymm} />
@@ -100,6 +140,29 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({ setIsSta
             >
                 {addToCartText}
             </button> */}
+            <div className="flex flex-row justify-between items-baseline self-stretch relative w-full gap-4 mt-4">
+                <QuantityInput
+                    product={product}
+                    inventoryAvailable={product.stockQuantity}
+                    name={"quantity"}
+                    id={"quantity"}
+                    // isDually={product?.dually}
+                />
+                <button
+                    onClick={() => {
+                        setAddToCartText('Adding to cart...');
+
+                        addProductToCartQuantity().then(() => {
+                            setAddToCartText('Added to cart');
+                        })
+                    }} className="rounded-xl px-3  flex gap-2 justify-center items-center flex-1 relative w-full min-h-14 bg-[#db1922] hover:bg-red-700 hover:text-white transition duration-300 ease-in-out">
+                    <PiShoppingCartLight className='text-white text-2xl' />
+
+                    <p className=" leading-[22px] text-white">
+                        <span className="text-white font-semibold text-base ">{addToCartText}</span>
+                    </p>
+                </button>
+            </div>
             <button
                 onClick={handleBuyWheels}
                 className={

@@ -8,10 +8,11 @@ import WheelDescription from "./wheel-description";
 import WheelSpecifications from "./wheel-specifications";
 import WheelDetails from "./wheels-details";
 import WheelsTitle from "./wheels-title";
+import WheelProvider from "./context/WheelProvider";
 
 const Wheels = ({ product }: { product: TInventoryItem }) => {
   return (
-    <>
+    <WheelProvider >
       <Breadcrumb>
         <Item href={"/"}>Home</Item>
         <Item href={"/collections/product-category/wheels"}>Collection</Item>
@@ -49,7 +50,7 @@ const Wheels = ({ product }: { product: TInventoryItem }) => {
           <WheelDescription product={product} />
         </div>
       </div>
-    </>
+    </WheelProvider>
   );
 };
 
