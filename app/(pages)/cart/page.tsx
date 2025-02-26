@@ -1,4 +1,4 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import Link from "next/link";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import EmptyCart from "./empty-cart";

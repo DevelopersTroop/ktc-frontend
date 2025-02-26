@@ -1,27 +1,30 @@
 "use client";
+import { useTypedSelector } from "@/app/globalRedux/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useAuth from "@/hooks/useAuth";
 import { Phone, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import MobileMenu from "./menu/mobile-menu/mobile-menu";
-import useAuth from "@/app/(pages)/_hooks/useAuth";
-import { useTypedSelector } from "@/app/globalRedux/store";
 
 export default function TopHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { user } = useAuth();
-  const { products } = useTypedSelector(state => state.persisted.cart)
+  const { products } = useTypedSelector((state) => state.persisted.cart);
 
   const cartQuantity = useMemo(() => {
-    return Object.values(products).reduce((acc, product) => acc + product.quantity, 0)
-  }, [JSON.stringify(products)])
+    return Object.values(products).reduce(
+      (acc, product) => acc + product.quantity,
+      0,
+    );
+  }, [JSON.stringify(products)]);
 
   return (
-    <div className="bg-white border-b">
+    <div className="border-b bg-white">
       {isSearchOpen && (
-        <div className="fixed inset-0 bg-white z-50 lg:hidden">
-          <div className="flex items-center p-4 gap-2">
+        <div className="fixed inset-0 z-50 bg-white lg:hidden">
+          <div className="flex items-center gap-2 p-4">
             <Input
               type="text"
               placeholder="Search products..."
@@ -34,7 +37,7 @@ export default function TopHeader() {
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto px-4 py-3">
+      <div className="mx-auto max-w-7xl px-4 py-3">
         <div className="flex items-center justify-between gap-4">
           <MobileMenu />
 
@@ -46,7 +49,7 @@ export default function TopHeader() {
             />
           </Link>
 
-          <div className="hidden lg:flex flex-1 max-w-xl mx-4">
+          <div className="mx-4 hidden max-w-xl flex-1 lg:flex">
             <div className="relative flex-1">
               <Input
                 type="text"
@@ -54,7 +57,7 @@ export default function TopHeader() {
                 className="w-full pl-4 pr-10"
               />
               <Button
-                className="absolute right-0 top-0 bottom-0 px-3"
+                className="absolute bottom-0 right-0 top-0 px-3"
                 variant="ghost"
               >
                 <Search className="h-5 w-5" />
@@ -71,7 +74,7 @@ export default function TopHeader() {
             <Search className="h-6 w-6" />
           </Button>
 
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden items-center gap-2 md:flex">
             <Phone className="h-5 w-5 text-gray-600" />
             <div>
               <a
@@ -84,19 +87,24 @@ export default function TopHeader() {
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-8">
-            <Link href={user?.email ? "/dashboard" : "/login"} className="flex items-center gap-2">
+          <div className="hidden items-center gap-8 md:flex">
+            <Link
+              href={user?.email ? "/dashboard" : "/login"}
+              className="flex items-center gap-2"
+            >
               <User className="h-5 w-5 text-gray-600" />
               <div>
                 <p className="text-sm font-medium">MY ACCOUNT</p>
-                <p className="text-xs text-gray-500">Hello, {user?.email ? user.email : "Login"} </p>
+                <p className="text-xs text-gray-500">
+                  Hello, {user?.email ? user.email : "Login"}{" "}
+                </p>
               </div>
             </Link>
 
             <Link href="/cart" className="relative flex items-center gap-2">
               <div className="relative">
                 <ShoppingCart className="h-5 w-5 text-gray-600" />
-                <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-xs text-white">
                   {cartQuantity}
                 </span>
               </div>
@@ -113,7 +121,7 @@ export default function TopHeader() {
             </Link>
             <Link href="/cart" className="relative">
               <ShoppingCart className="h-6 w-6" />
-              <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-xs text-white">
                 {cartQuantity}
               </span>
             </Link>

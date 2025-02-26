@@ -1,5 +1,5 @@
 "use client";
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { PiHandCoinsDuotone } from "react-icons/pi";
 

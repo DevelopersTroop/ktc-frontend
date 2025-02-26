@@ -1,5 +1,5 @@
 "use client";
-import { GProduct } from "@/app/types/product";
+import { GProduct } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
 

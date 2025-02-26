@@ -1,4 +1,4 @@
-import { TBillingAddress, TDealer } from "../globalRedux/features/checkout/checkout-slice";
+import { BillingAddress, Dealer } from "@/types/order";
 
 export function capitalizeWords(str: string) {
     return str
@@ -6,7 +6,7 @@ export function capitalizeWords(str: string) {
         .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize each word
         .join(' '); // Join the words with a space
 }
-export function dealerToString(dealer: TDealer) {
+export function dealerToString(dealer: Dealer) {
     return `${dealer.Addressee}, ${dealer["Address 1"]}, ${dealer.City}, ${dealer["State/Province"].text}, ${dealer["Zip Code"]}, ${dealer.Country.text}`;
 }
 
@@ -18,7 +18,7 @@ export function camelCaseToWords(str: string) {
         .trim(); // Remove leading and trailing whitespace
 }
 
-export function billingAddressToStringAddress(billingAddress: TBillingAddress) {
+export function billingAddressToStringAddress(billingAddress: BillingAddress) {
     // concat all keys of billing address in a such way so that it represent a full address. The string address should not include email, phone, names, company name, apartment
     const addressKeys = Object.keys(billingAddress).filter((key) => !['email', 'phone', 'firstName', 'lastName', 'companyName', 'apartment'].includes(key));
     const orderedKeys = [
@@ -33,4 +33,12 @@ export function billingAddressToStringAddress(billingAddress: TBillingAddress) {
         .map(key => billingAddress[key]);
 
     return addressParts.join(', ');
+}
+
+
+export function truncWord(word: string, maxLength=10) {
+    if (word.length <= maxLength) {
+        return word;
+    }
+    return `${word.slice(0, maxLength)}...`;
 }

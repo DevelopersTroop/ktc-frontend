@@ -1,4 +1,4 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import { camelCaseToWords } from "@/app/utils/string";
 
 const filterKeyValue = (key: string, value: any) => {

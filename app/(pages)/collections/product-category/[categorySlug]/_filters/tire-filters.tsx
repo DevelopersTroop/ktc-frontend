@@ -1,6 +1,6 @@
 "use client";
 
-import { TSingleFilter } from "@/app/types/filter";
+import { TSingleFilter } from "@/types/filter";
 import TireBrand from "./widgets/tire/tire-brand";
 import TireHeight from "./widgets/tire/tire-height";
 import TireImage from "./widgets/tire/tire-image";

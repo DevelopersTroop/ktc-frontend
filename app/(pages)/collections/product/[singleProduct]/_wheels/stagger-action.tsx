@@ -1,10 +1,10 @@
 import { addToCart } from "@/app/globalRedux/features/cart/cart-slice"
 import store, { RootState, useAppDispatch } from "@/app/globalRedux/store"
-import { TInventoryItem } from "@/app/types/product"
 import { Button } from "@/components/ui/button"
+import { TInventoryItem } from "@/types/product"
+import { useRouter } from "next/navigation"
 import { v4 as uuidv4 } from 'uuid'
 import { CartData } from "./normal-action"
-import { useRouter } from "next/navigation"
 export const StaggeredActionButton: React.FC<{ product: TInventoryItem }> = ({ product }) => {
     const router = useRouter()
     const dispatch = useAppDispatch()

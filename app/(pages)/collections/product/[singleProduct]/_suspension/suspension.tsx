@@ -1,4 +1,4 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
 import ImageGallery from "../image-gallery";

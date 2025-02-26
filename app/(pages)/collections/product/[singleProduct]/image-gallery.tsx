@@ -1,5 +1,5 @@
 "use client";
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import { s3BucketUrl } from "@/app/utils/api";
 import { useEffect, useState } from "react";
 import Gallery from "react-image-gallery";

@@ -28,6 +28,8 @@ export type TInventoryItem = {
   deletedBy: string | null;
   isDelete: boolean;
   deletedAt: string | null;
+  wheel_size?:string
+  finish?:string
   _id: string;
   createdAt: string;
   updatedAt: string;

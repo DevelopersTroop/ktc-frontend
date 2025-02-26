@@ -1,6 +1,6 @@
 "use client";
 import useAuth from "@/app/(pages)/_hooks/useAuth";
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import { customFetch } from "@/lib/common-fetch";
 import { errorMessage, successMessage } from "@/lib/toast";
 import { useState } from "react";

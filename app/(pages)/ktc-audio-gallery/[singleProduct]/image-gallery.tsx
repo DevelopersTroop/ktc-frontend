@@ -1,6 +1,6 @@
 "use client";
-import { TInventoryItem } from "@/app/types/product";
 import { s3BucketUrl } from "@/app/utils/api";
+import { TInventoryItem } from "@/types/product";
 import { useEffect, useState } from "react";
 import Gallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -58,7 +58,7 @@ const ImageGallery = ({ product }: { product: TInventoryItem }) => {
   }, [product.item_image]);
 
   return (
-    <div className="flex justify-center mx-2 custom-gallery">
+    <div className="custom-gallery mx-2 flex justify-center">
       <div className="md:w-3/5">
         <Gallery
           showPlayButton={false}

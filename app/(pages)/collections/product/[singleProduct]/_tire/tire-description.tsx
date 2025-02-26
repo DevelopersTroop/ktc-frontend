@@ -1,4 +1,4 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 
 const TireDescription = ({ product }: { product: TInventoryItem }) => {
   return (

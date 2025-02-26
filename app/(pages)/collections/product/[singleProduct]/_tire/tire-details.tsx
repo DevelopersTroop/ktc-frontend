@@ -1,4 +1,4 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
 import { LiaShippingFastSolid } from "react-icons/lia";

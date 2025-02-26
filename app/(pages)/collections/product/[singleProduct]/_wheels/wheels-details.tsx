@@ -1,4 +1,4 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import Link from "next/link";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { MdOutlineLocalPhone } from "react-icons/md";
@@ -9,8 +9,8 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
     <div className="flex flex-col gap-5">
       <div>
         <p className="text-gray-700">
-          <span className="font-semibold text-2xl">$315.00</span> each{" "}
-          <span className="font-semibold text-2xl">
+          <span className="text-2xl font-semibold">$315.00</span> each{" "}
+          <span className="text-2xl font-semibold">
             /${product.price.toFixed(2)}
           </span>{" "}
           set
@@ -26,8 +26,8 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
         </p>
       </div> */}
 
-      <div className=" flex items-center gap-2">
-        <div className={"rounded-full p-1 inline-block bg-primary"}>
+      <div className="flex items-center gap-2">
+        <div className={"inline-block rounded-full bg-primary p-1"}>
           <LiaShippingFastSolid className={"text-white"} />
         </div>
         <div className="text-base uppercase">
@@ -51,14 +51,14 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
         </div>
       </div> */}
 
-      <div className=" flex items-center gap-2">
-        <div className={"rounded-full p-1 inline-block bg-primary"}>
+      <div className="flex items-center gap-2">
+        <div className={"inline-block rounded-full bg-primary p-1"}>
           <PiHandCoinsDuotone className={"text-white"} />
         </div>
         <div className="text-base">
           <p className="text-gray-800">
             Starting at $79/mo or 0% APR with{" "}
-            <span className="text-btext font-bold">affirm</span>{" "}
+            <span className="font-bold text-btext">affirm</span>{" "}
             <Link href="#" className="text-gray-900">
               Check your purchasing power
             </Link>
@@ -66,8 +66,8 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
         </div>
       </div>
 
-      <div className=" flex items-center gap-2">
-        <div className={"rounded-full p-1 inline-block bg-primary"}>
+      <div className="flex items-center gap-2">
+        <div className={"inline-block rounded-full bg-primary p-1"}>
           <PiHandCoinsDuotone className={"text-white"} />
         </div>
         <div className="text-base">
@@ -77,17 +77,17 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
               <img
                 src="/paypal.svg"
                 alt="paypal"
-                className="h-5 inline-block"
+                className="inline-block h-5"
               />
               <br />
-              <span className="underline text-primary">Learn More</span>{" "}
+              <span className="text-primary underline">Learn More</span>{" "}
             </p>
           </Link>
         </div>
       </div>
 
-      <div className=" flex items-center gap-2">
-        <div className={"rounded-full p-1 inline-block bg-primary"}>
+      <div className="flex items-center gap-2">
+        <div className={"inline-block rounded-full bg-primary p-1"}>
           <MdOutlineLocalPhone className={"text-white"} />
         </div>
         <p className="text-base uppercase text-gray-600">
