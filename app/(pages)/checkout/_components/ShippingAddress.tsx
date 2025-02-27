@@ -150,7 +150,7 @@ const ShippingAddressForm = () => {
       }
     } else {
       // If no account creation is needed, proceed directly
-      setStep(3);
+      setStep(2);
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }, 100);
@@ -345,7 +345,7 @@ const ShippingAddressForm = () => {
           <div className="flex gap-4 font-semibold">
             <button
               type="submit"
-              className="flex h-14 w-full max-w-fit items-center gap-2 rounded bg-red-600 px-4 py-3 text-white transition-colors hover:bg-red-700"
+              className="flex h-14 w-full max-w-fit items-center gap-2 rounded bg-primary px-4 py-3 text-white transition-colors hover:bg-primary"
               onClick={() => {
                 if (!validateForm()) {
                   setShowRequiredAlert(true);

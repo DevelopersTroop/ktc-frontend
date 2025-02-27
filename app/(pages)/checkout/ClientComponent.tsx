@@ -1,6 +1,7 @@
 "use client";
 
 import { useTypedSelector } from "@/app/globalRedux/store";
+import Container from "@/app/ui/container/container";
 import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
 import { useCheckout } from "@/context/CheckoutContext";
 import { useRouter } from "next/navigation";
@@ -16,16 +17,8 @@ const Page: React.FC = () => {
 
   const steps = [
     {
-      title: "Installation",
-      subTitle: "Enter your ZIP code to view your installation options.",
-    },
-    {
       title: "Shipping Info",
       subTitle: "Enter shipping info and a few additional details.",
-    },
-    {
-      title: "Order Summary",
-      subTitle: "Select preferred payment method.",
     },
     {
       title: "Secure payment options",
@@ -66,10 +59,10 @@ const Page: React.FC = () => {
 
   return (
     <div className="my-10 w-full">
-      <div className="container mx-auto w-full px-6">
+      <Container>
         <Stepper currentStep={step} steps={steps} setStep={setStep} />
         <Renderer setStep={setStep} step={step} />
-      </div>
+      </Container>
     </div>
   );
 };

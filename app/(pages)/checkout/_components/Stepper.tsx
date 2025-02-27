@@ -25,7 +25,7 @@ export const Stepper: React.FC<StepperProps> = ({
   const isFinalStep = currentStep === 5;
 
   return (
-    <div className="mx-auto max-w-7xl">
+    <div className="">
       <div className="flex items-start justify-between">
         <div className="relative flex w-full justify-between">
           <div
