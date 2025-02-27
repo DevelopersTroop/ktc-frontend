@@ -2,6 +2,7 @@
 import { setAccessToken, setRefreshToken, setUserDetails } from "@/app/globalRedux/features/user/user-slice";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useAuth from "@/hooks/useAuth";
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,7 +10,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { userLogin } from "../../(auth)/login/login";
-import useAuth from "../../_hooks/useAuth";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),

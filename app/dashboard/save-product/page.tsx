@@ -1,7 +1,7 @@
 "use client";
-import useAuth from "@/app/(pages)/_hooks/useAuth";
 import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
 import { apiBaseUrl } from "@/app/utils/api";
+import useAuth from "@/hooks/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ type WishListData = {
   item_image: string;
   category: string;
   slug: string;
-}
+};
 
 type WishListResult = {
   statusCode: number;
@@ -23,11 +23,11 @@ type WishListResult = {
     pages: number;
     wishlists: any;
   };
-}
+};
 
 const SaveProduct = () => {
   const router = useRouter();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
 
   const [wishListData, setWishListData] = useState<
@@ -46,24 +46,21 @@ const SaveProduct = () => {
     }
     (async () => {
       setLoading(true);
-      const wishListResponse = await fetch(
-        `${apiBaseUrl}/wishlists/list`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.accessToken}`,
-          },
-          body: JSON.stringify({
-            sort: [
-              {
-                whom: 'updatedAt',
-                order: 'desc' 
-              }
-            ]
-          }),
-        }
-      );
+      const wishListResponse = await fetch(`${apiBaseUrl}/wishlists/list`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+        body: JSON.stringify({
+          sort: [
+            {
+              whom: "updatedAt",
+              order: "desc",
+            },
+          ],
+        }),
+      });
       const wishListResult = await wishListResponse.json();
       setLoading(false);
       if (wishListResult?.statusCode === 200) {
@@ -78,7 +75,7 @@ const SaveProduct = () => {
             slug: wishlist?.slug,
           };
         });
-        setWishListData(wishList)
+        setWishListData(wishList);
       }
     })();
   }, []);
@@ -93,38 +90,41 @@ const SaveProduct = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user?.accessToken}`,
         },
-      }
+      },
     );
     const result = await response.json();
 
     // setLoading(false);
     if (result?.statusCode === 200) {
-      const updatedWishList = wishListData.filter((wishlist) => wishlist.wishlist_id !== wishlist_id);
+      const updatedWishList = wishListData.filter(
+        (wishlist) => wishlist.wishlist_id !== wishlist_id,
+      );
       setWishListData(updatedWishList);
     }
-  }
+  };
 
-  if(loading) return (
-    <div className="my-20">
-      <LoadingSpinner />
-    </div>
-  )
+  if (loading)
+    return (
+      <div className="my-20">
+        <LoadingSpinner />
+      </div>
+    );
 
   console.log("wishlist === ", wishListData);
 
   return (
     <div>
       <div className="hidden md:block">
-        <table className="min-w-full bg-white border-x border-b p-8">
+        <table className="min-w-full border-x border-b bg-white p-8">
           <thead>
             <tr className="text-start">
-              <th className="py-5 px-24 border-b text-start uppercase text-bold">
+              <th className="text-bold border-b px-24 py-5 text-start uppercase">
                 Name
               </th>
-              <th className="py-5 px-4 border-b text-start uppercase text-bold">
+              <th className="text-bold border-b px-4 py-5 text-start uppercase">
                 Category
               </th>
-              <th className="py-5 px-4 border-b text-start uppercase text-bold">
+              <th className="text-bold border-b px-4 py-5 text-start uppercase">
                 Actions
               </th>
             </tr>
@@ -133,28 +133,31 @@ const SaveProduct = () => {
             {wishListData.length > 0 ? (
               wishListData.map((product) => (
                 <tr key={product?.wishlist_id}>
-                  <td className="py-5 px-4 border-b">
-                    <div className="flex flex-col md:flex-row items-center gap-4">
+                  <td className="border-b px-4 py-5">
+                    <div className="flex flex-col items-center gap-4 md:flex-row">
                       <div
-                        className="w-[100px] overflow-hidden whitespace-nowrap text-ellipsis hover:cursor-pointer"
+                        className="w-[100px] overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
                         title={product?.item_image}
                       >
-                        <img src={
+                        <img
+                          src={
                             product?.item_image !== ""
                               ? product.item_image
                               : "/not-available.webp"
-                          } 
-                          alt={product?.title} 
+                          }
+                          alt={product?.title}
                         />
                       </div>
-                      <Link href={`/collections/product/${product.slug}?wishlist_id=${product?.wishlist_id}`}>
+                      <Link
+                        href={`/collections/product/${product.slug}?wishlist_id=${product?.wishlist_id}`}
+                      >
                         <p className="text-primary"> {product?.title} </p>
                       </Link>
                     </div>
                   </td>
-                  <td className="py-5 px-4 border-b">{product?.category}</td>
-                  <td className="py-5 px-4 border-b">
-                    <button onClick={() => handleOnclick(product?.wishlist_id)} >
+                  <td className="border-b px-4 py-5">{product?.category}</td>
+                  <td className="border-b px-4 py-5">
+                    <button onClick={() => handleOnclick(product?.wishlist_id)}>
                       <p className="text-primary"> Remove </p>
                     </button>
                   </td>
@@ -165,7 +168,7 @@ const SaveProduct = () => {
                 <tr>
                   <td
                     colSpan={5}
-                    className="py-5 px-4 border-b text-center text-gray-500"
+                    className="border-b px-4 py-5 text-center text-gray-500"
                   >
                     <div className="text-lg font-semibold">
                       You have not Save Product.
@@ -180,13 +183,13 @@ const SaveProduct = () => {
 
       {/* Product View for Mobile */}
       {wishListData.length > 0 && (
-        <div className="block text-xs min-[390px]:text-base  md:hidden ">
+        <div className="block text-xs min-[390px]:text-base md:hidden">
           {wishListData.map((product) => (
             <div
               key={product?.wishlist_id}
-              className="bg-white text-sm min-[380px]:text-base border border-gray-200 rounded-lg mb-4 p-2 min-[380px]:p-4 shadow-sm"
+              className="mb-4 rounded-lg border border-gray-200 bg-white p-2 text-sm shadow-sm min-[380px]:p-4 min-[380px]:text-base"
             >
-              <div className="flex justify-center mb-2">
+              <div className="mb-2 flex justify-center">
                 <img
                   className="w-[150px]"
                   src={
@@ -197,22 +200,22 @@ const SaveProduct = () => {
                   alt={product?.title}
                 />
               </div>
-              <div className="flex justify-between mb-2">
-                <span className="text-gray-500 font-semibold">Name</span>
+              <div className="mb-2 flex justify-between">
+                <span className="font-semibold text-gray-500">Name</span>
                 <span>
                   <Link href={`#`}>
                     <p className="text-primary"> {product?.title} </p>
                   </Link>
                 </span>
               </div>
-              <div className="flex justify-between mb-2">
-                <span className="text-gray-500 font-semibold">Category</span>
+              <div className="mb-2 flex justify-between">
+                <span className="font-semibold text-gray-500">Category</span>
                 <span>{product?.category}</span>
               </div>
-              <div className="flex justify-between mb-2">
-                <span className="text-gray-500 font-semibold">Actions</span>
+              <div className="mb-2 flex justify-between">
+                <span className="font-semibold text-gray-500">Actions</span>
                 <span>
-                  <button onClick={() => handleOnclick(product?.wishlist_id)} >
+                  <button onClick={() => handleOnclick(product?.wishlist_id)}>
                     <p className="text-primary"> Remove </p>
                   </button>
                 </span>
