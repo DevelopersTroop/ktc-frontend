@@ -12,7 +12,7 @@ export default {
     	extend: {
     		colors: {
     			primary: {
-    				DEFAULT: '#E52727',
+    				DEFAULT: 'hsl(var(--primary))',
     				foreground: 'hsl(var(--primary-foreground))'
     			},
     			secondary: {
@@ -119,14 +119,13 @@ export default {
     		animation: {
     			'accordion-down': 'accordion-down 0.2s ease-out',
     			'accordion-up': 'accordion-up 0.2s ease-out',
-    			'color-pulse': 'color-pulse 2s ease-in-out infinite',
-    			'accordion-down': 'accordion-down 0.2s ease-out',
-    			'accordion-up': 'accordion-up 0.2s ease-out'
+    			'color-pulse': 'color-pulse 2s ease-in-out infinite'
     		},
     		borderRadius: {
     			lg: 'var(--radius)',
     			md: 'calc(var(--radius) - 2px)',
-    			sm: 'calc(var(--radius) - 4px)'
+    			sm: 'calc(var(--radius) - 4px)',
+          xs:'.75rem'
     		}
     	}
     },
