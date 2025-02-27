@@ -2,6 +2,7 @@ import { useTypedSelector } from "@/app/globalRedux/store";
 import { AccessoriesCard } from "@/components/shared/accessories-card";
 import CartSubtotal from "@/components/shared/cart-subtotal";
 import CartTitle from "@/components/shared/cart-title";
+import TiresCard from "@/components/shared/tire-card";
 import WheelCard from "@/components/shared/wheel-card";
 import { TCartProduct } from "@/types/cart";
 
