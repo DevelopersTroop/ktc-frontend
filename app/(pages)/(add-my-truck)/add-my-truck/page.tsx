@@ -1,9 +1,9 @@
 'use client';
 
 import Container from "@/app/ui/container/container";
-import useAuth from "../../_hooks/useAuth";
-import { useEffect } from "react";
+import useAuth from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import AddMyTruckYMMFilters from "./_components/add-my-truck-ymm-filter";
 
 export default function Page() {

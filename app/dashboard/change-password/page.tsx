@@ -1,5 +1,4 @@
 "use client";
-import useAuth from "@/app/(pages)/_hooks/useAuth";
 import { removeUser } from "@/app/globalRedux/features/user/user-slice";
 import Container from "@/app/ui/container/container";
 import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
@@ -8,6 +7,7 @@ import { TextInput } from "@/components/shared/text-input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import useAuth from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -20,14 +20,13 @@ type ChangePasswordValues = {
 };
 
 const ChangePassword = () => {
-
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<
-      {
-        message: string;
-      }[]
-    >([]);
+    {
+      message: string;
+    }[]
+  >([]);
   const { user } = useAuth();
   const router = useRouter();
   const form = useForm({
@@ -38,11 +37,10 @@ const ChangePassword = () => {
     },
     mode: "onSubmit",
     reValidateMode: "onChange",
-  })
-
+  });
 
   const handleLogout = () => {
-    dispatch(removeUser())
+    dispatch(removeUser());
     router.push("/login");
   };
 
@@ -50,20 +48,17 @@ const ChangePassword = () => {
     try {
       setLoading(true);
       setErrors([]);
-      const response = await fetch(
-        `${apiBaseUrl}/auth/change-password`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${user?.accessToken}`,
-          },
-          body: JSON.stringify({
-            oldPassword: values.currentPassword,
-            newPassword: values.newPassword,
-          }),
-        }
-      );
+      const response = await fetch(`${apiBaseUrl}/auth/change-password`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.accessToken}`,
+        },
+        body: JSON.stringify({
+          oldPassword: values.currentPassword,
+          newPassword: values.newPassword,
+        }),
+      });
       if (response.ok) {
         handleLogout();
       } else {
@@ -73,9 +68,11 @@ const ChangePassword = () => {
         if (Array.isArray(errorData.errors)) {
           setErrors(errorData.errors);
         } else {
-          setErrors([{ message: errorData.message || "Failed to change password." }]);
+          setErrors([
+            { message: errorData.message || "Failed to change password." },
+          ]);
         }
-  
+
         throw new Error(errorData.message || "Failed to change password.");
       }
     } catch (err) {
@@ -84,7 +81,6 @@ const ChangePassword = () => {
         ...prevErrors,
         { message: (err as Error).message || "Something went wrong." },
       ]);
-      
     } finally {
       setLoading(false);
     }
@@ -92,12 +88,13 @@ const ChangePassword = () => {
 
   const onSubmit = (values: ChangePasswordValues) => {
     if (values.newPassword !== values.confirmPassword) {
-      setErrors([{message: "New password and confirm password do not match."}]);
+      setErrors([
+        { message: "New password and confirm password do not match." },
+      ]);
       return;
     }
     changePasswordApi(values);
   };
-
 
   return (
     <Container>
@@ -105,26 +102,48 @@ const ChangePassword = () => {
         {loading ? (
           <div className="w-full">
             <LoadingSpinner />
-            <h1 className="text-center text-2xl text-primary mt-10">Please Wait</h1>
+            <h1 className="mt-10 text-center text-2xl text-primary">
+              Please Wait
+            </h1>
           </div>
         ) : (
           <>
-          {errors.length > 0 &&
-          errors.map((error) => (
-            <Alert variant="destructive" key={error.message} className="mt-4">
-              <AlertDescription>{error.message}</AlertDescription>
-            </Alert>
-          ))}
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="gap-y-4 flex flex-col">
-              <TextInput control={form.control} type="password" name="currentPassword" label="Current Password (leave blank to leave unchanged)" />
-              <TextInput control={form.control} type="password" name="newPassword" label="New Password (leave blank to leave unchanged)" />
-              <TextInput control={form.control} type="password" name="confirmPassword" label="Confirm new Password" />
-              <Button className="w-full text-lg font-semibold">
-                Save
-              </Button>
-            </form>
-          </Form>
+            {errors.length > 0 &&
+              errors.map((error) => (
+                <Alert
+                  variant="destructive"
+                  key={error.message}
+                  className="mt-4"
+                >
+                  <AlertDescription>{error.message}</AlertDescription>
+                </Alert>
+              ))}
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col gap-y-4"
+              >
+                <TextInput
+                  control={form.control}
+                  type="password"
+                  name="currentPassword"
+                  label="Current Password (leave blank to leave unchanged)"
+                />
+                <TextInput
+                  control={form.control}
+                  type="password"
+                  name="newPassword"
+                  label="New Password (leave blank to leave unchanged)"
+                />
+                <TextInput
+                  control={form.control}
+                  type="password"
+                  name="confirmPassword"
+                  label="Confirm new Password"
+                />
+                <Button className="w-full text-lg font-semibold">Save</Button>
+              </form>
+            </Form>
           </>
         )}
       </div>

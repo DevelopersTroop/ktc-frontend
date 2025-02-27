@@ -3,15 +3,19 @@ import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import {
+  setAccessToken,
+  setRefreshToken,
+  setUserDetails,
+} from "@/app/globalRedux/features/user/user-slice";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useAuth from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
-import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import useAuth from "../../_hooks/useAuth";
+import * as Yup from "yup";
 import { userLogin } from "./login";
-import { setAccessToken, setRefreshToken, setUserDetails } from "@/app/globalRedux/features/user/user-slice";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -37,7 +41,7 @@ const Page = () => {
   });
 
   const dispatch = useDispatch();
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   // const form = useForm({
   //   defaultValues: {
@@ -49,8 +53,6 @@ const Page = () => {
 
   useEffect(() => {
     if (user) {
-
-
       router.push("/dashboard/orders");
     }
   }, [user, router]);
@@ -65,64 +67,75 @@ const Page = () => {
 
   return (
     <div className="px-4 pt-2 md:p-0" style={banner}>
-      <div className="w-full md:h-full flex flex-col md:flex-row py-8 px-4 md:p-0 bg-gray-400 bg-opacity-70 rounded-md md:bg-transparent">
-        <div className="w-full md:w-[60%] text-white md:pt-2">
-          <h1 className="text-6xl text-center uppercase md:block hidden">
+      <div className="flex w-full flex-col rounded-md bg-gray-400 bg-opacity-70 px-4 py-8 md:h-full md:flex-row md:bg-transparent md:p-0">
+        <div className="w-full text-white md:w-[60%] md:pt-2">
+          <h1 className="hidden text-center text-6xl uppercase md:block">
             Get Access
           </h1>
-          <h1 className="text-2xl text-center uppercase md:hidden block">
+          <h1 className="block text-center text-2xl uppercase md:hidden">
             Welcome Back
           </h1>
-          <div className="w-full h-2 bg-primary"></div>
+          <div className="h-2 w-full bg-primary"></div>
         </div>
-        
-        <div className="md:bg-gray-400 md:bg-opacity-90 w-full md:w-[40%] flex justify-center items-center">
-          <div className="w-full shadow-[0_1px_3px_0_rgba(0,0,0,0.09)] pt-2 md:px-12 md:py-20">
-            <h2 className="text-2xl font-bold pb-4 border-b border-gray-200 text-white uppercase">
+
+        <div className="flex w-full items-center justify-center md:w-[40%] md:bg-gray-400 md:bg-opacity-90">
+          <div className="w-full pt-2 shadow-[0_1px_3px_0_rgba(0,0,0,0.09)] md:px-12 md:py-20">
+            <h2 className="border-b border-gray-200 pb-4 text-2xl font-bold uppercase text-white">
               Login
             </h2>
-              {errors.length > 0 &&
-                  errors.map((error) => (
-                    <Alert variant="destructive" key={error.message} className="mt-4">
-                      <AlertDescription>{error.message}</AlertDescription>
-                    </Alert>
-                  ))}
-                {success.isSuccess && (
-                  <Alert className="mt-4">
-                    <AlertDescription>{success.message}</AlertDescription>
-                  </Alert>
-                )}
+            {errors.length > 0 &&
+              errors.map((error) => (
+                <Alert
+                  variant="destructive"
+                  key={error.message}
+                  className="mt-4"
+                >
+                  <AlertDescription>{error.message}</AlertDescription>
+                </Alert>
+              ))}
+            {success.isSuccess && (
+              <Alert className="mt-4">
+                <AlertDescription>{success.message}</AlertDescription>
+              </Alert>
+            )}
             <Formik
               initialValues={{ email: "", password: "" }}
               validationSchema={validationSchema}
               onSubmit={(values) => {
                 setIsSubmitting(true);
                 userLogin({ email: values.email, password: values.password })
-            .then(async (data) => {
-              if (Array.isArray(data)) {
-                setSuccess({ isSuccess: false, message: "" });
-                return setErrors(data);
-              }
-              setErrors([]);
-              setSuccess({ isSuccess: true, message: "Login successful" });
-              dispatch(setAccessToken({ accessToken: data.token.accessToken }));
-              dispatch(
-                setRefreshToken({ refreshToken: data.token.refreshToken })
-              );
-              dispatch(setUserDetails({ userDetails: data.user }));
+                  .then(async (data) => {
+                    if (Array.isArray(data)) {
+                      setSuccess({ isSuccess: false, message: "" });
+                      return setErrors(data);
+                    }
+                    setErrors([]);
+                    setSuccess({
+                      isSuccess: true,
+                      message: "Login successful",
+                    });
+                    dispatch(
+                      setAccessToken({ accessToken: data.token.accessToken }),
+                    );
+                    dispatch(
+                      setRefreshToken({
+                        refreshToken: data.token.refreshToken,
+                      }),
+                    );
+                    dispatch(setUserDetails({ userDetails: data.user }));
 
-              router.push("/dashboard");
-            })
-            .finally(() => {
-              setIsSubmitting(false);
-            });
+                    router.push("/dashboard");
+                  })
+                  .finally(() => {
+                    setIsSubmitting(false);
+                  });
               }}
             >
               {({ errors: formErrors, touched }) => (
                 <Form className="mt-6 space-y-4">
                   <div>
                     <label
-                      className="block font-semibold mb-1 text-white"
+                      className="mb-1 block font-semibold text-white"
                       htmlFor="email"
                     >
                       Email address
@@ -149,7 +162,7 @@ const Page = () => {
 
                   <div>
                     <label
-                      className="block font-semibold mb-1 text-white "
+                      className="mb-1 block font-semibold text-white"
                       htmlFor="password"
                     >
                       Password
@@ -175,17 +188,14 @@ const Page = () => {
                   </div>
                   <div className="text-end">
                     <p className="text-sm text-white">
-                      <Link
-                        href="/forgot-password"
-                        className=" hover:underline"
-                      >
+                      <Link href="/forgot-password" className="hover:underline">
                         Forgot password?
                       </Link>
                     </p>
                   </div>
                   <Button
                     type="submit"
-                    className="w-full uppercase bg-primary"
+                    className="w-full bg-primary uppercase"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Please wait..." : "Sign In"}
@@ -193,13 +203,13 @@ const Page = () => {
                 </Form>
               )}
             </Formik>
-            <div className="flex my-4 justify-end items-center gap-1">
+            <div className="my-4 flex items-center justify-end gap-1">
               <div className="w-full">
                 <hr className="border-t border-gray-200" />
               </div>
-              <p className="text-sm text-nowrap text-white">
-                <Link href="/register" className=" hover:underline">
-                  Don't have an account?
+              <p className="text-nowrap text-sm text-white">
+                <Link href="/register" className="hover:underline">
+                  {"Don't have an account?"}
                 </Link>
               </p>
               <div className="w-full">

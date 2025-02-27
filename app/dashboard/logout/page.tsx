@@ -1,10 +1,10 @@
 "use client";
-import useAuth from "@/app/(pages)/_hooks/useAuth";
 import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
+import useAuth from "@/hooks/useAuth";
 import { useEffect } from "react";
 
 const Logout = () => {
-  const {logout} = useAuth();
+  const { logout } = useAuth();
   useEffect(() => {
     setTimeout(() => {
       logout(true);
@@ -13,7 +13,7 @@ const Logout = () => {
   return (
     <div className="w-full">
       <LoadingSpinner />
-      <h1 className="text-center text-2xl text-primary mt-10">Please Wait</h1>
+      <h1 className="mt-10 text-center text-2xl text-primary">Please Wait</h1>
     </div>
   );
 };
