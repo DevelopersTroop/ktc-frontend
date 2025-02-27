@@ -1,5 +1,5 @@
 "use client";
-import { GProduct } from "@/app/types/product";
+import { GProduct } from "@/types/product";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
 import React from "react";

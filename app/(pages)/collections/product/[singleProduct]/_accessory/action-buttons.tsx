@@ -1,5 +1,5 @@
 "use client";
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import React from "react";
 import wait from "wait";
 // import { CenterCapContext } from "./context/CenterCapProvider";

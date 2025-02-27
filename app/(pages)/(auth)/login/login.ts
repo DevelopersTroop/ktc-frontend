@@ -1,6 +1,6 @@
 "use client"
 
-import { TUser } from "@/app/types/user";
+import { TUser } from "@/types/user";
 import { apiBaseUrl } from "@/app/utils/api";
 
 export const userLogin = async ({ email, password }: { email: string, password: string }) => {

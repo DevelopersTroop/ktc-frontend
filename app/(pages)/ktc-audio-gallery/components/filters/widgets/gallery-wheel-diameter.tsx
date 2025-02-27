@@ -1,7 +1,7 @@
 "use client";
 import FilterHeading from "@/app/(pages)/collections/product-category/[categorySlug]/_filters/template/filter-heading";
 import SelectFilterTemplate from "@/app/(pages)/collections/product-category/[categorySlug]/_filters/template/select-filter-template";
-import { TSingleFilter } from "@/app/types/filter";
+import { TSingleFilter } from "@/types/filter";
 import { useState } from "react";
 
 const GalleryWheelDiameter = ({

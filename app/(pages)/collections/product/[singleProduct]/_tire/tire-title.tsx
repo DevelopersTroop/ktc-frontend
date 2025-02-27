@@ -1,4 +1,4 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import { FaStar } from "react-icons/fa6";
 
 const TireTitle = ({ product }: { product: TInventoryItem }) => {

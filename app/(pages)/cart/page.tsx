@@ -1,19 +1,18 @@
 "use client";
-
-import { RootState, useAppDispatch, useTypedSelector } from "@/app/globalRedux/store";
-import { TInventoryItem } from "@/app/types/product";
+import { removeFromCart } from "@/app/globalRedux/features/cart/cart-slice";
+import {
+  RootState,
+  useAppDispatch,
+  useTypedSelector,
+} from "@/app/globalRedux/store";
 import { calculateCartTotal, formatPrice } from "@/app/utils/price";
 import Image from "next/image";
 import Link from "next/link";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import EmptyCart from "./empty-cart";
-import Quantity from "./_components/quantity";
-import { removeFromCart } from "@/app/globalRedux/features/cart/cart-slice";
-import { customFetch } from "@/lib/common-fetch";
-import useAuth from "../_hooks/useAuth";
-import { errorMessage, successMessage } from "@/lib/toast";
 import { useEffect, useState } from "react";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import { useSelector } from "react-redux";
+import Quantity from "./_components/quantity";
+import EmptyCart from "./empty-cart";
 
 // const cartProducts1: TInventoryItem[] = [
 //   {
@@ -57,17 +56,18 @@ import { useEffect, useState } from "react";
 // ];
 
 const Cart = () => {
-  const [isShippingProtectionChecked, setIsShippingProtectionChecked] = useState<boolean>(false);
-  const shippingProtectionCost = 6.00;
+  const [isShippingProtectionChecked, setIsShippingProtectionChecked] =
+    useState<boolean>(false);
+  const shippingProtectionCost = 6.0;
 
   const cart = useSelector((state: RootState) => state.persisted.cart);
   const cartProducts = useTypedSelector(
-    (state) => state.persisted.cart.products
+    (state) => state.persisted.cart.products,
   );
 
-  
-
-  const subTotalCost = Number(calculateCartTotal(cart.products).replace(/,/g, ""));
+  const subTotalCost = Number(
+    calculateCartTotal(cart.products).replace(/,/g, ""),
+  );
   const [totalCost, setTotalCost] = useState<number>(subTotalCost);
 
   console.log("subtotal type == ", typeof subTotalCost);
@@ -82,17 +82,15 @@ const Cart = () => {
     const updatedTotal = isShippingProtectionChecked
       ? numericSubTotal + shippingProtectionCost
       : numericSubTotal;
-  
-    setTotalCost(formatPrice(updatedTotal)); // Format properly
-  }, [isShippingProtectionChecked, subTotalCost]);
 
+    setTotalCost(Number(formatPrice(updatedTotal))); // Format properly
+  }, [isShippingProtectionChecked, subTotalCost]);
 
   const dispatch = useAppDispatch();
 
   const removeCartProduct = (cartSerial: string) => {
     dispatch(removeFromCart({ cartSerial }));
   };
-
 
   return (
     <div>
@@ -104,206 +102,228 @@ const Cart = () => {
       ) : (
         <>
           <div className="bg-gray-200">
-            <div className="w-full max-w-[1600px] py-4 min-[1100px]:px-[50px] mx-auto">
-              <h1 className="text-xl font-semibold pb-6 px-4 min-[1100px]:px-0">
+            <div className="mx-auto w-full max-w-[1600px] py-4 min-[1100px]:px-[50px]">
+              <h1 className="px-4 pb-6 text-xl font-semibold min-[1100px]:px-0">
                 Shopping Cart
               </h1>
-              <div className="w-full flex flex-col min-[1100px]:flex-row gap-4 min-[1100px]:gap-20">
-                <div className="w-full min-[1100px]:w-4/6 flex flex-col gap-6 px-[5%] min-[1100px]:px-0 order-2 min-[1100px]:order-1">
+              <div className="flex w-full flex-col gap-4 min-[1100px]:flex-row min-[1100px]:gap-20">
+                <div className="order-2 flex w-full flex-col gap-6 px-[5%] min-[1100px]:order-1 min-[1100px]:w-4/6 min-[1100px]:px-0">
                   {Object.values(cartProducts).map((product, index) => {
                     console.log("product ==  ", product);
-                    return(
-          
-                    <div key={index} className="w-full bg-white p-4">
-                      <div className="flex gap-4 text-black">
-                        <p className="text-xl font-semibold ">Wheels</p>
-                        <p className="font-medium hidden md:block">
-                          Vehicle: {product.brand}
-                        </p>
-                        <div className="block md:hidden flex-1 text-end">
-                          <button onClick={()=> removeCartProduct(product.cartSerial)}  className="text-lg text-primary">
-                            Remove
-                          </button>
+                    return (
+                      <div key={index} className="w-full bg-white p-4">
+                        <div className="flex gap-4 text-black">
+                          <p className="text-xl font-semibold">Wheels</p>
+                          <p className="hidden font-medium md:block">
+                            Vehicle: {product.brand}
+                          </p>
+                          <div className="block flex-1 text-end md:hidden">
+                            <button
+                              onClick={() =>
+                                removeCartProduct(product.cartSerial)
+                              }
+                              className="text-lg text-primary"
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="flex flex-col md:flex-row gap-8  mt-2">
-                        <div className="w-full md:w-4/6 order-2 md:order-1">
-                          <div className="w-full flex gap-5 items-center md:items-start">
-                            <div className="min-w-[100px]">
-                              <Image
-                                className={
-                                  "rounded-xl w-[100px] h-full object-cover"
-                                }
-                                height={100}
-                                width={100}
-                                alt="product image"
-                                src={
-                                  product.thumbnail
-                                    ? product.thumbnail
-                                    : "/not-available.webp"
-                                }
-                              ></Image>
+                        <div className="mt-2 flex flex-col gap-8 md:flex-row">
+                          <div className="order-2 w-full md:order-1 md:w-4/6">
+                            <div className="flex w-full items-center gap-5 md:items-start">
+                              <div className="min-w-[100px]">
+                                <Image
+                                  className={
+                                    "h-full w-[100px] rounded-xl object-cover"
+                                  }
+                                  height={100}
+                                  width={100}
+                                  alt="product image"
+                                  src={
+                                    product.thumbnail
+                                      ? product.thumbnail
+                                      : "/not-available.webp"
+                                  }
+                                ></Image>
+                              </div>
+                              <div className="hidden md:block">
+                                <p className="text-xl font-semibold">
+                                  {product.title}
+                                </p>
+                                <p className="text-gray-500">
+                                  {" "}
+                                  {product.model}{" "}
+                                </p>
+                                <p> {product._id} </p>
+                              </div>
+                              <div className="flex-1 text-end">
+                                <p className="flex items-start justify-end font-semibold">
+                                  $
+                                  <span className="text-2xl">
+                                    {product?.price}
+                                  </span>
+                                </p>
+                              </div>
                             </div>
-                            <div className="hidden md:block ">
+
+                            <div className="flex flex-col gap-3 border-gray-300 text-end md:border-b md:pb-28">
+                              <div className="flex justify-end gap-2 pt-5">
+                                {/* <p className="text-lg font-medium">Quantity:</p> */}
+                                <Quantity cartProduct={product} />
+                              </div>
+
+                              <div className="hidden md:block">
+                                <button
+                                  onClick={() =>
+                                    removeCartProduct(product.cartSerial)
+                                  }
+                                  className="text-xl text-primary"
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="w-full border-b border-gray-300 pb-5 pt-3 md:hidden">
                               <p className="text-xl font-semibold">
                                 {product.title}
                               </p>
-                              <p className="text-gray-500" > {product.model} </p>
+                              <p className="text-gray-500"> {product.model} </p>
                               <p> {product._id} </p>
                             </div>
-                            <div className="flex-1 text-end">
-                              <p className="flex items-start justify-end font-semibold">
+
+                            <div className="mt-2 flex justify-between">
+                              <p className="text-2xl font-semibold">
+                                Item Total
+                              </p>
+                              <p className="flex items-start text-primary">
                                 $
-                                <span className="text-2xl">
-                                  {product?.price}
+                                <span className="text-2xl font-semibold">
+                                  {product.price * product.quantity}
                                 </span>
                               </p>
                             </div>
                           </div>
 
-                          <div className="flex flex-col text-end gap-3 md:pb-28 md:border-b border-gray-300">
-                            <div className="flex justify-end gap-2 pt-5">
-                              {/* <p className="text-lg font-medium">Quantity:</p> */}
-                              <Quantity cartProduct={product} />
-                            </div>
-                            
-                            <div className="hidden md:block">
-                              <button onClick={()=> removeCartProduct(product.cartSerial)}  className="text-xl text-primary">
-                                Remove
-                              </button>
-                            </div>
-                          </div>
-
-                          <div className="w-full md:hidden pb-5 pt-3 border-b border-gray-300">
-                            <p className="text-xl font-semibold">
-                              {product.title}
-                            </p>
-                            <p className="text-gray-500" > {product.model} </p>
-                              <p> {product._id} </p>
-                          </div>
-
-                          <div className="flex justify-between mt-2">
-                            <p className="text-2xl font-semibold">Item Total</p>
-                            <p className="text-primary flex items-start">
-                              $
-                              <span className="text-2xl font-semibold">
-                                {product.price * product.quantity}
-                              </span>
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="w-full md:w-2/6 order-1 md:order-2">
-                          <div className="md:border-b border-gray-400 pb-5">
-                            <h1 className="text-base font-semibold">
-                              Choose your delivery Option:
-                            </h1>
-                            <div className="flex flex-row items-center gap-2 shadow-2xl md:shadow-none p-5 md:p-0">
-                              <div>
-                                <input
-                                  className="w-5 h-5"
-                                  type="checkbox"
-                                  id={`delivery-option-${product._id}`}
-                                  name="delivery-option"
-                                  defaultChecked
-                                />
-                              </div>
-                              <div className="flex flex-col text-lg">
-                                <p className="text-primary font-semibold">
-                                  Tuesday, Jan 21
-                                </p>
-                                <p>Standard Shipping</p>
+                          <div className="order-1 w-full md:order-2 md:w-2/6">
+                            <div className="border-gray-400 pb-5 md:border-b">
+                              <h1 className="text-base font-semibold">
+                                Choose your delivery Option:
+                              </h1>
+                              <div className="flex flex-row items-center gap-2 p-5 shadow-2xl md:p-0 md:shadow-none">
+                                <div>
+                                  <input
+                                    className="h-5 w-5"
+                                    type="checkbox"
+                                    id={`delivery-option-${product._id}`}
+                                    name="delivery-option"
+                                    defaultChecked
+                                  />
+                                </div>
+                                <div className="flex flex-col text-lg">
+                                  <p className="font-semibold text-primary">
+                                    Tuesday, Jan 21
+                                  </p>
+                                  <p>Standard Shipping</p>
+                                </div>
                               </div>
                             </div>
-                          </div>
 
-                          <div className="mt-3">
-                            <h1 className="text-base font-semibold">
-                              Shipping Protection
-                            </h1>
-                            <div className="flex flex-row items-center gap-2 shadow-2xl md:shadow-none p-5 md:p-0">
-                              <div>
-                                <input
-                                  className="w-5 h-5"
-                                  type="checkbox"
-                                  id={`delivery-option-${product._id}`}
-                                  name="delivery-option"
-                                  checked={isShippingProtectionChecked}
-                                  onChange={handleCheckboxChange}
-                                />
-                              </div>
-                              <div className="flex flex-col text-lg">
-                                <p className="font-semibold">${shippingProtectionCost.toFixed(2)}</p>
-                                <p>Covers lost, stolen, or Damaged packages</p>
+                            <div className="mt-3">
+                              <h1 className="text-base font-semibold">
+                                Shipping Protection
+                              </h1>
+                              <div className="flex flex-row items-center gap-2 p-5 shadow-2xl md:p-0 md:shadow-none">
+                                <div>
+                                  <input
+                                    className="h-5 w-5"
+                                    type="checkbox"
+                                    id={`delivery-option-${product._id}`}
+                                    name="delivery-option"
+                                    checked={isShippingProtectionChecked}
+                                    onChange={handleCheckboxChange}
+                                  />
+                                </div>
+                                <div className="flex flex-col text-lg">
+                                  <p className="font-semibold">
+                                    ${shippingProtectionCost.toFixed(2)}
+                                  </p>
+                                  <p>
+                                    Covers lost, stolen, or Damaged packages
+                                  </p>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )})}
+                    );
+                  })}
                 </div>
 
                 {/* Order Summary */}
-                <div className="w-full min-[1100px]:w-2/6 bg-white p-8 shadow h-full text-center order-1 min-[1100px]:order-2">
-                  <h2 className="uppercase font-semibold text-3xl">
+                <div className="order-1 h-full w-full bg-white p-8 text-center shadow min-[1100px]:order-2 min-[1100px]:w-2/6">
+                  <h2 className="text-3xl font-semibold uppercase">
                     Order Summary
                   </h2>
-                  <div className="flex flex-col gap-4 mt-6">
-                    <div className="flex justify-between text-xl font-medium text-start">
+                  <div className="mt-6 flex flex-col gap-4">
+                    <div className="flex justify-between text-start text-xl font-medium">
                       <p className="uppercase">Original Price</p>
                       <p>${subTotalCost.toFixed(2)}</p>
                     </div>
-                    <div className="flex justify-between text-xl font-medium text-start">
+                    <div className="flex justify-between text-start text-xl font-medium">
                       <p className="uppercase">Discount Savings</p>
                       <p>$0.00</p>
                     </div>
-                    <div className="flex justify-between text-xl font-medium text-start">
+                    <div className="flex justify-between text-start text-xl font-medium">
                       <p className="uppercase">Subtotal</p>
                       <p>${subTotalCost.toFixed(2)}</p>
                     </div>
-                    <div className="flex justify-between text-xl font-medium text-start">
+                    <div className="flex justify-between text-start text-xl font-medium">
                       <p className="uppercase">Shipping</p>
                       <p>$0.00</p>
                     </div>
-                    <div className="flex justify-between text-xl font-medium text-start">
+                    <div className="flex justify-between text-start text-xl font-medium">
                       <p className="uppercase">Shipping Protection</p>
-                      <p>$ {isShippingProtectionChecked ? shippingProtectionCost.toFixed(2) : "0.00"} </p>
+                      <p>
+                        ${" "}
+                        {isShippingProtectionChecked
+                          ? shippingProtectionCost.toFixed(2)
+                          : "0.00"}{" "}
+                      </p>
                     </div>
                     <div className="border-b border-gray-800"></div>
                   </div>
                   <div>
-                    <h2 className="uppercase text-2xl font-medium mt-2">
+                    <h2 className="mt-2 text-2xl font-medium uppercase">
                       Total Before Tax
                     </h2>
-                    <p className="text-4xl font-semibold mt-2">
-                      ${totalCost}
-                    </p>
-                    <p className="text-sm mt-4">
+                    <p className="mt-2 text-4xl font-semibold">${totalCost}</p>
+                    <p className="mt-4 text-sm">
                       Tax is calculated during checkout
                     </p>
                   </div>
-                  <div className="my-4 mx-[10%]">
+                  <div className="mx-[10%] my-4">
                     <Link href="/cart">
-                      <button className="w-full py-2 bg-gray-400 rounded shadow-2xl text-white text-xl  font-semibold">
+                      <button className="w-full rounded bg-gray-400 py-2 text-xl font-semibold text-white shadow-2xl">
                         Choose Shipping Optons
                       </button>
                     </Link>
                   </div>
                   <div className="mx-[10%]">
                     <Link href="/collections/product-category/wheels">
-                      <button className="w-full py-2 outline outline-1 text-lg font-semibold rounded">
+                      <button className="w-full rounded py-2 text-lg font-semibold outline outline-1">
                         Continue Shopping
                       </button>
                     </Link>
                   </div>
-                  <div className="flex justify-center gap-5 mt-3 text-lg text-primary font-medium cursor-pointer">
-                    <div className="flex gap-2 items-center">
+                  <div className="mt-3 flex cursor-pointer justify-center gap-5 text-lg font-medium text-primary">
+                    <div className="flex items-center gap-2">
                       <p>Share</p>
                       <MdKeyboardArrowRight />
                     </div>
-                    <button  className="flex gap-2 items-center">
+                    <button className="flex items-center gap-2">
                       <p>Save for Later</p>
                       <MdKeyboardArrowRight />
                     </button>

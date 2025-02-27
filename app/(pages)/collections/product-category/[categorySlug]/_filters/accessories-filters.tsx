@@ -1,6 +1,6 @@
 "use client";
 
-import { TSingleFilter } from "@/app/types/filter";
+import { TSingleFilter } from "@/types/filter";
 import AccessoriesBrand from "./widgets/accessories/accessories-brand";
 import AccessoriesSearchByKey from "./widgets/accessories/accessories-search-by-key";
 import AccessoriesSubCategory from "./widgets/accessories/accessories-subcategory";

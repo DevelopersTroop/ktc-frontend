@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IApiRes } from "@/app/types/redux-helper";
-import { TInventoryItem } from "@/app/types/product";
+import { IApiRes } from "@/types/redux-helper";
+import { TInventoryItem } from "@/types/product";
 
 interface FilterState {
   sort?: {

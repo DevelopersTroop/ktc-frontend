@@ -4,8 +4,8 @@ import {
   fetchWheelSuccess,
 } from "@/app/globalRedux/features/wheel";
 import { AppDispatch, RootState } from "@/app/globalRedux/store";
-import { TInventoryItem } from "@/app/types/product";
-import { IApiRes } from "@/app/types/redux-helper";
+import { TInventoryItem } from "@/types/product";
+import { IApiRes } from "@/types/redux-helper";
 import { customFetch } from "@/lib/common-fetch";
 
 export const fetchWheelData = async (
