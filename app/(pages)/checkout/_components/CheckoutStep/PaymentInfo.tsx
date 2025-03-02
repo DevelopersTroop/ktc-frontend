@@ -37,7 +37,6 @@ export const PaymentInfo: React.FC<{ paymentData: PaymentData }> = ({
       currency: currency,
     }).format(amount);
   };
-  console.log(paymentData);
 
   return (
     <div className="flex items-start gap-4 font-bold">

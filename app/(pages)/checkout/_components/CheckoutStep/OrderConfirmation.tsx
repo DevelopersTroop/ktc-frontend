@@ -15,11 +15,10 @@ export const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
   email,
   orderData,
 }) => {
-
   return (
     <div>
-      <div className="space-y-4 pt-3 pb-5">
-        <h2 className="font-bold text-xl">Thank You For Your Order!</h2>
+      <div className="space-y-4 pb-5 pt-3">
+        <h2 className="text-xl font-bold">Thank You For Your Order!</h2>
         <p className="text-gray-700">
           Order Received:{" "}
           <span className="font-bold">
@@ -35,14 +34,14 @@ export const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
             Please review important details regarding your order below
           </span>
         </p>
-        <ul className="space-y-4 list-disc text-gray-700 pl-5 marker:text-primary">
+        <ul className="list-disc space-y-4 pl-5 text-gray-700 marker:text-primary">
           <li>
             An order confirmation email will be sent to {email}. Make sure you
-            add no-reply@amaniforged.com to your list of approved senders.
+            add no-reply@ktcaudio.com to your list of approved senders.
           </li>
           <li>
             If you have questions about the items in your order, please give our
-            customer service team a call at 1-800-123-4567 during our sales and
+            customer service team a call at 1-303-695-6305 during our sales and
             customer care phone hours.
           </li>
           <li>
@@ -59,7 +58,7 @@ export const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
           document={<OrderInvoicePDF order={orderData} />}
           fileName="invoice.pdf"
         >
-          <div className="text-black font-bold flex items-center gap-2 hover:opacity-80 mt-4 transition-opacity">
+          <div className="mt-4 flex items-center gap-2 font-bold text-black transition-opacity hover:opacity-80">
             <PrinterIcon className="text-gray-700" />
             <span>Print Order</span>
           </div>

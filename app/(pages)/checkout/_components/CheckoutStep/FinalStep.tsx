@@ -1,34 +1,27 @@
 /** eslint-disable @next/next/no-img-element */
 "use client";
 
-import { emptyCart } from "@/app/globalRedux/features/cart/cart-slice";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { useCheckout } from "@/context/CheckoutContext";
 import useAuth from "@/hooks/useAuth";
 import { Clock, Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
+import { emptyCart } from "@/app/globalRedux/features/cart/cart-slice";
 import {
   revokeCouponCode,
   setIsAccountCreated,
   updateOrderSuccessData,
 } from "@/app/globalRedux/features/checkout/checkout-slice";
 import { useTypedSelector } from "@/app/globalRedux/store";
-import { apiBaseUrl } from "@/app/utils/api";
+import { customFetch } from "@/lib/common-fetch";
+import { Order } from "@/types/order";
+import { IApiRes } from "@/types/redux-helper";
 import { TUser } from "@/types/user";
 import { CartSummary } from "./CartSummary";
 import { CreateAccountSection } from "./CreateAccountSection";
-import { DeliveryOptions } from "./DeliveryOptions";
 import { OrderConfirmation } from "./OrderConfirmation";
 import { OrderSummary } from "./OrderSummary";
 import { PaymentData, PaymentInfo } from "./PaymentInfo";
@@ -49,16 +42,12 @@ export const FinalStep: React.FC = () => {
   /**
    * Checkout context
    */
-  const { clearCheckoutState, setStep } = useCheckout();
   const { user, signUp } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
-
-  const [showSurvey, setShowSurvey] = useState(false);
-  const [survey, setSurvey] = useState<"yes" | "no" | "">("");
   const [verifying, setVerifying] = useState(true);
   const [progress, setProgress] = useState(0);
-  const [paymentData, setPaymentData] = useState(null);
+  const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [userInfo, setUserInfo] = useState<{ email: string; password: string }>(
     {
       email: "",
@@ -95,26 +84,29 @@ export const FinalStep: React.FC = () => {
       });
   };
 
-  const handleSumbitSurvey = (data: typeof survey) => {
-    setSurvey(data);
-    setShowSurvey(false);
-  };
+  const queryParams = useMemo(
+    () => ({
+      sessionId: searchParams.get("session_id"),
+      orderId: searchParams.get("order_id"),
+      paymentId: searchParams.get("paymentId"),
+      PayerID: searchParams.get("PayerID"),
+    }),
+    [searchParams],
+  );
+
+  const { sessionId, orderId, paymentId, PayerID } = queryParams;
 
   useEffect(() => {
+    if (!orderId || (!sessionId && (!paymentId || !PayerID))) {
+      return; // Prevent unnecessary effect execution
+    }
+
+    let isMounted = true; // Prevent state updates on unmounted component
+    setVerifying(true);
+
     const verifyPayment = async () => {
       try {
-        //Stripe params
-        const sessionId = searchParams.get("session_id");
-        const orderId = searchParams.get("order_id");
-
-        //PayPal params
-        const paymentId = searchParams.get("paymentId");
-        const PayerID = searchParams.get("PayerID");
-
-        if (!orderId) {
-          throw new Error("Missing order information");
-        }
-
+        // Start progress animation only if below 90
         const interval = setInterval(() => {
           setProgress((prev) => {
             if (prev >= 90) {
@@ -126,45 +118,58 @@ export const FinalStep: React.FC = () => {
         }, 200);
 
         let response;
-
         if (sessionId) {
-          // Stripe
-          response = await fetch(
-            `${apiBaseUrl}/payments/stripe/verify-payment?sessionId=${sessionId}&orderId=${orderId}`,
+          response = await customFetch<
+            IApiRes<{ order: Order; payment: PaymentData }>
+          >(
+            `payments/stripe/verify-payment?sessionId=${sessionId}&orderId=${orderId}`,
           );
         } else {
-          // PayPal
-          response = await fetch(
-            `${apiBaseUrl}/payments/verify-paypal-payment?paymentId=${paymentId}&PayerID=${PayerID}&orderId=${orderId}`,
+          response = await customFetch<
+            IApiRes<{ order: Order; payment: PaymentData }>
+          >(
+            `payments/verify-paypal-payment?paymentId=${paymentId}&PayerID=${PayerID}&orderId=${orderId}`,
           );
         }
 
-        const result = await response.json();
+        clearInterval(interval); // Stop progress animation
 
-        if (response.ok && result.data?.order) {
+        if (!isMounted) return;
+
+        if (!response || !response.data) {
+          throw new Error("Invalid response from payment verification");
+        }
+
+        const result = response.data;
+        if (result?.order) {
           setProgress(100);
-          dispatch(updateOrderSuccessData(result.data.order));
-          setPaymentData(result.data.payment);
-          toast.error("Payment verification failed");
-
-          clearCheckoutState();
-          setStep(5);
+          dispatch(updateOrderSuccessData(result.order));
+          setPaymentData(result.payment);
+          toast.success("Order Placed Successfully");
           dispatch(emptyCart());
           dispatch(revokeCouponCode());
         } else {
-          // throw new Error(result.message || "Payment verification failed");
+          throw new Error("Payment verification failed");
         }
       } catch (err) {
-        console.log("err", err);
-        // Redirect to checkout page with error status
-        router.push("/checkout?step=4&order_status=false");
+        console.error("Payment verification error:", err);
+        toast.error("Payment verification failed. Please try again.");
+        if (isMounted) {
+          router.push("/checkout?step=2&order_status=false");
+        }
       } finally {
-        setVerifying(false);
+        if (isMounted) {
+          setVerifying(false);
+        }
       }
     };
 
     verifyPayment();
-  }, [searchParams, router, dispatch, clearCheckoutState, setStep]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [sessionId, orderId, paymentId, PayerID, dispatch, router]);
 
   useEffect(() => {
     setUserInfo((prev) => ({
@@ -217,11 +222,11 @@ export const FinalStep: React.FC = () => {
               totalCost={orderSuccessData?.data?.totalCost}
             />
 
-            <DeliveryOptions
+            {/* <DeliveryOptions
               requestedDealer={orderSuccessData?.data?.requestedDealer}
               selectedDealerInfo={orderSuccessData?.data?.selectedDealerInfo}
               selectedOptionTitle={orderSuccessData?.data?.selectedOptionTitle}
-            />
+            /> */}
 
             <ShippingInfo
               shippingAddress={orderSuccessData?.data?.shippingAddress}
@@ -256,45 +261,6 @@ export const FinalStep: React.FC = () => {
           />
         </div>
       </div>
-
-      <Dialog open={showSurvey} onOpenChange={setShowSurvey}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="relative w-fit">
-              <img
-                src="/images/AmaniLogo.webp"
-                className="h-20 w-20 rounded-full"
-              />
-            </DialogTitle>
-          </DialogHeader>
-          <h2 className="mt-2 text-lg font-bold">Your Opinion Counts</h2>
-          <h3 className="font-bold">
-            Is this your first time placing an order with us?
-          </h3>
-          <div className="flex items-center gap-4">
-            <div
-              onClick={() => handleSumbitSurvey("yes")}
-              className="flex cursor-pointer items-center gap-2 font-bold"
-            >
-              <Checkbox
-                checked={survey === "yes"}
-                className="rounded-full border-slate-300"
-              />
-              <p>Yes</p>
-            </div>
-            <div
-              onClick={() => handleSumbitSurvey("no")}
-              className="flex cursor-pointer items-center gap-2 font-bold"
-            >
-              <Checkbox
-                checked={survey === "no"}
-                className="rounded-full border-slate-300"
-              />
-              <p>No</p>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

@@ -19,28 +19,27 @@ const oldOrdersData = [
 ];
 
 const Order = () => {
-
   const router = useRouter();
-  
+
   return (
-    <div>
-      <div className="hidden md:block ">
-        <table className="min-w-full bg-white border-x border-b mx-auto p-8">
+    <div className="">
+      <div className="hidden md:block">
+        <table className="mx-auto min-w-full border-x border-b bg-white p-8">
           <thead>
             <tr className="text-start">
-              <th className="py-5 px-4 border-b text-start uppercase text-bold">
+              <th className="text-bold border-b px-4 py-5 text-start uppercase">
                 Order
               </th>
-              <th className="py-5 px-4 border-b text-start uppercase text-bold">
+              <th className="text-bold border-b px-4 py-5 text-start uppercase">
                 Date
               </th>
-              <th className="py-5 px-4 border-b text-start uppercase text-bold">
+              <th className="text-bold border-b px-4 py-5 text-start uppercase">
                 Status
               </th>
-              <th className="py-5 px-4 border-b text-start uppercase text-bold">
+              <th className="text-bold border-b px-4 py-5 text-start uppercase">
                 Total
               </th>
-              <th className="py-5 px-4 border-b text-start uppercase text-bold">
+              <th className="text-bold border-b px-4 py-5 text-start uppercase">
                 Actions
               </th>
             </tr>
@@ -49,34 +48,36 @@ const Order = () => {
             {oldOrdersData.length > 0 ? (
               oldOrdersData.map((order) => (
                 <tr key={order.order_id}>
-                  <td className="py-5 px-4 border-b text-red-600 relative">
+                  <td className="relative border-b px-4 py-5 text-red-600">
                     <div
-                      className="w-[66px] overflow-hidden whitespace-nowrap text-ellipsis hover:cursor-pointer"
+                      className="w-[66px] overflow-hidden text-ellipsis whitespace-nowrap hover:cursor-pointer"
                       title={order.order_id}
                     >
                       {order.order_id}
                     </div>
                     <div
-                      className="absolute hidden bg-gray-800 text-white text-sm py-1 rounded shadow-md hover:block"
+                      className="absolute hidden rounded bg-gray-800 py-1 text-sm text-white shadow-md hover:block"
                       style={{ top: "-30px", left: "0", whiteSpace: "nowrap" }}
                     >
                       {order.order_id}
                     </div>
                   </td>
 
-                  <td className="py-5 px-4 border-b">{order.date}</td>
-                  <td className="py-5 px-4 border-b">{order.status}</td>
-                  <td className="py-5 px-4 border-b">
+                  <td className="border-b px-4 py-5">{order.date}</td>
+                  <td className="border-b px-4 py-5">{order.status}</td>
+                  <td className="border-b px-4 py-5">
                     <span className="text-red-600">
                       {" "}
                       {order.total} for {order.items} items{" "}
                     </span>
                   </td>
-                  <td className="py-5 px-4 border-b">
+                  <td className="border-b px-4 py-5">
                     <button
                       className={"box-button disabled:bg-red-300"}
                       onClick={() =>
-                        router.push(`/dashboard/orders/${order.order_id.replace('#', '')}`)
+                        router.push(
+                          `/dashboard/orders/${order.order_id.replace("#", "")}`,
+                        )
                       }
                     >
                       View
@@ -89,7 +90,7 @@ const Order = () => {
                 <tr>
                   <td
                     colSpan={5}
-                    className="py-5 px-4 border-b text-center text-gray-500"
+                    className="border-b px-4 py-5 text-center text-gray-500"
                   >
                     <div className="text-lg font-semibold">
                       You have not made any orders yet.
@@ -108,33 +109,37 @@ const Order = () => {
           {oldOrdersData.map((order) => (
             <div
               key={order.order_id}
-              className="bg-white text-sm min-[380px]:text-base border border-gray-200 rounded-lg mb-4 p-2 min-[380px]:p-4 shadow-sm"
+              className="mb-4 rounded-lg border border-gray-200 bg-white p-2 text-sm shadow-sm min-[380px]:p-4 min-[380px]:text-base"
             >
-              <div className="flex justify-between mb-2">
-                <span className="text-gray-500 font-semibold">Order</span>
-                <span className="text-red-600 font-bold">{order.order_id}</span>
+              <div className="mb-2 flex justify-between">
+                <span className="font-semibold text-gray-500">Order</span>
+                <span className="font-bold text-red-600">{order.order_id}</span>
               </div>
-              <div className="flex justify-between mb-2">
-                <span className="text-gray-500 font-semibold">Date</span>
+              <div className="mb-2 flex justify-between">
+                <span className="font-semibold text-gray-500">Date</span>
                 <span>{order.date}</span>
               </div>
-              <div className="flex justify-between mb-2">
-                <span className="text-gray-500 font-semibold">Status</span>
+              <div className="mb-2 flex justify-between">
+                <span className="font-semibold text-gray-500">Status</span>
                 <span>{order.status}</span>
               </div>
-              <div className="flex justify-between mb-2">
-                <span className="text-gray-500 font-semibold">Total</span>
+              <div className="mb-2 flex justify-between">
+                <span className="font-semibold text-gray-500">Total</span>
                 <span>
                   <span className="text-red-600">{order.total}</span> for{" "}
                   {order.items} items
                 </span>
               </div>
-              <div className="flex justify-between mb-2">
-                <span className="text-gray-500 font-semibold">Actions</span>
+              <div className="mb-2 flex justify-between">
+                <span className="font-semibold text-gray-500">Actions</span>
                 <span>
                   <button
                     className={"box-button disabled:bg-red-300"}
-                    onClick={() => router.push(`/dashboard/orders/${order.order_id.replace('#', '')}`)}
+                    onClick={() =>
+                      router.push(
+                        `/dashboard/orders/${order.order_id.replace("#", "")}`,
+                      )
+                    }
                   >
                     View
                   </button>

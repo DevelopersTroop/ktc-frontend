@@ -6,6 +6,7 @@ import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
 import { useCheckout } from "@/context/CheckoutContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Stepper } from "./_components/Stepper";
 import { Renderer } from "./_components/StepRenderer";
 
@@ -31,13 +32,13 @@ const Page: React.FC = () => {
   ];
 
   useEffect(() => {
-    // if (Object.keys(products).length === 0 && step !== 5) {
-    //   toast.error(
-    //     "Your cart is empty. Please add items before proceeding to checkout.",
-    //   );
-    //   router.push("/cart");
-    //   return;
-    // }
+    if (Object.keys(products).length === 0 && step !== 3) {
+      toast.error(
+        "Your cart is empty. Please add items before proceeding to checkout.",
+      );
+      router.push("/cart");
+      return;
+    }
     setIsLoading(false);
   }, [products, router, step]);
 

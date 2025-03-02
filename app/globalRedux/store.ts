@@ -13,6 +13,7 @@ import tirePackageReducer from "@/app/globalRedux/features/tire-package/tire-pac
 import userReducer from "@/app/globalRedux/features/user/user-slice";
 import yearMakeModelModalReducer from "@/app/globalRedux/features/year-make-model-modal/year-make-model-modal-slice";
 import yearMakeModelReducer from "@/app/globalRedux/features/year-make-model/year-make-model-slice";
+
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import {
@@ -21,7 +22,9 @@ import {
     REGISTER, REHYDRATE
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import tireReducer from './features/tire';
 import wheelReducer from "./features/wheel";
+import { cartListenerMiddleware } from "./middleware/cart-listener";
 
 const rootPersistConfig = {
   key: "ktc-audio-store",
@@ -50,6 +53,7 @@ const rootReducer = combineReducers({
   newsletterModal: newsletterModalReducer,
   saveEmail: cartProductSaveEmailReducer,
   wheel: wheelReducer,
+  tire:tireReducer
 });
 
 const store = configureStore({
@@ -59,7 +63,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).prepend(cartListenerMiddleware.middleware),
 });
 
 export const persistor = persistStore(store);

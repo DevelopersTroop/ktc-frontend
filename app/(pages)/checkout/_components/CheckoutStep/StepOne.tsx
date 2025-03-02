@@ -79,7 +79,7 @@ export const StepOne: React.FC<ICheckoutStepProps> = ({ setStep }) => {
 
   return (
     <div className="flex flex-col gap-y-6">
-      <div className="rounded-xs py-smx px-md gap-lg grid grid-cols-1 bg-[#F7F7F7] lg:grid-cols-2">
+      <div className="py-smx px-md gap-lg grid grid-cols-1 rounded-xs bg-[#F7F7F7] lg:grid-cols-2">
         <div className="flex flex-col gap-y-3">
           <div className="pt-3">
             <p className="leading-snug">
