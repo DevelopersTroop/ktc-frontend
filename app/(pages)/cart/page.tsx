@@ -1,11 +1,12 @@
 "use client";
 import { removeFromCart } from "@/app/globalRedux/features/cart/cart-slice";
+import { initiateCheckout } from "@/app/globalRedux/features/checkout/checkout-slice";
 import {
   RootState,
   useAppDispatch,
   useTypedSelector,
 } from "@/app/globalRedux/store";
-import { calculateCartTotal, formatPrice } from "@/app/utils/price";
+import { calculateCartTotal } from "@/app/utils/price";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -13,48 +14,6 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { useSelector } from "react-redux";
 import Quantity from "./_components/quantity";
 import EmptyCart from "./empty-cart";
-
-// const cartProducts1: TInventoryItem[] = [
-//   {
-//     _id: 1,
-//     slug: "Wheel & Tire Package",
-//     title: {
-//       brand: "American Force AFW 09",
-//       model: "CAESAR CHROME",
-//       subtitle: "20X12-51MM",
-//     },
-//     price: 1699.0,
-//     description: "High quality wheel",
-//     item_image: "/images/wheels/wheels1.png",
-//     item_promo: "Save up to $68.96 When Adding Tires to Package",
-//     item_shipping: "In Stock & free quick delivery as fast as",
-//     delivery_date: "Tuesday, Jan 21",
-//     vehicle: "2024 GMC Hummer EV Pickup 3X",
-//   },
-//   {
-//     _id: 3,
-//     slug: "Suspension Kit",
-//     title: {
-//       subtitle: "Rough Country V2 Shock Shaft Protector",
-//     },
-//     price: 19.95,
-//     item_image: "/images/suspension/suspension3.webp",
-//     delivery_date: "Saturday, Jan 18",
-//     vehicle: "2024 GMC Hummer EV Pickup 3X",
-//   },
-//   {
-//     _id: 4,
-//     slug: "Accessory",
-//     title: {
-//       subtitle: 'Body Armor 4x4 3/4" Black D-Ring with Red Isolators',
-//     },
-//     price: 15.95,
-//     item_image: "/images/accessories/accessories4.webp",
-//     delivery_date: "Wednesday, Jan 22",
-//     vehicle: "2024 GMC Hummer EV Pickup 3X",
-//   },
-// ];
-
 const Cart = () => {
   const [isShippingProtectionChecked, setIsShippingProtectionChecked] =
     useState<boolean>(false);
@@ -70,11 +29,8 @@ const Cart = () => {
   );
   const [totalCost, setTotalCost] = useState<number>(subTotalCost);
 
-  console.log("subtotal type == ", typeof subTotalCost);
-
   const handleCheckboxChange = () => {
     setIsShippingProtectionChecked((prevChecked) => !prevChecked);
-    console.log("checkt = ", isShippingProtectionChecked);
   };
 
   useEffect(() => {
@@ -83,7 +39,7 @@ const Cart = () => {
       ? numericSubTotal + shippingProtectionCost
       : numericSubTotal;
 
-    setTotalCost(Number(formatPrice(updatedTotal))); // Format properly
+    setTotalCost(updatedTotal); // Format properly
   }, [isShippingProtectionChecked, subTotalCost]);
 
   const dispatch = useAppDispatch();
@@ -109,7 +65,6 @@ const Cart = () => {
               <div className="flex w-full flex-col gap-4 min-[1100px]:flex-row min-[1100px]:gap-20">
                 <div className="order-2 flex w-full flex-col gap-6 px-[5%] min-[1100px]:order-1 min-[1100px]:w-4/6 min-[1100px]:px-0">
                   {Object.values(cartProducts).map((product, index) => {
-                    console.log("product ==  ", product);
                     return (
                       <div key={index} className="w-full bg-white p-4">
                         <div className="flex gap-4 text-black">
@@ -305,7 +260,12 @@ const Cart = () => {
                     </p>
                   </div>
                   <div className="mx-[10%] my-4">
-                    <Link href="/cart">
+                    <Link
+                      onClick={() => {
+                        dispatch(initiateCheckout());
+                      }}
+                      href="/checkout"
+                    >
                       <button className="w-full rounded bg-gray-400 py-2 text-xl font-semibold text-white shadow-2xl">
                         Choose Shipping Optons
                       </button>

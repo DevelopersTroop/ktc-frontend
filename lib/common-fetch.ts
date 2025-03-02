@@ -10,7 +10,7 @@ type RequestOptions<M extends HttpMethod> = {
   ? { body: Record<string, any> } // Require body for these methods
   : { body?: never }); // Disallow body for GET, DELETE
 
-export async function customFetch<T extends unknown>(
+export async function customFetch<T extends Record<string, any>>(
   url: string,
   method: HttpMethod = "GET",
   options?: RequestOptions<HttpMethod>

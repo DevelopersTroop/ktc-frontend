@@ -13,7 +13,7 @@ import { useCheckout } from "@/context/CheckoutContext";
 import useAuth from "@/hooks/useAuth";
 import { Address } from "@/types/order";
 import { AlertCircle } from "lucide-react";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
@@ -55,15 +55,11 @@ const ShippingAddressForm = () => {
   );
   const dispatch = useDispatch();
 
-  const { setStep, validatedZipCode, zipCodeAddress } = useCheckout();
+  const { setStep } = useCheckout();
   const [createAccount, setCreateAccount] = useState(false);
   const { user, signUp } = useAuth();
   const [showRequiredAlert, setShowRequiredAlert] = useState(false);
   const [requiredFields, setRequiredFields] = useState<string[]>([]);
-
-  const address = useMemo(() => {
-    return zipCodeAddress.split(",") || [];
-  }, [zipCodeAddress]);
 
   const {
     register,
@@ -76,8 +72,6 @@ const ShippingAddressForm = () => {
     defaultValues: {
       ...shippingAddress,
       isPrimaryPhone: true,
-      zipCode: validatedZipCode,
-      country: address[address.length - 1] || "",
     },
   });
 
@@ -215,7 +209,6 @@ const ShippingAddressForm = () => {
           <Input label="Address Line 2" {...register("address2")} />
 
           <Input
-            disabled
             label="ZIP/postal Code"
             required
             error={errors.zipCode?.message}
@@ -325,12 +318,9 @@ const ShippingAddressForm = () => {
                     },
                     validate: (value) => {
                       if (value && (value.length < 6 || value.length > 14)) {
-                        toast({
-                          variant: "destructive",
-                          title: "Invalid Password",
-                          description:
-                            "Password must be between 6 and 14 characters long",
-                        });
+                        toast.error(
+                          "Password must be between 6 and 14 characters long",
+                        );
                         return false;
                       }
                       return true;

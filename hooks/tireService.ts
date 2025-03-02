@@ -1,18 +1,18 @@
 import {
-    fetchWheelFailure,
-    fetchWheelStart,
-    fetchWheelSuccess,
-} from "@/app/globalRedux/features/wheel";
+    fetchTireFailure,
+    fetchTireStart,
+    fetchTireSuccess,
+} from "@/app/globalRedux/features/tire";
 import { AppDispatch, RootState } from "@/app/globalRedux/store";
 import { customFetch } from "@/lib/common-fetch";
 import { TInventoryItem } from "@/types/product";
 import { IApiRes } from "@/types/redux-helper";
 
-export const fetchWheelData = async (
+export const fetchTireData = async (
   dispatch: AppDispatch,
   { minPrice, maxPrice, ...filters }: RootState["wheel"]["filters"]
 ) => {
-  dispatch(fetchWheelStart());
+  dispatch(fetchTireStart());
 
   try {
     const price =
@@ -37,8 +37,8 @@ export const fetchWheelData = async (
         },
       }
     );
-    dispatch(fetchWheelSuccess(response.data));
+    dispatch(fetchTireSuccess(response.data));
   } catch (error: any) {
-    dispatch(fetchWheelFailure(error.message));
+    dispatch(fetchTireFailure(error.message));
   }
 };

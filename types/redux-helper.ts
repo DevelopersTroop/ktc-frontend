@@ -1,4 +1,6 @@
-export type IApiRes<T, K extends string> = {
+export type IApiRes<T, K extends keyof T & string = keyof T & string> = {
   total?: number;
   pages?: number;
-} & Record<K, T>;
+} & {
+  [U in K]: T[U];
+};

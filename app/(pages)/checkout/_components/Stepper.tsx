@@ -67,7 +67,7 @@ export const Stepper: React.FC<StepperProps> = ({
                 </div>
               </div>
 
-              <div className="w-full max-w-[150px] text-left">
+              <div className="w-full max-w-fit text-left">
                 <p
                   className={cn(
                     "mb-1 hidden text-xl font-medium md:block",
