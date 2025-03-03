@@ -90,7 +90,7 @@ const AccountDetails = () => {
         )}
         <Form {...form}>
           <form className="flex flex-col gap-y-4" onSubmit={form.handleSubmit(changeAccountApi)}>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col min-[400px]:flex-row items-center gap-4">
               <TextInput control={form.control} name="firstName" label="First name" />
               <TextInput control={form.control} name="lastName" label="Last name" />
             </div>
