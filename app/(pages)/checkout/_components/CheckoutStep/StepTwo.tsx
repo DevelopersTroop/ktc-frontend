@@ -13,7 +13,13 @@ import { useCheckout } from "@/context/CheckoutContext";
 import { usePaypalCheckout } from "@/hooks/use-paypal-checkout";
 import { useStripeCheckout } from "@/hooks/use-stripe-checkout";
 import { BillingAddress } from "@/types/order";
-import { AlertCircle, Loader, ShoppingCart, X } from "lucide-react";
+import {
+  AlertCircle,
+  ChevronLeft,
+  Loader,
+  ShoppingBasket,
+  X,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -274,6 +280,10 @@ export const StepTwo: React.FC<any> = () => {
 
   return (
     <Container>
+      <Button className="mb-4" onClick={() => router.push(`/checkout?step=1`)}>
+        <ChevronLeft />
+        Go Back
+      </Button>
       {showPaymentError && (
         <div className="mb-6 flex items-center justify-between rounded-lg border border-red-200 bg-red-50 p-4">
           <div className="flex items-center gap-2 text-red-700">
@@ -669,7 +679,7 @@ export const StepTwo: React.FC<any> = () => {
                   </>
                 ) : (
                   <>
-                    <ShoppingCart className="h-5 w-5" />
+                    <ShoppingBasket />
                     <span className="text-base">Place Order</span>
                   </>
                 )}
