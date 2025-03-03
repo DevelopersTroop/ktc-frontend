@@ -1,41 +1,15 @@
 "use client";
-import useAuth from "@/hooks/useAuth";
-import { customFetch } from "@/lib/common-fetch";
-import { errorMessage, successMessage } from "@/lib/toast";
+import { useWishlist } from "@/hooks/useWishlist";
 import { TInventoryItem } from "@/types/product";
 import { useState } from "react";
 import { NormalActionButton } from "./normal-action";
 import { StaggeredActionButton } from "./stagger-action";
 
 const ActionButtons = ({ product }: { product: TInventoryItem }) => {
-  const { user } = useAuth();
+  const { saveToLater } = useWishlist();
 
   const [isStaggered, setIsStaggered] = useState(false);
-  const handleWishlist = async () => {
-    if (!user) {
-      errorMessage("You must have to loging");
-      return;
-    }
 
-    try {
-      await customFetch("wishlists", "POST", {
-        headers: {
-          Authorization: `Bearer ${user?.accessToken}`,
-        },
-        body: {
-          slug: product?.slug,
-          data: {
-            title: product?.title,
-            item_image: product?.thumbnail,
-            category: "wheels",
-          },
-        },
-      });
-      successMessage("Added to wishlist");
-    } catch (error: any) {
-      errorMessage(error.message);
-    }
-  };
   return (
     <div className="flex flex-col gap-y-4">
       {isStaggered ? (
@@ -67,7 +41,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
         See these on Vehicles
       </button>
       <button
-        onClick={handleWishlist}
+        onClick={() => saveToLater(product)}
         className={
           "w-full rounded bg-gray-100 py-1 text-gray-600 outline outline-1 outline-gray-300"
         }
