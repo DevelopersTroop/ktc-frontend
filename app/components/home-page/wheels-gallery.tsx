@@ -96,7 +96,7 @@ const WheelsGallery = () => {
           </Swiper>
 
           <div className="text-center mt-4">
-            <button className="px-4 py-2 text-emerald-400 bg-gray-700 bg-opacity-50 text-2xl font-semibold uppercase outline outline-1 outline-emerald-500">
+            <button className="px-4 py-2 text-primary bg-white bg-opacity-50 text-2xl font-semibold uppercase outline outline-1 outline-primary hover:bg-primary hover:text-white">
               <Link href="/collections/product-category/wheels">
                 View popular wheels
               </Link>

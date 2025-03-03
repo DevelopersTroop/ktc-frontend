@@ -160,7 +160,7 @@ const TireFilters = () => {
             you exactly the tires your build needs.
           </p>
           <div className="text-center mt-3">
-            <button className="uppercase py-1.5 px-10 bg-primary text-center text-white mx-auto">
+            <button className="uppercase py-1.5 px-10 bg-primary hover:bg-primary-hover text-center text-white mx-auto">
               Get Guided
             </button>
           </div>
@@ -175,7 +175,7 @@ const TireFilters = () => {
         }
       >
         <p>Action Filter</p>
-        <p className="text-sm text-primary cursor-pointer hidden md:block">
+        <p className="text-sm text-primary hover:bg-primary-hover cursor-pointer hidden md:block">
           Clear filter
         </p>
       </div>

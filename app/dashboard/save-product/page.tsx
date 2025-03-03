@@ -1,5 +1,4 @@
 "use client";
-import useAuth from "@/app/(pages)/_hooks/useAuth";
 import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
 import { apiBaseUrl } from "@/app/utils/api";
 import useAuth from "@/hooks/useAuth";
@@ -110,7 +109,7 @@ const SaveProduct = () => {
     </div>
   )
 
-  console.log("wishlist === ", wishListData);
+  // console.log("wishlist === ", wishListData);
 
   return (
     <div>

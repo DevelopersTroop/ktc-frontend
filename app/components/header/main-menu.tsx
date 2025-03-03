@@ -12,7 +12,7 @@ const MainMenu = () => {
         <MenuItemHasChildren>
           <DesktopMenuLink
             className={
-              "mt-[] h-full flex items-center text-white font-bold uppercase text-[15px] hover:underline hover:bg-emerald-500 px-6 duration-500"
+              "mt-[] h-full flex items-center text-white font-bold uppercase text-[15px] hover:underline hover:bg-primary px-6 duration-500"
             }
             href="/collections/product-category/wheels"
           >
@@ -23,7 +23,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium  px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium  px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="/collections/product-category/wheels"
                 >
@@ -33,7 +33,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="/collections/product-category/tires"
                 >
@@ -43,7 +43,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="/collections/product-category/suspension"
                 >
@@ -53,7 +53,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="/collections/product-category/accessories"
                 >
@@ -66,7 +66,7 @@ const MainMenu = () => {
 
         <li
           className={
-            "h-full text-center hover:bg-emerald-500 px-6 duration-500"
+            "h-full text-center hover:bg-primary px-6 duration-500"
           }
         >
           <DesktopMenuLink
@@ -81,7 +81,7 @@ const MainMenu = () => {
 
         <li
           className={
-            "h-full text-center hover:bg-emerald-500 px-6 duration-500"
+            "h-full text-center hover:bg-primary px-6 duration-500"
           }
         >
           <DesktopMenuLink
@@ -97,7 +97,7 @@ const MainMenu = () => {
         <MenuItemHasChildren>
           <DesktopMenuLink
             className={
-              "mt-[] h-full flex items-center text-white font-bold uppercase text-[15px] hover:underline hover:bg-emerald-500 px-6 duration-500"
+              "mt-[] h-full flex items-center text-white font-bold uppercase text-[15px] hover:underline hover:bg-primary px-6 duration-500"
             }
             href="#"
           >
@@ -108,7 +108,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium  px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium  px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="/collections/product-category/wheels"
                 >
@@ -118,7 +118,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="/collections/product-category/tires"
                 >
@@ -128,7 +128,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="/collections/product-category/suspension"
                 >
@@ -138,7 +138,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-green-400"
+                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="/collections/product-category/accessories"
                 >
@@ -148,7 +148,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="#"
                 >
@@ -163,7 +163,7 @@ const MainMenu = () => {
         <MenuItemHasChildren>
           <DesktopMenuLink
             className={
-              "-mt-6 h-full flex items-center text-white font-bold uppercase text-[15px] hover:underline hover:bg-emerald-500 px-6 duration-500"
+              "-mt-6 h-full flex items-center text-white font-bold uppercase text-[15px] hover:underline hover:bg-primary px-6 duration-500"
             }
             href="#"
           >
@@ -174,7 +174,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium  px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium  px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="/about"
                 >
@@ -184,7 +184,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="/track-order"
                 >
@@ -194,7 +194,7 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-primary"
                   }
                   href="#"
                 >
@@ -204,9 +204,9 @@ const MainMenu = () => {
               <li className="w-full inline-block text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-primary"
                   }
-                  href="/contact-us"
+                  href="/contact"
                 >
                   Contact
                 </DesktopMenuLink>

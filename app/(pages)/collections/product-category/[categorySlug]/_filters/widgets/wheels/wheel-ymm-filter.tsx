@@ -97,7 +97,7 @@ const WheelYMMFilters = () => {
           "flex justify-between items-center font-medium text-gray-900 hover:text-gray-600 transition-colors pr-5 pb-3 border-y"
         }
       >
-        <div className="uppercase bg-primary text-white pl-3 pr-7 py-1">
+        <div className="uppercase bg-primary hover:bg-primary-hover text-white pl-3 pr-7 py-1">
           <p className="text-xs">Search by</p>
           <h2 className="text-base">Vehicle</h2>
         </div>
@@ -273,7 +273,7 @@ const WheelYMMFilters = () => {
                 <div className="flex justify-center pt-3">
                   <button
                     type="submit"
-                    className="rounded-none px-16 py-1 mx-auto bg-primary text-white"
+                    className="rounded-none px-16 py-1 mx-auto bg-primary hover:bg-primary-hover text-white"
                   >
                     Submit
                   </button>

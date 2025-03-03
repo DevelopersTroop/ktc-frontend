@@ -65,7 +65,7 @@ const SelectFilterTemplate = ({
                   onCheckedChange={(checked) =>
                     onCheckboxChange(checked as boolean, data.value.toString())
                   }
-                  className="border-gray-400 data-[state=checked]:bg-red-500 data-[state=checked]:border-red-500 rounded-none shadow-sm"
+                  className="border-gray-400 data-[state=checked]:bg-primary data-[state=checked]:border-primary rounded-none shadow-sm"
                 />
                 <label
                   htmlFor={data.value.toString()}

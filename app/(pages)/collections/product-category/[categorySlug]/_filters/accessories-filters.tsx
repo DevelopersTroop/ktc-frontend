@@ -54,7 +54,7 @@ const AccessoriesFilters = () => {
         }
       >
         <p>Action Filter</p>
-        <p className="text-sm text-primary cursor-pointer hidden md:block">
+        <p className="text-sm text-primary hover:text-primary-hover cursor-pointer hidden md:block">
           Clear filter
         </p>
       </div>

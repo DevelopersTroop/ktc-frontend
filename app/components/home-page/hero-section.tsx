@@ -19,7 +19,7 @@ export default function HeroSection() {
 
           <div className="w-full flex flex-col items-center bg-gray-900/80 md:px-8 pb-8 rounded-lg text-white">
             <div className="w-full flex flex-row">
-              <div className="w-full p-4 bg-primary">
+              <div className="w-full p-4 bg-primary hover:bg-primary-hover">
                 <h2 className="uppercase text-xl">SEARCH VEHICLE</h2>
               </div>
               <div className="w-full p-4 bg-black">
@@ -49,7 +49,7 @@ export default function HeroSection() {
             </div>
 
             <div className="w-full p-4">
-              <button className="w-full bg-primary text-white py-3 text-lg uppercase ">
+              <button className="w-full bg-primary hover:bg-primary-hover text-white py-3 text-lg uppercase ">
                 Shop wheels
               </button>
             </div>

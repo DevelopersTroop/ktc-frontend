@@ -30,7 +30,7 @@ const WheelsSection = () => {
             </p>
 
             <Link href="/collections/product-category/wheels">
-              <Button className="bg-emerald-400 hover:bg-emerald-500 text-black font-bold py-3 px-8 text-lg uppercase tracking-wider">
+              <Button className="bg-primary hover:bg-primary-hover text-black font-bold py-3 px-8 text-lg uppercase tracking-wider">
                 Shop Wheels
               </Button>
             </Link>

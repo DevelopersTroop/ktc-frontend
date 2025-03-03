@@ -15,7 +15,7 @@ const ViewGallery = () => {
       </h1>
       <div>
         <Link href="/ktc-audio-gallery">
-          <button className="absolute bottom-[5%] text-2xl left-1/2 transform -translate-x-1/2 outline outline-1 outline-red-900 text-white py-2 px-10 whitespace-nowrap">
+          <button className="absolute bottom-[5%] text-2xl left-1/2 transform -translate-x-1/2 outline outline-1 outline-primary hover:outline-primary-hover text-white py-2 px-10 whitespace-nowrap">
             View Gallery
           </button>
         </Link>

@@ -1,26 +1,26 @@
 "use client";
-import useAuth from "@/app/(pages)/_hooks/useAuth";
 import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
 import { apiBaseUrl } from "@/app/utils/api";
+import useAuth from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-const oldOrdersData = [
-  {
-    order_id: "#174849",
-    date: "November 18, 2024",
-    status: "Cancelled",
-    total: "$0.00",
-    items: 0,
-  },
-  {
-    order_id: "#174850",
-    date: "November 19, 2024",
-    status: "On hold",
-    total: "$2,345.67",
-    items: 8,
-  },
-];
+// const oldOrdersData = [
+//   {
+//     order_id: "#174849",
+//     date: "November 18, 2024",
+//     status: "Cancelled",
+//     total: "$0.00",
+//     items: 0,
+//   },
+//   {
+//     order_id: "#174850",
+//     date: "November 19, 2024",
+//     status: "On hold",
+//     total: "$2,345.67",
+//     items: 8,
+//   },
+// ];
 
 interface ProductInfo {
   price: number;
@@ -50,7 +50,6 @@ interface OrderListResult {
 }
 
 const Order = () => {
-<<<<<<< HEAD
 
   const {user} = useAuth();
   const [orderData, setOrderData] = useState<OrderData[]>([]);
@@ -127,7 +126,11 @@ const Order = () => {
     })();
   }, []);
 
-  if(loading) return <LoadingSpinner />
+  if(loading) return (
+    <div className="my-20">
+      <LoadingSpinner />
+    </div>
+  )
   if (error) return <p>Error: {error}</p>;
 
 
@@ -135,14 +138,6 @@ const Order = () => {
     <div>
       <div className="hidden md:block overflow-x-auto">
         <table className="min-w-full bg-white border-x border-b p-8">
-=======
-  const router = useRouter();
-
-  return (
-    <div className="">
-      <div className="hidden md:block">
-        <table className="mx-auto min-w-full border-x border-b bg-white p-8">
->>>>>>> main
           <thead>
             <tr className="text-start">
               <th className="text-bold border-b px-4 py-5 text-start uppercase">
@@ -157,7 +152,6 @@ const Order = () => {
               <th className="text-bold border-b px-4 py-5 text-start uppercase">
                 Total
               </th>
-<<<<<<< HEAD
               <th className="py-5 px-4 border-b text-start uppercase text-bold">
                 Discount
               </th>
@@ -165,9 +159,6 @@ const Order = () => {
                 Net Amount
               </th>
               <th className="py-5 px-4 border-b text-start uppercase text-bold">
-=======
-              <th className="text-bold border-b px-4 py-5 text-start uppercase">
->>>>>>> main
                 Actions
               </th>
             </tr>
@@ -199,13 +190,9 @@ const Order = () => {
                       {order.total} for {order.items} items{" "}
                     </span>
                   </td>
-<<<<<<< HEAD
                   <td className="py-5 px-4 border-b">{order.discount}</td>
                   <td className="py-5 px-4 border-b">{order.net_total}</td>
                   <td className="py-5 px-4 border-b">
-=======
-                  <td className="border-b px-4 py-5">
->>>>>>> main
                     <button
                       className={"py-2 px-8 bg-primary text-white disabled:bg-red-300 font-semibold rounded-xl hover:bg-red-700"}
                       onClick={() =>
@@ -223,13 +210,8 @@ const Order = () => {
               <>
                 <tr>
                   <td
-<<<<<<< HEAD
                     colSpan={7}
                     className="py-5 px-4 border-b text-center text-gray-500"
-=======
-                    colSpan={5}
-                    className="border-b px-4 py-5 text-center text-gray-500"
->>>>>>> main
                   >
                     <div className="text-lg font-semibold text-center">
                       You have not made any orders yet.
@@ -269,7 +251,6 @@ const Order = () => {
                   {order.items} items
                 </span>
               </div>
-<<<<<<< HEAD
               <div className="flex justify-between mb-2">
                 <span className="text-gray-500 font-semibold">Discount</span>
                 <span>{order.discount}</span>
@@ -284,18 +265,6 @@ const Order = () => {
                   <button
                     className={"py-2 px-8 bg-primary text-white disabled:bg-red-300 font-semibold rounded-xl hover:bg-red-700"}
                     onClick={() => router.push(`/dashboard/orders/${order.order_id.replace('#', '')}`)}
-=======
-              <div className="mb-2 flex justify-between">
-                <span className="font-semibold text-gray-500">Actions</span>
-                <span>
-                  <button
-                    className={"box-button disabled:bg-red-300"}
-                    onClick={() =>
-                      router.push(
-                        `/dashboard/orders/${order.order_id.replace("#", "")}`,
-                      )
-                    }
->>>>>>> main
                   >
                     View
                   </button>

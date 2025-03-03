@@ -15,7 +15,7 @@ export default function DiscountBanner() {
   }, []);
 
   return (
-    <div className="overflow-hidden bg-emerald-500 py-2 text-xl font-semibold text-white">
+    <div className="overflow-hidden bg-primary hover:bg-primary-hover py-2 text-xl font-semibold text-white">
       <motion.div
         initial={{ x: "100%" }}
         animate={{ x: "-100%" }}

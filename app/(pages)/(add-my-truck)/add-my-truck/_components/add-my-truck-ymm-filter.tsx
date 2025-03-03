@@ -279,7 +279,7 @@ const AddMyTruckYMMFilters = () => {
               <div className="flex justify-center pt-3">
                 <button
                   type="submit"
-                  className="rounded-lg px-6 py-1 mx-auto bg-primary text-white uppercase"
+                  className="rounded-lg px-6 py-1 mx-auto bg-primary hover:bg-primary-hover text-white uppercase"
                   disabled={true}
                 >
                   Next Step

@@ -13,7 +13,7 @@ const TrackOrderPage: React.FC = () => {
           placeholder="Email"
           className="border border-gray-300 p-2 "
         />
-        <button className="bg-primary text-white px-4 py-2">Track Order</button>
+        <button className="bg-primary hover:bg-primary-hover text-white px-4 py-2">Track Order</button>
       </div>
 
       <div className="w-full flex flex-col gap-3 mt-7 text-gray-600">
