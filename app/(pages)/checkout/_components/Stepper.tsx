@@ -2,8 +2,6 @@
 
 import { useTypedSelector } from "@/app/globalRedux/store";
 import useAuth from "@/hooks/useAuth";
-import { cn } from "@/lib/utils";
-import { Check } from "lucide-react";
 
 interface StepperProps {
   currentStep: number;
@@ -25,7 +23,7 @@ export const Stepper: React.FC<StepperProps> = ({
 
   return (
     <div className="">
-      <div className="flex items-start justify-between">
+      {/* <div className="flex items-start justify-between">
         <div className="relative flex w-full justify-between">
           <div
             className="absolute top-[15px] h-[1px] bg-gray-200"
@@ -87,7 +85,7 @@ export const Stepper: React.FC<StepperProps> = ({
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* {!user?._id && !isFinalStep && (
         <div className="my-5 flex max-w-3xl flex-col items-start justify-between gap-3 rounded-lg border border-gray-200 p-4 sm:flex-row sm:items-center">
