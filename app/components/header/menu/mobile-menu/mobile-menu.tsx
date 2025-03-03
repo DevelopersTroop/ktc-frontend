@@ -33,7 +33,7 @@ const MobileMenu = () => {
                   onClick={() => setIsShopDropdownOpen(!isShopDropdownOpen)}
                   className="flex justify-between text-start w-full"
                 >
-                  <span className="text-2xl font-bold text-gray-800 border-t border-emerald-500 pt-2 uppercase">
+                  <span className="text-2xl font-bold text-gray-800 border-t border-primary pt-2 uppercase">
                     Shop
                   </span>
                   <svg
@@ -65,7 +65,7 @@ const MobileMenu = () => {
                 {isShopDropdownOpen && (
                   <div className="">
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/wheels"
                         className="block text-2xl font-semibold text-gray-800"
@@ -74,7 +74,7 @@ const MobileMenu = () => {
                       </Link>
                     </div>
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/tires"
                         className="block text-2xl font-semibold text-gray-800"
@@ -84,7 +84,7 @@ const MobileMenu = () => {
                     </div>
 
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/suspensions"
                         className="block text-2xl font-semibold text-gray-800"
@@ -93,7 +93,7 @@ const MobileMenu = () => {
                       </Link>
                     </div>
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/accessories"
                         className="block text-2xl font-semibold text-gray-800"
@@ -106,7 +106,7 @@ const MobileMenu = () => {
               </div>
 
               <div>
-                <div className="w-[70px] pb-2 border-t border-emerald-500 "></div>
+                <div className="w-[70px] pb-2 border-t border-primary "></div>
                 <Link
                   href="/add-login"
                   className="text-2xl font-bold text-gray-800"
@@ -116,7 +116,7 @@ const MobileMenu = () => {
               </div>
 
               <div>
-                <div className="w-[70px] pb-2 border-t border-emerald-500 "></div>
+                <div className="w-[70px] pb-2 border-t border-primary "></div>
                 <Link
                   href="/ktc-audio-gallery"
                   className="text-2xl font-bold text-gray-800"
@@ -130,7 +130,7 @@ const MobileMenu = () => {
                   onClick={() => setIsBrandsDropdownOpen(!isBrandsDropdownOpen)}
                   className="flex justify-between text-start w-full"
                 >
-                  <span className="text-2xl font-bold text-gray-800 border-t border-emerald-500 pt-2 uppercase">
+                  <span className="text-2xl font-bold text-gray-800 border-t border-primary pt-2 uppercase">
                     Brands
                   </span>
                   <svg
@@ -162,7 +162,7 @@ const MobileMenu = () => {
                 {isBrandsDropdownOpen && (
                   <div className="">
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/wheels"
                         className="block text-2xl font-semibold text-gray-800"
@@ -171,7 +171,7 @@ const MobileMenu = () => {
                       </Link>
                     </div>
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/tires"
                         className="block text-2xl font-semibold text-gray-800"
@@ -181,7 +181,7 @@ const MobileMenu = () => {
                     </div>
 
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/suspensions"
                         className="block text-2xl font-semibold text-gray-800"
@@ -190,7 +190,7 @@ const MobileMenu = () => {
                       </Link>
                     </div>
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/accessories"
                         className="block text-2xl font-semibold text-gray-800"
@@ -199,7 +199,7 @@ const MobileMenu = () => {
                       </Link>
                     </div>
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/wheels"
                         className="block text-2xl font-semibold text-gray-800"
@@ -218,7 +218,7 @@ const MobileMenu = () => {
                   }
                   className="flex justify-between text-start w-full"
                 >
-                  <span className="text-2xl font-bold text-gray-800 border-t border-emerald-500 pt-2 uppercase">
+                  <span className="text-2xl font-bold text-gray-800 border-t border-primary pt-2 uppercase">
                     Resources
                   </span>
                   <svg
@@ -250,7 +250,7 @@ const MobileMenu = () => {
                 {isResourcesDropdownOpen && (
                   <div className="">
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/about"
                         className="block text-2xl font-semibold text-gray-800"
@@ -259,7 +259,7 @@ const MobileMenu = () => {
                       </Link>
                     </div>
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/track-order"
                         className="block text-2xl font-semibold text-gray-800"
@@ -269,7 +269,7 @@ const MobileMenu = () => {
                     </div>
 
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="#"
                         className="block text-2xl font-semibold text-gray-800"
@@ -278,7 +278,7 @@ const MobileMenu = () => {
                       </Link>
                     </div>
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/contact-us"
                         className="block text-2xl font-semibold text-gray-800"
