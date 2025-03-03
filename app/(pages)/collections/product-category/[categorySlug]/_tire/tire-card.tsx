@@ -9,10 +9,10 @@ const TireCard = ({ product }: { product: TInventoryItem }) => {
   return (
     <div
       className={
-        "flex w-full flex-row gap-4 border border-white px-4 py-4 shadow min-[600px]:max-w-[250px] min-[600px]:flex-col"
+        "flex w-full flex-row min-[600px]:max-w-[250px] min-[600px]:flex-col overflow-hidden rounded-xl border border-[#cfcfcf] px-4 bg-white"
       }
     >
-      <div className="flex w-full items-center justify-center">
+      <div className="flex w-full items-center justify-center pt-5">
         <Link href={productLink}>
           <Image
             className={"d-block mx-auto w-full rounded-xl object-cover"}
@@ -27,7 +27,7 @@ const TireCard = ({ product }: { product: TInventoryItem }) => {
           ></Image>
         </Link>
       </div>
-      <Link href={productLink}>
+      <Link href={productLink} className="py-6">
         <TireCardDescription product={product} />
       </Link>
     </div>

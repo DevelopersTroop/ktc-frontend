@@ -17,12 +17,12 @@ const Quantity = ({
       inputName={cartProduct.cartPackage}
       inputValue={cartProduct.quantity}
       maxInputValue={cartProduct.stockQuantity}
-      quantityStep={Math.abs(4)}
+      quantityStep={Math.abs(1)}
       onDecrease={() => {
         dispatch(
           changeItemQuantity({
             cartSerial: cartProduct.cartSerial,
-            quantity: cartProduct.quantity > 4 ? cartProduct.quantity - 4 : 4,
+            quantity: cartProduct.quantity > 1 ? cartProduct.quantity - 1 : 1,
           })
         );
       }}
@@ -30,8 +30,8 @@ const Quantity = ({
         dispatch(
           changeItemQuantity({
             cartSerial: cartProduct.cartSerial,
-            quantity: cartProduct.stockQuantity - cartProduct.quantity > 4
-                ? cartProduct.quantity + 4
+            quantity: cartProduct.stockQuantity - cartProduct.quantity > 1
+                ? cartProduct.quantity + 1
                 : cartProduct.stockQuantity,
           })
         );
