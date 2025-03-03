@@ -5,6 +5,7 @@ import {
 } from "@/app/globalRedux/features/checkout/checkout-slice";
 import { RootState, useTypedSelector } from "@/app/globalRedux/store";
 import Container from "@/app/ui/container/container";
+import { Flex } from "@/components/shared/flex";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -20,10 +21,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import { Input } from "../ShippingAddress";
-import { ICheckoutStepProps } from "./StepOne";
+import { Input } from "./StepOne";
 
-export const StepFour: React.FC<ICheckoutStepProps> = () => {
+export const StepTwo: React.FC<any> = () => {
   const [activeAccordion, setActiveAccordion] = useState("card");
   const [shippingSameAsBilling, setShippingSameAsBilling] = useState(true);
   const [showTermsAlert, setShowTermsAlert] = useState(false);
@@ -40,8 +40,9 @@ export const StepFour: React.FC<ICheckoutStepProps> = () => {
   /**
    * Redux Store And Dispatch Hook
    */
-  const { billingAddress, shippingAddress, orderInfo, selectedOptionTitle } =
-    useTypedSelector((state) => state.persisted.checkout);
+  const { billingAddress, shippingAddress, orderInfo } = useTypedSelector(
+    (state) => state.persisted.checkout,
+  );
   const dispatch = useDispatch();
 
   /**
@@ -72,7 +73,7 @@ export const StepFour: React.FC<ICheckoutStepProps> = () => {
 
   const handleCloseAlert = () => {
     setShowPaymentError(false);
-    router.replace(`/checkout?step=4`);
+    router.replace(`/checkout?step=2`);
     if (autoCloseTimerRef.current) {
       clearTimeout(autoCloseTimerRef.current);
     }
@@ -93,6 +94,7 @@ export const StepFour: React.FC<ICheckoutStepProps> = () => {
   } = useForm<BillingAddress>({
     defaultValues: {
       ...billingAddress,
+      country: "USA",
     },
     mode: "onChange",
     reValidateMode: "onChange",
@@ -246,7 +248,7 @@ export const StepFour: React.FC<ICheckoutStepProps> = () => {
       setValue("lname", shippingAddress.lname);
       setValue("zipCode", shippingAddress.zipCode);
       setValue("name", shippingAddress.name);
-      setValue("country", shippingAddress.country);
+      setValue("country", "USA");
       setValue("cityState", shippingAddress.cityState);
       setValue("company", shippingAddress.company);
       setValue("phone", shippingAddress.phone);
@@ -268,7 +270,7 @@ export const StepFour: React.FC<ICheckoutStepProps> = () => {
         zipCode: "",
       });
     }
-  }, [shippingSameAsBilling]);
+  }, [shippingSameAsBilling, setValue, reset, shippingAddress]);
 
   return (
     <Container>
@@ -451,19 +453,17 @@ export const StepFour: React.FC<ICheckoutStepProps> = () => {
 
             <div className="flex flex-col gap-y-8 pt-8">
               <h2 className="text-xl font-bold">Billing Info</h2>
-              {selectedOptionTitle === "Direct To Customer" && (
-                <div
-                  className="flex cursor-pointer items-center gap-1 py-2"
-                  onClick={() => setShippingSameAsBilling((prev) => !prev)}
-                >
-                  <Checkbox
-                    checked={shippingSameAsBilling}
-                    className="h-5 w-5 border-black data-[state=checked]:bg-black"
-                  />
-                  <span className="text-lg">Same as shipping address</span>
-                </div>
-              )}
-              <div className="max-w-lg space-y-8">
+              <div
+                className="flex cursor-pointer items-center gap-1 py-2"
+                onClick={() => setShippingSameAsBilling((prev) => !prev)}
+              >
+                <Checkbox
+                  checked={shippingSameAsBilling}
+                  className="h-5 w-5 border-black data-[state=checked]:bg-black"
+                />
+                <span className="text-lg">Same as shipping address</span>
+              </div>
+              <div className="space-y-8">
                 <div className="flex flex-col gap-y-8">
                   <div className="flex gap-4">
                     <Input
@@ -484,20 +484,22 @@ export const StepFour: React.FC<ICheckoutStepProps> = () => {
                     />
                   </div>
                   <Input label="Company/Care of" {...register("company")} />
-                  <div className="space-y-3">
-                    <Input
-                      label="Address Line 1"
-                      required
-                      error={errors.address1?.message}
-                      {...register("address1", {
-                        required: "Address is required",
-                      })}
-                    />
-                    <div className="text-sm text-muted">
-                      Note: Cannot be a P.O. box, except at APO/FPO addresses.
+                  <Flex>
+                    <div className="w-full space-y-3">
+                      <Input
+                        label="Address Line 1"
+                        required
+                        error={errors.address1?.message}
+                        {...register("address1", {
+                          required: "Address is required",
+                        })}
+                      />
+                      <div className="text-sm text-muted">
+                        Note: Cannot be a P.O. box, except at APO/FPO addresses.
+                      </div>
                     </div>
-                  </div>
-                  <Input label="Address Line 2" {...register("address2")} />
+                    <Input label="Address Line 2" {...register("address2")} />
+                  </Flex>
                   <Input
                     label="ZIP/Postal Code"
                     required
@@ -506,45 +508,49 @@ export const StepFour: React.FC<ICheckoutStepProps> = () => {
                       required: "ZIP/Postal Code is required",
                     })}
                   />
-                  <Input
-                    label="Country"
-                    required
-                    error={errors.country?.message}
-                    {...register("country", {
-                      required: "Country is required",
-                    })}
-                    placeholder="Enter country name or wait for auto-detection"
-                  />
-                  <Input
-                    label="City/State"
-                    required
-                    error={errors.cityState?.message}
-                    {...register("cityState", {
-                      required: "City/State is required",
-                    })}
-                  />
-                  <Input
-                    label="Phone Number"
-                    type="tel"
-                    required
-                    error={errors.phone?.message}
-                    {...register("phone", {
-                      required: "Phone number is required",
-                    })}
-                  />
-                  <Input
-                    label="Email Address"
-                    required
-                    type="email"
-                    error={errors.email?.message}
-                    {...register("email", {
-                      required: "Email address is required",
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: "Please enter a valid email address",
-                      },
-                    })}
-                  />
+                  <Flex>
+                    <Input
+                      label="Country"
+                      required
+                      error={errors.country?.message}
+                      {...register("country", {
+                        required: "Country is required",
+                      })}
+                      placeholder="Enter country name or wait for auto-detection"
+                    />
+                    <Input
+                      label="City/State"
+                      required
+                      error={errors.cityState?.message}
+                      {...register("cityState", {
+                        required: "City/State is required",
+                      })}
+                    />
+                  </Flex>
+                  <Flex>
+                    <Input
+                      label="Phone Number"
+                      type="tel"
+                      required
+                      error={errors.phone?.message}
+                      {...register("phone", {
+                        required: "Phone number is required",
+                      })}
+                    />
+                    <Input
+                      label="Email Address"
+                      required
+                      type="email"
+                      error={errors.email?.message}
+                      {...register("email", {
+                        required: "Email address is required",
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                          message: "Please enter a valid email address",
+                        },
+                      })}
+                    />
+                  </Flex>
                 </div>
               </div>
             </div>
@@ -554,14 +560,6 @@ export const StepFour: React.FC<ICheckoutStepProps> = () => {
         <div className="col-span-11 h-full w-full space-y-6 lg:col-span-4">
           <div className="rounded-xs bg-[#F7F7F7] py-7">
             <div className="space-y-6 text-[#210203]">
-              <div className="space-y-2 px-6">
-                <h3 className="text-base font-semibold uppercase tracking-wider text-black">
-                  Delivery Option
-                </h3>
-                <div className="text-sm text-[#210203]">
-                  {selectedOptionTitle}
-                </div>
-              </div>
               <div className="space-y-2 text-[#210203]">
                 <div className="flex items-baseline justify-between px-6 py-2">
                   <p className="text-base leading-[19px] text-[#210203]">
@@ -661,7 +659,7 @@ export const StepFour: React.FC<ICheckoutStepProps> = () => {
             <div className="px-6">
               <Button
                 disabled={shouldDisableButton}
-                className="rounded-xs mt-2 flex h-14 w-full items-center justify-center gap-2 font-semibold antialiased"
+                className="mt-2 flex h-14 w-full items-center justify-center gap-2 rounded-xs font-semibold antialiased"
                 onClick={handlePlaceOrder}
               >
                 {isLoading ? (

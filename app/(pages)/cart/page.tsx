@@ -7,6 +7,7 @@ import {
   useTypedSelector,
 } from "@/app/globalRedux/store";
 import { calculateCartTotal } from "@/app/utils/price";
+import { useWishlist } from "@/hooks/useWishlist";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -15,6 +16,7 @@ import { useSelector } from "react-redux";
 import Quantity from "./_components/quantity";
 import EmptyCart from "./empty-cart";
 const Cart = () => {
+  const { saveAllProductFromCart } = useWishlist();
   const [isShippingProtectionChecked, setIsShippingProtectionChecked] =
     useState<boolean>(false);
   const shippingProtectionCost = 6.0;
@@ -283,7 +285,10 @@ const Cart = () => {
                       <p>Share</p>
                       <MdKeyboardArrowRight />
                     </div>
-                    <button className="flex items-center gap-2">
+                    <button
+                      onClick={saveAllProductFromCart}
+                      className="flex items-center gap-2"
+                    >
                       <p>Save for Later</p>
                       <MdKeyboardArrowRight />
                     </button>

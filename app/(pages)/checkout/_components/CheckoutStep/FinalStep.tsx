@@ -2,7 +2,6 @@
 "use client";
 
 import { Progress } from "@/components/ui/progress";
-import useAuth from "@/hooks/useAuth";
 import { Clock, Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -12,16 +11,12 @@ import { toast } from "sonner";
 import { emptyCart } from "@/app/globalRedux/features/cart/cart-slice";
 import {
   revokeCouponCode,
-  setIsAccountCreated,
   updateOrderSuccessData,
 } from "@/app/globalRedux/features/checkout/checkout-slice";
 import { useTypedSelector } from "@/app/globalRedux/store";
 import { customFetch } from "@/lib/common-fetch";
 import { Order } from "@/types/order";
 import { IApiRes } from "@/types/redux-helper";
-import { TUser } from "@/types/user";
-import { CartSummary } from "./CartSummary";
-import { CreateAccountSection } from "./CreateAccountSection";
 import { OrderConfirmation } from "./OrderConfirmation";
 import { OrderSummary } from "./OrderSummary";
 import { PaymentData, PaymentInfo } from "./PaymentInfo";
@@ -31,58 +26,19 @@ export const FinalStep: React.FC = () => {
   /**
    * Redux Store & Dispatch hook
    */
-  const {
-    orderSuccessData,
-    shippingAddress,
-    billingAddress,
-    isAccountCreated,
-  } = useTypedSelector((state) => state.persisted.checkout);
+  const { orderSuccessData } = useTypedSelector(
+    (state) => state.persisted.checkout,
+  );
   const dispatch = useDispatch();
 
   /**
    * Checkout context
    */
-  const { user, signUp } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [verifying, setVerifying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
-  const [userInfo, setUserInfo] = useState<{ email: string; password: string }>(
-    {
-      email: "",
-      password: "",
-    },
-  );
-
-  const handleCreateAccount = async () => {
-    if (!orderSuccessData) {
-      console.error("Order data is not available");
-      return;
-    }
-
-    const { shippingAddress, billingAddress } = orderSuccessData?.data;
-    const firstName =
-      billingAddress?.name?.split(" ")[0] ||
-      shippingAddress?.name?.split(" ")[0];
-    const lastName =
-      billingAddress?.name?.split(" ")[1] ||
-      shippingAddress?.name?.split(" ")[1];
-    const email = billingAddress?.email || shippingAddress?.email;
-    const password = userInfo.password;
-
-    //added toast for account creation
-    signUp({ firstName, lastName, email, password })
-      .then((res: { user: TUser }) => {
-        if (res?.user) {
-          dispatch(setIsAccountCreated(true));
-          toast.success("Account has been created successfully.");
-        }
-      })
-      .catch((error: { message: string }) => {
-        toast.error(error.message);
-      });
-  };
 
   const queryParams = useMemo(
     () => ({
@@ -172,13 +128,6 @@ export const FinalStep: React.FC = () => {
   }, [sessionId, orderId, paymentId, PayerID, dispatch, router]);
 
   useEffect(() => {
-    setUserInfo((prev) => ({
-      ...prev,
-      email: shippingAddress.email || billingAddress.email,
-    }));
-  }, [billingAddress, shippingAddress]);
-
-  useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
@@ -217,10 +166,10 @@ export const FinalStep: React.FC = () => {
           />
 
           <div className="flex flex-col gap-8">
-            <CartSummary
+            {/* <CartSummary
               productsInfo={orderSuccessData?.data?.productsInfo}
               totalCost={orderSuccessData?.data?.totalCost}
-            />
+            /> */}
 
             {/* <DeliveryOptions
               requestedDealer={orderSuccessData?.data?.requestedDealer}
@@ -240,18 +189,6 @@ export const FinalStep: React.FC = () => {
         </div>
 
         <div className="sticky top-0 col-span-11 flex flex-col gap-8 lg:col-span-4">
-          {!isAccountCreated && !user?._id && (
-            <CreateAccountSection
-              email={
-                orderSuccessData?.data?.shippingAddress?.email ||
-                orderSuccessData?.data?.billingAddress?.email
-              }
-              onPasswordChange={(password) =>
-                setUserInfo((prev) => ({ ...prev, password }))
-              }
-              onCreateAccount={handleCreateAccount}
-            />
-          )}
           <OrderSummary
             totalCost={orderSuccessData?.data?.totalCost}
             netCost={orderSuccessData?.data?.netCost}

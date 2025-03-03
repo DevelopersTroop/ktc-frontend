@@ -5,6 +5,7 @@ export type TInventoryItem = {
   price: number;
   stockQuantity: number;
   galleryImages: string[];
+  category:string
   brand: string;
   model: string;
   partNumber: string;
