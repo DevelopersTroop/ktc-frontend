@@ -1,6 +1,6 @@
 import { FinalStep } from "./CheckoutStep/FinalStep";
-import { StepFour } from "./CheckoutStep/StepFour";
-import ShippingAddressForm from "./ShippingAddress";
+import StepOne from "./CheckoutStep/StepOne";
+import { StepTwo } from "./CheckoutStep/StepTwo";
 
 interface RendererProps {
   step: number;
@@ -24,10 +24,10 @@ export const Renderer: React.FC<RendererProps> = ({ step, setStep }) => {
   };
   switch (step) {
     case 1:
-      return <ShippingAddressForm />;
+      return <StepOne />;
     case 2:
       return (
-        <StepFour
+        <StepTwo
           handleBack={handleBack}
           handleContinue={handleContinue}
           setStep={setStep}
@@ -35,7 +35,7 @@ export const Renderer: React.FC<RendererProps> = ({ step, setStep }) => {
         />
       );
     case 3:
-      return <FinalStep setStep={setStep} />;
+      return <FinalStep />;
     default:
       return null;
   }

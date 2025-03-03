@@ -4,7 +4,6 @@ import { useTypedSelector } from "@/app/globalRedux/store";
 import useAuth from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
-import Link from "next/link";
 
 interface StepperProps {
   currentStep: number;
@@ -22,7 +21,7 @@ export const Stepper: React.FC<StepperProps> = ({
     (state) => state.persisted.checkout,
   );
 
-  const isFinalStep = currentStep === 5;
+  const isFinalStep = currentStep === 3;
 
   return (
     <div className="">
@@ -90,7 +89,7 @@ export const Stepper: React.FC<StepperProps> = ({
         </div>
       </div>
 
-      {!user?._id && !isFinalStep && (
+      {/* {!user?._id && !isFinalStep && (
         <div className="my-5 flex max-w-3xl flex-col items-start justify-between gap-3 rounded-lg border border-gray-200 p-4 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2">
             <svg
@@ -114,7 +113,7 @@ export const Stepper: React.FC<StepperProps> = ({
             Sign in
           </Link>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

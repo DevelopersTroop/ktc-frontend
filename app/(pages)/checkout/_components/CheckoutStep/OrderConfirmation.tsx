@@ -28,8 +28,8 @@ export const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
       </div>
       <div className="space-y-4 pb-14 lg:pb-24">
         <p className="text-gray-700">
-          Thanks for your order! We're shipping your item(s) to the address you
-          provided.{" "}
+          Thanks for your order! {"We're"} shipping your item(s) to the address
+          you provided.{" "}
           <span className="font-bold">
             Please review important details regarding your order below
           </span>
@@ -44,14 +44,14 @@ export const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
             customer service team a call at 1-303-695-6305 during our sales and
             customer care phone hours.
           </li>
-          <li>
+          {/* <li>
             All packages shipping from one distribution center leave together.
             If your order ships in multiple packages, packages may be separated
             by the carrier and delivered on different days. In most cases,
             packages not in the first delivery will be delivered the following
             business day. Orders that are shipped from more than one
             distribution center may arrive at different times.
-          </li>
+          </li> */}
         </ul>
 
         <PDFDownloadLink
