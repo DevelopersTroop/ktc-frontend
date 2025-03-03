@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
       {
         protocol:'https',
         hostname:'stage-amani-forged.s3.us-east-2.amazonaws.com'
+      },
+      {
+        protocol:'https',
+        hostname:'m.media-amazon.com'
       }
     ],
   },

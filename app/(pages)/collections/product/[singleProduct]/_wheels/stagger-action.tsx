@@ -66,7 +66,7 @@ export const StaggeredActionButton: React.FC<{ product: TInventoryItem }> = ({ p
                     <h2 className="uppercase font-bold text-gray-700 text-lg">Square Setup</h2>
                     <hr className="w-6 border-gray-700 border-[1.5px]" />
                 </div>
-                <Button onClick={handleSquareSetup} className="w-full uppercase font-medium h-12 text-lg bg-emerald-500 hover:bg-emerald-500">buy all (4) of this size</Button>
+                <Button onClick={handleSquareSetup} className="w-full uppercase font-medium h-12 text-lg bg-primary hover:bg-primary-hover">buy all (4) of this size</Button>
             </div>
             <div>
                 <div className="flex items-center justify-center gap-2">
@@ -74,7 +74,7 @@ export const StaggeredActionButton: React.FC<{ product: TInventoryItem }> = ({ p
                     <h2 className="uppercase font-bold text-gray-700 text-lg">STAGGERED SETUP</h2>
                     <hr className="w-6 border-gray-700 border-[1.5px]" />
                 </div>
-                <Button onClick={handleFrontWheel} className="w-full uppercase font-medium h-12 text-lg bg-emerald-500 hover:bg-emerald-500">buy as front wheels</Button>
+                <Button onClick={handleFrontWheel} className="w-full uppercase font-medium h-12 text-lg bg-primary hover:bg-primary-hover">buy as front wheels</Button>
             </div>
             <div>
                 <div className="flex items-center justify-center gap-2">
@@ -82,7 +82,7 @@ export const StaggeredActionButton: React.FC<{ product: TInventoryItem }> = ({ p
                     <h2 className="uppercase font-bold text-gray-700 text-lg">STAGGERED SETUP</h2>
                     <hr className="w-6 border-gray-700 border-[1.5px]" />
                 </div>
-                <Button onClick={handleRearWheel} className="w-full uppercase font-medium h-12 text-lg bg-emerald-500 hover:bg-emerald-500">buy as rear wheels</Button>
+                <Button onClick={handleRearWheel} className="w-full uppercase font-medium h-12 text-lg bg-primary hover:bg-primary-hover">buy as rear wheels</Button>
             </div>
         </div>
     )

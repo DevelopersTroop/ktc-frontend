@@ -43,7 +43,7 @@ const WheelsGallery = () => {
         <div  className="max-w-[1350px] p-4 mx-auto">
           {/* Section Title */}
           <div className="py-4 lg:py-8">
-            <hr className="border-emerald-500 border-[1.5px] w-[100px]" />
+            <hr className="border-primary border-[1.5px] w-[100px]" />
             <h3 className="text-3xl lg:text-5xl font-bold uppercase">
               Popular Wheels Available & in-stock
             </h3>

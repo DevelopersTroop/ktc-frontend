@@ -134,13 +134,13 @@ export default function Footer() {
                 href="https://www.facebook.com/ktcaudiocustomwheelsandtires"
                 target="_blank"
               >
-                <Facebook className="w-6 h-6 text-gray-600 hover:text-emerald-500 cursor-pointer" />
+                <Facebook className="w-6 h-6 text-gray-600 hover:text-primary cursor-pointer" />
               </Link>
               <Link href="https://www.youtube.com/@ktcaudio313" target="_blank">
-                <Youtube className="w-6 h-6 text-gray-600 hover:text-emerald-500 cursor-pointer" />
+                <Youtube className="w-6 h-6 text-gray-600 hover:text-primary cursor-pointer" />
               </Link>
-              <Instagram className="w-6 h-6 text-gray-600 hover:text-emerald-500 cursor-pointer" />
-              <Twitter className="w-6 h-6 text-gray-600 hover:text-blue-400 cursor-pointer" />
+              <Instagram className="w-6 h-6 text-gray-600 hover:text-primary cursor-pointer" />
+              <Twitter className="w-6 h-6 text-gray-600 hover:text-primary cursor-pointer" />
             </div>
 
             {/* Brand Logos */}

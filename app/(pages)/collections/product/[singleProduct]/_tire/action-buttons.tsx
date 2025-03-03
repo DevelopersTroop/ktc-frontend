@@ -71,7 +71,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
               setAddToCartText("Added to cart");
             });
           }}
-          className={"bg-emerald-500 py-3 text-white rounded text-xl w-full"}
+          className={"bg-primary py-3 text-white rounded text-xl w-full"}
         >
           {addToCartText}
         </button>
@@ -82,7 +82,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
             console.log("clicked");
           }}
           className={
-            " py-1 rounded outline outline-1 outline-emerald-500 w-full"
+            " py-1 rounded outline outline-1 outline-primary w-full"
           }
         >
           Buy Tires Only

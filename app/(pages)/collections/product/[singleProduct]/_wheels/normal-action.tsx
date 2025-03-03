@@ -181,7 +181,7 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
               setAddToCartText("Added to cart");
             });
           }}
-          className="relative flex min-h-14 w-full flex-1 items-center justify-center gap-2 rounded-xl bg-[#db1922] px-3 transition duration-300 ease-in-out hover:bg-red-700 hover:text-white"
+          className="relative flex min-h-14 w-full flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-3 transition duration-300 ease-in-out hover:bg-primary-hover hover:text-white"
         >
           <PiShoppingCartLight className="text-2xl text-white" />
 
@@ -194,7 +194,7 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
       </div>
       <button
         onClick={handleBuyWheels}
-        className={"w-full rounded py-1 outline outline-1 outline-emerald-500"}
+        className={"w-full rounded py-1 outline outline-1 outline-primary"}
       >
         Buy Wheels Only
       </button>
@@ -219,7 +219,7 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
                 setOpenFitmentModal(false);
                 setYmm((prev) => ({ ...prev, showError: true }));
               }}
-              className="h-10 border border-black bg-emerald-500 text-xl font-bold capitalize text-white hover:bg-emerald-500"
+              className="h-10 border border-black bg-primary text-xl font-bold capitalize text-white hover:bg-primary-hover"
             >
               Confirm fitment with vehicle deatils
             </Button>

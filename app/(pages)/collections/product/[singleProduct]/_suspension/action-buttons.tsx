@@ -69,7 +69,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
               setAddToCartText("Added to cart");
             });
           }}
-          className={"bg-emerald-500 py-3 text-white text-xl rounded w-full"}
+          className={"bg-primary py-3 text-white text-xl rounded w-full"}
         >
           {addToCartText}
         </button>
