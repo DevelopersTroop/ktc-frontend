@@ -9,17 +9,15 @@ const CardDescription = ({ product }: { product: TInventoryItem }) => {
     <div>
       {/* product title */}
       <div>
-        <h3 className="text-sm uppercase font-semibold text-black">
-          {product.title.brand}
+        <h3 className="text-sm font-semibold uppercase text-black">
+          {product.product_desc}
         </h3>
-        <h4 className="text-sm uppercase text-gray-600">
-          {product.title.model}
-        </h4>
-        <p className="text-sm uppercase text-black">{product.title.subtitle}</p>
+        <h4 className="text-sm uppercase text-gray-600">{product.model}</h4>
+        <p className="text-sm uppercase text-black">{product.brand_desc}</p>
       </div>
       {/* product review */}
       <div className="flex justify-between py-1">
-        <div className="flex text-sm gap-0.5">
+        <div className="flex gap-0.5 text-sm">
           <FaStar className="text-yellow-400" />
           <FaStar className="text-yellow-400" />
           <FaStar className="text-yellow-400" />
@@ -30,13 +28,13 @@ const CardDescription = ({ product }: { product: TInventoryItem }) => {
       </div>
 
       {/* product pricing */}
-      <div className="hidden min-[600px]:flex flex-col gap-3">
+      <div className="hidden flex-col gap-3 min-[600px]:flex">
         <div className="flex items-start gap-1">
           $
-          <span className="font-semibold text-3xl">
+          <span className="text-3xl font-semibold">
             {product.price.toFixed(2)}{" "}
           </span>{" "}
-          <span className="uppercase text-primary text-xs font-medium my-auto">
+          <span className="my-auto text-xs font-medium uppercase text-primary">
             set of four
           </span>
         </div>
@@ -48,17 +46,17 @@ const CardDescription = ({ product }: { product: TInventoryItem }) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 mt-3">
-        <div className=" flex items-center gap-2">
-          <div className={"rounded-full p-1 inline-block bg-primary"}>
+      <div className="mt-3 flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+          <div className={"inline-block rounded-full bg-primary p-1"}>
             <AiOutlineDollarCircle className={"text-white"} />
           </div>
           <p className="text-xs uppercase text-gray-800">
             {product.item_promo}
           </p>
         </div>
-        <div className=" flex items-center gap-2">
-          <div className={"rounded-full p-1 inline-block bg-primary"}>
+        <div className="flex items-center gap-2">
+          <div className={"inline-block rounded-full bg-primary p-1"}>
             <MdOutlineShoppingCart className={"text-white"} />
           </div>
           <div className="text-xs uppercase">
@@ -75,10 +73,10 @@ const CardDescription = ({ product }: { product: TInventoryItem }) => {
       <div className="flex flex-col gap-3 min-[600px]:hidden">
         <div className="flex items-start gap-1">
           $
-          <span className="font-semibold text-3xl">
+          <span className="text-3xl font-semibold">
             {product.price.toFixed(2)}{" "}
           </span>{" "}
-          <span className="uppercase text-primary text-xs font-medium my-auto">
+          <span className="my-auto text-xs font-medium uppercase text-primary">
             set of four
           </span>
         </div>
