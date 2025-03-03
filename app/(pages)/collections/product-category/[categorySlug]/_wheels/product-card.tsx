@@ -9,20 +9,22 @@ const ProductCard = ({ product }: { product: TInventoryItem }) => {
   return (
     <div
       className={
-        "w-full min-[600px]:w-[250px] flex flex-row min-[600px]:flex-col overflow-hidden rounded-xl border border-[#cfcfcf] px-4 bg-white"
+        "flex w-full flex-row overflow-hidden rounded-xl border border-[#cfcfcf] bg-white px-4 min-[600px]:w-[250px] min-[600px]:flex-col"
       }
     >
-      <div className="w-full flex justify-center items-center pt-5">
+      <div className="flex w-full items-center justify-center pt-5">
         <Link href={productLink}>
           <Image
-            className={"mx-auto d-block rounded-xl w-full object-cover"}
+            className={"d-block mx-auto w-full rounded-xl object-cover"}
             height={238}
             width={238}
             alt="product image"
             src={
               product.thumbnail.length
                 ? product.thumbnail
-                : "/not-available.webp"
+                : product.image_url.length
+                  ? product.image_url
+                  : "/not-available.webp"
             }
           ></Image>
         </Link>

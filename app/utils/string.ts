@@ -14,6 +14,7 @@ export function dealerToString(dealer: Dealer) {
 export function camelCaseToWords(str: string) {
     return str
         .replace(/([A-Z])/g, ' $1') // Add a space before every capital letter
+        .replace(/_/g, ' ') // Replace underscores with spaces
         .replace(/^./, (firstLetter: string) => firstLetter.toUpperCase()) // Capitalize the first letter
         .trim(); // Remove leading and trailing whitespace
 }

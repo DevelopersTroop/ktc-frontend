@@ -5,9 +5,9 @@ const WheelDescription = ({ product }: { product: TInventoryItem }) => {
     <div className="w-full">
       <h2 className="text-4xl font-bold text-gray-700">
         {" "}
-        About The {product.title?.brand}{" "}
+        About The {product.brand}{" "}
       </h2>
-      <p className="mt-2 text-base text-gray-600">{product?.description}</p>
+      <p className="mt-2 text-base text-gray-600">{product?.product_desc}</p>
     </div>
   );
 };
