@@ -10,7 +10,7 @@ const MenuItemHasChildren = ({ children }: { children: React.ReactNode }) => {
   return (
     <li
       onMouseOver={() => isMenuLock && dispatch(unlockMenu())}
-      className={"h-full group text-center "}
+      className={"group h-full list-none text-center"}
     >
       {children}
     </li>
