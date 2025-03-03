@@ -14,6 +14,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.customwheeloffset.com",
       },
+      {
+        protocol: "https",
+        hostname: "example.com",
+      },
+      {
+        protocol:'https',
+        hostname:'stage-amani-forged.s3.us-east-2.amazonaws.com'
+      }
     ],
   },
 };

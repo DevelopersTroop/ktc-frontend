@@ -1,5 +1,5 @@
 "use client";
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
 import TireCardDescription from "./tire-card-description";
@@ -9,19 +9,19 @@ const TireCard = ({ product }: { product: TInventoryItem }) => {
   return (
     <div
       className={
-        "w-full min-[600px]:max-w-[250px] flex flex-row min-[600px]:flex-col gap-4 border border-white shadow px-4 py-4"
+        "flex w-full flex-row gap-4 border border-white px-4 py-4 shadow min-[600px]:max-w-[250px] min-[600px]:flex-col"
       }
     >
-      <div className="w-full flex justify-center items-center">
+      <div className="flex w-full items-center justify-center">
         <Link href={productLink}>
           <Image
-            className={"mx-auto d-block rounded-xl w-full object-cover"}
+            className={"d-block mx-auto w-full rounded-xl object-cover"}
             height={238}
             width={238}
             alt="product image"
             src={
-              product.item_image !== ""
-                ? product.item_image
+              product.thumbnail !== ""
+                ? product.thumbnail
                 : "/not-available.webp"
             }
           ></Image>

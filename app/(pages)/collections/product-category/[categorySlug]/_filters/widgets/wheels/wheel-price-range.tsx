@@ -1,6 +1,6 @@
 "use client";
 
-import { TPriceFilter } from "@/app/types/filter";
+import { TPriceFilter } from "@/types/filter";
 import MultiRangeSlider from "@/app/ui/multi-range-slider/multi-range-slider";
 import debounce from "debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

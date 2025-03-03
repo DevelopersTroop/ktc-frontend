@@ -1,4 +1,4 @@
-import { TCartProduct } from "@/app/types/cart";
+import { TCartProduct } from "@/types/cart";
 import { createSlice } from "@reduxjs/toolkit";
 
 export type TCartState = { products: { [cartSerial: string]: TCartProduct } };

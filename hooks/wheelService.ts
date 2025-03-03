@@ -1,12 +1,12 @@
 import {
-  fetchWheelFailure,
-  fetchWheelStart,
-  fetchWheelSuccess,
+    fetchWheelFailure,
+    fetchWheelStart,
+    fetchWheelSuccess,
 } from "@/app/globalRedux/features/wheel";
 import { AppDispatch, RootState } from "@/app/globalRedux/store";
-import { TInventoryItem } from "@/app/types/product";
-import { IApiRes } from "@/app/types/redux-helper";
 import { customFetch } from "@/lib/common-fetch";
+import { TInventoryItem } from "@/types/product";
+import { IApiRes } from "@/types/redux-helper";
 
 export const fetchWheelData = async (
   dispatch: AppDispatch,
@@ -26,9 +26,8 @@ export const fetchWheelData = async (
             }),
           }
         : {};
-    console.log(filters);
 
-    const response = await customFetch<IApiRes<TInventoryItem[], "products">>(
+    const response = await customFetch<IApiRes<{products:TInventoryItem[]}>>(
       "products/list",
       "POST",
       {

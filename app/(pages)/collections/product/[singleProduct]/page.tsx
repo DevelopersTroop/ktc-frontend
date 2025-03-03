@@ -1,4 +1,4 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import Container from "@/app/ui/container/container";
 import Accessory from "./_accessory/accessory";
 import Suspension from "./_suspension/suspension";
@@ -6,7 +6,7 @@ import Tire from "./_tire/tire";
 import Wheels from "./_wheels/wheels";
 import "./single-product.css";
 import { customFetch } from "@/lib/common-fetch";
-import { IApiRes } from "@/app/types/redux-helper";
+import { IApiRes } from "@/types/redux-helper";
 
 
 const SingleProduct = async ({

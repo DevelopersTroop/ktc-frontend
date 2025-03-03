@@ -1,6 +1,6 @@
 import { addToCart } from "@/app/globalRedux/features/cart/cart-slice";
 import store, { useAppDispatch } from "@/app/globalRedux/store";
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";

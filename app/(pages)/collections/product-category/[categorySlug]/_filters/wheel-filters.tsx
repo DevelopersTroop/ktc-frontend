@@ -1,6 +1,6 @@
 "use client";
 
-import { TSingleFilter } from "@/app/types/filter";
+import { TSingleFilter } from "@/types/filter";
 import WheelDiameter from "./widgets/wheels/wheel-diameter";
 import WheelFinish from "./widgets/wheels/wheel-finish";
 import WheelModel from "./widgets/wheels/wheel-model";

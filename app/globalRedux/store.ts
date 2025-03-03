@@ -1,31 +1,30 @@
 "use client";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import yearMakeModelReducer from "@/app/globalRedux/features/year-make-model/year-make-model-slice";
-import yearMakeModelModalReducer from "@/app/globalRedux/features/year-make-model-modal/year-make-model-modal-slice";
-import newsletterModalReducer from "@/app/globalRedux/features/newsletter-modal/newsletter-modal-slice";
-import filterHeightReducer from "@/app/globalRedux/features/filter-height/filter-height-slice";
-import menuReducer from "@/app/globalRedux/features/menu/menu-slice";
-import searchRouterSlice from "@/app/globalRedux/features/serach-router/search-router-slice";
-import inStockProductReducer from "@/app/globalRedux/features/in-stock-product/in-stock-product-slice";
-import customProductReducer from "@/app/globalRedux/features/custom-product/custom-product-slice";
-import cartReducer from "@/app/globalRedux/features/cart/cart-slice";
 import cartProductSaveEmailReducer from "@/app/globalRedux/features/cart/cart-products-Save-email-slice";
-import tirePackageReducer from "@/app/globalRedux/features/tire-package/tire-package-slice";
+import cartReducer from "@/app/globalRedux/features/cart/cart-slice";
 import checkoutReducer from "@/app/globalRedux/features/checkout/checkout-slice";
-import userReducer from "@/app/globalRedux/features/user/user-slice";
+import customProductReducer from "@/app/globalRedux/features/custom-product/custom-product-slice";
 import customSteeringWheelReducer from "@/app/globalRedux/features/custom-steering-wheel/custom-steering-wheel-slice";
-import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import {
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
-import wheelReducer from "./features/wheel";
+import filterHeightReducer from "@/app/globalRedux/features/filter-height/filter-height-slice";
+import inStockProductReducer from "@/app/globalRedux/features/in-stock-product/in-stock-product-slice";
+import menuReducer from "@/app/globalRedux/features/menu/menu-slice";
+import newsletterModalReducer from "@/app/globalRedux/features/newsletter-modal/newsletter-modal-slice";
+import searchRouterSlice from "@/app/globalRedux/features/serach-router/search-router-slice";
+import tirePackageReducer from "@/app/globalRedux/features/tire-package/tire-package-slice";
+import userReducer from "@/app/globalRedux/features/user/user-slice";
+import yearMakeModelModalReducer from "@/app/globalRedux/features/year-make-model-modal/year-make-model-modal-slice";
+import yearMakeModelReducer from "@/app/globalRedux/features/year-make-model/year-make-model-slice";
+
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import {
+    FLUSH, PAUSE,
+    PERSIST, persistReducer, persistStore, PURGE,
+    REGISTER, REHYDRATE
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import tireReducer from './features/tire';
+import wheelReducer from "./features/wheel";
+import { cartListenerMiddleware } from "./middleware/cart-listener";
 
 const rootPersistConfig = {
   key: "ktc-audio-store",
@@ -54,6 +53,7 @@ const rootReducer = combineReducers({
   newsletterModal: newsletterModalReducer,
   saveEmail: cartProductSaveEmailReducer,
   wheel: wheelReducer,
+  tire:tireReducer
 });
 
 const store = configureStore({
@@ -63,7 +63,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).prepend(cartListenerMiddleware.middleware),
 });
 
 export const persistor = persistStore(store);

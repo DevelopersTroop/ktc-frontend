@@ -1,0 +1,42 @@
+import { FinalStep } from "./CheckoutStep/FinalStep";
+import { StepFour } from "./CheckoutStep/StepFour";
+import ShippingAddressForm from "./ShippingAddress";
+
+interface RendererProps {
+  step: number;
+  setStep: (step: number) => void;
+}
+export const Renderer: React.FC<RendererProps> = ({ step, setStep }) => {
+  const handleBack = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (step > 1) {
+      setStep(step - 1);
+    }
+  };
+
+  const handleContinue = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (step < 3) {
+      setStep(step + 1);
+    }
+  };
+  switch (step) {
+    case 1:
+      return <ShippingAddressForm />;
+    case 2:
+      return (
+        <StepFour
+          handleBack={handleBack}
+          handleContinue={handleContinue}
+          setStep={setStep}
+          step={step}
+        />
+      );
+    case 3:
+      return <FinalStep setStep={setStep} />;
+    default:
+      return null;
+  }
+};
