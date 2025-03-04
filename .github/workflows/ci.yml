@@ -73,11 +73,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Dependencies and Build
-        run: |
-          npm install --force
-          npm run build
-
       - name: Add EC2 Host to Known Hosts
         run: |
           mkdir -p ~/.ssh
@@ -85,9 +80,6 @@ jobs:
         shell: /usr/bin/bash -e {0}
         env:
           HOST: ${{ secrets.PROD_HOST }}
-
-      - name: Install dependencies
-        run: npm install --force
 
       - name: Deploy to EC2
         run: |
