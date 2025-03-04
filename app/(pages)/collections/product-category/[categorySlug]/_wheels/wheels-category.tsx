@@ -10,33 +10,22 @@ import WheelYMMFilters from "../_filters/widgets/wheels/wheel-ymm-filter";
 import NoProductsFound from "../no-products-found";
 import ProductCard from "./product-card";
 // import Loading from '../../../product/[singleProduct]/loading';
+import { Paginate } from "@/components/shared/paginate";
+import { useSearchParams } from "next/navigation";
 import { useFilterSync } from "../_filters/store";
 import ProductCardSkeleton from "../_loading/product-card-skeleton";
-const WheelsCategory: React.FC = () => {
+type ProductsPageProps = {
+  page?: number;
+};
+const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const { data, loading } = useTypedSelector((state) => state.wheel);
   const { filters } = useFilterSync();
 
   useEffect(() => {
-    fetchWheelData(dispatch, filters);
-  }, [filters, dispatch]);
-
-  // if (loading) {
-  //   return (
-  //     <Container>
-  //       <div className="flex w-full gap-6 pt-6">
-  //         <div className={'hidden lg:block lg:w-1/4'}>
-  //           <FilterLoadingSkeleton />
-  //         </div>
-  //         <div className={'w-full lg:w-3/4 grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 auto-rows-min'}>
-  //           {
-  //             Array(12).fill(0).map((_, index) => <ProductCardSkeleton key={`product-card-loading-${index}`} />)
-  //           }
-  //         </div>
-  //       </div>
-  //     </Container>
-  //   )
-  // }
+    fetchWheelData(dispatch, filters, page);
+  }, [filters, dispatch, page]);
 
   return (
     <>
@@ -86,6 +75,14 @@ const WheelsCategory: React.FC = () => {
                 {data?.products.map((product) => (
                   <ProductCard product={product} key={product._id} />
                 ))}
+              </div>
+              <div className="mt-8 flex w-full flex-row flex-wrap justify-center gap-4">
+                <Paginate
+                  searchParams={new URLSearchParams(searchParams)}
+                  totalPages={data?.pages}
+                  categorySlug={"wheels"}
+                  page={page}
+                />
               </div>
             </div>
           </>

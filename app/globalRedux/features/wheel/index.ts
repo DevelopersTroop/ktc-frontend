@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IApiRes } from "@/types/redux-helper";
 import { TInventoryItem } from "@/types/product";
+import { IApiRes } from "@/types/redux-helper";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface FilterState {
   sort?: {
@@ -14,7 +14,7 @@ interface FilterState {
 }
 
 interface WheelState {
-  data: IApiRes<TInventoryItem[], "products"> | null;
+  data: IApiRes<{products:TInventoryItem[]}> | null;
   filters: FilterState;
   loading: boolean;
   error: string | null;
@@ -37,7 +37,7 @@ const wheelSlice = createSlice({
     },
     fetchWheelSuccess: (
       state,
-      action: PayloadAction<IApiRes<TInventoryItem[], "products">>
+      action: PayloadAction<IApiRes<{products:TInventoryItem[]}>>
     ) => {
       state.loading = false;
       state.data = action.payload;

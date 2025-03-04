@@ -2,21 +2,25 @@
 import { useAppDispatch, useTypedSelector } from "@/app/globalRedux/store";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
+import { Paginate } from "@/components/shared/paginate";
 import { fetchTireData } from "@/hooks/tireService";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import SidebarFilters from "../_filters/mobile-filters/sidebar-filters";
 import { useFilterSync } from "../_filters/store";
 import TireFilters from "../_filters/tire-filters";
+import ProductCardSkeleton from "../_loading/product-card-skeleton";
 import NoProductsFound from "../no-products-found";
 import TireCard from "./tire-card";
 
-const TireCategory: React.FC = () => {
+const TireCategory: React.FC<{ page: number }> = ({ page }) => {
+  const searchParams = useSearchParams();
   const { data, loading } = useTypedSelector((state) => state.tire);
   const { filters } = useFilterSync();
   const dispatch = useAppDispatch();
   useEffect(() => {
-    fetchTireData(dispatch, filters);
-  }, [filters, dispatch]);
+    fetchTireData(dispatch, filters, page);
+  }, [filters, dispatch, page]);
 
   return (
     <>
@@ -29,7 +33,19 @@ const TireCategory: React.FC = () => {
         <div className="hidden h-full flex-col gap-3 md:flex md:w-[400px]">
           <TireFilters />
         </div>
-        {data?.products?.length === 0 ? (
+        {loading ? (
+          <div
+            className={
+              "grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            }
+          >
+            {Array(12)
+              .fill(0)
+              .map((_, index) => (
+                <ProductCardSkeleton key={`product-card-loading-${index}`} />
+              ))}
+          </div>
+        ) : data?.products?.length === 0 ? (
           <>
             <NoProductsFound />
           </>
@@ -53,6 +69,15 @@ const TireCategory: React.FC = () => {
                 {data?.products?.map((product) => (
                   <TireCard product={product} key={product._id} />
                 ))}
+              </div>
+
+              <div className="mt-8 flex w-full flex-row justify-center">
+                <Paginate
+                  searchParams={new URLSearchParams(searchParams)}
+                  page={page}
+                  totalPages={data?.pages}
+                  categorySlug={"tires"}
+                />
               </div>
             </div>
           </>

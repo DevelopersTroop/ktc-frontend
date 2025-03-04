@@ -5,8 +5,10 @@ import WheelsCategory from "./_wheels/wheels-category";
 
 const Collection = async ({
   params,
+  page,
 }: {
   params: Promise<{ categorySlug: string }>;
+  page: number;
 }) => {
   const { categorySlug } = await params;
 
@@ -14,9 +16,9 @@ const Collection = async ({
 
   let collection = <></>;
   if (categorySlug === "wheels") {
-    collection = <WheelsCategory />;
+    collection = <WheelsCategory page={page} />;
   } else if (categorySlug === "tires") {
-    collection = <TireCategory />;
+    collection = <TireCategory page={page} />;
   } else if (categorySlug === "suspension") {
     collection = <SuspensionCategory />;
   } else if (categorySlug === "accessories") {

@@ -2,10 +2,12 @@
 import { TInventoryItem } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import CardDescription from "./card-description";
 
 const ProductCard = ({ product }: { product: TInventoryItem }) => {
   const productLink = `/collections/product/${product.slug}`;
+  const [imageErr, setImageErr] = useState(false);
   return (
     <div
       className={
@@ -20,12 +22,15 @@ const ProductCard = ({ product }: { product: TInventoryItem }) => {
             width={238}
             alt="product image"
             src={
-              product.thumbnail.length
-                ? product.thumbnail
-                : product.image_url.length
-                  ? product.image_url
-                  : "/not-available.webp"
+              imageErr
+                ? "/not-available.webp"
+                : product.thumbnail.length
+                  ? product.thumbnail
+                  : product.image_url1.length
+                    ? product.image_url1
+                    : "/not-available.webp"
             }
+            onError={() => setImageErr(true)}
           ></Image>
         </Link>
       </div>

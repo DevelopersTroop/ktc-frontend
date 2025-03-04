@@ -10,7 +10,8 @@ import { IApiRes } from "@/types/redux-helper";
 
 export const fetchTireData = async (
   dispatch: AppDispatch,
-  { minPrice, maxPrice, ...filters }: RootState["wheel"]["filters"]
+  { minPrice, maxPrice, ...filters }: RootState["tire"]["filters"],
+  page:number
 ) => {
   dispatch(fetchTireStart());
 
@@ -34,6 +35,8 @@ export const fetchTireData = async (
         body: {
           ...filters,
           ...price,
+          page,
+          category:'tires'
         },
       }
     );
