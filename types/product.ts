@@ -1,5 +1,4 @@
-export type TInventoryItem = {
-  _id: string;
+export type TInventoryItem ={
   title: string;
   slug: string;
   thumbnail: string;
@@ -24,11 +23,10 @@ export type TInventoryItem = {
   boltPatterns: string[];
   trueDirectional: string;
   relatedVideos: string[];
-  category: string;
-  categoryId: string | null;
+  categoryId: string| null;
   sku: string;
   manufacturer_part_number: string;
-  tire_size: string;
+  size: string;
   tire_description: string;
   tire_manufacturer: string;
   msrp: number;
@@ -63,9 +61,17 @@ export type TInventoryItem = {
   product_desc: string;
   size_desc: string;
   lug_count: number;
+  load_rating_metric: string;
   bolt_pattern_metric: string;
   bolt_pattern_standard: string;
   centerbore: string;
+  load_rating_standard: string;
+  barrel_config: string;
+  cap_part_no: string;
+  certification: string;
+  max_offset: number;
+  min_offset: number;
+  other_accessories: string[];
   rear_only: boolean;
   tpms_compatible: boolean;
   shipping_weight: number;
@@ -73,23 +79,30 @@ export type TInventoryItem = {
   brand_desc: string;
   display_style_no: string;
   style: string;
+  box_label_desc: string;
   finish_warranty: string;
   structural_warranty: string;
   smallest_bolt_pattern: string;
   largest_bolt_pattern: string;
+  bolt_pattern_mm2: string;
   min_lug_count: number;
   max_lug_count: number;
   open_end_cap: boolean;
   rivet_part_no: string;
   rivet_quantity: number;
+  pvd_finish: boolean;
+  stainless_lip: boolean;
   flow_formed: boolean;
   forged: boolean;
   two_piece: boolean;
   steel_wheel: boolean;
   bead_lock: boolean;
+  not_dot_approved: boolean;
   patent: string;
   lip_depth: string;
   material: string;
+  fancy_finish_desc: string;
+  bolt_pattern_mm1: string;
   prop65_chemical1: string;
   prop65_chemical2: string;
   prop65_chemical3: string;
@@ -98,10 +111,8 @@ export type TInventoryItem = {
   updatedBy: string | null;
   deletedBy: string | null;
   isDelete: boolean;
-  deletedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-};
+  deletedAt: Date | null;
+};;
 export type GProduct = {
   id: number;
   slug: string;

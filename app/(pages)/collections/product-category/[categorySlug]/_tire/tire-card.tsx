@@ -2,14 +2,16 @@
 import { TInventoryItem } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import TireCardDescription from "./tire-card-description";
 
 const TireCard = ({ product }: { product: TInventoryItem }) => {
   const productLink = `/collections/product/${product.slug}`;
+  const [imageErr, setImageErr] = useState(false);
   return (
     <div
       className={
-        "flex w-full flex-row min-[600px]:max-w-[250px] min-[600px]:flex-col overflow-hidden rounded-xl border border-[#cfcfcf] px-4 bg-white"
+        "flex w-full flex-row overflow-hidden rounded-xl border border-[#cfcfcf] bg-white px-4 min-[600px]:max-w-[250px] min-[600px]:flex-col"
       }
     >
       <div className="flex w-full items-center justify-center pt-5">
@@ -20,10 +22,13 @@ const TireCard = ({ product }: { product: TInventoryItem }) => {
             width={238}
             alt="product image"
             src={
-              product.thumbnail !== ""
-                ? product.thumbnail
-                : "/not-available.webp"
+              imageErr
+                ? "/not-available.webp"
+                : product.thumbnail !== ""
+                  ? product.thumbnail
+                  : "/not-available.webp"
             }
+            onError={() => setImageErr(true)}
           ></Image>
         </Link>
       </div>

@@ -1,6 +1,6 @@
-import { TInventoryItem } from "@/types/product";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
+import { TInventoryItem } from "@/types/product";
 import ImageGallery from "../image-gallery";
 import ActionButtons from "./action-buttons";
 import TireDescription from "./tire-description";
@@ -19,23 +19,23 @@ const Tire = ({ product }: { product: TInventoryItem }) => {
         <Item href={"/collections/product-category/tires"}>Collection</Item>
         <Item href={"/collections/product-category/tires"}>Tire</Item>
         <Item href={`/collections/product/${product.slug}`}>
-          {product.title?.brand}
+          {product.brand}
         </Item>
       </Breadcrumb>
-      <div className="w-full flex flex-col gap-4 mt-4 lg:border sm:p-4">
+      <div className="mt-4 flex w-full flex-col gap-4 sm:p-4 lg:border">
         <TireTitle product={product} />
-        <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col gap-4 lg:flex-row">
           {/* image gallery */}
           <div className="w-full">
             <div>
               <ImageGallery product={product} />
             </div>
-            <div className="hidden lg:block mt-4">
+            <div className="mt-4 hidden lg:block">
               <TireSpecifications product={product} />
             </div>
           </div>
           {/* product details */}
-          <div className="max-w-[330px] mx-auto p-2 flex flex-col gap-4">
+          <div className="mx-auto flex max-w-[330px] flex-col gap-4 p-2">
             <TireDetails product={product} />
             <div>
               <ActionButtons product={product} />

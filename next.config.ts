@@ -32,8 +32,14 @@ const nextConfig: NextConfig = {
       },{
         hostname:'images.wheelpros.com',
         protocol:'https'
-      },{
+      },
+      {
         hostname:'wheelpros.com',
+        protocol:'https'
+      }
+      ,
+      {
+        hostname:'assets.wheelpros.com',
         protocol:'https'
       }
     ],
