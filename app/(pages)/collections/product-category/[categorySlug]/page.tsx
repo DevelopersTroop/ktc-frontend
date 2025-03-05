@@ -12,8 +12,6 @@ const Collection = async ({
 }) => {
   const { categorySlug } = await params;
 
-  console.log("categorySlug  == ", categorySlug);
-
   let collection = <></>;
   if (categorySlug === "wheels") {
     collection = <WheelsCategory page={page} />;

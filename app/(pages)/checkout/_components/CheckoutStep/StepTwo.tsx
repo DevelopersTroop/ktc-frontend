@@ -593,7 +593,7 @@ export const StepTwo: React.FC<any> = () => {
                     </p>
                     <div className="relative flex items-center gap-0">
                       <p className="text-base leading-[19px] text-[#210203]">
-                        (33625):
+                        ({shippingAddress.zipCode}):
                       </p>
                     </div>
                   </div>

@@ -3,11 +3,11 @@ import { useTypedSelector } from "@/app/globalRedux/store";
 import { checkCartCategories } from "@/app/utils/checkCartCategories";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
 } from "react";
 import { Dealer } from "../types/order";
 
@@ -137,7 +137,7 @@ export const CheckoutProvider: React.FC<{ children: React.ReactNode }> = ({
    */
   const subTotalCost = useMemo(() => {
     return productsInfo?.reduce(
-      (acc, product) => acc + product.price * product.quantity,
+      (acc, product) => acc + product.msrp * product.quantity,
       0,
     );
   }, [productsInfo]);
