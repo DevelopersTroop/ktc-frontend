@@ -1,22 +1,13 @@
 import { camelCaseToWords } from "@/app/utils/string";
 import { TInventoryItem } from "@/types/product";
 
-const filterKeyValue = (key: keyof TInventoryItem, value: any) => {
+const wheel_specs_key = ["brand", "model"];
+
+const filterKeyValue = (key: keyof TInventoryItem, value: string | number) => {
   if (
-    key === "brand" ||
-    key === "model" ||
-    Array.isArray(value) ||
-    value === null ||
-    typeof value === "object" ||
-    key === "_id" ||
-    key === "thumbnail" ||
-    key === "price" ||
-    key === "stockQuantity" ||
-    key === "title" ||
-    key === "isDelete" ||
-    key === "createdAt" ||
-    key === "updatedAt" ||
-    key === "slug"
+    wheel_specs_key.includes(key) &&
+    ((typeof value === "string" && value.length > 0) ||
+      (typeof value === "number" && value))
   )
     return true;
 };
@@ -39,17 +30,23 @@ const WheelSpecifications = ({ product }: { product: TInventoryItem }) => {
           </p>
         </div>
         {Object.entries(product).map(([key, value]) => {
-          if (filterKeyValue(key as keyof TInventoryItem, value)) return null;
-          return (
-            <div key={key} className="flex items-center">
-              <p>
-                <span className="text-lg font-medium text-gray-600">
-                  {camelCaseToWords(key)}:{" "}
-                </span>{" "}
-                <span className="text-base text-gray-600"> {value}</span>
-              </p>
-            </div>
-          );
+          if (filterKeyValue(key as keyof TInventoryItem, value)) {
+            return (
+              <div key={key} className="flex items-center">
+                <p>
+                  <span className="text-lg font-medium text-gray-600">
+                    {camelCaseToWords(key)}:{" "}
+                  </span>{" "}
+                  <span className="text-base text-gray-600">
+                    {" "}
+                    {value as string}
+                  </span>
+                </p>
+              </div>
+            );
+          } else {
+            return null;
+          }
         })}
       </div>
     </div>
