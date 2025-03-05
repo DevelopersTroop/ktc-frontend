@@ -10,9 +10,9 @@ const TireDetails = ({ product }: { product: TInventoryItem }) => {
     <div className="flex flex-col gap-5">
       <div>
         <p className="text-gray-700">
-          <span className="font-semibold text-2xl">$315.00</span> each{" "}
+          <span className="font-semibold text-2xl">${product.msrp}</span> each{" "}
           <span className="font-semibold text-2xl">
-            /${product.price.toFixed(2)}
+            /${(product?.msrp * 4).toFixed(2)}
           </span>{" "}
           set
         </p>

@@ -1,5 +1,23 @@
-import { TInventoryItem } from "@/types/product";
 import { camelCaseToWords } from "@/app/utils/string";
+import { TInventoryItem } from "@/types/product";
+
+const tire_specs_key: keyof TInventoryItem[] = [
+  "manufacturer_part_number",
+  "size",
+  "load_index",
+  "speed_rating",
+  "upc",
+  "section_width",
+  "rim_diameter",
+  "series",
+  "max_load",
+  "division",
+  "tread_depth",
+];
+
+const filterKeyValue = (key: keyof TInventoryItem, value: string | number) => {
+  if (tire_specs_key.includes(key)) return true;
+};
 
 const TireSpecifications = ({ product }: { product: TInventoryItem }) => {
   return (
@@ -13,27 +31,36 @@ const TireSpecifications = ({ product }: { product: TInventoryItem }) => {
             <span className=" font-medium text-gray-600 text-lg">Brand: </span>{" "}
             <span className="text-gray-600 text-base">
               {" "}
-              {product.title?.brand}
+              {product?.brand_desc}
             </span>
           </p>
-          <p>
+          {/* <p>
             <span className=" font-medium text-gray-600 text-lg">Model: </span>{" "}
             <span className="text-gray-600 text-base">
               {" "}
               {product.title?.model}
             </span>
-          </p>
+          </p> */}
         </div>
-        {Object.entries(product.specifications || {}).map(([key, value]) => (
-          <div key={key} className="flex items-center">
-            <p>
-              <span className=" font-medium text-gray-600 text-lg">
-                {camelCaseToWords(key)}:{" "}
-              </span>{" "}
-              <span className="text-gray-600 text-base"> {value}</span>
-            </p>
-          </div>
-        ))}
+        {Object.entries(product).map(([key, value]) => {
+          if (filterKeyValue(key as keyof TInventoryItem, value)) {
+            return (
+              <div key={key} className="flex items-center">
+                <p>
+                  <span className="text-lg font-medium text-gray-600">
+                    {camelCaseToWords(key)}:{" "}
+                  </span>{" "}
+                  <span className="text-base text-gray-600">
+                    {" "}
+                    {value as string}
+                  </span>
+                </p>
+              </div>
+            );
+          } else {
+            return null;
+          }
+        })}
       </div>
     </div>
   );

@@ -35,6 +35,8 @@ const Cart = () => {
     setIsShippingProtectionChecked((prevChecked) => !prevChecked);
   };
 
+  console.log('cart product = ', cartProducts);
+
   useEffect(() => {
     const numericSubTotal = Number(subTotalCost); // Ensure it's a clean number
     const updatedTotal = isShippingProtectionChecked
@@ -70,9 +72,9 @@ const Cart = () => {
                     return (
                       <div key={index} className="w-full bg-white p-4">
                         <div className="flex gap-4 text-black">
-                          <p className="text-xl font-semibold">Wheels</p>
+                          <p className="text-xl font-semibold">{product?.category?.title}</p>
                           <p className="hidden font-medium md:block">
-                            Vehicle: {product.brand}
+                            Vehicle: {product.brand_desc}
                           </p>
                           <div className="block flex-1 text-end md:hidden">
                             <button
@@ -118,7 +120,7 @@ const Cart = () => {
                                 <p className="flex items-start justify-end font-semibold">
                                   $
                                   <span className="text-2xl">
-                                    {product?.price}
+                                    {product?.msrp.toFixed(2)}
                                   </span>
                                 </p>
                               </div>
@@ -157,7 +159,7 @@ const Cart = () => {
                               <p className="flex items-start text-primary">
                                 $
                                 <span className="text-2xl font-semibold">
-                                  {product.price * product.quantity}
+                                  {(product?.msrp * product?.quantity).toFixed(2)}
                                 </span>
                               </p>
                             </div>
@@ -256,7 +258,7 @@ const Cart = () => {
                     <h2 className="mt-2 text-2xl font-medium uppercase">
                       Total Before Tax
                     </h2>
-                    <p className="mt-2 text-4xl font-semibold">${totalCost}</p>
+                    <p className="mt-2 text-4xl font-semibold">${totalCost.toFixed(2)}</p>
                     <p className="mt-4 text-sm">
                       Tax is calculated during checkout
                     </p>

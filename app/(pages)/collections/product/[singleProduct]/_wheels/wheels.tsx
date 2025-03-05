@@ -11,6 +11,8 @@ import WheelDetails from "./wheels-details";
 import WheelsTitle from "./wheels-title";
 
 const Wheels = ({ product }: { product: TInventoryItem }) => {
+
+  console.log("wheel product == ", product);
   return (
     <WheelProvider>
       <Breadcrumb>
@@ -18,7 +20,7 @@ const Wheels = ({ product }: { product: TInventoryItem }) => {
         <Item href={"/collections/product-category/wheels"}>Collection</Item>
         <Item href={"/collections/product-category/wheels"}>Wheels</Item>
         <Item href={`/collections/product/${product.slug}`}>
-          {product.brand}
+          {product?.brand_desc}
         </Item>
       </Breadcrumb>
       <div className="mt-4 flex w-full flex-col gap-4 sm:p-4 lg:border">

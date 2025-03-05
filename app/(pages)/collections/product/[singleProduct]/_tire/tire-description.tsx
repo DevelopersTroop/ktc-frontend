@@ -5,9 +5,9 @@ const TireDescription = ({ product }: { product: TInventoryItem }) => {
     <div className="w-full">
       <h2 className="text-4xl text-gray-700 font-bold">
         {" "}
-        About The {product.title?.brand}{" "}
+        About The {product.brand_desc}{" "}
       </h2>
-      <p className="text-base text-gray-600 mt-2">{product?.description}</p>
+      <p className="text-base text-gray-600 mt-2">{product?.title}</p>
     </div>
   );
 };

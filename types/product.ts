@@ -24,6 +24,11 @@ export type TInventoryItem ={
   trueDirectional: string;
   relatedVideos: string[];
   categoryId: string| null;
+  category: {
+    _id: string;
+    slug: string;
+    title: string;
+  }
   sku: string;
   manufacturer_part_number: string;
   size: string;

@@ -12,8 +12,8 @@ const CardDescription = ({ product }: { product: TInventoryItem }) => {
         <h3 className="text-sm font-semibold uppercase text-black">
           {product.title}
         </h3>
-        <h4 className="text-sm uppercase text-gray-600">{product.model}</h4>
-        <p className="text-sm uppercase text-black">{product.brand}</p>
+        <h4 className="text-sm uppercase text-gray-600">{product?.model}</h4>
+        <p className="text-sm uppercase text-black">{product?.brand}</p>
       </div>
       {/* product review */}
       <div className="flex justify-between py-1">
@@ -32,7 +32,7 @@ const CardDescription = ({ product }: { product: TInventoryItem }) => {
         <div className="flex items-start gap-1">
           $
           <span className="text-3xl font-semibold">
-            {product.msrp.toFixed(2)}{" "}
+            {(product.msrp * 4).toFixed(2)}{" "}
           </span>{" "}
           <span className="my-auto text-xs font-medium uppercase text-primary">
             set of four
@@ -47,14 +47,14 @@ const CardDescription = ({ product }: { product: TInventoryItem }) => {
       </div>
 
       <div className="mt-3 flex flex-col gap-3">
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <div className={"inline-block rounded-full bg-primary p-1"}>
             <AiOutlineDollarCircle className={"text-white"} />
           </div>
           <p className="text-xs uppercase text-gray-800">
             {product.item_promo}
           </p>
-        </div>
+        </div> */}
         <div className="flex items-center gap-2">
           <div className={"inline-block rounded-full bg-primary p-1"}>
             <MdOutlineShoppingCart className={"text-white"} />

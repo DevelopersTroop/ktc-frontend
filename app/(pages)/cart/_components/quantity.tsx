@@ -16,7 +16,7 @@ const Quantity = ({
       id={cartProduct.cartPackage}
       inputName={cartProduct.cartPackage}
       inputValue={cartProduct.quantity}
-      maxInputValue={cartProduct.stockQuantity}
+      maxInputValue={20}
       quantityStep={Math.abs(1)}
       onDecrease={() => {
         dispatch(
@@ -30,9 +30,9 @@ const Quantity = ({
         dispatch(
           changeItemQuantity({
             cartSerial: cartProduct.cartSerial,
-            quantity: cartProduct.stockQuantity - cartProduct.quantity > 1
+            quantity: 20 - cartProduct.quantity > 1
                 ? cartProduct.quantity + 1
-                : cartProduct.stockQuantity,
+                : 20,
           })
         );
       }}

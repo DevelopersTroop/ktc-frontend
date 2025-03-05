@@ -52,7 +52,7 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
   const [isFitmentNeeded, setIsFitmentNeeded] = useState(false);
   const [openFitmentModal, setOpenFitmentModal] = useState(false);
   const { quantity } = useContext(WheelContext);
-  console.log("quantity === ", quantity);
+  console.log("action product  === ", product);
   const handleBuyWheels = () => {
     if (
       !isFitmentNeeded &&
@@ -168,7 +168,7 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
       <div className="relative mt-4 flex w-full flex-row items-baseline justify-between gap-4 self-stretch">
         <QuantityInput
           product={product}
-          inventoryAvailable={product.stockQuantity}
+          inventoryAvailable={20}
           name={"quantity"}
           id={"quantity"}
           // isDually={product?.dually}
