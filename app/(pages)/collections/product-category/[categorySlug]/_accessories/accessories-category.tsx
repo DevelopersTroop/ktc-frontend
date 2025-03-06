@@ -4,7 +4,6 @@ import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
 import { Paginate } from "@/components/shared/paginate";
 import { fetchAccessoriesData } from "@/hooks/accessoriesService";
-import { TInventoryItem } from "@/types/product";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import AccessoriesFilters from "../_filters/accessories-filters";
@@ -14,90 +13,6 @@ import AccessoriesYMMFilters from "../_filters/widgets/accessories/accessories-y
 import ProductCardSkeleton from "../_loading/product-card-skeleton";
 import NoProductsFound from "../no-products-found";
 import AccessoriesCard from "./accessories-card";
-
-const productData: TInventoryItem[] = [
-  {
-    _id: 1,
-    slug: "accessories",
-    title: {
-      subtitle: "Body Armor 4x4 Back bone Hitch Skid",
-    },
-    price: 132.99,
-    item_image: "/images/accessories/accessories1.webp",
-    delivery_date: "Wednesday, Jan 22",
-  },
-  {
-    _id: 2,
-    slug: "accessories",
-    title: {
-      subtitle: "Rally Armor Universal Basic Plus Black Mud Flap/Red Logo",
-    },
-    price: 44.0,
-    item_image: "/images/accessories/accessories2.webp",
-    delivery_date: "Wednesday, Jan 22",
-  },
-  {
-    _id: 3,
-    slug: "accessories",
-    title: {
-      subtitle: 'Body Armor 4x4 3/4" Red D-Ring With Isolators (Single)',
-    },
-    price: 19.95,
-    item_image: "/images/accessories/accessories3.webp",
-    delivery_date: "Wednesday, Jan 22",
-  },
-  {
-    _id: 4,
-    slug: "accessories",
-    title: {
-      subtitle: 'Body Armor 4x4 3/4" Black D-Ring with Red Isolators',
-    },
-    price: 15.95,
-    item_image: "/images/accessories/accessories4.webp",
-    delivery_date: "Wednesday, Jan 22",
-  },
-  {
-    _id: 5,
-    slug: "accessories",
-    title: {
-      subtitle: "Rough Country 9500LB Pro Series Winch | Steel Cable",
-    },
-    price: 329.95,
-    item_image: "/images/accessories/accessories5.webp",
-    delivery_date: "Wednesday, Jan 22",
-  },
-  {
-    _id: 6,
-    slug: "accessories",
-    title: {
-      subtitle: "Rough Country 12000LB Pro Series Winch | Steel Cable",
-    },
-    price: 49.99,
-    item_image: "/images/accessories/accessories6.webp",
-    delivery_date: "Wednesday, Jan 22",
-  },
-  {
-    _id: 7,
-    slug: "accessories",
-    title: {
-      subtitle: 'Rough Country Flag Pole Holder | Dual | 2" Hitch',
-    },
-    price: 49.95,
-    item_image: "/images/accessories/accessories7.webp",
-    delivery_date: "Wednesday, Jan 22",
-  },
-  {
-    _id: 8,
-    slug: "accessories",
-    title: {
-      subtitle: "AMP Research BedXtender HD Mounting Kit",
-    },
-    price: 19.99,
-    item_image: "/images/accessories/accessories8.webp",
-    delivery_date: "Wednesday, Jan 22",
-  },
-  // Add more products as needed
-];
 
 type ProductsPageProps = {
   page?: number;
@@ -111,7 +26,7 @@ const AccessoriesCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   const { filters } = useFilterSync();
 
   useEffect(() => {
-    fetchAccessoriesData(dispatch, filters, page);
+    fetchAccessoriesData(dispatch, filters, Number.isNaN(page) ? 1 : page);
   }, [filters, dispatch, page]);
 
   return (

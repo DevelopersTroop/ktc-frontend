@@ -24,7 +24,7 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   const { filters } = useFilterSync();
 
   useEffect(() => {
-    fetchWheelData(dispatch, filters, page);
+    fetchWheelData(dispatch, filters, Number.isNaN(page) ? 1 : page);
   }, [filters, dispatch, page]);
 
   return (

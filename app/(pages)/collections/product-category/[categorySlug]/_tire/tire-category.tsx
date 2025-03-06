@@ -19,7 +19,7 @@ const TireCategory: React.FC<{ page: number }> = ({ page = 1 }) => {
   const { filters } = useFilterSync();
   const dispatch = useAppDispatch();
   useEffect(() => {
-    fetchTireData(dispatch, filters, page);
+    fetchTireData(dispatch, filters, Number.isNaN(page) ? 1 : page);
   }, [filters, dispatch, page]);
 
   return (
