@@ -24,6 +24,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import tireReducer from './features/tire';
 import wheelReducer from "./features/wheel";
+import accessoriesReducer from "./features/accessories"
 import { cartListenerMiddleware } from "./middleware/cart-listener";
 
 const rootPersistConfig = {
@@ -53,7 +54,8 @@ const rootReducer = combineReducers({
   newsletterModal: newsletterModalReducer,
   saveEmail: cartProductSaveEmailReducer,
   wheel: wheelReducer,
-  tire:tireReducer
+  tire:tireReducer,
+  accessories: accessoriesReducer
 });
 
 const store = configureStore({

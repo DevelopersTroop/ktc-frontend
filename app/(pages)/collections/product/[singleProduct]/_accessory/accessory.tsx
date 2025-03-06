@@ -7,10 +7,11 @@ import AccessoryDetails from "./accessory-details";
 import AccessorySpecifications from "./accessory-specifications";
 import AccessoryTitle from "./accessory-title";
 import ActionButtons from "./action-buttons";
+import AccessoryProvider from "./context/AccessoryProvider";
 
 const Accessory = ({ product }: { product: TInventoryItem }) => {
   return (
-    <>
+    <AccessoryProvider>
       <Breadcrumb>
         <Item href={"/"}>Home</Item>
         <Item href={"/collections/product-category/accessories"}>
@@ -20,7 +21,7 @@ const Accessory = ({ product }: { product: TInventoryItem }) => {
           Accessories
         </Item>
         <Item href={`/collections/product/${product.slug}`}>
-          {product.title?.subtitle}
+          {product?.brand_desc}
         </Item>
       </Breadcrumb>
       <div className="w-full flex flex-col gap-4 mt-4 lg:border sm:p-4">
@@ -56,7 +57,7 @@ const Accessory = ({ product }: { product: TInventoryItem }) => {
           <AccessoryDescription product={product} />
         </div>
       </div>
-    </>
+    </AccessoryProvider>
   );
 };
 

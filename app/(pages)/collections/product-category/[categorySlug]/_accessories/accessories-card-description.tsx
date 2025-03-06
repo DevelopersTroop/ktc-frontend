@@ -18,7 +18,7 @@ const AccessoriesCardDescription = ({
       {/* product title */}
       <div>
         <h3 className="text-sm uppercase font-semibold text-black">
-          {product.title?.subtitle}
+          {product?.title}
         </h3>
       </div>
 

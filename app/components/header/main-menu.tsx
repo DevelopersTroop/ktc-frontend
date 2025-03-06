@@ -39,7 +39,7 @@ const MainMenu = () => {
                   Tires
                 </DesktopMenuLink>
               </li>
-              <li className="inline-block w-full text-left">
+              {/* <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
                     "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
@@ -48,7 +48,7 @@ const MainMenu = () => {
                 >
                   Suspension
                 </DesktopMenuLink>
-              </li>
+              </li> */}
               <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
@@ -116,7 +116,7 @@ const MainMenu = () => {
                   Tires
                 </DesktopMenuLink>
               </li>
-              <li className="inline-block w-full text-left">
+              {/* <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
                     "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
@@ -125,7 +125,7 @@ const MainMenu = () => {
                 >
                   Suspension
                 </DesktopMenuLink>
-              </li>
+              </li> */}
               <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
@@ -136,7 +136,7 @@ const MainMenu = () => {
                   Accessories
                 </DesktopMenuLink>
               </li>
-              <li className="inline-block w-full text-left">
+              {/* <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
                     "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
@@ -145,7 +145,7 @@ const MainMenu = () => {
                 >
                   View All
                 </DesktopMenuLink>
-              </li>
+              </li> */}
             </ul>
           </DesktopMenu>
         </MenuItemHasChildren>

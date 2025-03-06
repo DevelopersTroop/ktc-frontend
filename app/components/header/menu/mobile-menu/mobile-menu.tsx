@@ -83,7 +83,7 @@ const MobileMenu = () => {
                       </Link>
                     </div>
 
-                    <div className="pl-12 py-2">
+                    {/* <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/suspensions"
@@ -91,7 +91,7 @@ const MobileMenu = () => {
                       >
                         Suspension
                       </Link>
-                    </div>
+                    </div> */}
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
@@ -180,7 +180,7 @@ const MobileMenu = () => {
                       </Link>
                     </div>
 
-                    <div className="pl-12 py-2">
+                    {/* <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/suspensions"
@@ -188,7 +188,7 @@ const MobileMenu = () => {
                       >
                         Suspension
                       </Link>
-                    </div>
+                    </div> */}
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
@@ -198,7 +198,7 @@ const MobileMenu = () => {
                         Accessories
                       </Link>
                     </div>
-                    <div className="pl-12 py-2">
+                    {/* <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/wheels"
@@ -206,7 +206,7 @@ const MobileMenu = () => {
                       >
                         View All
                       </Link>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>

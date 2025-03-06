@@ -7,13 +7,14 @@ import TireDescription from "./tire-description";
 import TireDetails from "./tire-details";
 import TireSpecifications from "./tire-specifications";
 import TireTitle from "./tire-title";
+import TireProvider from "./context/TireProvider";
 
 export const step = 4;
 export const duallyStep = 6;
 
 const Tire = ({ product }: { product: TInventoryItem }) => {
   return (
-    <>
+    <TireProvider>
       <Breadcrumb>
         <Item href={"/"}>Home</Item>
         <Item href={"/collections/product-category/tires"}>Collection</Item>
@@ -51,7 +52,7 @@ const Tire = ({ product }: { product: TInventoryItem }) => {
           <TireDescription product={product} />
         </div>
       </div>
-    </>
+    </TireProvider>
   );
 };
 

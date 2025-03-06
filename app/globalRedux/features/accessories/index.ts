@@ -13,36 +13,36 @@ interface FilterState {
   wheel_diameter?: string;
 }
 
-interface TireState {
-  data: IApiRes<{products: TInventoryItem[]}> | null;
+interface AccessoriesState {
+  data: IApiRes<{products:TInventoryItem[]}> | null;
   filters: FilterState;
   loading: boolean;
   error: string | null;
 }
 
-const initialState: TireState = {
+const initialState: AccessoriesState = {
   data: null,
   filters: {}, // Default filter state
   loading: false,
   error: null,
 };
 
-const tireSlice = createSlice({
-  name: "tire",
+const accessoriesSlice = createSlice({
+  name: "accessories",
   initialState,
   reducers: {
-    fetchTireStart: (state) => {
+    fetchAccessoriesStart: (state) => {
       state.loading = true;
       state.error = null;
     },
-    fetchTireSuccess: (
+    fetchAccessoriesSuccess: (
       state,
-      action: PayloadAction<IApiRes<{products: TInventoryItem[]}>>
+      action: PayloadAction<IApiRes<{products:TInventoryItem[]}>>
     ) => {
       state.loading = false;
       state.data = action.payload;
     },
-    fetchTireFailure: (state, action: PayloadAction<string>) => {
+    fetchAccessoriesFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -53,7 +53,9 @@ const tireSlice = createSlice({
 });
 
 export const {
-  fetchTireStart,fetchTireFailure,fetchTireSuccess,
+  fetchAccessoriesStart,
+  fetchAccessoriesSuccess,
+  fetchAccessoriesFailure,
   updateFilters,
-} = tireSlice.actions;
-export default tireSlice.reducer;
+} = accessoriesSlice.actions;
+export default accessoriesSlice.reducer;

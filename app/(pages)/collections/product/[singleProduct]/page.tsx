@@ -18,14 +18,18 @@ const SingleProduct = async ({
     `products/${singleProduct}`,
   );
 
+  // console.log("response    =========   ", response.data.product);
+
+  const categoryId = response.data.product?.categoryId;
+
+  // console.log("categoryId === ", categoryId);
+
   let productBasedOnCategory = <></>;
-  if (singleProduct === "wheels") {
+  if (categoryId === "67c58e553c7586cd076bf226") {
     productBasedOnCategory = <Wheels product={response.data.product} />;
-  } else if (singleProduct === "tire") {
+  } else if (categoryId === "67c58e423c7586cd076bf223") {
     productBasedOnCategory = <Tire product={response.data.product} />;
-  } else if (singleProduct === "suspension") {
-    productBasedOnCategory = <Suspension product={response.data.product} />;
-  } else if (singleProduct === "accessories") {
+  }else if (categoryId === "67c58e6d3c7586cd076bf22c") {
     productBasedOnCategory = <Accessory product={response.data.product} />;
   } else {
     productBasedOnCategory = <Wheels product={response.data.product} />;

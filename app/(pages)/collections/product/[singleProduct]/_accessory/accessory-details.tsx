@@ -8,7 +8,7 @@ const AccessoryDetails = ({ product }: { product: TInventoryItem }) => {
     <div className="flex flex-col gap-5">
       <div>
         <p className="text-gray-700 text-5xl font-semibold">
-          ${product.price.toFixed(2)}
+          ${product.msrp.toFixed(2)}
         </p>
       </div>
 

@@ -1,13 +1,19 @@
 "use client";
-import { TInventoryItem } from "@/types/product";
+import { useAppDispatch, useTypedSelector } from "@/app/globalRedux/store";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
-import React from "react";
+import { Paginate } from "@/components/shared/paginate";
+import { fetchAccessoriesData } from "@/hooks/accessoriesService";
+import { TInventoryItem } from "@/types/product";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect } from "react";
 import AccessoriesFilters from "../_filters/accessories-filters";
 import SidebarFilters from "../_filters/mobile-filters/sidebar-filters";
+import { useFilterSync } from "../_filters/store";
 import AccessoriesYMMFilters from "../_filters/widgets/accessories/accessories-ymm-filter";
 import NoProductsFound from "../no-products-found";
 import AccessoriesCard from "./accessories-card";
+import ProductCardSkeleton from "../_loading/product-card-skeleton";
 
 const productData: TInventoryItem[] = [
   {
@@ -93,7 +99,23 @@ const productData: TInventoryItem[] = [
   // Add more products as needed
 ];
 
-const AccessoriesCategory: React.FC = () => {
+type ProductsPageProps = {
+  page?: number;
+};
+
+const AccessoriesCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
+  const searchParams = useSearchParams();
+  const dispatch = useAppDispatch();
+  const { data, loading } = useTypedSelector((state) => state.accessories);
+
+  const { filters } = useFilterSync();
+
+  useEffect(() => {
+    fetchAccessoriesData(dispatch, filters, page);
+  }, [filters, dispatch, page]);
+
+  console.log("accessories === ", data);
+
   return (
     <>
       <div className="w-full max-w-[1450px] flex flex-col md:flex-row gap-6 px-4 py-6 mx-auto">
@@ -106,7 +128,19 @@ const AccessoriesCategory: React.FC = () => {
           <AccessoriesYMMFilters />
           <AccessoriesFilters />
         </div>
-        {productData.length === 0 ? (
+        {loading ? (
+          <div
+            className={
+              "grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            }
+          >
+            {Array(12)
+              .fill(0)
+              .map((_, index) => (
+                <ProductCardSkeleton key={`product-card-loading-${index}`} />
+              ))}
+          </div>
+        ) : data?.products.length === 0 ? (
           <>
             <NoProductsFound />
           </>
@@ -127,9 +161,17 @@ const AccessoriesCategory: React.FC = () => {
                   "w-full flex flex-row flex-wrap gap-8 justify-center bg-gray-200 py-6"
                 }
               >
-                {productData.map((product) => (
+                {data?.products.map((product) => (
                   <AccessoriesCard product={product} key={product._id} />
                 ))}
+              </div>
+              <div className="mt-8 flex w-full flex-row flex-wrap justify-center gap-4">
+                <Paginate
+                  searchParams={new URLSearchParams(searchParams)}
+                  totalPages={data?.pages}
+                  categorySlug={"accessories"}
+                  page={page}
+                />
               </div>
             </div>
           </>
