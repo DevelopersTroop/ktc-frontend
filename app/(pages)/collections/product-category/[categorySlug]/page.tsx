@@ -5,22 +5,20 @@ import WheelsCategory from "./_wheels/wheels-category";
 
 const Collection = async ({
   params,
-  page,
 }: {
-  params: Promise<{ categorySlug: string }>;
-  page: number;
+  params: Promise<{ categorySlug: string; page: string }>;
 }) => {
-  const { categorySlug } = await params;
+  const { categorySlug, page } = await params;
 
   let collection = <></>;
   if (categorySlug === "wheels") {
-    collection = <WheelsCategory page={page} />;
+    collection = <WheelsCategory page={Number(page)} />;
   } else if (categorySlug === "tires") {
-    collection = <TireCategory page={page} />;
+    collection = <TireCategory page={Number(page)} />;
   } else if (categorySlug === "suspension") {
     collection = <SuspensionCategory />;
   } else if (categorySlug === "accessories") {
-    collection = <AccessoriesCategory />;
+    collection = <AccessoriesCategory page={Number(page)} />;
   }
 
   return collection;

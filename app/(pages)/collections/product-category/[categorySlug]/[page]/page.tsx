@@ -5,8 +5,7 @@ const ProductNavigation = async ({
 }: {
   params: Promise<{ page: string; categorySlug: string }>;
 }) => {
-  const { page } = await params;
-  return <Collection page={Number(page) || 1} params={params} />;
+  return <Collection params={params} />;
 };
 
 export default ProductNavigation;

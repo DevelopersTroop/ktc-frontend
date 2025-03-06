@@ -13,7 +13,7 @@ import ProductCardSkeleton from "../_loading/product-card-skeleton";
 import NoProductsFound from "../no-products-found";
 import TireCard from "./tire-card";
 
-const TireCategory: React.FC<{ page: number }> = ({ page }) => {
+const TireCategory: React.FC<{ page: number }> = ({ page = 1 }) => {
   const searchParams = useSearchParams();
   const { data, loading } = useTypedSelector((state) => state.tire);
   const { filters } = useFilterSync();

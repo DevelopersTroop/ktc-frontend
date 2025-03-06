@@ -1,6 +1,5 @@
 "use client";
 import { TInventoryItem } from "@/types/product";
-import { AiOutlineDollarCircle } from "react-icons/ai";
 import { FaStar } from "react-icons/fa6";
 import { MdOutlineShoppingCart } from "react-icons/md";
 

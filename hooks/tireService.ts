@@ -36,7 +36,8 @@ export const fetchTireData = async (
           ...filters,
           ...price,
           page,
-          category:'tires'
+          category:'tires',
+          size:12
         },
       }
     );

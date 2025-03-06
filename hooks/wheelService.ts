@@ -36,7 +36,8 @@ export const fetchWheelData = async (
           ...filters,
           ...price,
           page,
-          category:'wheels'
+          category:'wheels',
+          size:12
         },
       }
     );

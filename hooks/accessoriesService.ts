@@ -32,7 +32,8 @@ export const fetchAccessoriesData = async (
           ...filters,
           ...price,
           page,
-          category:'accessories'
+          category:'accessories',
+          size:12
         },
       }
     );
