@@ -5,11 +5,11 @@ import FilterHeading from "../../template/filter-heading";
 import SelectFilterTemplate from "../../template/select-filter-template";
 
 const TireWheelDiameter = ({
-  diameter,
+  diameter = [],
   filterKey,
 }: {
   filterKey: string;
-  diameter: TSingleFilter[];
+  diameter?: TSingleFilter[];
 }) => {
   const [showFilter, setshowFilter] = useState(false);
 

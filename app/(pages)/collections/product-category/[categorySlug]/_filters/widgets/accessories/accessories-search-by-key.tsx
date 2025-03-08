@@ -1,18 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface AccessoriesSearchByKeyProps {
-  onSearch: (searchKey: string) => void;
+  searchKey: string;
+  setSearchKey: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AccessoriesSearchByKey: React.FC<AccessoriesSearchByKeyProps> = ({
-  onSearch,
+  searchKey,
+  setSearchKey,
 }) => {
-  const [searchKey, setSearchKey] = useState("");
-
-  const handleSearch = () => {
-    onSearch(searchKey);
-  };
-
   return (
     <div>
       <div>
@@ -25,13 +21,10 @@ const AccessoriesSearchByKey: React.FC<AccessoriesSearchByKeyProps> = ({
           value={searchKey}
           onChange={(e) => setSearchKey(e.target.value)}
           className={
-            "w-full px-3 outline-none bg-transparent border-b border-gray-300"
+            "w-full border-b border-gray-300 bg-transparent px-3 outline-none"
           }
         />
       </div>
-      <button className="box-button mt-2 uppercase" onClick={handleSearch}>
-        Search
-      </button>
     </div>
   );
 };
