@@ -9,8 +9,8 @@ interface FilterState {
   }[];
   minPrice?: number;
   maxPrice?: number;
-  wheel_width?: string;
-  wheel_diameter?: string;
+  width?: string;
+  diameter?: string;
 }
 
 interface WheelState {

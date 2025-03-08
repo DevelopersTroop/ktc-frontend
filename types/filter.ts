@@ -8,5 +8,15 @@ export type TSingleFilter = {
 }
 
 export type TFilters = {
-    [filterType: string | "price"]: TPriceFilter | TSingleFilter[]
+    width?: TSingleFilter[],
+    msrp?: TSingleFilter[],
+    diameter?: TSingleFilter[],
+    map_price?: TSingleFilter[],
+    load_index?: TSingleFilter[],
+    rim_diameter?: TSingleFilter[],
+    color?: TSingleFilter[],
+    model?: TSingleFilter[],
+    brand?: TSingleFilter[],
+    price: TPriceFilter,
+    product_sub_type?: TSingleFilter[],
 }
