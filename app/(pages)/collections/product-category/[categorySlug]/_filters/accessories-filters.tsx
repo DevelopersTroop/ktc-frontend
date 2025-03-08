@@ -1,31 +1,19 @@
 "use client";
 
 import { useFetchFilters } from "@/hooks/useFetchFilters";
-import debounce from "debounce";
-import { useEffect, useState } from "react";
-import { useFilterSync } from "./store";
+import { useSearchFilter } from "@/hooks/useSearchFilter";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import AccessoriesBrand from "./widgets/accessories/accessories-brand";
 import AccessoriesSearchByKey from "./widgets/accessories/accessories-search-by-key";
 import AccessoriesSubCategory from "./widgets/accessories/accessories-subcategory";
-
 const AccessoriesFilters = () => {
-  const { handleSearch, filters: activeFilters } = useFilterSync();
-  const [searchKey, setSearchKey] = useState("");
+  const searchParams = useSearchParams();
+  const query = searchParams.get("q") || "";
+  const [searchKey, setSearchKey] = useState(query);
   const { filters } = useFetchFilters("accessories");
-
-  useEffect(() => {
-    const debouncedToggle = debounce(() => {
-      handleSearch("q", searchKey);
-    }, 500);
-    debouncedToggle();
-    return () => {
-      debouncedToggle.clear();
-    };
-  }, [searchKey, handleSearch]);
-
-  // useEffect(() => {
-  //   if (activeFilters?.q?.length) setSearchKey(activeFilters.q);
-  // }, [activeFilters?.q]);
+  // Rerender every time if the search key changes
+  useSearchFilter(searchKey, setSearchKey, query);
 
   return (
     <div className={"filter-shadow bg-gray-200"}>

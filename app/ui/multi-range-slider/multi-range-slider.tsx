@@ -19,8 +19,8 @@ const MultiRangeSlider = ({ min, max, currentLow, currentHigh, onChange }) => {
             setValues(newValues);
           }
         }}
-        min={min}
-        max={max}
+        min={min * 4}
+        max={max * 4}
         step={1}
         className="w-full max-w-md cursor-pointer"
       />
