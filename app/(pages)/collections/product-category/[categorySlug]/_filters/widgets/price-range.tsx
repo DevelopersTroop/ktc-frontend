@@ -13,25 +13,36 @@ const PriceRange = ({ price }: { price?: TPriceFilter }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [showFilter, setShowFilter] = useState(true);
+  const [showFilter, setShowFilter] = useState(false);
+
   const minPriceRef = useRef(price?.min || 0);
   const maxPriceRef = useRef(price?.max || 0);
   const currentLowPriceRef = useRef(
-    Number(filters.minPrice) || searchParams.get("minPrice") || price?.min,
+    Number(filters.minPrice) ||
+      Number(searchParams.get("minPrice")) ||
+      price?.min ||
+      0,
   );
   const currentHighPriceRef = useRef(
-    Number(filters.maxPrice) || searchParams.get("maxPrice") || price?.max,
+    Number(filters.maxPrice) ||
+      Number(searchParams.get("maxPrice")) ||
+      price?.max ||
+      0,
   );
 
   const createQueryString = useCallback(
     (minPrice: number, maxPrice: number) => {
       const params = new URLSearchParams(searchParams.toString());
-      minPrice !== price?.min
-        ? params.set("minPrice", String(minPrice))
-        : params.delete("minPrice");
-      maxPrice !== price?.max
-        ? params.set("maxPrice", String(maxPrice))
-        : params.delete("maxPrice");
+      if (minPrice !== price?.min) {
+        params.set("minPrice", String(minPrice));
+      } else {
+        params.delete("minPrice");
+      }
+      if (maxPrice !== price?.max) {
+        params.set("maxPrice", String(maxPrice));
+      } else {
+        params.delete("maxPrice");
+      }
       return params.toString();
     },
     [searchParams, price?.min, price?.max],
@@ -40,11 +51,9 @@ const PriceRange = ({ price }: { price?: TPriceFilter }) => {
   const debouncedUpdate = useRef(
     debounce((minPrice: number, maxPrice: number) => {
       const queryString = createQueryString(minPrice, maxPrice);
-      if (minPrice !== price?.min || maxPrice !== price?.max) {
-        router.push(queryString ? `${pathname}?${queryString}` : pathname, {
-          scroll: false,
-        });
-      }
+      router.push(queryString ? `${pathname}?${queryString}` : pathname, {
+        scroll: false,
+      });
       toggleFilterValue("minPrice", String(minPrice), false);
       toggleFilterValue("maxPrice", String(maxPrice), false);
     }, 500),
@@ -75,11 +84,14 @@ const PriceRange = ({ price }: { price?: TPriceFilter }) => {
       ) {
         currentLowPriceRef.current = currentLow;
         currentHighPriceRef.current = currentHigh;
-        debouncedUpdate(currentLow, currentHigh);
       }
     },
     [],
   );
+
+  const applyFilter = () => {
+    debouncedUpdate(currentLowPriceRef.current, currentHighPriceRef.current);
+  };
 
   useEffect(() => {
     if (price) {
@@ -88,7 +100,7 @@ const PriceRange = ({ price }: { price?: TPriceFilter }) => {
     }
   }, [price]);
 
-  if (maxPriceRef.current === minPriceRef.current) return null;
+  // if (maxPriceRef.current === minPriceRef.current) return null;
 
   return (
     <div className="border-y px-5 py-3">
@@ -102,19 +114,15 @@ const PriceRange = ({ price }: { price?: TPriceFilter }) => {
           <MultiRangeSlider
             min={minPriceRef.current}
             max={maxPriceRef.current}
-            currentLow={parseInt(
-              currentLowPriceRef?.current?.toString() || "0",
-            )}
-            currentHigh={parseInt(
-              currentHighPriceRef?.current?.toString() || "0",
-            )}
+            currentLow={currentLowPriceRef.current}
+            currentHigh={currentHighPriceRef.current}
             onChange={getMinMax}
           />
-          {/* <div>
-            <button onClick={onClick} className={"box-button mt-3"}>
-              Filter Price
+          <div className="mt-3">
+            <button onClick={applyFilter} className="box-button">
+              Apply Filter
             </button>
-          </div> */}
+          </div>
         </div>
       )}
     </div>
