@@ -45,6 +45,10 @@ export const fetchAccessoriesData = async (
           ...price,
           page,
           category:'accessories',
+          sort: [{
+     whom: "msrp",
+     order: "desc"
+   }],
           size:12
         },
       }

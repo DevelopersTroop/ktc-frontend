@@ -14,8 +14,7 @@ export const fetchTireData = async (
   page:number
 ) => {
   dispatch(fetchTireStart());
-
-  const shouldArray = ['brand','model','color','diameter','rim_diameter','width']
+  const shouldArray = ['brand','model','color','diameter','rim_diameter','width','load_index']
   try {
     const price =
       minPrice !== undefined || maxPrice !== undefined
@@ -45,7 +44,12 @@ export const fetchTireData = async (
       {
         body: {
           ...obj,
-          ...price,
+          maxPrice:price.maxPrice?Math.round(price.maxPrice/4):price.maxPrice,
+          minPrice:price.minPrice?Math.round(price.minPrice/4):price.minPrice,
+          sort: [{
+     whom: "msrp",
+     order: "desc"
+   }],
           page,
           category:'tires',
           size:12

@@ -35,7 +35,8 @@ export const fetchWheelData = async (
     Object.entries(filters).forEach(function([key,value]){
       if(shouldArray.includes(key) && key !=='sort' && typeof value !=='object'){
         obj[key] = value.split(',').map((brand:string)=>brand.trim());
-      }else{
+      }
+      else{
         obj[key] = value;
       }
     })
@@ -47,9 +48,14 @@ export const fetchWheelData = async (
       {
         body: {
           ...obj,
-          ...price,
+          maxPrice:price.maxPrice?Math.round(price.maxPrice/4):price.maxPrice,
+          minPrice:price.minPrice?Math.round(price.minPrice/4):price.minPrice,
           page,
           category:'wheels',
+          sort: [{
+     whom: "msrp",
+     order: "desc"
+   }],
           size:12
         },
       }
