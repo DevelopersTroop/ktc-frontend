@@ -313,7 +313,7 @@ const HomeYmm = () => {
     }
 
 
-    const onSubmit = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const onSubmit = (e:  MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
         if(selectedSubModel.DRChassisID && !isLoading.vehicleData){
             router.push("/collections/product-category/wheels?bolt_pattern=" + vehicleInformation.boltPattern);
         }
@@ -346,7 +346,7 @@ const HomeYmm = () => {
             </div>
         </div>
         <div className="w-full p-4">
-            <button  disabled={isDisabledSubmit} className={cn(
+            <button onClick={onSubmit} disabled={isDisabledSubmit} className={cn(
                 "w-full bg-primary hover:bg-primary-hover  text-white py-3 text-lg uppercase cursor-pointer",
                 isDisabledSubmit ? "opacity-50 cursor-not-allowed" : ""
             )}>
