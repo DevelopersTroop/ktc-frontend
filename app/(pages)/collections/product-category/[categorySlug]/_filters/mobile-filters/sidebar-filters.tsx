@@ -12,7 +12,7 @@ const SidebarFilters = ({ children }: SidebarProps) => {
   const [isOpenFilter, setIsOpenFilter] = useState(false);
 
   return (
-    <div className="pt-4">
+    <div className="">
       <button
         className="box-button"
         onClick={() => setIsOpenFilter((prev) => !prev)}
@@ -30,22 +30,22 @@ const SidebarFilters = ({ children }: SidebarProps) => {
           bmMenuWrap: {
             top: "0px",
             left: "0px",
-            width: "100%",
+            // width: "100%",
           },
           bmMenu: {
             background: "#E5E7EB", // equivalent to bg-gray-200
             padding: "20px 0",
-            height: "100vh",
+            // height: "100vh",
           },
           bmCrossButton: {
             zIndex: "50",
           },
         }}
       >
-        <div className="border-b-2 border-gray-400 text-2xl text-gray-700 font-semibold my-auto fixed bg-gray-100 w-full py-2 px-4 -mt-5 mb-2 z-50">
+        <div className="border-b-2 border-gray-400 text-2xl text-gray-700 font-semibold my-auto fixed bg-gray-100 w-[300px] py-2 px-4 -mt-5 mb-2 z-50">
           Filter
         </div>
-        <div className="text-black pt-7">{children}</div>
+        <div className="text-black pt-7 w[80%]">{children}</div>
       </Menu>
     </div>
   );

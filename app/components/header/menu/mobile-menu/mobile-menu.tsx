@@ -2,6 +2,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -15,14 +16,20 @@ const MobileMenu = () => {
   const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false);
   const [isBrandsDropdownOpen, setIsBrandsDropdownOpen] = useState(false);
   const [isResourcesDropdownOpen, setIsResourcesDropdownOpen] = useState(false);
+  const [open , setIsOpen] = useState(false);
+
+  const handleSheetClose = () => {
+    setIsOpen(false);
+  }
+
 
   return (
     <div className="block min-[1160px]:hidden">
-      <Sheet>
-        <SheetTrigger asChild>
-          <MdOutlineMenu className="text-3xl text-gray-800" />
-        </SheetTrigger>
-        <SheetContent side="left" className="bg-gray-100">
+      <Sheet open={open} onOpenChange={setIsOpen}>
+        <div>
+          <MdOutlineMenu onClick={()=> setIsOpen(!open)} className="text-3xl text-gray-800" />
+        </div>
+        <SheetContent side="left" className="bg-gray-100 w-[85%]">
           <SheetHeader className="sr-only">
             <SheetTitle>Navigation Menu</SheetTitle>
           </SheetHeader>
@@ -67,6 +74,7 @@ const MobileMenu = () => {
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/wheels"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -76,6 +84,7 @@ const MobileMenu = () => {
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/tires"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -95,6 +104,7 @@ const MobileMenu = () => {
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/accessories"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -104,20 +114,21 @@ const MobileMenu = () => {
                   </div>
                 )}
               </div>
-
               <div>
                 <div className="w-[70px] pb-2 border-t border-primary "></div>
                 <Link
+                onClick={handleSheetClose}
                   href="/add-login"
                   className="text-2xl font-bold text-gray-800"
                 >
                   Add My Truck
                 </Link>
               </div>
-
+         
               <div>
                 <div className="w-[70px] pb-2 border-t border-primary "></div>
                 <Link
+                  onClick={handleSheetClose}
                   href="/ktc-audio-gallery"
                   className="text-2xl font-bold text-gray-800"
                 >
@@ -164,6 +175,7 @@ const MobileMenu = () => {
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/wheels"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -173,6 +185,7 @@ const MobileMenu = () => {
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/tires"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -192,6 +205,7 @@ const MobileMenu = () => {
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/accessories"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -252,6 +266,7 @@ const MobileMenu = () => {
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/about"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -261,6 +276,7 @@ const MobileMenu = () => {
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/track-order"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -271,6 +287,7 @@ const MobileMenu = () => {
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="#"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -280,7 +297,8 @@ const MobileMenu = () => {
                     <div className="pl-12 py-2">
                       <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
-                        href="/contact-us"
+                        onClick={handleSheetClose}
+                        href="/contact"
                         className="block text-2xl font-semibold text-gray-800"
                       >
                         Contact

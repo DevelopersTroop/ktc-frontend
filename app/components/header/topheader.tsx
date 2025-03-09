@@ -7,6 +7,7 @@ import { Phone, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import MobileMenu from "./menu/mobile-menu/mobile-menu";
+import HeaderSearchButton from "./search/search";
 
 export default function TopHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -49,7 +50,7 @@ export default function TopHeader() {
             />
           </Link>
 
-          <div className="mx-4 hidden max-w-xl flex-1 lg:flex">
+          {/* <div className="mx-4 hidden max-w-xl flex-1 lg:flex">
             <div className="relative flex-1">
               <Input
                 type="text"
@@ -72,7 +73,8 @@ export default function TopHeader() {
             onClick={() => setIsSearchOpen(true)}
           >
             <Search className="h-6 w-6" />
-          </Button>
+          </Button> */}
+          <HeaderSearchButton />
 
           <div className="hidden items-center gap-2 md:flex">
             <Phone className="h-5 w-5 text-gray-600" />
@@ -116,11 +118,11 @@ export default function TopHeader() {
           </div>
 
           <div className="flex items-center gap-2 md:hidden">
-            <Link href="/account">
-              <User className="h-6 w-6" />
+            <Link href={user?.email ? "/dashboard" : "/login"}>
+              <User className="h-6 w-6 text-gray-600" />
             </Link>
             <Link href="/cart" className="relative">
-              <ShoppingCart className="h-6 w-6" />
+              <ShoppingCart className="h-6 w-6 text-gray-600" />
               <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-xs text-white">
                 {cartQuantity}
               </span>
