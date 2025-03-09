@@ -1,3 +1,5 @@
+import HomeYmm from "./home-ymm";
+
 export default function HeroSection() {
   const banner = {
     backgroundImage: `url('/images/hero.jpeg')`,
@@ -27,32 +29,8 @@ export default function HeroSection() {
               </div>
             </div>
 
-            <div className="w-full p-4">
-              <div className="w-full flex flex-col md:flex-row gap-4 mt-4">
-                <select className="w-full p-2 rounded bg-white text-xl text-black">
-                  <option value="">Year</option>
-                  {/* Add options for years */}
-                </select>
-                <select className="w-full p-2 rounded bg-white text-xl text-black">
-                  <option value="">Make</option>
-                  {/* Add options for makes */}
-                </select>
-                <select className="w-full p-2 rounded bg-white text-xl text-black">
-                  <option value="">Model</option>
-                  {/* Add options for models */}
-                </select>
-                <select className="w-full p-2 rounded bg-white text-xl text-black">
-                  <option value="">Drive/Trim</option>
-                  {/* Add options for trims */}
-                </select>
-              </div>
-            </div>
+            <HomeYmm />
 
-            <div className="w-full p-4">
-              <button className="w-full bg-primary hover:bg-primary-hover text-white py-3 text-lg uppercase ">
-                Shop wheels
-              </button>
-            </div>
           </div>
         </div>
       </div>
