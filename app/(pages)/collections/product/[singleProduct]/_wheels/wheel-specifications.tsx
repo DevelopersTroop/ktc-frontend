@@ -1,7 +1,7 @@
 import { camelCaseToWords } from "@/app/utils/string";
 import { TInventoryItem } from "@/types/product";
 
-const wheel_specs_key : keyof TInventoryItem[] = ["manufacturer_part_number","size", "diameter", "lug_count", "bolt_pattern_metric", "bolt_pattern_standard", "offset","upc", "backspacing", "centerbore", "cap_part_no", "load_rating_metric", "division", "wheel_weight", "box_label_desc" ];
+const wheel_specs_key : keyof TInventoryItem[] = ["manufacturer_part_number","size", "diameter", "lug_count", "bolt_pattern_metric", "bolt_pattern_standard", "offset","upc", "backspacing", "centerbore", "hubBore", "material", "style", "cap_part_no", "load_rating_metric", "load_rating_standard", "division", "weight", "box_label_desc", "color", "width", "trueDirectional" ];
 
 const filterKeyValue = (key: keyof TInventoryItem, value: string | number) => {
   if (
@@ -20,12 +20,12 @@ const WheelSpecifications = ({ product }: { product: TInventoryItem }) => {
         <div className="flex flex-col">
           <p>
             <span className="text-lg font-medium text-gray-600">Brand: </span>{" "}
-            <span className="text-base text-gray-600"> {product.brand_desc}</span>
+            <span className="text-base text-gray-600"> {product.brand}</span>
           </p>
-          {/* <p>
+          <p>
             <span className="text-lg font-medium text-gray-600">Model: </span>{" "}
             <span className="text-base text-gray-600"> {product.model}</span>
-          </p> */}
+          </p>
         </div>
         {Object.entries(product).map(([key, value]) => {
           if (filterKeyValue(key as keyof TInventoryItem, value)) {

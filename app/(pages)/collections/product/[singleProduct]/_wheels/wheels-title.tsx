@@ -6,7 +6,7 @@ const WheelsTitle = ({ product }: { product: TInventoryItem }) => {
     <div className="flex flex-col">
       <div>
         <p className="text-2xl font-semibold text-gray-800">
-          {product.title} {product?.brand_desc}
+          {product.title} {product?.brand}
         </p>
       </div>
       {/* <div className="flex gap-4 items-center">

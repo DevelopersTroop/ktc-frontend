@@ -21,7 +21,7 @@ const Accessory = ({ product }: { product: TInventoryItem }) => {
           Accessories
         </Item>
         <Item href={`/collections/product/${product.slug}`}>
-          {product?.brand_desc}
+          {product?.brand}
         </Item>
       </Breadcrumb>
       <div className="w-full flex flex-col gap-4 mt-4 lg:border sm:p-4">

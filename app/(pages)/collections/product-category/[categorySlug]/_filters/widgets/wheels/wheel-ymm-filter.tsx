@@ -1,93 +1,368 @@
-import { useState } from "react";
-
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useForm } from "react-hook-form";
+  getBodyTypes,
+  getMakes,
+  getModels,
+  getSubModels,
+  getVehicleData,
+  getYears,
+} from "@/lib/driver-right-api";
+import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 
 const WheelYMMFilters = () => {
-  const [years, setYears] = useState<string[]>(["2020", "2021", "2022"]);
+  const router = useRouter();
+  const [years, setYears] = useState<string[]>([]);
   const [makes, setMakes] = useState<string[]>([]);
   const [models, setModels] = useState<string[]>([]);
-  const [trims, setTrims] = useState<string[]>([]);
-  const [drives, setDrives] = useState<string[]>([]);
-  const [loadingMakes, setLoadingMakes] = useState(false);
-  const [loadingModels, setLoadingModels] = useState(false);
-  const [loadingTrims, setLoadingTrims] = useState(false);
-  const [loadingDrives, setLoadingDrives] = useState(false);
+  const [bodyTypes, setBodyTypes] = useState<string[]>([]);
+  const [subModels, setSubModels] = useState<
+    {
+      SubModel: string;
+      DRChassisID: string;
+      DRModelID: string;
+    }[]
+  >([]);
 
-  const form = useForm({
-    defaultValues: {
-      year: "",
-      make: "",
-      model: "",
-      trim: "",
-      drive: "",
-    },
+  const [isLoading, setIsLoading] = useState({
+    year: true,
+    make: true,
+    model: true,
+    bodyType: true,
+    subModel: true,
+    vehicleData: true,
   });
 
-  const onYearChange = (value: string) => {
-    form.setValue("year", value);
-    form.setValue("make", "");
-    form.setValue("model", "");
-    setLoadingMakes(true);
-    setTimeout(() => {
-      setMakes(["Toyota", "Honda", "Ford"]);
-      setLoadingMakes(false);
-    }, 1000);
+  const [isDisabledSubmit, setIsDisabledSubmit] = useState(true);
+
+  const [selectedYear, setSelectedYear] = useState<string>("");
+  const [selectedMake, setSelectedMake] = useState<string>("");
+  const [selectedModel, setSelectedModel] = useState<string>("");
+  const [selectedBodyType, setSelectedBodyType] = useState<string>("");
+  const [selectedSubModel, setSelectedSubModel] = useState<
+    (typeof subModels)[0]
+  >({
+    SubModel: "",
+    DRChassisID: "",
+    DRModelID: "",
+  });
+
+  const [vehicleInformation, setVehicleInformation] = useState<{
+    boltPattern: string;
+    frontRimSize: string;
+    rearRimSize: string;
+    frontCenterBore: string;
+    rearCenterBore: string;
+    tireSizes: Record<"front" | "rear", string>[];
+  }>({
+    boltPattern: "",
+    frontRimSize: "",
+    rearRimSize: "",
+    frontCenterBore: "",
+    rearCenterBore: "",
+    tireSizes: [],
+  });
+
+  // fetch year
+  useEffect(() => {
+    if (isLoading.year === true) {
+      getYears()
+        .then((years) => {
+          setYears(years);
+        })
+        .finally(() => {
+          setIsLoading({
+            year: false,
+            make: true,
+            model: true,
+            bodyType: true,
+            subModel: true,
+            vehicleData: true,
+          });
+        });
+    }
+  }, [isLoading.year]);
+
+  // fetch makes
+  useEffect(() => {
+    if (isLoading.make === true && selectedYear !== "") {
+      getMakes(selectedYear)
+        .then((makes) => {
+          setMakes(makes);
+        })
+        .finally(() => {
+          setIsLoading({
+            year: false,
+            make: false,
+            model: true,
+            bodyType: true,
+            subModel: true,
+            vehicleData: true,
+          });
+        });
+    }
+  }, [selectedYear, isLoading.make]);
+
+  // fetch model
+  useEffect(() => {
+    if (
+      isLoading.model === true &&
+      selectedYear !== "" &&
+      selectedMake !== ""
+    ) {
+      getModels(selectedYear, selectedMake)
+        .then((models) => {
+          setModels(models);
+        })
+        .finally(() => {
+          setIsLoading({
+            year: false,
+            make: false,
+            model: false,
+            bodyType: true,
+            subModel: true,
+            vehicleData: true,
+          });
+        });
+    }
+  }, [selectedYear, selectedMake, isLoading.model]);
+
+  // fetch getBodyTypes
+  useEffect(() => {
+    if (
+      isLoading.bodyType === true &&
+      selectedYear !== "" &&
+      selectedMake !== "" &&
+      selectedModel !== ""
+    ) {
+      getBodyTypes(selectedYear, selectedMake, selectedModel)
+        .then((bodyTypes) => {
+          setBodyTypes(bodyTypes);
+        })
+        .finally(() => {
+          setIsLoading({
+            year: false,
+            make: false,
+            model: false,
+            bodyType: false,
+            subModel: true,
+            vehicleData: true,
+          });
+        });
+    }
+  }, [selectedYear, selectedMake, selectedModel, isLoading.bodyType]);
+
+  // get getSubModels
+  useEffect(() => {
+    if (
+      isLoading.subModel === true &&
+      selectedYear !== "" &&
+      selectedMake !== "" &&
+      selectedModel !== "" &&
+      selectedBodyType !== ""
+    ) {
+      getSubModels(selectedYear, selectedMake, selectedModel, selectedBodyType)
+        .then((subModels) => {
+          setSubModels(subModels);
+        })
+        .finally(() => {
+          setIsLoading({
+            year: false,
+            make: false,
+            model: false,
+            bodyType: false,
+            subModel: false,
+            vehicleData: true,
+          });
+        });
+    }
+  }, [
+    selectedYear,
+    selectedMake,
+    selectedModel,
+    selectedBodyType,
+    isLoading.subModel,
+  ]);
+
+  //get getVehicleData
+  useEffect(() => {
+    if (
+      selectedSubModel.DRChassisID !== "" &&
+      selectedSubModel.DRModelID !== ""
+    ) {
+      setIsDisabledSubmit(true);
+      getVehicleData(
+        selectedSubModel.DRModelID,
+        selectedSubModel.DRChassisID
+      ).then((vehicleInformation) => {
+        setVehicleInformation(vehicleInformation);
+      });
+    }
+  }, [selectedSubModel]);
+
+  // enable submit button when vehicleData (bolt pattern) is available
+  useEffect(() => {
+    if (vehicleInformation.boltPattern !== "") {
+      setIsDisabledSubmit(false);
+      setIsLoading({
+        year: false,
+        make: false,
+        model: false,
+        bodyType: false,
+        subModel: false,
+        vehicleData: false,
+      });
+    }
+  }, [vehicleInformation]);
+
+  const onYearChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedYear(e.target.value);
+    // empty all other selected value
+    setSelectedMake("");
+    setSelectedModel("");
+    setSelectedBodyType("");
+    setSelectedSubModel({
+      SubModel: "",
+      DRChassisID: "",
+      DRModelID: "",
+    });
+
+    // empty all other list
+    setMakes([]);
+    setModels([]);
+    setBodyTypes([]);
+    setSubModels([]);
+    setVehicleInformation({
+      boltPattern: "",
+      frontRimSize: "",
+      rearRimSize: "",
+      frontCenterBore: "",
+      rearCenterBore: "",
+      tireSizes: [],
+    });
+
+    // make all other loading to true
+    setIsLoading({
+      year: false,
+      make: true,
+      model: true,
+      bodyType: true,
+      subModel: true,
+      vehicleData: true,
+    });
+    setIsDisabledSubmit(true);
+  };
+  const onMakeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMake(e.target.value);
+    // empty all other selected value
+    setSelectedModel("");
+    setSelectedBodyType("");
+    setSelectedSubModel({
+      SubModel: "",
+      DRChassisID: "",
+      DRModelID: "",
+    });
+    // empty all other list
+    setModels([]);
+    setBodyTypes([]);
+    setSubModels([]);
+    setVehicleInformation({
+      boltPattern: "",
+      frontRimSize: "",
+      rearRimSize: "",
+      frontCenterBore: "",
+      rearCenterBore: "",
+      tireSizes: [],
+    });
+
+    // make all other loading to true
+    setIsLoading({
+      year: false,
+      make: false,
+      model: true,
+      bodyType: true,
+      subModel: true,
+      vehicleData: true,
+    });
+    setIsDisabledSubmit(true);
+  };
+  const onModelChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedModel(e.target.value);
+    // empty all other selected value
+    setSelectedBodyType("");
+    setSelectedSubModel({
+      SubModel: "",
+      DRChassisID: "",
+      DRModelID: "",
+    });
+    // empty all other list
+    setBodyTypes([]);
+    setSubModels([]);
+    setVehicleInformation({
+      boltPattern: "",
+      frontRimSize: "",
+      rearRimSize: "",
+      frontCenterBore: "",
+      rearCenterBore: "",
+      tireSizes: [],
+    });
+    // make all other loading to true
+    setIsLoading({
+      year: false,
+      make: false,
+      model: false,
+      bodyType: true,
+      subModel: true,
+      vehicleData: true,
+    });
+    setIsDisabledSubmit(true);
+  };
+  const onBodyTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedBodyType(e.target.value);
+    // empty all other selected value
+    setSelectedSubModel({
+      SubModel: "",
+      DRChassisID: "",
+      DRModelID: "",
+    });
+    // empty all other list
+    setSubModels([]);
+    setVehicleInformation({
+      boltPattern: "",
+      frontRimSize: "",
+      rearRimSize: "",
+      frontCenterBore: "",
+      rearCenterBore: "",
+      tireSizes: [],
+    });
+    // make all other loading to true
+    setIsLoading({
+      year: false,
+      make: false,
+      model: false,
+      bodyType: false,
+      subModel: true,
+      vehicleData: true,
+    });
+    setIsDisabledSubmit(true);
+  };
+  const onSubModelChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubModel(
+      subModels.find(
+        (subModel) => subModel.SubModel === e.target.value
+      ) as (typeof subModels)[0]
+    );
   };
 
-  const onMakeChange = (value: string) => {
-    setLoadingModels(true);
-    console.log("onMakeChange", value);
-    form.setValue("make", value);
-    form.setValue("model", "");
-    setTimeout(() => {
-      setModels(["Corolla", "Camry", "Accord"]);
-      setLoadingModels(false);
-    }, 1000);
-  };
-
-  const onModelChange = (value: string) => {
-    setLoadingTrims(true);
-    console.log("onModelChange", value);
-    form.setValue("model", value);
-    form.setValue("trim", "");
-    setTimeout(() => {
-      setTrims(["LT", "RS"]);
-      setLoadingTrims(false);
-    }, 1000);
-  };
-
-  const onTrimChange = (value: string) => {
-    console.log("onTrimChange", value);
-    form.setValue("trim", value);
-    form.setValue("drive", "");
-    setLoadingDrives(true);
-    setTimeout(() => {
-      setDrives(["RWD"]);
-      setLoadingDrives(false);
-    }, 1000);
-  };
-
-  const onSubmit = (values: any) => {
-    console.log(values);
-    setYears([values.year]);
-    setMakes([values.make]);
-    setModels([values.model]);
-    setTrims([values.trim]);
-    setDrives([values.drive]);
+  const onSubmit = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    if (selectedSubModel.DRChassisID && !isLoading.vehicleData) {
+      router.push(
+        "/collections/product-category/wheels?bolt_pattern=" +
+          vehicleInformation.boltPattern
+      );
+    }
   };
 
   return (
@@ -107,180 +382,87 @@ const WheelYMMFilters = () => {
       </div>
 
       <div className="px-10 pb-10 pt-2 border-y">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-0.5">
-            <FormField
-              control={form.control}
-              name="year"
-              rules={{ required: "Please select a year" }}
-              render={({ field }) => (
-                <FormItem className="bg-white">
-                  <Select onValueChange={onYearChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Year" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {years?.map((year) => (
-                        <SelectItem key={`year-${year}`} value={year}>
-                          {year}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="make"
-              rules={{ required: "Please select a make" }}
-              render={({ field }) => (
-                <FormItem className="bg-white">
-                  <Select
-                    onValueChange={onMakeChange}
-                    value={field.value}
-                    disabled={!form.getValues("year") || loadingMakes}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={
-                            loadingMakes ? "Loading..." : "Select Make"
-                          }
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {makes.map((make) => (
-                        <SelectItem key={`make-${make}`} value={make}>
-                          {make}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="model"
-              rules={{ required: "Please select a model" }}
-              render={({ field }) => (
-                <FormItem className="bg-white">
-                  <Select
-                    onValueChange={onModelChange}
-                    value={field.value}
-                    disabled={!form.getValues("make") || loadingModels}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={
-                            loadingModels ? "Loading..." : "Select Model"
-                          }
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {models.map((model) => (
-                        <SelectItem key={`model-${model}`} value={model}>
-                          {model}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="trim"
-              rules={{ required: "Please select a trim" }}
-              render={({ field }) => (
-                <FormItem className="bg-white">
-                  <Select
-                    onValueChange={onTrimChange}
-                    value={field.value}
-                    disabled={!form.getValues("model") || loadingTrims}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={
-                            loadingTrims ? "Loading..." : "Select Trim"
-                          }
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {trims.map((trim) => (
-                        <SelectItem key={`trim-${trim}`} value={trim}>
-                          {trim}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="drive"
-              rules={{ required: "Please select a drive" }}
-              render={({ field }) => (
-                <FormItem className="bg-white">
-                  <Select
-                    onValueChange={(value) => form.setValue("drive", value)}
-                    value={field.value}
-                    disabled={!form.getValues("trim") || loadingDrives}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={
-                            loadingDrives ? "Loading..." : "Select Drive"
-                          }
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {drives.map((drive) => (
-                        <SelectItem key={`drive-${drive}`} value={drive}>
-                          {drive}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {form.watch("year") &&
-              form.watch("make") &&
-              form.watch("model") &&
-              form.watch("trim") &&
-              form.watch("drive") && (
-                <div className="flex justify-center pt-3">
-                  <button
-                    type="submit"
-                    className="rounded-none px-16 py-1 mx-auto bg-primary hover:bg-primary-hover text-white"
-                  >
-                    Submit
-                  </button>
+        <div className="w-full flex flex-col gap-1 mt-4">
+          <select
+            onChange={onYearChange}
+            className="w-full p-2 rounded bg-white text-base text-black"
+          >
+            <option value="">{isLoading.year ? "Loading..." : "Year"}</option>
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+          <select
+            onChange={onMakeChange}
+            className="w-full p-2 rounded bg-white text-base text-black"
+          >
+            <option value="">
+              {selectedYear && !isLoading.year && isLoading.make
+                ? "Loading..."
+                : "Make"}
+            </option>
+            {makes.map((make) => (
+              <option key={make} value={make}>
+                {make}
+              </option>
+            ))}
+          </select>
+          <select
+            onChange={onModelChange}
+            className="w-full p-2 rounded bg-white text-base text-black"
+          >
+            <option value="">
+              {selectedMake && !isLoading.make && isLoading.model
+                ? "Loading..."
+                : "Model"}
+            </option>
+            {models.map((model) => (
+              <option key={model} value={model}>
+                {model}
+              </option>
+            ))}
+          </select>
+          <select
+            onChange={onBodyTypeChange}
+            className="w-full p-2 rounded bg-white text-base text-black"
+          >
+            <option value="">
+              {selectedModel && !isLoading.model && isLoading.bodyType
+                ? "Loading..."
+                : "Body Type"}
+            </option>
+            {bodyTypes.map((bodyType) => (
+              <option key={bodyType} value={bodyType}>
+                {bodyType}
+              </option>
+            ))}
+          </select>
+          <select
+            onChange={onSubModelChange}
+            className="w-full p-2 rounded bg-white text-base text-black"
+          >
+            <option value="">
+              {selectedBodyType && !isLoading.bodyType && isLoading.subModel
+                ? "Loading..."
+                : "Submodel"}
+            </option>
+            {subModels.map((subModel) => (
+              <option key={subModel.SubModel} value={subModel.SubModel}>
+                {subModel.SubModel}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="w-full p-4">
+                    <button onClick={onSubmit} disabled={isDisabledSubmit} className={cn(
+                        "w-full bg-primary hover:bg-primary-hover  text-white py-1 text-base uppercase cursor-pointer",
+                        isDisabledSubmit ? "opacity-50 cursor-not-allowed" : ""
+                    )}>
+                        {selectedSubModel.DRChassisID && !isLoading.vehicleData ? "Submit" : (selectedSubModel.DRChassisID ? "Loading..." : "Submit" )}
+                    </button>
                 </div>
-              )}
-          </form>
-        </Form>
       </div>
     </div>
   );

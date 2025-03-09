@@ -67,10 +67,10 @@ export type TInventoryItem ={
   size_desc: string;
   lug_count: number;
   load_rating_metric: string;
+  load_rating_standard: string;
   bolt_pattern_metric: string;
   bolt_pattern_standard: string;
   centerbore: string;
-  load_rating_standard: string;
   barrel_config: string;
   cap_part_no: string;
   certification: string;
@@ -112,6 +112,8 @@ export type TInventoryItem ={
   prop65_chemical2: string;
   prop65_chemical3: string;
   image_url1: string;
+  product_sub_type: string;
+  color: string;
   createdBy: string | null;
   updatedBy: string | null;
   deletedBy: string | null;

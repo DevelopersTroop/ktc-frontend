@@ -3,16 +3,28 @@ import { TInventoryItem } from "@/types/product";
 
 const tire_specs_key: keyof TInventoryItem[] = [
   "manufacturer_part_number",
-  "size",
   "load_index",
   "speed_rating",
   "upc",
+  "width",
   "section_width",
+  "size",
+  "load_index",
+  "load_rating_metric",
+  "load_rating_standard",
+  "max_pressure",
+  "ply",
+  "speed_rating",
   "rim_diameter",
   "series",
   "max_load",
   "division",
   "tread_depth",
+  "weight",
+  "finish_warranty",
+  "structural_warranty",
+  "mileage_warranty",
+
 ];
 
 const filterKeyValue = (key: keyof TInventoryItem, value: string | number) => {
@@ -30,17 +42,15 @@ const TireSpecifications = ({ product }: { product: TInventoryItem }) => {
           <p>
             <span className=" font-medium text-gray-600 text-lg">Brand: </span>{" "}
             <span className="text-gray-600 text-base">
-              {" "}
-              {product?.brand_desc}
+              {product?.brand}
             </span>
           </p>
-          {/* <p>
+          <p>
             <span className=" font-medium text-gray-600 text-lg">Model: </span>{" "}
             <span className="text-gray-600 text-base">
-              {" "}
-              {product.title?.model}
+              {product.model}
             </span>
-          </p> */}
+          </p>
         </div>
         {Object.entries(product).map(([key, value]) => {
           if (filterKeyValue(key as keyof TInventoryItem, value)) {

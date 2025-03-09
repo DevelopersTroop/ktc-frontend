@@ -2,7 +2,9 @@ import { camelCaseToWords } from "@/app/utils/string";
 import { TInventoryItem } from "@/types/product";
 
 const accessories_specs_key: keyof TInventoryItem[] = [
+  "brand",
   "brand_cd",
+  "product_sub_type",
   "upc",
 ];
 

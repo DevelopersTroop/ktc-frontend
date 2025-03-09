@@ -74,7 +74,7 @@ const Cart = () => {
                         <div className="flex gap-4 text-black">
                           <p className="text-xl font-semibold">{product?.category?.title}</p>
                           <p className="hidden font-medium md:block">
-                            Vehicle: {product.brand_desc}
+                            Vehicle: {product.brand}
                           </p>
                           <div className="block flex-1 text-end md:hidden">
                             <button

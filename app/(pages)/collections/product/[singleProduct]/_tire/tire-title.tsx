@@ -7,7 +7,7 @@ const TireTitle = ({ product }: { product: TInventoryItem }) => {
       <div>
         <p className="text-2xl font-semibold text-gray-800">
           {product.title} {""}
-          {product.brand_desc} <br />{" "}
+          {product.brand} <br />{" "}
           <span className="text-lg">{product?.size}</span>
         </p>
       </div>
