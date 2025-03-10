@@ -121,7 +121,7 @@ const Page = () => {
                             {...field}
                             className={`bg-white ${
                               formErrors.firstName && touched.firstName
-                                ? "border-primary"
+                                ? "border-red-500"
                                 : ""
                             }`}
                           />
@@ -143,7 +143,7 @@ const Page = () => {
                             {...field}
                             className={`bg-white ${
                               formErrors.lastName && touched.lastName
-                                ? "border-primary"
+                                ? "border-red-500"
                                 : ""
                             }`}
                           />
@@ -170,14 +170,14 @@ const Page = () => {
                           type="email"
                           className={`bg-white ${
                             formErrors.email && touched.email
-                              ? "border-primary"
+                              ? "border-red-500"
                               : ""
                           }`}
                         />
                       )}
                     </Field>
                     {formErrors.email && touched.email && (
-                      <p className="mt-1 text-sm text-primary">
+                      <p className="mt-1 text-sm text-red-500">
                         {formErrors.email}
                       </p>
                     )}
@@ -204,7 +204,7 @@ const Page = () => {
                       )}
                     </Field>
                     {formErrors.password && touched.password && (
-                      <p className="mt-1 text-sm text-primary">
+                      <p className="mt-1 text-sm text-red-500">
                         {formErrors.password}
                       </p>
                     )}

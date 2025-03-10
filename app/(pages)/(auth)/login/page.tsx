@@ -154,7 +154,7 @@ const Page = () => {
                       )}
                     </Field>
                     {formErrors.email && touched.email && (
-                      <p className="mt-1 text-sm text-primary">
+                      <p className="mt-1 text-sm text-red-500">
                         {formErrors.email}
                       </p>
                     )}
@@ -174,14 +174,14 @@ const Page = () => {
                           type="password"
                           className={`bg-white ${
                             formErrors.password && touched.password
-                              ? "border-primary"
+                              ? "border-red-500"
                               : ""
                           }`}
                         />
                       )}
                     </Field>
                     {formErrors.password && touched.password && (
-                      <p className="mt-1 text-sm text-primary">
+                      <p className="mt-1 text-sm text-red-500">
                         {formErrors.password}
                       </p>
                     )}

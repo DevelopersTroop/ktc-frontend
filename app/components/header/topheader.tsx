@@ -112,7 +112,7 @@ export default function TopHeader() {
               </div>
               <div className="hidden md:block">
                 <p className="text-sm font-medium">MY CART</p>
-                <p className="text-xs text-gray-500">$0.00</p>
+                {/* <p className="text-xs text-gray-500">$0.00</p> */}
               </div>
             </Link>
           </div>

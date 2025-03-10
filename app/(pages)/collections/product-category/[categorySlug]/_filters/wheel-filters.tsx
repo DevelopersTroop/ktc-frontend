@@ -1,15 +1,21 @@
 "use client";
 
 import { useFetchFilters } from "@/hooks/useFetchFilters";
-import React from "react";
+import React, { useState } from "react";
 import PriceRange from "./widgets/price-range";
 import WheelDiameter from "./widgets/wheels/wheel-diameter";
 import WheelFinish from "./widgets/wheels/wheel-finish";
 import WheelModel from "./widgets/wheels/wheel-model";
+import { useSearchFilter } from "@/hooks/useSearchFilter";
+import { useSearchParams } from "next/navigation";
 
 const WheelFilters = React.memo(() => {
   const { filters } = useFetchFilters("wheels");
-  console.log(filters);
+  const searchParams = useSearchParams();
+    const query = searchParams.get("q") || "";
+    const [searchKey, setSearchKey] = useState(query);
+    useSearchFilter(searchKey, setSearchKey, query);
+  console.log("filter price == ", filters?.price);
   return (
     <div className={"filter-shadow bg-gray-200"}>
       <div

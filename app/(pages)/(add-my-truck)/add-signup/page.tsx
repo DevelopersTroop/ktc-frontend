@@ -1,20 +1,38 @@
 "use client";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, Form, Formik } from "formik";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import { userRegister } from "../../(auth)/register/register";
+import { setAccessToken, setRefreshToken, setUserDetails } from "@/app/globalRedux/features/user/user-slice";
 
 const validationSchema = Yup.object().shape({
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string().required("Password is required"),
-  confirmPassword: Yup.string().required("Confirm Password is required"),
 });
 
 const AddTruckSignUpPage: React.FC = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState<
+    {
+      message: string;
+      field: string;
+      location: string;
+    }[]
+  >([]);
+  const [success, setSuccess] = useState<{
+    isSuccess: boolean;
+    message: string;
+  }>({
+    message: "",
+    isSuccess: false,
+  });
+  const [isLoadingRegister, setIsLoadingRegister] = useState(false);
 
   return (
     <div className="w-full flex flex-col px-2 mx-auto text-center my-12 gap-6">
@@ -32,24 +50,103 @@ const AddTruckSignUpPage: React.FC = () => {
           Create Account
         </h2>
 
+        {errors.length > 0 &&
+          errors.map((error) => (
+            <Alert variant="destructive" key={error.message} className="mt-4">
+              <AlertDescription>{error.message}</AlertDescription>
+            </Alert>
+          ))}
+        {success.isSuccess && (
+          <Alert className="mt-4">
+            <AlertDescription>{success.message}</AlertDescription>
+          </Alert>
+        )}
+
         <Formik
-          initialValues={{ email: "", password: "", confirmPassword: "" }}
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+          }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            setIsSubmitting(true);
-            console.log("values = ", values);
-            if (
-              values.email &&
-              values.password &&
-              values.password === values.confirmPassword
-            ) {
-              router.push("/");
-            }
-            setIsSubmitting(false);
+            setIsLoadingRegister(true);
+            userRegister({
+              firstName: values.firstName,
+              lastName: values.lastName,
+              email: values.email,
+              password: values.password,
+              role: 2,
+            })
+              .then((response) => {
+                const { statusCode, data, errors } = response;
+                if (data && statusCode === 201) {
+                  setSuccess({
+                    isSuccess: true,
+                    message: "Please check your email to verify your account",
+                  });
+                  setErrors([]);
+                  dispatch(setAccessToken({ accessToken: data.accessToken }));
+                  dispatch(
+                    setRefreshToken({ refreshToken: data.refreshToken })
+                  );
+                  dispatch(setUserDetails({ userDetails: data.user }));
+                } else if (errors) {
+                  setErrors(errors);
+                  setSuccess({ isSuccess: false, message: "" });
+                }
+              })
+              .finally(() => {
+                window.scrollTo(0, 0);
+                setIsLoadingRegister(false);
+              });
           }}
         >
           {({ errors: formErrors, touched }) => (
             <Form className="mt-6 space-y-4">
+              <div>
+                <Field name="firstName">
+                  {({ field }: any) => (
+                    <Input
+                      {...field}
+                      type="firstname"
+                      placeholder="First Name"
+                      className={`bg-white ${
+                        formErrors.firstName && touched.firstName
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                    />
+                  )}
+                </Field>
+                {formErrors.firstName && touched.firstName && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {formErrors.firstName}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Field name="lastName">
+                  {({ field }: any) => (
+                    <Input
+                      {...field}
+                      type="lastname"
+                      placeholder="Last Name"
+                      className={`bg-white ${
+                        formErrors.lastName && touched.lastName
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                    />
+                  )}
+                </Field>
+                {formErrors.lastName && touched.lastName && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {formErrors.lastName}
+                  </p>
+                )}
+              </div>
               <div>
                 <Field name="email">
                   {({ field }: any) => (
@@ -59,14 +156,14 @@ const AddTruckSignUpPage: React.FC = () => {
                       placeholder="Email Address"
                       className={`bg-white ${
                         formErrors.email && touched.email
-                          ? "border-primary"
+                          ? "border-red-500"
                           : ""
                       }`}
                     />
                   )}
                 </Field>
                 {formErrors.email && touched.email && (
-                  <p className="mt-1 text-sm text-primary">
+                  <p className="mt-1 text-sm text-red-500">
                     {formErrors.email}
                   </p>
                 )}
@@ -88,39 +185,17 @@ const AddTruckSignUpPage: React.FC = () => {
                   )}
                 </Field>
                 {formErrors.password && touched.password && (
-                  <p className="mt-1 text-sm text-primary">
+                  <p className="mt-1 text-sm text-red-500">
                     {formErrors.password}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Field name="confirmPassword">
-                  {({ field }: any) => (
-                    <Input
-                      {...field}
-                      type="password"
-                      placeholder="Confirm Password"
-                      className={`bg-white ${
-                        formErrors.confirmPassword && touched.confirmPassword
-                          ? "border-primary"
-                          : ""
-                      }`}
-                    />
-                  )}
-                </Field>
-                {formErrors.confirmPassword && touched.confirmPassword && (
-                  <p className="mt-1 text-sm text-primary">
-                    {formErrors.confirmPassword}
                   </p>
                 )}
               </div>
               <Button
                 type="submit"
                 className="w-full uppercase bg-primary"
-                disabled={isSubmitting}
+                disabled={isLoadingRegister}
               >
-                {isSubmitting ? "Please wait..." : "Sign UP"}
+                {isLoadingRegister ? "Please wait..." : "Sign UP"}
               </Button>
             </Form>
           )}

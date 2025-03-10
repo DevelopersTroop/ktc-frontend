@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { userLogin } from "../../(auth)/login/login";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -54,6 +55,21 @@ const AddTruckLoginPage: React.FC = () => {
 
       <div className="w-full lg:w-[45%] mx-auto">
         <h2 className="text-2xl font-bold text-gray-600 uppercase">Login</h2>
+          {errors.length > 0 &&
+                        errors.map((error) => (
+                          <Alert
+                            variant="destructive"
+                            key={error.message}
+                            className="mt-4"
+                          >
+                            <AlertDescription>{error.message}</AlertDescription>
+                          </Alert>
+                        ))}
+                      {success.isSuccess && (
+                        <Alert className="mt-4">
+                          <AlertDescription>{success.message}</AlertDescription>
+                        </Alert>
+                      )}
 
         <Formik
           initialValues={{ email: "", password: "" }}
@@ -105,7 +121,7 @@ const AddTruckLoginPage: React.FC = () => {
                     )}
                   </Field>
                   {formErrors.email && touched.email && (
-                    <p className="mt-1 text-sm text-primary">
+                    <p className="mt-1 text-sm text-red-500">
                       {formErrors.email}
                     </p>
                   )}
@@ -127,14 +143,14 @@ const AddTruckLoginPage: React.FC = () => {
                         type="password"
                         placeholder="Password"
                         className={`bg-white ${formErrors.password && touched.password
-                          ? "border-primary"
+                          ? "border-red-500"
                           : ""
                           }`}
                       />
                     )}
                   </Field>
                   {formErrors.password && touched.password && (
-                    <p className="mt-1 text-sm text-primary">
+                    <p className="mt-1 text-sm text-red-500">
                       {formErrors.password}
                     </p>
                   )}
