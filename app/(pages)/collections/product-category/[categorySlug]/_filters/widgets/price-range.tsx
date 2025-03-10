@@ -4,42 +4,45 @@ import MultiRangeSlider from "@/app/ui/multi-range-slider/multi-range-slider";
 import { TPriceFilter } from "@/types/filter";
 import debounce from "debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFilterSync } from "../store";
 import FilterHeading from "../template/filter-heading";
 
 const PriceRange = ({ price }: { price?: TPriceFilter }) => {
-  const { filters, toggleFilterValue } = useFilterSync();
+  const { toggleFilterValue } = useFilterSync();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [showFilter, setShowFilter] = useState(false);
 
-  const minPriceRef = useRef(price?.min || 0);
-  const maxPriceRef = useRef(price?.max || 0);
-  const currentLowPriceRef = useRef(
-    Number(filters.minPrice) ||
-      Number(searchParams.get("minPrice")) ||
-      price?.min ||
-      0,
-  );
-  const currentHighPriceRef = useRef(
-    Number(filters.maxPrice) ||
-      Number(searchParams.get("maxPrice")) ||
-      price?.max ||
-      0,
+  // Use state instead of ref to track min/max price
+  const [minPrice, setMinPrice] = useState(price?.min || 0);
+  const [maxPrice, setMaxPrice] = useState(price?.max || 0);
+  const [currentLow, setCurrentLow] = useState(price?.min || 0);
+  const [currentHigh, setCurrentHigh] = useState(
+    price?.max ? price?.max * 4 : 0,
   );
 
+  // Ensure min/max values are updated when price prop changes
+  useEffect(() => {
+    if (price) {
+      setMinPrice(price.min);
+      setMaxPrice(price.max);
+      setCurrentLow(price.min);
+      setCurrentHigh(price.max * 4);
+    }
+  }, [price]);
+
   const createQueryString = useCallback(
-    (minPrice: number, maxPrice: number) => {
+    (min: number, max: number) => {
       const params = new URLSearchParams(searchParams.toString());
-      if (minPrice !== price?.min) {
-        params.set("minPrice", String(minPrice));
+      if (min !== price?.min) {
+        params.set("minPrice", String(min));
       } else {
         params.delete("minPrice");
       }
-      if (maxPrice !== price?.max) {
-        params.set("maxPrice", String(maxPrice));
+      if (max !== price?.max) {
+        params.set("maxPrice", String(max));
       } else {
         params.delete("maxPrice");
       }
@@ -48,16 +51,17 @@ const PriceRange = ({ price }: { price?: TPriceFilter }) => {
     [searchParams, price?.min, price?.max],
   );
 
-  const debouncedUpdate = useRef(
-    debounce((minPrice: number, maxPrice: number) => {
-      const queryString = createQueryString(minPrice, maxPrice);
+  const debouncedUpdate = useCallback(
+    debounce((min: number, max: number) => {
+      const queryString = createQueryString(min, max);
       router.push(queryString ? `${pathname}?${queryString}` : pathname, {
         scroll: false,
       });
-      toggleFilterValue("minPrice", String(minPrice), false);
-      toggleFilterValue("maxPrice", String(maxPrice), false);
+      toggleFilterValue("minPrice", String(min), false);
+      toggleFilterValue("maxPrice", String(max), false);
     }, 500),
-  ).current;
+    [router, pathname, createQueryString, toggleFilterValue],
+  );
 
   const toggleFilter = () => setShowFilter((prev) => !prev);
 
@@ -73,34 +77,17 @@ const PriceRange = ({ price }: { price?: TPriceFilter }) => {
       currentLow: number;
       currentHigh: number;
     }) => {
-      if (min !== minPriceRef.current || max !== maxPriceRef.current) {
-        minPriceRef.current = min;
-        maxPriceRef.current = max;
-      }
-
-      if (
-        currentLow !== currentLowPriceRef.current ||
-        currentHigh !== currentHighPriceRef.current
-      ) {
-        currentLowPriceRef.current = currentLow;
-        currentHighPriceRef.current = currentHigh;
-      }
+      setMinPrice(min);
+      setMaxPrice(max);
+      setCurrentLow(currentLow);
+      setCurrentHigh(currentHigh);
     },
     [],
   );
 
   const applyFilter = () => {
-    debouncedUpdate(currentLowPriceRef.current, currentHighPriceRef.current);
+    debouncedUpdate(currentLow, currentHigh);
   };
-
-  useEffect(() => {
-    if (price) {
-      minPriceRef.current = price.min;
-      maxPriceRef.current = price.max;
-    }
-  }, [price]);
-
-  // if (maxPriceRef.current === minPriceRef.current) return null;
 
   return (
     <div className="border-y px-5 py-3">
@@ -112,10 +99,10 @@ const PriceRange = ({ price }: { price?: TPriceFilter }) => {
       {showFilter && (
         <div className="mt-3">
           <MultiRangeSlider
-            min={minPriceRef.current}
-            max={maxPriceRef.current}
-            currentLow={currentLowPriceRef.current}
-            currentHigh={currentHighPriceRef.current}
+            min={minPrice}
+            max={maxPrice}
+            currentLow={currentLow}
+            currentHigh={currentHigh}
             onChange={getMinMax}
           />
           <div className="mt-3">
