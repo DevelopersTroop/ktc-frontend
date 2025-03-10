@@ -314,7 +314,7 @@ const useYmm = () => {
 
     const onSubmit = (e:  MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
         if(selectedSubModel.DRChassisID && !isLoading.vehicleData){
-            router.push("/collections/product-category/wheels?bolt_pattern=" + vehicleInformation.boltPattern);
+            router.push("/collections/product-category/wheels?bolt_pattern_metric=" + vehicleInformation.boltPattern);
         }
     }
 
@@ -339,7 +339,7 @@ const useYmm = () => {
         onSubmit,
         isDisabledSubmit
     }
-    
+     
 }
 
 export default useYmm;
