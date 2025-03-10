@@ -35,8 +35,8 @@ const PriceRange = ({ price }: { price?: TPriceFilter }) => {
 
   useEffect(() => {
     if (price) {
-      setCurrentLow(Number(searchParams.get("minPrice")));
-      setCurrentHigh(Number(searchParams.get("maxPrice")));
+      setCurrentLow(Number(searchParams.get("minPrice")) || price.min);
+      setCurrentHigh(Number(searchParams.get("maxPrice")) || price.max * 4);
     }
   }, [searchParams, price]);
 
