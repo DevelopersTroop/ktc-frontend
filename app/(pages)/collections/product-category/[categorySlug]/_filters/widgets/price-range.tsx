@@ -33,6 +33,13 @@ const PriceRange = ({ price }: { price?: TPriceFilter }) => {
     }
   }, [price]);
 
+  useEffect(() => {
+    if (price) {
+      setCurrentLow(Number(searchParams.get("minPrice")));
+      setCurrentHigh(Number(searchParams.get("maxPrice")));
+    }
+  }, [searchParams, price]);
+
   const createQueryString = useCallback(
     (min: number, max: number) => {
       const params = new URLSearchParams(searchParams.toString());
