@@ -22,7 +22,7 @@ const MultiRangeSlider = ({ min, max, currentLow, currentHigh, onChange }) => {
         min={min * 4}
         max={max * 4}
         step={1}
-        className="w-full max-w-md cursor-pointer"
+        className="w-full max-w-md cursor-pointer bg-gray-700"
       />
       <div className="mt-3 text-sm font-medium text-gray-700">
         Price: ${values[0]} - ${values[1]}
