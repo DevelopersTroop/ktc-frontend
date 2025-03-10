@@ -58,7 +58,7 @@ export const useFilterSync = () => {
   );
 
   const handleSearch = (key: string, value: string) => {
-    const updatedFilters = { ...localFilters, [key]: value };
+    const updatedFilters = { ...parsedFilters, ...localFilters, [key]: value };
     setLocalFilters(updatedFilters);
     updateQueryParams(updatedFilters);
   };
@@ -81,6 +81,7 @@ export const useFilterSync = () => {
 
   // Update query params when filters change
   useEffect(() => {
+    console.log("Local Filters:", localFilters);
     updateQueryParams(localFilters);
     return () => updateQueryParams.cancel(); // Cleanup debounce on unmount
   }, [localFilters, updateQueryParams]);
