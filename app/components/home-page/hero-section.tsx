@@ -1,6 +1,12 @@
+'use client';
+import { useState } from "react";
 import HomeYmm from "./home-ymm";
+import WheelsBySizeAndBrand from "./home-wheels-by-size-and-brand";
 
 export default function HeroSection() {
+
+  const [activeTab, setActiveTab] = useState('vehicle');
+
   const banner = {
     backgroundImage: `url('/images/hero.jpeg')`,
     backgroundPosition: "center",
@@ -19,19 +25,24 @@ export default function HeroSection() {
             </h1>
           </div>
 
-          <div className="w-full flex flex-col items-center bg-gray-900/80 md:px-8 pb-8 rounded-lg text-white">
+            <div className="w-full flex flex-col items-center bg-gray-900/80  pb-8 rounded-lg text-white">
             <div className="w-full flex flex-row">
-              <div className="w-full p-4 bg-primary hover:bg-primary-hover">
-                <h2 className="uppercase text-xl">SEARCH VEHICLE</h2>
+              <div
+              className={`w-full p-4 cursor-pointer ${activeTab === 'vehicle' ? 'bg-primary' : 'bg-black'}`}
+              onClick={() => setActiveTab('vehicle')}
+              >
+              <h2 className="uppercase text-base sm:text-xl">SEARCH VEHICLE</h2>
               </div>
-              <div className="w-full p-4 bg-black">
-                <h2 className="uppercase text-xl">WHEELS BY SIZE & BRAND</h2>
+              <div
+              className={`w-full p-4 cursor-pointer ${activeTab === 'wheels' ? 'bg-primary' : 'bg-black'}`}
+              onClick={() => setActiveTab('wheels')}
+              >
+              <h2 className="uppercase text-base sm:text-xl">WHEELS BY SIZE & BRAND</h2>
               </div>
             </div>
 
-            <HomeYmm />
-
-          </div>
+            {activeTab === 'vehicle' ? <HomeYmm /> : <WheelsBySizeAndBrand />}
+            </div>
         </div>
       </div>
     </div>
