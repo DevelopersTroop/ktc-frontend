@@ -94,9 +94,9 @@ const Page = () => {
                         message: "Please check your email to verify your account",
                       });
                       setErrors([]);
-                      dispatch(setAccessToken({ accessToken: data.accessToken }));
-                      dispatch(setRefreshToken({ refreshToken: data.refreshToken }));
-                      dispatch(setUserDetails({ userDetails: data.user }));
+                      // dispatch(setAccessToken({ accessToken: data.accessToken }));
+                      // dispatch(setRefreshToken({ refreshToken: data.refreshToken }));
+                      // dispatch(setUserDetails({ userDetails: data.user }));
                     } else if (errors) {
                       setErrors(errors);
                       setSuccess({ isSuccess: false, message: "" });

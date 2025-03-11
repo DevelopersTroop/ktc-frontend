@@ -1,5 +1,6 @@
 "use client";
 
+import { ActionFilter } from "@/components/shared/action-filter";
 import { useFetchFilters } from "@/hooks/useFetchFilters";
 import PriceRange from "./widgets/price-range";
 import TireBrand from "./widgets/tire/tire-brand";
@@ -36,16 +37,7 @@ const TireFilters = () => {
           </div>
         </div>
       </div>
-      <div
-        className={
-          "sticky top-7 z-40 flex justify-between border-y border-gray-300 bg-gray-100 px-5 py-3 text-lg font-medium text-gray-900 transition-colors hover:text-gray-600 md:static md:bg-transparent"
-        }
-      >
-        <p>Action Filter</p>
-        <p className="hidden cursor-pointer text-sm text-primary hover:bg-primary-hover md:block">
-          Clear filter
-        </p>
-      </div>
+      <ActionFilter />
       <div>
         <PriceRange price={filters?.price} />
       </div>

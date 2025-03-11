@@ -33,7 +33,16 @@ export const fetchTireData = async (
     Object.entries(filters).forEach(function([key,value]){
       if(shouldArray.includes(key) && key !=='sort' && typeof value !=='object'){
         obj[key] = value.split(',').map((brand:string)=>brand.trim());
-      }else{
+      }
+      else if(key === 'sort' && typeof value === 'string'){
+        obj[key]=[
+          {
+            whom: value.split(',')[0],
+            order: value.split(',')[1]
+          }
+        ]
+      }
+      else{
         obj[key] = value;
       }
     })
@@ -43,13 +52,13 @@ export const fetchTireData = async (
       "POST",
       {
         body: {
-          ...obj,
-          maxPrice:price.maxPrice?Math.round(price.maxPrice/4):price.maxPrice,
-          minPrice:price.minPrice?Math.round(price.minPrice/4):price.minPrice,
           sort: [{
      whom: "msrp",
      order: "desc"
    }],
+          ...obj,
+          maxPrice:price.maxPrice?Math.round(price.maxPrice/4):price.maxPrice,
+          minPrice:price.minPrice?Math.round(price.minPrice/4):price.minPrice,
           page,
           category:'tires',
           size:12

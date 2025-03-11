@@ -13,6 +13,7 @@ import AccessoriesYMMFilters from "../_filters/widgets/accessories/accessories-y
 import ProductCardSkeleton from "../_loading/product-card-skeleton";
 import NoProductsFound from "../no-products-found";
 import AccessoriesCard from "./accessories-card";
+import SortByFilter from "../_filters/sort-by-filter";
 
 type ProductsPageProps = {
   page?: number;
@@ -32,10 +33,14 @@ const AccessoriesCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   return (
     <>
       <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 py-6 md:flex-row">
-        <div className="w-full md:hidden">
+        <div className="w-full flex flex-row justify-between md:hidden">
           <SidebarFilters>
             <AccessoriesFilters />
           </SidebarFilters>
+
+          <div className="w-full max-w-[165px]">
+              <SortByFilter />
+          </div>
         </div>
         <div className="hidden h-full flex-col gap-3 md:flex md:w-[400px]">
           <AccessoriesYMMFilters />
@@ -60,14 +65,19 @@ const AccessoriesCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
         ) : (
           <>
             <div className="flex w-full flex-col">
-              <div className="p-2">
-                <Breadcrumb>
-                  <Item href={"/"}>Home</Item>
-                  <Item href={"/"}>Collections</Item>
-                  <Item href={"/collections/product-category/accessories"}>
-                    Accessories
-                  </Item>
-                </Breadcrumb>
+            <div className="flex w-full flex-row justify-between"> 
+                <div className="p-2">
+                  <Breadcrumb>
+                    <Item href={"/"}>Home</Item>
+                    <Item href={"/"}>Collections</Item>
+                    <Item href={"/collections/product-category/accessories"}>
+                      Accessories
+                    </Item>
+                  </Breadcrumb>
+                </div>
+                <div className="hidden md:block w-full max-w-[180px]">
+                  <SortByFilter />
+                </div>
               </div>
               <div
                 className={
