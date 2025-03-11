@@ -75,16 +75,33 @@ export const useFilterSync = () => {
       router.replace(`${pathname}?${decodeURIComponent(query.toString())}`, {
         scroll: false,
       });
-    }, 500),
+    }, 0),
     [router, pathname],
   );
 
   // Update query params when filters change
   useEffect(() => {
-    console.log("Local Filters:", localFilters);
     updateQueryParams(localFilters);
     return () => updateQueryParams.cancel(); // Cleanup debounce on unmount
   }, [localFilters, updateQueryParams]);
 
-  return { filters: localFilters, toggleFilterValue, handleSearch };
+  const removeSorting = () => {
+    const updatedFilters = { ...localFilters };
+    delete updatedFilters["sort"];
+    setLocalFilters(updatedFilters);
+    updateQueryParams(updatedFilters);
+  };
+
+  const clearFilters = () => {
+    setLocalFilters({});
+    updateQueryParams({});
+  };
+
+  return {
+    filters: localFilters,
+    toggleFilterValue,
+    handleSearch,
+    removeSorting,
+    clearFilters,
+  };
 };
