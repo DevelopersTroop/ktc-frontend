@@ -46,7 +46,7 @@ const WheelsBySizeAndBrand = () => {
           >
             <div className="mt-4 flex w-full flex-col gap-4 md:flex-row">
               <SelectInput
-                className="h-20 bg-white text-lg font-normal text-black"
+                className="h-10 bg-white text-lg font-normal text-black"
                 control={form.control}
                 placeholder={loading ? "Loading..." : "Select Diameter"}
                 name="diameter"
@@ -60,7 +60,7 @@ const WheelsBySizeAndBrand = () => {
 
               <SelectInput
                 control={form.control}
-                className="h-20 bg-white text-lg font-normal text-black"
+                className="h-10 bg-white text-lg font-normal text-black"
                 placeholder="Select Width"
                 name="width"
                 options={
@@ -72,7 +72,7 @@ const WheelsBySizeAndBrand = () => {
               />
 
               <SelectInput
-                className="h-20 bg-white text-lg font-normal text-black"
+                className="h-10 bg-white text-lg font-normal text-black"
                 control={form.control}
                 placeholder="Select Bolt Pattern Metric"
                 name="bolt_pattern_metric"
@@ -85,7 +85,7 @@ const WheelsBySizeAndBrand = () => {
               />
 
               <SelectInput
-                className="h-20 bg-white text-lg font-normal text-black"
+                className="h-10 bg-white text-lg font-normal text-black"
                 control={form.control}
                 name="brand"
                 placeholder="Select Brand"

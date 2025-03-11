@@ -170,23 +170,23 @@ export default function Footer() {
 
         <div className="mt-12 pt-4 border-t text-sm text-gray-600 text-center">
           <div className="space-x-2">
-            <Link href="/terms" className="hover:underline">
+            <Link href="#" className="hover:underline">
               Terms of Use
             </Link>
             <span>|</span>
-            <Link href="/terms-conditions" className="hover:underline">
+            <Link href="#" className="hover:underline">
               Terms and Conditions
             </Link>
             <span>|</span>
-            <Link href="/privacy" className="hover:underline">
+            <Link href="#" className="hover:underline">
               Privacy Policy
             </Link>
             <span>|</span>
-            <Link href="/ccpa" className="hover:underline">
+            <Link href="#" className="hover:underline">
               California Consumer Privacy Act
             </Link>
             <span>|</span>
-            <Link href="/ccpa-opt-out" className="hover:underline">
+            <Link href="#" className="hover:underline">
               CCPA Opt Out
             </Link>
             <span>|</span>
