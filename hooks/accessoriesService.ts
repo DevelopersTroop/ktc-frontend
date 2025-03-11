@@ -31,24 +31,36 @@ export const fetchAccessoriesData = async (
     Object.entries(filters).forEach(function([key,value]){
       if(shouldArray.includes(key) && key !=='sort' && typeof value !=='object'){
         obj[key] = value.split(',').map((brand:string)=>brand.trim());
-      }else{
+      }
+      else if(key === 'sort' && typeof value === 'string'){
+        obj[key]=[
+          {
+            whom: value.split(',')[0],
+            order: value.split(',')[1]
+          }
+        ]
+      }
+      else{
         obj[key] = value;
       }
     })
+
+    console.log("Filter page",obj)
 
     const response = await customFetch<IApiRes<{products:TInventoryItem[]}>>(
       "products/list",
       "POST",
       {
         body: {
-          ...obj,
-          ...price,
-          page,
-          category:'accessories',
           sort: [{
      whom: "msrp",
      order: "desc"
    }],
+          ...obj,
+          ...price,
+          page,
+          category:'accessories',
+
           size:12
         },
       }

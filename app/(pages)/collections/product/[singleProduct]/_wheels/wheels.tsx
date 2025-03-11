@@ -11,8 +11,6 @@ import WheelDetails from "./wheels-details";
 import WheelsTitle from "./wheels-title";
 
 const Wheels = ({ product }: { product: TInventoryItem }) => {
-
-  console.log("wheel product == ", product);
   return (
     <WheelProvider>
       <Breadcrumb>

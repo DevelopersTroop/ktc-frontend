@@ -19,4 +19,6 @@ export type TFilters = {
     brand?: TSingleFilter[],
     price: TPriceFilter,
     product_sub_type?: TSingleFilter[],
+    bolt_pattern_metric?: TSingleFilter[],
+    bolt_pattern_standard?: TSingleFilter[],
 }
