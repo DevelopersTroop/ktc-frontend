@@ -92,6 +92,7 @@ const Order = () => {
 
         const orderListResult: OrderListResult = await orderListResponse.json();
 
+
         setLoading(false);
 
         if (orderListResult?.statusCode === 200) {
@@ -107,9 +108,9 @@ const Order = () => {
                 order_id: `#${order._id}`,
                 date: new Date(order.createdAt).toLocaleDateString(),
                 status: order.status,
-                total: `$${order?.data?.totalCost.toFixed(2)}`,
+                total: `$${order?.data?.totalCost}`,
                 discount: `$${order.data?.discount.toFixed(2)}` || 0,
-                net_total: `$${order?.data?.netCost.toFixed(2)}` || 0,
+                net_total: `$${order?.data?.netCost}` || 0,
                 items,
               };
             }

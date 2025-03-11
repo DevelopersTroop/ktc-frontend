@@ -55,25 +55,25 @@ export default function Footer() {
             </h3>
             <div className="space-y-2">
               <Link
-                href="/terms-of-service"
+                href="#"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Terms of service
               </Link>
               <Link
-                href="/shipping-policy"
+                href="#"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Shipping Policy
               </Link>
               <Link
-                href="/refund-policy"
+                href="#"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Refund policy
               </Link>
               <Link
-                href="/jprivacy-policy"
+                href="#"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Privacy policy
@@ -99,19 +99,19 @@ export default function Footer() {
             </h3>
             <div className="space-y-2">
               <Link
-                href="/order-history"
+                href="/dashboard/orders"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Order History
               </Link>
               <Link
-                href="/wishlist"
+                href="/dashboard/save-product"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Wishlist
               </Link>
               <Link
-                href="/special-offers"
+                href="#"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Special Offers

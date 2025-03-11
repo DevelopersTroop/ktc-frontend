@@ -13,7 +13,7 @@ const DashbaordTopbar = () => {
   }, [pathname]);
   return (
     <ul className="w-full flex flex-row justify-around flex-wrap text-base border">
-      <li>
+      {/* <li>
         <Link
           href={"/dashboard/garage"}
           className={`cursor-pointer py-4 block font-semibold text-nowrap border-r ${
@@ -22,7 +22,7 @@ const DashbaordTopbar = () => {
         >
           Garage{" "}
         </Link>
-      </li>
+      </li> */}
       <li>
         <Link
           href={"/dashboard/orders"}
@@ -30,7 +30,7 @@ const DashbaordTopbar = () => {
             selectedNav === "orders" ? "text-primary" : "text-black"
           } px-2 sm:px-5 py-2 hover:text-primary`}
         >
-          Orders{" "}
+          Orders
         </Link>
       </li>
       <li>
@@ -53,7 +53,7 @@ const DashbaordTopbar = () => {
           Downloads{" "}
         </Link>
       </li> */}
-      <li>
+      {/* <li>
         <Link
           href={"/dashboard/addresses"}
           className={`cursor-pointer py-4 block font-semibold border-r ${
@@ -62,7 +62,7 @@ const DashbaordTopbar = () => {
         >
           Addresses{" "}
         </Link>
-      </li>
+      </li> */}
       <li>
         <Link
           href={"/dashboard/account-details"}
@@ -70,7 +70,7 @@ const DashbaordTopbar = () => {
             selectedNav === "account-details" ? "text-primary" : "text-black"
           } px-2 sm:px-5 py-2 hover:text-primary`}
         >
-          Account details{" "}
+          Account details
         </Link>
       </li>
       <li>
@@ -80,7 +80,7 @@ const DashbaordTopbar = () => {
             selectedNav === "change-password" ? "text-primary" : "text-black"
           } px-2 sm:px-5 py-2 hover:text-primary`}
         >
-          Change password{" "}
+          Change password
         </Link>
       </li>
       <li>
@@ -90,7 +90,7 @@ const DashbaordTopbar = () => {
             selectedNav === "logout" ? "text-primary" : "text-black"
           } px-2 sm:px-5 py-2 hover:text-primary`}
         >
-          Log out{" "}
+          Log out
         </Link>
       </li>
     </ul>

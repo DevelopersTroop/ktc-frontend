@@ -70,8 +70,8 @@ const SaveProduct = () => {
           return {
             wishlist_id: wishlist?._id,
             title: wishlist?.data?.title,
-            item_image: wishlist?.data?.item_image,
-            category: wishlist?.data?.category,
+            item_image: wishlist?.data?.thumbnail,
+            category: wishlist?.data?.category.title,
             slug: wishlist?.slug,
           };
         });

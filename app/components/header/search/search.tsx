@@ -111,7 +111,7 @@ const HeaderSearchButton = () => {
               className="lg:hidden"
               onClick={() => setIsSearchOpen(true)}
             >
-              <Search className="h-6 w-6" />
+              <Search className="h-8 w-8 text-3xl" />
             </Button>
           </form>
         </div>

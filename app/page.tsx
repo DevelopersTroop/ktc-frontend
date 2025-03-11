@@ -11,7 +11,7 @@ const page = () => {
       <ViewGallery />
       <WheelsSection />
       <WheelsGallery />
-      <SuspensionSection />
+      {/* <SuspensionSection /> */}
     </div>
   );
 };
