@@ -44,7 +44,7 @@ const WheelsBySizeAndBrand = () => {
               router.push(`/collections/product-category/wheels?${query}`);
             })}
           >
-            <div className="mt-4 flex w-full flex-col gap-4 md:flex-row">
+            <div className="mt-3.5 flex w-full flex-col gap-4 md:flex-row">
               <SelectInput
                 className="h-10 bg-white text-lg font-normal text-black"
                 control={form.control}
@@ -98,7 +98,7 @@ const WheelsBySizeAndBrand = () => {
               />
             </div>
 
-            <div className="w-full pt-4">
+            <div className="w-full pt-6">
               <button
                 className={cn(
                   "w-full cursor-pointer bg-primary py-3 text-lg uppercase text-white hover:bg-primary-hover",

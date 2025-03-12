@@ -18,7 +18,7 @@ const TireFilters = () => {
       <div className="border-b border-gray-300">
         <TireImage />
       </div>
-      <div className="border-b border-gray-300 px-3 pb-3 pt-10">
+      {/* <div className="border-b border-gray-300 px-3 pb-3 pt-10">
         <div className="relative p-1 outline outline-1">
           <h2 className="pt-3 text-base font-semibold uppercase">
             Not A pro at this?
@@ -36,7 +36,7 @@ const TireFilters = () => {
             <h2 className="text-lg font-semibold uppercase">Never Fail</h2>
           </div>
         </div>
-      </div>
+      </div> */}
       <ActionFilter />
       <div>
         <PriceRange price={filters?.price} />

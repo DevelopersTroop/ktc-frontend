@@ -43,7 +43,7 @@ const AccessoriesCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
           </div>
         </div>
         <div className="hidden h-full flex-col gap-3 md:flex md:w-[400px]">
-          <AccessoriesYMMFilters />
+          {/* <AccessoriesYMMFilters /> */}
           <AccessoriesFilters />
         </div>
         {loading ? (

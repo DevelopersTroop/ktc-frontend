@@ -1,9 +1,6 @@
 "use client";
 import useYmm from "@/hooks/use-ymm";
-import { getBodyTypes, getMakes, getModels, getSubModels, getVehicleData, getYears } from "@/lib/driver-right-api";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 
 const HomeYmm = () => {
     const {
