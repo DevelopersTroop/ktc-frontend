@@ -15,6 +15,7 @@ import { useSearchParams } from "next/navigation";
 import { useFilterSync } from "../_filters/store";
 import ProductCardSkeleton from "../_loading/product-card-skeleton";
 import SortByFilter from "../_filters/sort-by-filter";
+import { TInventoryItem } from "@/types/product";
 type ProductsPageProps = {
   page?: number;
 };
@@ -36,7 +37,7 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
             <WheelFilters />
           </SidebarFilters>
           <div className="w-full max-w-[165px]">
-              <SortByFilter />
+            <SortByFilter />
           </div>
         </div>
         <div className="hidden h-full flex-col gap-3 md:flex md:w-[400px]">
@@ -81,8 +82,8 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
                   "flex w-full flex-row flex-wrap justify-center gap-4"
                 }
               >
-                {data?.products.map((product) => (
-                  <ProductCard product={product} key={product._id} />
+                {data?.products.map((product: TInventoryItem) => (
+                <ProductCard product={product} key={product._id} />
                 ))}
               </div>
               <div className="mt-8 flex w-full flex-row flex-wrap justify-center gap-4">

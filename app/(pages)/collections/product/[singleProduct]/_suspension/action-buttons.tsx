@@ -9,7 +9,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
   //   const dispatch = useDispatch();
   //   const { quantity } = useContext(CenterCapContext);
   //   const { year, make, model } = useSelector(
-  //     (state: RootState) => state.persisted.yearMakeModel
+  //     (state: RootState) => state.yearMakeModel
   //   );
 
   //   const cartProducts = useSelector(

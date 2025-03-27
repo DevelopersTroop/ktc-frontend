@@ -1,26 +1,63 @@
 "use client";
-import {createSlice} from "@reduxjs/toolkit";
+import { TYmm } from "@/types/ymm";
+import { createSlice } from "@reduxjs/toolkit";
 
+
+const initialState: TYmm = {
+    list: {
+        years: [],
+        makes: [],
+        models: [],
+        bodyTypes: [],
+        subModels: []
+    },
+    year: "",
+    make: "",
+    model: "",
+    bodyType: "",
+    subModel: {
+        SubModel: "",
+        DRChassisID: "",
+        DRModelID: ""
+    },
+    vehicleInformation: {
+        boltPattern: "",
+        frontRimSize: "",
+        rearRimSize: "",
+        frontCenterBore: "",
+        rearCenterBore: "",
+        maxWheelLoad: "",
+        tireSizes: [],
+        supportedWheels: []
+    }
+}
 const yearMakeModelSlice = createSlice({
     name: "yearMakeModel",
-    initialState: {
-        year: "",
-        make: "",
-        model: ""
-    },
+    initialState,
     reducers: {
-        setYearMakeModel: (state, action) => {
-            state.year = action.payload.year;
-            state.make = action.payload.make;
-            state.model = action.payload.model;
+        setYmm: (state, action: { payload: Partial<TYmm> }) => {
+            return {
+                ...state,
+                ...action.payload,
+                vehicleInformation: {
+                    ...state.vehicleInformation,
+                    ...(action.payload?.vehicleInformation ?? {})
+                },
+                list: {
+                    ...state.list,
+                    ...(action.payload?.list ?? {})
+                },
+                subModel: {
+                    ...state.subModel,
+                    ...(action.payload?.subModel ?? {})
+                }
+            }
         },
         clearYearMakeModel: (state) => {
-            state.year = "";
-            state.make = "";
-            state.model = "";
+            state = initialState
         }
     }
 });
 
 export default yearMakeModelSlice.reducer;
-export const {setYearMakeModel, clearYearMakeModel} = yearMakeModelSlice.actions;
+export const { setYmm, clearYearMakeModel } = yearMakeModelSlice.actions;

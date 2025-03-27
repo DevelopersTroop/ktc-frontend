@@ -2,12 +2,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/globalRedux/store";
 import { closeModal, openModal } from "@/app/globalRedux/features/year-make-model-modal/year-make-model-modal-slice";
-import { clearYearMakeModel, setYearMakeModel } from "@/app/globalRedux/features/year-make-model/year-make-model-slice";
-import { apiBaseUrl } from "./api";
+import { clearYearMakeModel, setYmm } from "@/app/globalRedux/features/year-make-model/year-make-model-slice";
+import { apiBaseUrl } from "../app/utils/api";
 
 
-const useYmm = () => {
-    const yearMakeMode = useSelector((state: RootState) => state.persisted.yearMakeModel);
+const useYmmModal = () => {
+    const yearMakeMode = useSelector((state: RootState) => state.yearMakeModel);
     const dispatch = useDispatch();
     const hasYmm = () => {
         return yearMakeMode.year !== "";
@@ -61,7 +61,7 @@ const useYmm = () => {
         if (Object.values(ymm).every(data => data === "")) {
             return clearYmmModal()
         }
-        dispatch(setYearMakeModel(ymm))
+        dispatch(setYmm(ymm))
     }
 
     const setYmmUserMeta = async ({
@@ -80,7 +80,7 @@ const useYmm = () => {
         if (year === "" && make === "" && model === "") {
             clearYmmModal();
         } else {
-            dispatch(setYearMakeModel({
+            dispatch(setYmm({
                 year,
                 make,
                 model
@@ -137,5 +137,5 @@ const useYmm = () => {
 
     return { hasYmm, closeYmmModal, setYmmUserMeta, openYmmModal, clearYmmModal, setSavedYmmDataFromUserMetaToStore, getSavedYmmFromUserMeta }
 };
-export default useYmm;
+export default useYmmModal;
 

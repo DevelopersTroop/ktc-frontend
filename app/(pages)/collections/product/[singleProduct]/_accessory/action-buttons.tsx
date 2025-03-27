@@ -7,6 +7,7 @@ import wait from "wait";
 import { v4 as uuidv4 } from "uuid";
 import { AccessoryContext } from "./context/AccessoryProvider";
 import QuantityInput from "./quantity-input";
+import { CartData } from "../_wheels/normal-action";
 // import { CenterCapContext } from "./context/CenterCapProvider";
 
 const ActionButtons = ({ product }: { product: TInventoryItem }) => {
@@ -14,7 +15,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
   const {quantity} = useContext(AccessoryContext);
   //   const { quantity } = useContext(CenterCapContext);
   //   const { year, make, model } = useSelector(
-  //     (state: RootState) => state.persisted.yearMakeModel
+  //     (state: RootState) => state.yearMakeModel
   //   );
 
   const addProductToCart = async (meta?: any) => {
