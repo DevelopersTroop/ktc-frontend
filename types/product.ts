@@ -1,4 +1,5 @@
-export type TInventoryItem ={
+export type TInventoryItem = {
+  _id: string;
   title: string;
   slug: string;
   thumbnail: string;
@@ -23,12 +24,12 @@ export type TInventoryItem ={
   boltPatterns: string[];
   trueDirectional: string;
   relatedVideos: string[];
-  categoryId: string| null;
+  categoryId: string | null;
   category: {
     _id: string;
     slug: string;
     title: string;
-  }
+  };
   sku: string;
   manufacturer_part_number: string;
   size: string;
@@ -113,13 +114,12 @@ export type TInventoryItem ={
   prop65_chemical3: string;
   image_url1: string;
   product_sub_type: string;
-  color: string;
   createdBy: string | null;
   updatedBy: string | null;
   deletedBy: string | null;
   isDelete: boolean;
   deletedAt: Date | null;
-};;
+};
 export type GProduct = {
   id: number;
   slug: string;
