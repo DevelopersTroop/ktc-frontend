@@ -25,7 +25,7 @@ const useYmm = () => {
 
     // fetch year
     useEffect(() => {
-        if (isLoading.year === true) {
+        if (isLoading.year === true && ymm.list?.years?.length === 0 && ymm.year === "") {
             getYears().then((years) => {
                 dispatch(setYmm({ list: { years } }))
             })
@@ -78,7 +78,7 @@ const useYmm = () => {
                     })
                 })
         }
-    }, [JSON.stringify(ymm.year), JSON.stringify(ymm.make), isLoading.model])
+    }, [JSON.stringify(ymm.make), isLoading.model])
 
     // fetch getBodyTypes
     useEffect(() => {
@@ -97,7 +97,7 @@ const useYmm = () => {
                     })
                 })
         }
-    }, [ JSON.stringify(ymm.year), JSON.stringify(ymm.make), JSON.stringify(ymm.model), isLoading.bodyType])
+    }, [JSON.stringify(ymm.model), isLoading.bodyType])
 
     // get getSubModels
     useEffect(() => {
@@ -117,7 +117,7 @@ const useYmm = () => {
                 })
         }
 
-    }, [JSON.stringify(ymm.year), JSON.stringify(ymm.make), JSON.stringify(ymm.model), JSON.stringify(ymm.bodyType), isLoading.subModel]);
+    }, [JSON.stringify(ymm.bodyType), isLoading.subModel]);
 
     //get getVehicleData
     useEffect(() => {
@@ -281,7 +281,8 @@ const useYmm = () => {
 
     const onSubmit = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
         if (ymm.subModel.DRChassisID && !isLoading.vehicleData) {
-            router.push("/collections/product-category/wheels?bolt_pattern_metric=" + ymm.vehicleInformation.boltPattern);
+            
+            router.push("/collections/product-category/wheels?vehicle=selectedVehicleInformation");
         }
     }
 
@@ -296,19 +297,14 @@ const useYmm = () => {
         isBodyTypeLoading: ymm.model && !isLoading.model && isLoading.bodyType,
         isSubmodelLoading: ymm.bodyType && !isLoading.bodyType && isLoading.subModel,
         shouldShowSubmit: ymm.subModel.DRChassisID && !isLoading.vehicleData || !Boolean(ymm.subModel.DRChassisID),
-        years: ymm.list.years ?? [],
-        makes: ymm.list.makes ?? [],
-        models: ymm.list.models ?? [],
-        bodyTypes: ymm.list.bodyTypes ?? [],
-        subModels: ymm.list.subModels ?? [],
-        vehicleInformation: ymm.vehicleInformation,
         onYearChange,
         onMakeChange,
         onModelChange,
         onBodyTypeChange,
         onSubModelChange,
         onSubmit,
-        isDisabledSubmit
+        isDisabledSubmit,
+        ...ymm
     }
 
 }

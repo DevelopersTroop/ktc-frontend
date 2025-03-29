@@ -16,6 +16,7 @@ import { useFilterSync } from "../_filters/store";
 import ProductCardSkeleton from "../_loading/product-card-skeleton";
 import SortByFilter from "../_filters/sort-by-filter";
 import { TInventoryItem } from "@/types/product";
+import { TYmmVehicleInformation } from "@/types/ymm";
 type ProductsPageProps = {
   page?: number;
 };
@@ -24,9 +25,13 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   const dispatch = useAppDispatch();
   const { data, loading } = useTypedSelector((state) => state.wheel);
   const { filters } = useFilterSync();
-
+  const ymm = useTypedSelector(state => state.yearMakeModel);
   useEffect(() => {
-    fetchWheelData(dispatch, filters, Number.isNaN(page) ? 1 : page);
+    let vehicleInformation = {} as Partial<TYmmVehicleInformation>;
+    if(filters['vehicle'] !== undefined){
+      vehicleInformation = ymm.vehicleInformation
+    }
+    fetchWheelData(dispatch, filters, Number.isNaN(page) ? 1 : page, vehicleInformation);
   }, [filters, dispatch, page]);
 
   return (

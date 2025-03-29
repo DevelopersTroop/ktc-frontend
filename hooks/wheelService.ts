@@ -1,3 +1,4 @@
+import { TYmmVehicleInformation } from './../types/ymm';
 import {
   fetchWheelFailure,
   fetchWheelStart,
@@ -11,7 +12,8 @@ import { IApiRes } from "@/types/redux-helper";
 export const fetchWheelData = async (
   dispatch: AppDispatch,
   { minPrice, maxPrice, ...filters }: RootState["wheel"]["filters"],
-  page: number
+  page: number,
+  vehicleInformation: Partial<TYmmVehicleInformation>
 ) => {
   dispatch(fetchWheelStart());
 
@@ -44,10 +46,15 @@ export const fetchWheelData = async (
           }
         ]
       }
+      else if (key === "vehicle") {
+        obj['vehicleInformation'] = vehicleInformation
+      }
       else {
         obj[key] = value;
       }
     })
+
+   
 
 
     const response = await customFetch<IApiRes<{ products: TInventoryItem[] }>>(
