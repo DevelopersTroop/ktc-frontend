@@ -1,4 +1,4 @@
-import { TYmmVehicleInformation } from './../types/ymm';
+import { TYmmVehicleInformation } from "./../types/ymm";
 import {
   fetchWheelFailure,
   fetchWheelStart,
@@ -17,61 +17,74 @@ export const fetchWheelData = async (
 ) => {
   dispatch(fetchWheelStart());
 
-  const shouldArray = ['brand', 'model', 'color', 'diameter']
+  const shouldArray = ["brand", "model", "color", "diameter"];
 
   try {
     const price =
       minPrice !== undefined || maxPrice !== undefined
         ? {
-          ...(minPrice !== undefined && {
-            minPrice: parseInt(minPrice.toString(), 10),
-          }),
-          ...(maxPrice !== undefined && {
-            maxPrice: parseInt(maxPrice.toString(), 10),
-          }),
-        }
+            ...(minPrice !== undefined && {
+              minPrice: parseInt(minPrice.toString(), 10),
+            }),
+            ...(maxPrice !== undefined && {
+              maxPrice: parseInt(maxPrice.toString(), 10),
+            }),
+          }
         : {};
 
-    const obj: Record<string, string[] | number[] | string | number | object> = {}
+    const obj: Record<string, string[] | number[] | string | number | object> =
+      {};
 
     Object.entries(filters).forEach(function ([key, value]) {
-      if (shouldArray.includes(key) && key !== 'sort' && typeof value !== 'object') {
-        obj[key] = value.split(',').map((brand: string) => brand.trim());
-      }
-      else if (key === 'sort' && typeof value === 'string') {
+      if (
+        shouldArray.includes(key) &&
+        key !== "sort" &&
+        typeof value !== "object"
+      ) {
+        obj[key] = value.split(",").map((brand: string) => brand.trim());
+      } else if (key === "sort" && typeof value === "string") {
         obj[key] = [
           {
-            whom: value.split(',')[0],
-            order: value.split(',')[1]
-          }
-        ]
+            whom: value.split(",")[0],
+            order: value.split(",")[1],
+          },
+        ];
       }
-      else if (key === "vehicle") {
-        obj['vehicleInformation'] = vehicleInformation
-      }
+      // else if (key === "vehicle") {
+      //   obj['vehicleInformation'] = vehicleInformation
+      // }
       else {
-        obj[key] = value;
+        obj[key] =
+          key === "vehicle"
+            ? {
+                ...vehicleInformation,
+                boltPattern: vehicleInformation?.boltPattern?.toUpperCase(),
+              }
+            : value;
       }
-    })
-
-   
-
+    });
 
     const response = await customFetch<IApiRes<{ products: TInventoryItem[] }>>(
       "products/list",
       "POST",
       {
         body: {
-          sort: [{
-            whom: "msrp",
-            order: "desc"
-          }],
+          sort: [
+            {
+              whom: "msrp",
+              order: "desc",
+            },
+          ],
           ...obj,
-          maxPrice: price.maxPrice ? Math.round(price.maxPrice / 4) : price.maxPrice,
-          minPrice: price.minPrice ? Math.round(price.minPrice / 4) : price.minPrice,
+          maxPrice: price.maxPrice
+            ? Math.round(price.maxPrice / 4)
+            : price.maxPrice,
+          minPrice: price.minPrice
+            ? Math.round(price.minPrice / 4)
+            : price.minPrice,
           page,
-          category: 'wheels',
-          size: 12
+          category: "wheels",
+          size: 12,
         },
       }
     );
