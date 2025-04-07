@@ -7,6 +7,7 @@ import React, { useContext } from "react";
 import wait from "wait";
 import QuantityInput from "./quantity-input";
 import { TireContext } from "./context/TireProvider";
+import { CartData } from "../_wheels/normal-action";
 // import { CenterCapContext } from "./context/CenterCapProvider";
 
 const ActionButtons = ({ product }: { product: TInventoryItem }) => {
@@ -15,7 +16,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
   const {quantity} = useContext(TireContext);
   //   const { quantity } = useContext(CenterCapContext);
   //   const { year, make, model } = useSelector(
-  //     (state: RootState) => state.persisted.yearMakeModel
+  //     (state: RootState) => state.yearMakeModel
   //   );
 
   //   const cartProducts = useSelector(

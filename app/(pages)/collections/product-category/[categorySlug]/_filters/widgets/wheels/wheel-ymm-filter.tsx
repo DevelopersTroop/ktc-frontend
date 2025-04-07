@@ -9,11 +9,11 @@ const WheelYMMFilters = () => {
     isBodyTypeLoading,
     isSubmodelLoading,
     shouldShowSubmit,
-    years,
-    makes,
-    models,
-    bodyTypes,
-    subModels,
+    list: { years,
+      makes,
+      models,
+      bodyTypes,
+      subModels },
     onYearChange,
     onMakeChange,
     onModelChange,
@@ -21,6 +21,7 @@ const WheelYMMFilters = () => {
     onSubModelChange,
     onSubmit,
     isDisabledSubmit,
+    year, make, model, bodyType, subModel
   } = useYmm();
 
   return (
@@ -42,59 +43,64 @@ const WheelYMMFilters = () => {
       <div className="px-10 pb-10 pt-2 border-y">
         <div className="w-full flex flex-col gap-1 mt-4">
           <select
+            value={year}
             onChange={onYearChange}
             className="w-full p-2 rounded bg-white text-base text-black"
           >
             <option value="">{isYearLoading ? "Loading..." : "Year"}</option>
-            {years.map((year) => (
+            {years?.map((year) => (
               <option key={year} value={year}>
                 {year}
               </option>
             ))}
           </select>
           <select
+            value={make}
             onChange={onMakeChange}
             className="w-full p-2 rounded bg-white text-base text-black"
           >
             <option value="">{isMakeLoading ? "Loading..." : "Make"}</option>
-            {makes.map((make) => (
+            {makes?.map((make) => (
               <option key={make} value={make}>
                 {make}
               </option>
             ))}
           </select>
           <select
+            value={model}
             onChange={onModelChange}
             className="w-full p-2 rounded bg-white text-base text-black"
           >
             <option value="">{isModelLoading ? "Loading..." : "Model"}</option>
-            {models.map((model) => (
+            {models?.map((model) => (
               <option key={model} value={model}>
                 {model}
               </option>
             ))}
           </select>
           <select
+            value={bodyType}
             onChange={onBodyTypeChange}
             className="w-full p-2 rounded bg-white text-base text-black"
           >
             <option value="">
               {isBodyTypeLoading ? "Loading..." : "Body Type"}
             </option>
-            {bodyTypes.map((bodyType) => (
+            {bodyTypes?.map((bodyType) => (
               <option key={bodyType} value={bodyType}>
                 {bodyType}
               </option>
             ))}
           </select>
           <select
+            value={subModel.SubModel}
             onChange={onSubModelChange}
             className="w-full p-2 rounded bg-white text-base text-black"
           >
             <option value="">
               {isSubmodelLoading ? "Loading..." : "Submodel"}
             </option>
-            {subModels.map((subModel) => (
+            {subModels?.map((subModel) => (
               <option key={subModel.SubModel} value={subModel.SubModel}>
                 {subModel.SubModel}
               </option>

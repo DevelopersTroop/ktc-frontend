@@ -33,7 +33,6 @@ const rootPersistConfig = {
 };
 
 const presistingReducer = combineReducers({
-  yearMakeModel: yearMakeModelReducer,
   cart: cartReducer,
   customProduct: customProductReducer,
   customSteeringWheel: customSteeringWheelReducer,
@@ -46,6 +45,7 @@ const persistedReducer = persistReducer(rootPersistConfig, presistingReducer);
 
 const rootReducer = combineReducers({
   persisted: persistedReducer,
+  yearMakeModel: yearMakeModelReducer,
   searchRouter: searchRouterSlice,
   filterHeight: filterHeightReducer,
   yearMakeModelModal: yearMakeModelModalReducer,

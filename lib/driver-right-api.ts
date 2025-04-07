@@ -86,9 +86,9 @@ const getSubModels = async (year: string, make: string, model: string, bodyType:
     return (await subModelResponse.json()) as { SubModel: string, DRChassisID: string, DRModelID: string }[];
 };
 
-/** Get Vehicle Info */
-const getVehicleData = async (modelId: string, chassssisId: string) => {
-    const vehicleInfoResponse = await fetch(`https://api.driverightdata.com/eu/api/vehicle-info/GetVehicleDataFromDRD_NA?username=Tire_Wheel_Experts&securityToken=0b035d5ccecc43f2a9adce9849c7024e&DRDModelID=${modelId}&DRDChassisID=${chassssisId}`);
+/** Get DRDChassisReturn_NA */
+const getDRDChassisReturn_NA = async (modelId: string, chassisId: string) => {
+    const vehicleInfoResponse = await fetch(`https://api.driverightdata.com/eu/api/vehicle-info/GetVehicleDataFromDRD_NA?username=Tire_Wheel_Experts&securityToken=0b035d5ccecc43f2a9adce9849c7024e&DRDModelID=${modelId}&DRDChassisID=${chassisId}`);
     const vehicleInfo = await vehicleInfoResponse.json();
 
     // bolt pattern / PCD
@@ -102,6 +102,9 @@ const getVehicleData = async (modelId: string, chassssisId: string) => {
     // center bore
     const frontCenterBore = vehicleInfo['DRDChassisReturn_NA']['CenterBore'];
     const rearCenterBore = vehicleInfo['DRDChassisReturn_NA']['CenterBore_R'] || frontCenterBore;
+
+    // max wheel load
+    const maxWheelLoad = vehicleInfo['DRDChassisReturn_NA']['WheelLoad_Max_Lbs'];
 
     // get tire sizes
     const tireSizes: { front: string, rear: string }[] = [];
@@ -133,6 +136,7 @@ const getVehicleData = async (modelId: string, chassssisId: string) => {
         rearRimSize,
         frontCenterBore,
         rearCenterBore,
+        maxWheelLoad,
         tireSizes
     } as {
         boltPattern: string;
@@ -140,8 +144,54 @@ const getVehicleData = async (modelId: string, chassssisId: string) => {
         rearRimSize: string;
         frontCenterBore: string;
         rearCenterBore: string;
+        maxWheelLoad: string;
         tireSizes: Record<"front" | "rear", string>[]
     }
 }
 
-export { getRegions, getYears, getMakes, getModels, getBodyTypes, getSubModels, getVehicleData };
+/** Get Upstep wheels */
+const getUpStepWheels = async (chassisId: string) => {
+    const upStepWheelsResponse = await fetch(`https://api.driverightdata.com/eu/api/wheel-data/GetUpstepWheelsByChassisID?username=Tire_Wheel_Experts&securityToken=0b035d5ccecc43f2a9adce9849c7024e&chassisID=${chassisId}`);
+    const upStepWheelsInfo:
+        {
+            "UpstepID": number,
+            "ChassisID": number,
+            "UpstepType": string,
+            "UpstepCode": string,
+            "WheelSize": string,
+            "Tyre1": string,
+            "Tyre2": string,
+            "Tyre3": string,
+            "Tyre4": string,
+            "Tyre5": string,
+            "Tyre6": string,
+            "Tyre7": string,
+            "Tyre8": string,
+            "MinOffset": number,
+            "MaxOffset": number,
+            "Changedate": string,
+            "Comments": string,
+            "SortOrder": number,
+            "SortOrder2": number
+        }[]
+        = await upStepWheelsResponse.json();
+    const data = [];
+    for (let wheelInfo of upStepWheelsInfo) {
+        const wheelSize = wheelInfo.WheelSize.replaceAll(" ", "").split("x").map(size => Number(size));
+        const upStepType = wheelInfo.UpstepType;
+        const minOffset = wheelInfo.MinOffset;
+        const maxOffset = wheelInfo.MaxOffset;
+        const comments = wheelInfo.Comments;
+        data.push({ diameter: Math.max(...wheelSize), width: Math.min(...wheelSize), upStepType, minOffset, maxOffset, comments });
+    }
+    return data;
+}
+
+/** Get Vehicle Data */
+const getVehicleData = async (modelId: string, chassisId: string) => {
+    const DRDChassisReturn_NA = await getDRDChassisReturn_NA(modelId, chassisId);
+    const upStepWheels = await getUpStepWheels(chassisId);
+    return { ...DRDChassisReturn_NA, supportedWheels: upStepWheels };
+}
+
+export { getRegions, getYears, getMakes, getModels, getBodyTypes, getSubModels, getDRDChassisReturn_NA, getUpStepWheels, getVehicleData };
