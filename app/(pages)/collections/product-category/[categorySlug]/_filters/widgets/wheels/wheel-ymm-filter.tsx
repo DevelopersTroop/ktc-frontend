@@ -110,7 +110,7 @@ const WheelYMMFilters = () => {
         <div className="w-full p-4">
           <button
             onClick={onSubmit}
-            disabled={isDisabledSubmit}
+            disabled={isDisabledSubmit && !shouldShowSubmit}
             className={cn(
               "w-full bg-primary hover:bg-primary-hover  text-white py-1 text-base uppercase cursor-pointer",
               isDisabledSubmit ? "opacity-50 cursor-not-allowed" : ""

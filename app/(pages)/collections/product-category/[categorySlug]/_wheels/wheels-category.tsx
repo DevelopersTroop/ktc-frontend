@@ -32,7 +32,7 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
       vehicleInformation = ymm.vehicleInformation
     }
     fetchWheelData(dispatch, filters, Number.isNaN(page) ? 1 : page, vehicleInformation);
-  }, [filters, dispatch, page]);
+  }, [filters, dispatch, page, ymm.submitYmm]);
 
   return (
     <>

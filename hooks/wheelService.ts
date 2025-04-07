@@ -47,7 +47,7 @@ export const fetchWheelData = async (
         ]
       }
       else if (key === "vehicle") {
-        obj['vehicleInformation'] = vehicleInformation
+        obj['vehicleInformation'] = { ...vehicleInformation, boltPattern: vehicleInformation.boltPattern?.toUpperCase() }
       }
       else {
         obj[key] = value;
