@@ -45,10 +45,13 @@ export const fetchWheelData = async (
       } else if (key === "sort" && typeof value === "string") {
         obj[key] = [
           {
-            whom: value.split(",")[0],
-            order: value.split(",")[1],
-          },
-        ];
+            whom: value.split(',')[0],
+            order: value.split(',')[1]
+          }
+        ]
+      }
+      else if (key === "vehicle") {
+        obj['vehicleInformation'] = { ...vehicleInformation, boltPattern: vehicleInformation.boltPattern?.toUpperCase() }
       }
       // else if (key === "vehicle") {
       //   obj['vehicleInformation'] = vehicleInformation

@@ -29,7 +29,8 @@ const initialState: TYmm = {
         maxWheelLoad: "",
         tireSizes: [],
         supportedWheels: []
-    }
+    },
+    submitYmm: {}
 }
 const yearMakeModelSlice = createSlice({
     name: "yearMakeModel",
@@ -55,9 +56,12 @@ const yearMakeModelSlice = createSlice({
         },
         clearYearMakeModel: (state) => {
             state = initialState
+        },
+        submitYmm: (state, action: { payload: object }) => {
+            state.submitYmm = action.payload
         }
     }
 });
 
 export default yearMakeModelSlice.reducer;
-export const { setYmm, clearYearMakeModel } = yearMakeModelSlice.actions;
+export const { setYmm, clearYearMakeModel, submitYmm } = yearMakeModelSlice.actions;
