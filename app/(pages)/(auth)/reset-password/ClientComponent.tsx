@@ -103,8 +103,8 @@ const ClientComponent = () => {
                 {/* Reset Password Form */}
                 <Form {...form}>
                     <form className="space-y-4 mt-4 pt-2" onSubmit={form.handleSubmit(onSubmit)}>
-                        <TextInput type="password" label="New Password" required name="newPassword" control={form.control} />
-                        <TextInput type="password" label="Confirm Password" required name="confirmPassword" control={form.control} />
+                        <TextInput type="password" className="bg-white" label="New Password" required name="newPassword" control={form.control} />
+                        <TextInput type="password" className="bg-white" label="Confirm Password" required name="confirmPassword" control={form.control} />
                         <Button disabled={isLoadin} className="w-40 text-lg font-semibold">
                             Submit
                         </Button>
