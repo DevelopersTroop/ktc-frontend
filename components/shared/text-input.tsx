@@ -23,12 +23,14 @@ export function TextInput<
   control,
   variant = "primary",
   type,
+  labelClassName,
   ...props
 }: InputProps & {
   name?: TName;
   control?: Control<TFieldValues>;
   label?: string;
   variant?: "primary" | "secondary";
+  labelClassName?: string;
 }) {
   const [show, setShow] = useState(false);
   const [inputType, setInputType] = useState(type);
@@ -55,9 +57,10 @@ export function TextInput<
             >
               {label ? (
                 <FormLabel
-                  className={
-                    "mb-3 inline-block w-full max-w-fit text-[1.1rem] font-normal text-[#210203]"
-                  }
+                className={cn(
+                  "mb-3 inline-block w-full max-w-fit text-[1.1rem] font-normal",
+                  labelClassName || "text-[#210203]"
+                )}
                 >
                   {props.required ? (
                     <span>

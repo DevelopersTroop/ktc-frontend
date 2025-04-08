@@ -97,7 +97,8 @@ const Page = () => {
                   required
                   name={"email"}
                   type={"email"}
-                  className="text-white"
+                  className="bg-white"
+                  labelClassName="!text-white"
                 />
                 <Button
                   disabled={isSubmitting}
