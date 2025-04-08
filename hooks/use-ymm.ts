@@ -1,5 +1,5 @@
 "use client"
-import { setYmm } from "@/app/globalRedux/features/year-make-model/year-make-model-slice";
+import { setYmm, submitYmm } from "@/app/globalRedux/features/year-make-model/year-make-model-slice";
 import { useTypedSelector } from "@/app/globalRedux/store";
 import { getBodyTypes, getMakes, getModels, getSubModels, getVehicleData, getYears, getUpStepWheels } from "@/lib/driver-right-api";
 import { useRouter } from "next/navigation";
@@ -49,14 +49,25 @@ const useYmm = () => {
                 dispatch(setYmm({ list: { makes } }))
             })
                 .finally(() => {
-                    setIsLoading({
-                        year: false,
-                        make: false,
-                        model: true,
-                        bodyType: true,
-                        subModel: true,
-                        vehicleData: true
-                    })
+                    if(ymm.year){
+                        setIsLoading({
+                            year: false,
+                            make: false,
+                            model: false,
+                            bodyType: false,
+                            subModel: false,
+                            vehicleData: false
+                        })
+                    } else {
+                        setIsLoading({
+                            year: false,
+                            make: false,
+                            model: true,
+                            bodyType: true,
+                            subModel: true,
+                            vehicleData: true
+                        })
+                    }
                 })
         }
     }, [JSON.stringify(ymm.year), isLoading.make]);
@@ -68,14 +79,25 @@ const useYmm = () => {
                 dispatch(setYmm({ list: { models } }))
             })
                 .finally(() => {
-                    setIsLoading({
-                        year: false,
-                        make: false,
-                        model: false,
-                        bodyType: true,
-                        subModel: true,
-                        vehicleData: true
-                    })
+                    if (ymm.make) {
+                        setIsLoading({
+                            year: false,
+                            make: false,
+                            model: false,
+                            bodyType: false,
+                            subModel: false,
+                            vehicleData: false
+                        })
+                    } else {
+                        setIsLoading({
+                            year: false,
+                            make: false,
+                            model: false,
+                            bodyType: true,
+                            subModel: true,
+                            vehicleData: true
+                        })
+                    }
                 })
         }
     }, [JSON.stringify(ymm.make), isLoading.model])
@@ -87,14 +109,26 @@ const useYmm = () => {
                 dispatch(setYmm({ list: { bodyTypes } }))
             })
                 .finally(() => {
-                    setIsLoading({
-                        year: false,
-                        make: false,
-                        model: false,
-                        bodyType: false,
-                        subModel: true,
-                        vehicleData: true
-                    })
+                    if (ymm.model) {
+                        setIsLoading({
+                            year: false,
+                            make: false,
+                            model: false,
+                            bodyType: false,
+                            subModel: false,
+                            vehicleData: false
+                        })
+                    } else {
+                        setIsLoading({
+                            year: false,
+                            make: false,
+                            model: false,
+                            bodyType: false,
+                            subModel: true,
+                            vehicleData: true
+                        })
+                    }
+
                 })
         }
     }, [JSON.stringify(ymm.model), isLoading.bodyType])
@@ -106,14 +140,26 @@ const useYmm = () => {
                 dispatch(setYmm({ list: { subModels } }))
             })
                 .finally(() => {
-                    setIsLoading({
-                        year: false,
-                        make: false,
-                        model: false,
-                        bodyType: false,
-                        subModel: false,
-                        vehicleData: true
-                    })
+                    if (ymm.bodyType !== "") {
+                        setIsLoading({
+                            year: false,
+                            make: false,
+                            model: false,
+                            bodyType: false,
+                            subModel: false,
+                            vehicleData: false
+                        })
+                    } else {
+                        setIsLoading({
+                            year: false,
+                            make: false,
+                            model: false,
+                            bodyType: false,
+                            subModel: false,
+                            vehicleData: true
+                        })
+                    }
+
                 })
         }
 
@@ -281,8 +327,9 @@ const useYmm = () => {
  
     const onSubmit = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
         if (ymm.subModel.DRChassisID && !isLoading.vehicleData) {
-            
+            dispatch(submitYmm({}));
             router.push("/collections/product-category/wheels?vehicle=selectedVehicleInformation");
+
         }
     }
 

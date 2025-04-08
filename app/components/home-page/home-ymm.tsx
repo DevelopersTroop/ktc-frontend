@@ -51,7 +51,7 @@ const HomeYmm = () => {
             </div>
         </div>
         <div className="w-full p-4">
-            <button onClick={onSubmit} disabled={isDisabledSubmit} className={cn(
+            <button onClick={onSubmit} disabled={isDisabledSubmit || !shouldShowSubmit} className={cn(
                 "w-full bg-primary hover:bg-primary-hover  text-white py-3 text-lg uppercase cursor-pointer",
                 isDisabledSubmit ? "opacity-50 cursor-not-allowed" : ""
             )}>

@@ -43,4 +43,5 @@ export type TYmm = {
     bodyType: string;
     subModel: Partial<TYmmSubModel>;
     vehicleInformation: Partial<TYmmVehicleInformation>;
+    submitYmm: object
 }
