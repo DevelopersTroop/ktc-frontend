@@ -3,11 +3,11 @@ import { useTypedSelector } from "@/app/globalRedux/store";
 import { checkCartCategories } from "@/app/utils/checkCartCategories";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, {
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from "react";
 import { Dealer } from "../types/order";
 
@@ -50,7 +50,7 @@ export const CheckoutProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   // Redux Checkout Store
-  const { discount, productsInfo } = useTypedSelector(
+  const { discount, productsInfo, shippingProtection } = useTypedSelector(
     (state) => state.persisted.checkout,
   );
   const router = useRouter();
@@ -144,7 +144,7 @@ export const CheckoutProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const deliveryCharge = cartType === "CENTER_CAP_ONLY" ? 14.99 : 0;
   const salesTax = 0;
-  const totalCost = subTotalCost - discount + salesTax + deliveryCharge;
+  const totalCost = subTotalCost - discount + salesTax + deliveryCharge + shippingProtection;
 
   useEffect(() => {
     if (pathname === "/checkout") {
