@@ -166,6 +166,7 @@ export type OrderData = {
   selectedOption: number;
   deliveryCharge: number;
   isCouponApplied: boolean;
+  shippingProtection: number;
   couponCode: string;
   shippingMethod?: { option: number; title: string };
   couponDiscount: number;

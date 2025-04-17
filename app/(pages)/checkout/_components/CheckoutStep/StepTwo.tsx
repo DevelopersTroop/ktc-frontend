@@ -28,6 +28,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { Input } from "./StepOne";
+import { CheckoutForm } from "../stripe/checkout-form";
 
 export const StepTwo: React.FC<any> = () => {
   const [activeAccordion, setActiveAccordion] = useState("card");
@@ -46,7 +47,7 @@ export const StepTwo: React.FC<any> = () => {
   /**
    * Redux Store And Dispatch Hook
    */
-  const { billingAddress, shippingAddress, orderInfo } = useTypedSelector(
+  const { billingAddress, shippingAddress, orderInfo, shippingProtection } = useTypedSelector(
     (state) => state.persisted.checkout,
   );
   const dispatch = useDispatch();
@@ -304,6 +305,7 @@ export const StepTwo: React.FC<any> = () => {
       <div className="grid grid-cols-11 gap-8">
         <div className="col-span-11 flex w-full flex-col gap-y-8 lg:col-span-7">
           <h3 className="text-2xl font-bold">Select Payment Option</h3>
+          {/* <CheckoutForm/> */}
           <div>
             <div className="flex flex-col space-y-4">
               <div
@@ -311,37 +313,41 @@ export const StepTwo: React.FC<any> = () => {
                 className="relative cursor-pointer rounded-lg border p-2.5"
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex min-w-0 cursor-pointer items-center">
+                  <div className="flex min-w-0 gap-2 cursor-pointer items-center">
                     {/* Radio button with absolute positioning */}
-                    <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
+                    <div className="h-5" >
                       <span
-                        className={`inline-block h-5 w-5 rounded-full border ${
-                          activeAccordion === "card"
-                            ? "border-4 border-black"
-                            : "border-gray-600"
-                        }`}
+                        className={`inline-block h-5 w-5 rounded-full border ${activeAccordion === "card"
+                          ? "border-4 border-black"
+                          : "border-gray-600"
+                          }`}
                       />
                     </div>
                     {/* Content with consistent left padding */}
-                    <div className="flex items-center pl-10">
-                      <img
+                    <div className="flex items-center">
+                      {/* <img
                         src="https://js.stripe.com/v3/fingerprinted/img/card-ce24697297bd3c6a00fdd2fb6f760f0d.svg"
                         className="mr-2 h-4 w-4"
                         alt="Credit Card"
-                      />
-                      <span className="truncate text-xl font-semibold text-gray-900">
-                        Card
-                      </span>
+                      /> */}
+                      <div className="truncate text-xl font-semibold text-gray-900 flex items-center gap-2 w-20 h-10">
+                        {/* <span>
+                          Pay With
+                        </span>  */}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stripe">
+                          <path fill="#646FDE" d="M11.319 9.242h1.673v5.805h-1.673zM4.226 13.355c0-2.005-2.547-1.644-2.547-2.403l.001.002c0-.262.218-.364.567-.368a3.7 3.7 0 0 1 1.658.432V9.434a4.4 4.4 0 0 0-1.654-.307C.9 9.127 0 9.839 0 11.029c0 1.864 2.532 1.561 2.532 2.365 0 .31-.266.413-.638.413-.551 0-1.264-.231-1.823-.538v1.516a4.591 4.591 0 0 0 1.819.382c1.384-.001 2.336-.6 2.336-1.812zM11.314 8.732l1.673-.36V7l-1.673.36zM16.468 9.129a1.86 1.86 0 0 0-1.305.527l-.086-.417H13.61V17l1.665-.357.004-1.902c.24.178.596.425 1.178.425 1.193 0 2.28-.879 2.28-3.016.004-1.956-1.098-3.021-2.269-3.021zm-.397 4.641c-.391.001-.622-.143-.784-.318l-.011-2.501c.173-.193.413-.334.795-.334.607 0 1.027.69 1.027 1.569.005.906-.408 1.584-1.027 1.584zm5.521-4.641c-1.583 0-2.547 1.36-2.547 3.074 0 2.027 1.136 2.964 2.757 2.964.795 0 1.391-.182 1.845-.436v-1.266c-.454.231-.975.371-1.635.371-.649 0-1.219-.231-1.294-1.019h3.259c.007-.087.022-.44.022-.602H24c0-1.725-.825-3.086-2.408-3.086zm-.889 2.448c0-.758.462-1.076.878-1.076.409 0 .844.319.844 1.076h-1.722zm-13.251-.902V9.242H6.188l-.004-1.459-1.625.349-.007 5.396c0 .997.743 1.641 1.729 1.641.548 0 .949-.103 1.171-.224v-1.281c-.214.087-1.264.398-1.264-.595v-2.395h1.264zm3.465.114V9.243c-.225-.08-1.001-.227-1.391.496l-.102-.496h-1.44v5.805h1.662v-3.907c.394-.523 1.058-.42 1.271-.352z"></path>
+                        </svg>
+                      </div>
                     </div>
                   </div>
-                  <div className="ml-auto flex gap-2">
+                  {/* <div className="ml-auto flex gap-2">
                     {Array.from({ length: 6 }).map((_, index) => (
                       <div
                         key={index}
                         className="flex h-6 w-10 items-center justify-center rounded-sm bg-[#d9d9d9]"
                       >
                         <Image
-                          src={`/accepted-cards/${index + 1}.png`}
+                          src={`/images/accepted-cards/${index + 1}.png`}
                           width={40}
                           height={40}
                           alt=""
@@ -349,92 +355,11 @@ export const StepTwo: React.FC<any> = () => {
                         />
                       </div>
                     ))}
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
-              <div
-                onClick={() => toggleAccordion("affirm")}
-                className="relative cursor-pointer rounded-lg border p-2.5"
-              >
-                <div className="flex items-center">
-                  <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
-                    <span
-                      className={`inline-block h-5 w-5 rounded-full border ${
-                        activeAccordion === "affirm"
-                          ? "border-4 border-black"
-                          : "border-gray-600"
-                      }`}
-                    />
-                  </div>
-                  <div className="flex items-center pl-10">
-                    <img
-                      src="https://js.stripe.com/v3/fingerprinted/img/affirm-bce57680b3d99bf1f1390bda5d024909.svg"
-                      className="mr-2 h-4 w-4"
-                      alt="Affirm"
-                    />
-                    <span className="truncate text-xl font-semibold text-gray-900">
-                      Affirm
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                onClick={() => toggleAccordion("cashapp")}
-                className="relative cursor-pointer rounded-lg border p-2.5"
-              >
-                <div className="flex items-center">
-                  <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
-                    <span
-                      className={`inline-block h-5 w-5 rounded-full border ${
-                        activeAccordion === "cashapp"
-                          ? "border-4 border-black"
-                          : "border-gray-600"
-                      }`}
-                    />
-                  </div>
-                  <div className="flex items-center pl-10">
-                    <img
-                      src="https://js.stripe.com/v3/fingerprinted/img/payment-methods/icon-pm-cashapp-981164a833e417d28a8ac2684fda2324.svg"
-                      className="mr-2 h-4 w-4"
-                      alt="Cash App"
-                    />
-                    <span className="truncate text-xl font-semibold text-gray-900">
-                      Cash App Pay
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                onClick={() => toggleAccordion("klarna")}
-                className="relative cursor-pointer rounded-lg border p-2.5"
-              >
-                <div className="flex items-center">
-                  <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
-                    <span
-                      className={`inline-block h-5 w-5 rounded-full border ${
-                        activeAccordion === "klarna"
-                          ? "border-4 border-black"
-                          : "border-gray-600"
-                      }`}
-                    />
-                  </div>
-                  <div className="flex items-center pl-10">
-                    <img
-                      src="https://js.stripe.com/v3/fingerprinted/img/klarna-531cd07130cfad7de4c678ef467cbeb7.svg"
-                      className="mr-2 h-4 w-4"
-                      alt="Klarna"
-                    />
-                    <span className="truncate text-xl font-semibold text-gray-900">
-                      Klarna
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div
+              {/* <div
                 onClick={() => toggleAccordion("paypal")}
                 className="relative cursor-pointer rounded-lg border p-2.5"
               >
@@ -458,7 +383,7 @@ export const StepTwo: React.FC<any> = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div className="flex flex-col gap-y-8 pt-8">
@@ -573,7 +498,7 @@ export const StepTwo: React.FC<any> = () => {
               <div className="space-y-2 text-[#210203]">
                 <div className="flex items-baseline justify-between px-6 py-2">
                   <p className="text-base leading-[19px] text-[#210203]">
-                    Item(s) Total
+                    Total
                   </p>
                   <div className="relative flex items-baseline gap-0">
                     <p className="text-xl leading-[29px] text-[#210203]">
@@ -591,15 +516,32 @@ export const StepTwo: React.FC<any> = () => {
                     <p className="text-base leading-[19px] text-[#210203]">
                       Shipping
                     </p>
-                    <div className="relative flex items-center gap-0">
+                    {/* <div className="relative flex items-center gap-0">
                       <p className="text-base leading-[19px] text-[#210203]">
                         ({shippingAddress.zipCode}):
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="relative flex items-baseline gap-0">
                     <h4 className="text-xl font-bold leading-[29px] text-[#210203]">
                       Free
+                    </h4>
+                  </div>
+                </div>
+                <div className="relative flex w-full items-baseline justify-between self-stretch px-6">
+                  <div className="relative flex items-center gap-2">
+                    <p className="text-base leading-[19px] text-[#210203]">
+                      Shipping Protection
+                    </p>
+                    {/* <div className="relative flex items-center gap-0">
+                      <p className="text-base leading-[19px] text-[#210203]">
+                        ({shippingAddress.zipCode}):
+                      </p>
+                    </div> */}
+                  </div>
+                  <div className="relative flex items-baseline gap-0">
+                    <h4 className="text-xl font-bold leading-[29px] text-[#210203]">
+                      {shippingProtection.toFixed(2)}
                     </h4>
                   </div>
                 </div>

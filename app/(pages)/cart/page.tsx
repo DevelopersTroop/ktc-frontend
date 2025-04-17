@@ -1,6 +1,6 @@
 "use client";
 import { removeFromCart } from "@/app/globalRedux/features/cart/cart-slice";
-import { initiateCheckout } from "@/app/globalRedux/features/checkout/checkout-slice";
+import { initiateCheckout, updateShippingProtection } from "@/app/globalRedux/features/checkout/checkout-slice";
 import {
   RootState,
   useAppDispatch,
@@ -51,6 +51,14 @@ const Cart = () => {
   const removeCartProduct = (cartSerial: string) => {
     dispatch(removeFromCart({ cartSerial }));
   };
+
+  useEffect(() => {
+    if (isShippingProtectionChecked) {
+      dispatch(updateShippingProtection(shippingProtectionCost))
+    } else {
+      dispatch(updateShippingProtection(0))
+    }
+  }, [isShippingProtectionChecked])
 
   return (
     <div>

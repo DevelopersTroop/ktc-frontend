@@ -19,29 +19,29 @@ const nextConfig: NextConfig = {
         hostname: "example.com",
       },
       {
-        protocol:'https',
-        hostname:'stage-amani-forged.s3.us-east-2.amazonaws.com'
+        protocol: "https",
+        hostname: "stage-amani-forged.s3.us-east-2.amazonaws.com",
       },
       {
-        protocol:'https',
-        hostname:'m.media-amazon.com'
+        protocol: "https",
+        hostname: "m.media-amazon.com",
       },
       {
-        protocol:'https',
-        hostname:'media.wheelpros.com'
-      },{
-        hostname:'images.wheelpros.com',
-        protocol:'https'
+        protocol: "https",
+        hostname: "media.wheelpros.com",
       },
       {
-        hostname:'wheelpros.com',
-        protocol:'https'
-      }
-      ,
+        hostname: "images.wheelpros.com",
+        protocol: "https",
+      },
       {
-        hostname:'assets.wheelpros.com',
-        protocol:'https'
-      }
+        hostname: "wheelpros.com",
+        protocol: "https",
+      },
+      {
+        hostname: "assets.wheelpros.com",
+        protocol: "https",
+      },
     ],
   },
 };

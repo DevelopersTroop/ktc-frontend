@@ -1,14 +1,13 @@
 "use client";
 
+import { useCheckout } from "@/context/CheckoutContext";
 import React from "react";
-import { useCheckout } from "@/app/context/CheckoutContext";
 
 const OrderSummary: React.FC = () => {
   const {
     cartType,
     subTotalCost,
     discount,
-    salesTax,
     totalCost,
     validatedZipCode,
     setIsValidZipCode

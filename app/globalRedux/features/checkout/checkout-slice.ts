@@ -1,11 +1,11 @@
 import {
-    Address,
-    BillingAddress,
-    Dealer,
-    Order,
-    OrderData,
-    OrderInfo,
-    RequestedDealer,
+  Address,
+  BillingAddress,
+  Dealer,
+  Order,
+  OrderData,
+  OrderInfo,
+  RequestedDealer,
 } from "@/types/order";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -16,6 +16,7 @@ export type TCheckoutState = OrderData & {
 const initialState: TCheckoutState = {
   discount: 0,
   selectedDealer: undefined,
+  shippingProtection: 0,
   billingAddress: {
     address1: "",
     cityState: "",
@@ -163,6 +164,9 @@ const checkoutSlice = createSlice({
         }
       }
     },
+    updateShippingProtection: (state, action: PayloadAction<number>) => {
+      state.shippingProtection = action.payload;
+    },
   },
 });
 
@@ -184,4 +188,5 @@ export const {
   setIsAccountCreated,
   updateCouponCode,
   revokeCouponCode,
+  updateShippingProtection,
 } = checkoutSlice.actions;
