@@ -90,7 +90,7 @@ export const Paginate = ({
           typeof item === "number" ? (
             <PaginationItem
               key={"apagination_" + index}
-              href={`/collections/product-category/${safeSlug}/${item}`}
+              href={`/collections/product-category/${safeSlug}/${item}?${searchParams.toString()}`}
               active={currentPage === item}
             >
               {item}
@@ -103,7 +103,7 @@ export const Paginate = ({
         )}
         <PaginationItem
           key={"next"}
-          href={`/collections/product-category/${safeSlug}/${currentPage + 1}`}
+          href={`/collections/product-category/${safeSlug}/${currentPage + 1}?${searchParams.toString()}`}
           disabled={currentPage === totalPages}
           className={
             currentPage === totalPages

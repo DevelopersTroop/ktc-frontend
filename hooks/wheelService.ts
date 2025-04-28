@@ -1,7 +1,7 @@
 import { RootState } from "@/app/globalRedux/store";
 import { TYmmVehicleInformation } from "./../types/ymm";
 
-export const wrapWheelFilters = async (
+export const wrapWheelFilters = (
   { minPrice, maxPrice, ...filters }: RootState["wheel"]["filters"],
   page: number,
   vehicleInformation: Partial<TYmmVehicleInformation>
