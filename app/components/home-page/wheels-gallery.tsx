@@ -1,11 +1,9 @@
 "use client";
 
 import { useFilterSync } from "@/app/(pages)/collections/product-category/[categorySlug]/_filters/store";
-import { useAppDispatch, useTypedSelector } from "@/app/globalRedux/store";
-import { fetchWheelData } from "@/hooks/wheelService";
+import { useGetProductListQuery } from "@/app/globalRedux/api/product";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { useEffect } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/zoom";
@@ -26,14 +24,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // ];
 
 const WheelsGallery = () => {
-
-  const dispatch = useAppDispatch()
-  const { data } = useTypedSelector(state => state.wheel);
   const { filters } = useFilterSync()
-  
-    useEffect(() => {
-      fetchWheelData(dispatch, filters)
-    }, [filters, dispatch])
+  const { data } = useGetProductListQuery(filters);
 
   // console.log("data == ", data);
 

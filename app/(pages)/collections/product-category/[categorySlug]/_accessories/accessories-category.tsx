@@ -1,19 +1,18 @@
 "use client";
-import { useAppDispatch, useTypedSelector } from "@/app/globalRedux/store";
+import { useGetProductListQuery } from "@/app/globalRedux/api/product";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
 import { Paginate } from "@/components/shared/paginate";
-import { fetchAccessoriesData } from "@/hooks/accessoriesService";
+import { wrapAccessoriesFilter } from "@/hooks/accessoriesService";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 import AccessoriesFilters from "../_filters/accessories-filters";
 import SidebarFilters from "../_filters/mobile-filters/sidebar-filters";
+import SortByFilter from "../_filters/sort-by-filter";
 import { useFilterSync } from "../_filters/store";
-import AccessoriesYMMFilters from "../_filters/widgets/accessories/accessories-ymm-filter";
 import ProductCardSkeleton from "../_loading/product-card-skeleton";
 import NoProductsFound from "../no-products-found";
 import AccessoriesCard from "./accessories-card";
-import SortByFilter from "../_filters/sort-by-filter";
 
 type ProductsPageProps = {
   page?: number;
@@ -21,14 +20,8 @@ type ProductsPageProps = {
 
 const AccessoriesCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   const searchParams = useSearchParams();
-  const dispatch = useAppDispatch();
-  const { data, loading } = useTypedSelector((state) => state.accessories);
-
   const { filters } = useFilterSync();
-
-  useEffect(() => {
-    fetchAccessoriesData(dispatch, filters, Number.isNaN(page) ? 1 : page);
-  }, [filters, dispatch, page]);
+  const { data, isLoading: loading } = useGetProductListQuery(wrapAccessoriesFilter(filters, Number.isNaN(page) ? 1 : page));
 
   return (
     <>
@@ -39,7 +32,7 @@ const AccessoriesCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
           </SidebarFilters>
 
           <div className="w-full max-w-[165px]">
-              <SortByFilter />
+            <SortByFilter />
           </div>
         </div>
         <div className="hidden h-full flex-col gap-3 md:flex md:w-[400px]">
@@ -65,7 +58,7 @@ const AccessoriesCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
         ) : (
           <>
             <div className="flex w-full flex-col">
-            <div className="flex w-full flex-row justify-between"> 
+              <div className="flex w-full flex-row justify-between">
                 <div className="p-2">
                   <Breadcrumb>
                     <Item href={"/"}>Home</Item>
