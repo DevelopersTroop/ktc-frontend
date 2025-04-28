@@ -24,7 +24,8 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   const searchParams = useSearchParams();
   const { filters } = useFilterSync();
   const ymm = useTypedSelector(state => state.yearMakeModel);
-  const { data, isLoading: loading } = useGetProductListQuery(wrapWheelFilters(filters, Number.isNaN(page) ? 1 : page, filters["vehicle"] ? ymm.vehicleInformation : {}))
+  const parsedFilter = wrapWheelFilters(filters, Number.isNaN(page) ? 1 : page, filters["vehicle"] ? ymm.vehicleInformation : {})
+  const { data, isLoading: loading } = useGetProductListQuery(parsedFilter)
   return (
     <>
       <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 py-6 md:flex-row">

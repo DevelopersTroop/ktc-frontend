@@ -9,6 +9,7 @@ const product = baseApi.injectEndpoints({
       any
     >({
       query: (params) => {
+        console.log("🚀 ~ params:", params)
         return {
           url: `/products/list`,
           params,

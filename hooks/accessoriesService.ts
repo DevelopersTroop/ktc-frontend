@@ -1,6 +1,6 @@
 import { RootState } from "@/app/globalRedux/store";
 
-export const wrapAccessoriesFilter = async (
+export const wrapAccessoriesFilter = (
   { minPrice, maxPrice, ...filters }: RootState["accessories"]["filters"],
   page: number
 ) => {

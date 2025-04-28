@@ -8,7 +8,7 @@ import { customFetch } from "@/lib/common-fetch";
 import { TInventoryItem } from "@/types/product";
 import { IApiRes } from "@/types/redux-helper";
 
-export const wrapTireFilters = async (
+export const wrapTireFilters = (
   { minPrice, maxPrice, ...filters }: RootState["tire"]["filters"],
   page: number
 ) => {
