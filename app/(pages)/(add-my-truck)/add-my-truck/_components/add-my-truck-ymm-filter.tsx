@@ -48,7 +48,7 @@ const AddMyTruckYMMFilters = () => {
                     <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Year</h2>
                     <select onChange={onYearChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black">
                       <option value="">{isYearLoading ? "Loading..." : "Year"}</option>
-                      {years.map(year => <option key={year} value={year}>{year}</option>)}
+                      {years?.map(year => <option key={year} value={year}>{year}</option>)}
                     </select>
                   </div>
 
@@ -56,7 +56,7 @@ const AddMyTruckYMMFilters = () => {
                     <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Make</h2>
                     <select onChange={onMakeChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black">
                       <option value="">{isMakeLoading ? "Loading..." : "Make"}</option>
-                      {makes.map(make => <option key={make} value={make}>{make}</option>)}
+                      {makes?.map(make => <option key={make} value={make}>{make}</option>)}
                     </select>
                   </div>
 
@@ -64,7 +64,7 @@ const AddMyTruckYMMFilters = () => {
                     <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Model</h2>
                     <select onChange={onModelChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black">
                       <option value="">{isModelLoading ? "Loading..." : "Model"}</option>
-                      {models.map(model => <option key={model} value={model}>{model}</option>)}
+                      {models?.map(model => <option key={model} value={model}>{model}</option>)}
                     </select>
                   </div>
                   
@@ -72,7 +72,7 @@ const AddMyTruckYMMFilters = () => {
                     <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Body Type</h2>
                     <select onChange={onBodyTypeChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black">
                       <option value="">{isBodyTypeLoading ? "Loading..." : "Body Type"}</option>
-                      {bodyTypes.map(bodyType => <option key={bodyType} value={bodyType}>{bodyType}</option>)}
+                      {bodyTypes?.map(bodyType => <option key={bodyType} value={bodyType}>{bodyType}</option>)}
                     </select>
                   </div>
                   
@@ -80,7 +80,7 @@ const AddMyTruckYMMFilters = () => {
                     <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Sub Model</h2>
                     <select onChange={onSubModelChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black">
                       <option value="">{isSubmodelLoading ? "Loading..." : "Submodel"}</option>
-                      {subModels.map(subModel => <option key={subModel.SubModel} value={subModel.SubModel}>{subModel.SubModel}</option>)}
+                      {subModels?.map(subModel => <option key={subModel.SubModel} value={subModel.SubModel}>{subModel.SubModel}</option>)}
                     </select>
                   </div>
               </div>
