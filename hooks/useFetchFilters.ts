@@ -7,6 +7,9 @@ export const useFetchFilters = (category:"wheels"|"tires"|"accessories") => {
   const [filters, setFilters] = useState<TFilters | null>(null);
   const [loading, setLoading] = useState(false);
 
+
+
+
   useEffect(() => {
     const fetchData = async function () {
       setLoading(true);
