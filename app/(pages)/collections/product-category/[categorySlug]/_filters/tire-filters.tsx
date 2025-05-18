@@ -66,10 +66,10 @@ const TireFilters = () => {
         />
       </div>
       <div className={"border-b border-gray-300 px-5 py-3"}>
-        <TireBrand filterKey={"brand"} brand={filters?.brand || []} />
+        <TireBrand filterKey={"brand_desc"} brand={filters?.brand_desc || []} />
       </div>
       <div className={"border-b border-gray-300 px-5 py-3"}>
-        <TireModel filterKey={"model"} model={filters?.model || []} />
+        <TireModel filterKey={"display_model_no"} model={filters?.display_model_no || []} />
       </div>
     </div>
   );

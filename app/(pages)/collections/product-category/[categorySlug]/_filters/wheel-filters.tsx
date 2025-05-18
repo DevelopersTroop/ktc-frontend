@@ -16,6 +16,9 @@ const WheelFilters = React.memo(() => {
   const query = searchParams.get("q") || "";
   const [searchKey, setSearchKey] = useState(query);
   useSearchFilter(searchKey, setSearchKey, query);
+
+  console.log("filters  =====   ", filters);
+  
   return (
     <div className={"filter-shadow bg-gray-200"}>
       <ActionFilter />
@@ -29,10 +32,10 @@ const WheelFilters = React.memo(() => {
         />
       </div>
       <div className={"border-b border-gray-300 px-5 py-3"}>
-        <WheelModel filterKey={"model"} model={filters?.model || []} />
+        <WheelModel filterKey={"display_model_no"} model={filters?.display_model_no || []} />
       </div>
       <div className={"border-b border-gray-300 px-5 py-3"}>
-        <WheelFinish filterKey={"color"} finish={filters?.color || []} />
+        <WheelFinish filterKey={"fancy_finish_desc"} finish={filters?.fancy_finish_desc || []} />
       </div>
     </div>
   );

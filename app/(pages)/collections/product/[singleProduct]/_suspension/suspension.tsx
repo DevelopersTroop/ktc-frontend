@@ -20,7 +20,7 @@ const Suspension = ({ product }: { product: TInventoryItem }) => {
           Suspension
         </Item>
         <Item href={`/collections/product/${product.slug}`}>
-          {product.title?.brand}
+          {product?.sku}
         </Item>
       </Breadcrumb>
       <div className="w-full flex flex-col gap-4 mt-4 lg:border sm:p-4">
