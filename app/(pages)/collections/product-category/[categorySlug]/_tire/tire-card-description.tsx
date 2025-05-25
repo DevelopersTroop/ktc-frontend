@@ -30,7 +30,7 @@ const TireCardDescription = ({ product }: { product: TInventoryItem }) => {
         <div className="flex items-start gap-1">
           $
           <span className="text-3xl font-semibold">
-            {(product.msrp * 4).toFixed(2)}{" "}
+            {(product.msrp * 4).toFixed(2)}
           </span>{" "}
           <span className="my-auto text-xs font-medium uppercase text-primary">
             set of four
@@ -86,7 +86,7 @@ const TireCardDescription = ({ product }: { product: TInventoryItem }) => {
         <div className="flex items-start gap-1">
           $
           <span className="text-3xl font-semibold">
-            {product.price.toFixed(2)}{" "}
+            {(product.msrp * 4).toFixed(2)}
           </span>{" "}
           <span className="my-auto text-xs font-medium uppercase text-primary">
             set of four

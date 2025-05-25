@@ -17,7 +17,7 @@ const WheelFilters = React.memo(() => {
   const [searchKey, setSearchKey] = useState(query);
   useSearchFilter(searchKey, setSearchKey, query);
 
-  console.log("filters  =====   ", filters);
+  // console.log("filters  =====   ", filters);
   
   return (
     <div className={"filter-shadow bg-gray-200"}>
