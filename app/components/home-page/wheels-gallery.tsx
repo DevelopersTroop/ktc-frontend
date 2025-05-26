@@ -2,6 +2,8 @@
 
 import { useFilterSync } from "@/app/(pages)/collections/product-category/[categorySlug]/_filters/store";
 import { useGetProductListQuery } from "@/app/globalRedux/api/product";
+import { useTypedSelector } from "@/app/globalRedux/store";
+import { wrapWheelFilters } from "@/hooks/wheelService";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import "swiper/css";
@@ -24,10 +26,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // ];
 
 const WheelsGallery = () => {
-  const { filters } = useFilterSync()
-  const { data } = useGetProductListQuery(filters);
-
-  // console.log("data == ", data);
+  const { filters } = useFilterSync();
+    const parsedFilter = wrapWheelFilters(filters)
+    const { data} = useGetProductListQuery(parsedFilter)
 
   return (
     <div>
