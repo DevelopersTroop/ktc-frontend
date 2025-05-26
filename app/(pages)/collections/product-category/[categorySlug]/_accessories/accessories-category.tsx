@@ -26,7 +26,7 @@ const AccessoriesCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   return (
     <>
       <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 py-6 md:flex-row">
-        <div className="w-full flex flex-row justify-between md:hidden">
+        <div className="w-full flex flex-row gap-2 justify-between md:hidden">
           <SidebarFilters>
             <AccessoriesFilters />
           </SidebarFilters>

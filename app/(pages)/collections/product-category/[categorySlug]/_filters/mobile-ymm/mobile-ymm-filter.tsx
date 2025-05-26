@@ -8,16 +8,16 @@ type SidebarProps = {
   children: ReactNode;
 };
 
-const SidebarFilters = ({ children }: SidebarProps) => {
+const MobileYmmFilter = ({ children }: SidebarProps) => {
   const [isOpenFilter, setIsOpenFilter] = useState(false);
 
   return (
     <div className="w-full md:hidden">
       <button
-        className="w-full text-primary px-auto py-[5px] border-2 border-primary hover:bg-primary-hover hover:text-white transition-colors duration-300 rounded-md text-base font-normal uppercase"
+        className="w-full text-primary px-auto py-[5px] border-2 border-primary hover:bg-primary-hover hover:text-white transition-colors duration-300 rounded-md text-base font-normal whitespace-nowrap uppercase"
         onClick={() => setIsOpenFilter((prev) => !prev)}
       >
-        Filtes
+        VEHICLE INFO
       </button>
 
       <Menu
@@ -42,8 +42,16 @@ const SidebarFilters = ({ children }: SidebarProps) => {
           },
         }}
       >
-        <div className="border-b-2 border-gray-400 text-2xl text-gray-700 font-semibold my-auto fixed bg-gray-100 w-[300px] py-2 px-4 -mt-5 mb-2 z-50">
-          Filter
+        <div className="border-b-2 border-gray-400 my-auto fixed bg-gray-100 w-[300px] py-2 px-4 -mt-5 mb-2 z-50 uppercase">
+            <div className="flex flex-row items-center gap-4"> 
+                <div className="uppercase">
+                    <h2 className="text-base font-normal">Search by</h2>
+                    <h2 className="text-base font-semibold">Vehicle</h2>
+                </div>
+                <p className="text-xs text-primary cursor-pointer">
+                New Vehicle Search
+                </p>
+            </div>    
         </div>
         <div className="text-black pt-7 w[80%]">{children}</div>
       </Menu>
@@ -51,4 +59,4 @@ const SidebarFilters = ({ children }: SidebarProps) => {
   );
 };
 
-export default SidebarFilters;
+export default MobileYmmFilter;

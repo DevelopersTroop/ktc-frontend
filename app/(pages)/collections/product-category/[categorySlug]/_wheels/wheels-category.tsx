@@ -17,6 +17,7 @@ import { useSearchParams } from "next/navigation";
 import SortByFilter from "../_filters/sort-by-filter";
 import { useFilterSync } from "../_filters/store";
 import ProductCardSkeleton from "../_loading/product-card-skeleton";
+import MobileYmmFilter from "../_filters/mobile-ymm/mobile-ymm-filter";
 type ProductsPageProps = {
   page?: number;
 };
@@ -29,10 +30,13 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   return (
     <>
       <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 py-6 md:flex-row">
-        <div className="w-full flex flex-row justify-between  md:hidden">
+        <div className="w-full flex flex-row gap-2 justify-between  md:hidden">
           <SidebarFilters>
             <WheelFilters />
           </SidebarFilters>
+          <MobileYmmFilter>
+            <WheelYMMFilters />
+          </MobileYmmFilter>
           <div className="w-full max-w-[165px]">
             <SortByFilter />
           </div>

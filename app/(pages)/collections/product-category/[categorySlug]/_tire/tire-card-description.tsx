@@ -2,7 +2,7 @@
 import { TInventoryItem } from "@/types/product";
 import { FaStar } from "react-icons/fa6";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { PiTireBold } from "react-icons/pi";
+// import { PiTireBold } from "react-icons/pi";
 
 const TireCardDescription = ({ product }: { product: TInventoryItem }) => {
   return (
