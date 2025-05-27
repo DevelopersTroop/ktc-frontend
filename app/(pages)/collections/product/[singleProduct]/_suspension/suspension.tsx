@@ -29,7 +29,7 @@ const Suspension = ({ product }: { product: TInventoryItem }) => {
           {/* image gallery */}
           <div className="w-full">
             <div>
-              <ImageGallery product={product} />
+              <ImageGallery product={product} fallbackImage="/not-available.webp" />
             </div>
             <div className="hidden lg:block mt-4">
               <SuspensionSpecifications product={product} />

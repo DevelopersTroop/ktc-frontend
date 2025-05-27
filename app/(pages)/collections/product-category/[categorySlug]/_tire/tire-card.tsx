@@ -23,10 +23,10 @@ const TireCard = ({ product }: { product: TInventoryItem }) => {
             alt="product image"
             src={
               imageErr
-                ? "/not-available.webp"
+                ? "/tire-not-available.webp"
                 : product.thumbnail !== ""
                   ? product.thumbnail
-                  : "/not-available.webp"
+                  : "/tire-not-available.webp"
             }
             onError={() => setImageErr(true)}
           ></Image>

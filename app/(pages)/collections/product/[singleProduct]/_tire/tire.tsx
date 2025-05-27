@@ -29,7 +29,7 @@ const Tire = ({ product }: { product: TInventoryItem }) => {
           {/* image gallery */}
           <div className="w-full">
             <div>
-              <ImageGallery product={product} />
+              <ImageGallery product={product} fallbackImage="/tire-not-available.webp" />
             </div>
             <div className="mt-4 hidden lg:block">
               <TireSpecifications product={product} />

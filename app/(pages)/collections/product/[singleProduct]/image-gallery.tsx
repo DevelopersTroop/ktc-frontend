@@ -1,63 +1,57 @@
 "use client";
-import { s3BucketUrl } from "@/app/utils/api";
 import { TInventoryItem } from "@/types/product";
 import { useEffect, useState } from "react";
 import Gallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
-const ImageGallery = ({ product }: { product: TInventoryItem }) => {
-  const isCustomProduct = false;
-  const [thumbnail, setThumbnail] = useState<
+const ImageGallery = ({ product, fallbackImage }: { product: TInventoryItem, fallbackImage: string }) => {
+  const [productImages, setProductImages] = useState<
     { original: string; thumbnail: string }[]
   >([]);
-  const [galleryImages, setGalleryImages] = useState<typeof thumbnail>([]);
-  const productImages = [...thumbnail, ...galleryImages];
-  const imageNotFound = [
-    {
-      original: "/not-available.webp",
-      thumbnail: "/not-available.webp",
-    },
-  ];
 
-  // add gallery Images
+  const validateImage = (url: string): Promise<string> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(url);
+    img.onerror = () => resolve(fallbackImage);
+    img.src = url;
+  });
+};
+
   useEffect(() => {
-    const galleryImages = product.galleryImages || [];
-    if (galleryImages?.length > 0) {
-      interface Image {
-        original: string;
-        thumbnail: string;
+    const loadImages = async () => {
+      const imagesToValidate: string[] = [];
+
+      // Main thumbnail first
+      if (product.thumbnail) {
+        const thumbnailUrl = product.thumbnail;
+        imagesToValidate.push(thumbnailUrl);
       }
 
-      const images: Image[] = [];
-      galleryImages.forEach((imageLink) => {
-        images.push({
-          original: isCustomProduct ? `${s3BucketUrl}/${imageLink}` : imageLink,
-          thumbnail: isCustomProduct
-            ? `${s3BucketUrl}/${imageLink}`
-            : imageLink,
-        });
+      // Gallery images
+      const galleryImages = product.galleryImages || [];
+      galleryImages.forEach((img) => {
+        const url = img;
+        imagesToValidate.push(url);
       });
-      setGalleryImages(images);
-    }
-  }, [product.galleryImages]);
 
-  // add thumbnail
-  useEffect(() => {
-    if (product.thumbnail !== "") {
-      setThumbnail([
-        {
-          original: product.thumbnail,
-          thumbnail: product.thumbnail,
-          // isCustomProduct
-          //   ? `${s3BucketUrl}/${product.thumbnail}`
-          //   : product.thumbnail,
-          // thumbnail: isCustomProduct
-          //   ? `${s3BucketUrl}/${product.thumbnail}`
-          //   : product.thumbnail,
-        },
-      ]);
-    }
-  }, [product.thumbnail]);
+      // Validate all
+      const validated = await Promise.all(imagesToValidate.map(validateImage));
+
+      // Format for react-image-gallery
+      const formatted = validated.map((url) => ({
+        original: url,
+        thumbnail: url,
+      }));
+
+      // Fallback if all are broken
+      setProductImages(
+        formatted.length > 0 ? formatted : [{ original: fallbackImage, thumbnail: fallbackImage }]
+      );
+    };
+
+    loadImages();
+  }, [product, fallbackImage]);
 
   return (
     <div className="flex justify-center">
@@ -66,7 +60,7 @@ const ImageGallery = ({ product }: { product: TInventoryItem }) => {
           showPlayButton={false}
           showNav={true}
           showFullscreenButton={false}
-          items={productImages.length > 0 ? productImages : imageNotFound}
+          items={productImages}
         />
       </div>
     </div>
