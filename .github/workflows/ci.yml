@@ -94,6 +94,7 @@ jobs:
             rm -rf .next/ &&
             npm install --legacy-peer-deps &&
             npm run build &&
+            sudo rm -rf node_modules &&
             pm2 restart ktc-web &&
             pm2 save
           "
