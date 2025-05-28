@@ -9,10 +9,14 @@ const product = baseApi.injectEndpoints({
       any
     >({
       query: (params) => {
-        console.log("🚀 ~ params:", params)
         return {
           url: `/products/list`,
-          params,
+          params: Object.entries(params)
+            .filter(([key]) => key !== "packageId")
+            .reduce((acc, [key, value]) => {
+              acc[key] = value;
+              return acc;
+            }, {} as Record<string, unknown>),
         };
       },
       providesTags: ["Products"],

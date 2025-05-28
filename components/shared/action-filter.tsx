@@ -17,7 +17,7 @@ export const ActionFilter = () => {
     "msrp,desc": "Price (high to low)",
   };
   const manipulatedObject = useMemo(() => {
-    return Object.entries(activeFilters).map(([key, value]) => {
+    return Object.entries(activeFilters).filter(([key]) => key !== "packageId").map(([key, value]) => {
       if (key !== "sort" && value.split(",").length) {
         return value.split(",").map((item) => ({ key, value: item }));
       } else if (key === "sort") {
