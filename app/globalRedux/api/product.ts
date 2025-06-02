@@ -12,7 +12,10 @@ const product = baseApi.injectEndpoints({
         return {
           url: `/products/list`,
           params: Object.entries(params)
-            .filter(([key]) => key !== "packageId")
+            .filter(
+              ([key]) =>
+                key !== "packageId" && key !== "selectedVehicleInformation"
+            )
             .reduce((acc, [key, value]) => {
               acc[key] = value;
               return acc;
