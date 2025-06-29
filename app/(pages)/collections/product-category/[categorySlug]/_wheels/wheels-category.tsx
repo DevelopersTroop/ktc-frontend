@@ -29,7 +29,10 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   const { data, isLoading: loading } = useGetProductListQuery(parsedFilter)
   return (
     <>
-      <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 py-6 md:flex-row">
+      <div className="flex justify-center items-center my-2.5">
+        <h1 className="text-[20px] font-semibold">Truck Wheels and Rims</h1>
+      </div>
+      <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 pb-6 pt-2 md:flex-row">
         <div className="w-full flex flex-row gap-2 justify-between  md:hidden">
           <SidebarFilters>
             <WheelFilters />
@@ -37,7 +40,7 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
           <MobileYmmFilter>
             <WheelYMMFilters />
           </MobileYmmFilter>
-          <div className="w-full max-w-[165px]">
+          <div className="w-full">
             <SortByFilter />
           </div>
         </div>
