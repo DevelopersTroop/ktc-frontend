@@ -8,12 +8,16 @@ import wait from "wait";
 import QuantityInput from "./quantity-input";
 import { TireContext } from "./context/TireProvider";
 import { CartData } from "../_wheels/normal-action";
+import { useRouter } from "next/navigation";
+import { Router } from "lucide-react";
 // import { CenterCapContext } from "./context/CenterCapProvider";
 
 const ActionButtons = ({ product }: { product: TInventoryItem }) => {
   console.log("product = ", product);
   const dispatch = useAppDispatch();
   const {quantity} = useContext(TireContext);
+
+  const router = useRouter();
   //   const { quantity } = useContext(CenterCapContext);
   //   const { year, make, model } = useSelector(
   //     (state: RootState) => state.yearMakeModel
@@ -61,7 +65,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
   };
 
   const [addToCartText, setAddToCartText] = React.useState(
-    "Add Wheels & Save More!"
+    "Buy Tires Only"
   );
 
   return (
@@ -77,27 +81,27 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
           </div>
         <button
           onClick={() => {
-            setAddToCartText("Adding to cart...");
-            wait(400).then(() => {
-              addProductToCart();
-              setAddToCartText("Added to cart");
-            });
+            router.push("/collections/product-category/wheels")
           }}
           className={"bg-primary py-3 text-white rounded text-xl w-full"}
         >
-          {addToCartText}
+          Add Wheels & Save More !
         </button>
       </div>
       <div className="mt-4">
         <button
           onClick={() => {
-            console.log("clicked");
+            wait(400).then(() => {
+              addProductToCart();
+              setAddToCartText("Loading..");
+              router.push('/cart')
+            });
           }}
           className={
             " py-1 rounded outline outline-1 outline-primary w-full"
           }
         >
-          Buy Tires Only
+          {addToCartText}
         </button>
       </div>
     </>
