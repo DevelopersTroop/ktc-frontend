@@ -20,7 +20,10 @@ const TireCategory: React.FC<{ page: number }> = ({ page = 1 }) => {
   const { data, isLoading: loading } = useGetProductListQuery(wrapTireFilters(filters, Number.isNaN(page) ? 1 : page))
   return (
     <>
-      <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 py-6 md:flex-row">
+      <div className="flex justify-center items-center my-2.5">
+        <h1 className="text-[20px] font-semibold">Aftermarket Truck Tires</h1>
+      </div>
+      <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 pb-6 pt-2 md:flex-row">
         <div className="w-full flex flex-row gap-2 justify-between  md:hidden">
           <SidebarFilters>
             <TireFilters />

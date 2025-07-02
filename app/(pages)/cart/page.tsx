@@ -162,7 +162,7 @@ const Cart = () => {
 
                             <div className="mt-2 flex justify-between">
                               <p className="text-2xl font-semibold">
-                                Item Total
+                                {product?.category?.title}
                               </p>
                               <p className="flex items-start text-primary">
                                 $

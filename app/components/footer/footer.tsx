@@ -190,7 +190,7 @@ export default function Footer() {
               CCPA Opt Out
             </Link>
             <span>|</span>
-            <span>© 2025 KTC Audio Custom Wheels</span>
+            <span>© 2025 KTC Audio</span>
           </div>
         </div>
       </div>

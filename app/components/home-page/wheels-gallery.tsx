@@ -74,7 +74,7 @@ const WheelsGallery = () => {
                       className="w-full p-4 h-auto object-cover"
                     />
                     <h4 className="text-lg font-semibold mt-2 text-center">
-                      {product.brand}
+                      {product?.sku}
                     </h4>
                   </div>
                 </Link>
