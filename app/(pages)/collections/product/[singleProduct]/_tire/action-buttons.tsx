@@ -13,7 +13,7 @@ import { CartData } from "../_wheels/normal-action";
 const ActionButtons = ({ product }: { product: TInventoryItem }) => {
   console.log("product = ", product);
   const dispatch = useAppDispatch();
-  const {quantity} = useContext(TireContext);
+  const { quantity } = useContext(TireContext);
   //   const { quantity } = useContext(CenterCapContext);
   //   const { year, make, model } = useSelector(
   //     (state: RootState) => state.yearMakeModel
@@ -69,12 +69,18 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
       <div className="flex flex-col justify-center gap-4">
         <div className="max-w-52" >
           <QuantityInput
-              product={product}
-              inventoryAvailable={20}
-              name={"quantity"}
-              id={"quantity"}
-            />
-          </div>
+            product={product}
+            inventoryAvailable={20}
+            name={"quantity"}
+            id={"quantity"}
+          />
+        </div>
+        {/* <button
+          onClick={() => {}}
+          className={"w-full rounded py-1 outline outline-1 outline-primary"}
+        >
+          Add Tires
+        </button> */}
         <button
           onClick={() => {
             setAddToCartText("Adding to cart...");

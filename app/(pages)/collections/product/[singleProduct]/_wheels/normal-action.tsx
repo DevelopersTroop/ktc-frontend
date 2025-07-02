@@ -71,11 +71,31 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
     });
   };
 
-  const addProductToCart = async (meta?: any) => {
+
+  const handleAddTires = () => {
+    // if (
+    //   !isFitmentNeeded &&
+    //   (!ymm.year.length ||
+    //     !ymm.make.length ||
+    //     !ymm.model.length ||
+    //     !ymm.trim.length)
+    // ) {
+    //   setOpenFitmentModal(true);
+    //   return;
+    // }
+    addProductToCart(ymm).then((res) => {
+      router.push(
+        `/collections/product-category/tires?rim_diameter=${product.diameter}&cartPackage=${res.cartPackage}&cartSerial=${res.cartSerial}`,
+        // `/collections/product-category/tires?rim_diameter=${product.diameter}`,
+      );
+    });
+  }
+
+  const addProductToCart = async (meta?: any, prePackageId?: string, preCartSerial?: string) => {
     const data = await new Promise<CartData>((resolve, reject) => {
       try {
-        const packageId = uuidv4();
-        const cartSerial = uuidv4();
+        const packageId = prePackageId ?? uuidv4();
+        const cartSerial = preCartSerial ?? uuidv4();
         const metaData = meta || {};
         dispatch(
           addToCart({
@@ -171,7 +191,7 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
           inventoryAvailable={20}
           name={"quantity"}
           id={"quantity"}
-          // isDually={product?.dually}
+        // isDually={product?.dually}
         />
         <button
           onClick={() => {
@@ -192,6 +212,12 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
           </p>
         </button>
       </div>
+      <button
+        onClick={handleAddTires}
+        className={"w-full rounded py-1 outline outline-1 outline-primary"}
+      >
+        Add Tires
+      </button>
       <button
         onClick={handleBuyWheels}
         className={"w-full rounded py-1 outline outline-1 outline-primary"}

@@ -17,6 +17,9 @@ export const useFilterSync = () => {
   const parsedFilters = useMemo<Filters>(() => {
     const params: Filters = {};
     searchParams.forEach((value, key) => {
+      if (key === "cartPackage" || key === "cartSerial") {
+        return;
+      }
       params[key] = value;
     });
     return params;
