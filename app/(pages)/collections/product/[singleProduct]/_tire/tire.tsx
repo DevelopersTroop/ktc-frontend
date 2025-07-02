@@ -8,6 +8,7 @@ import TireDetails from "./tire-details";
 import TireSpecifications from "./tire-specifications";
 import TireTitle from "./tire-title";
 import TireProvider from "./context/TireProvider";
+import { Reviews } from "@/components/shared/reviews/Reviews";
 
 export const step = 4;
 export const duallyStep = 6;
@@ -50,6 +51,9 @@ const Tire = ({ product }: { product: TInventoryItem }) => {
 
         <div className="mt-4">
           <TireDescription product={product} />
+        </div>
+        <div className="mt-4">
+          <Reviews productId={product._id} />
         </div>
       </div>
     </TireProvider>
