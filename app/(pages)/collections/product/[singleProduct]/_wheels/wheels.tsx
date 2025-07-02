@@ -9,6 +9,7 @@ import WheelDescription from "./wheel-description";
 import WheelSpecifications from "./wheel-specifications";
 import WheelDetails from "./wheels-details";
 import WheelsTitle from "./wheels-title";
+import { Reviews } from "@/components/shared/reviews/Reviews";
 
 const Wheels = ({ product }: { product: TInventoryItem }) => {
   return (
@@ -48,6 +49,9 @@ const Wheels = ({ product }: { product: TInventoryItem }) => {
 
         <div className="mt-4">
           <WheelDescription product={product} />
+        </div>
+        <div className="mt-4">
+          <Reviews productId={product._id} />
         </div>
       </div>
     </WheelProvider>

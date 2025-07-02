@@ -1,4 +1,5 @@
 "use client";
+import { ProductCardRating } from "@/components/shared/reviews/ProductCardRating";
 import { TInventoryItem } from "@/types/product";
 import { FaStar } from "react-icons/fa6";
 import { MdOutlineShoppingCart } from "react-icons/md";
@@ -14,16 +15,8 @@ const TireCardDescription = ({ product }: { product: TInventoryItem }) => {
         </h3>
       </div>
       {/* product review */}
-      <div className="flex justify-between py-1">
-        <div className="flex gap-0.5 text-sm">
-          <FaStar className="text-yellow-400" />
-          <FaStar className="text-yellow-400" />
-          <FaStar className="text-yellow-400" />
-          <FaStar className="text-yellow-400" />
-          <FaStar className="text-yellow-400" />
-        </div>
-        <div className="text-xs text-gray-600">7 Review</div>
-      </div>
+
+      <ProductCardRating productId={product._id} />
 
       {/* product pricing */}
       <div className="hidden flex-col gap-3 min-[600px]:flex">
