@@ -1,20 +1,53 @@
 "use client";
-import { Field, Form, Formik } from "formik";
-import { useState } from "react";
-
+import { Alert } from "@/app/ui/alert/alert";
+import { apiBaseUrl } from "@/app/utils/api";
+import { TextInput } from "@/components/shared/text-input";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
-import * as Yup from "yup";
-
-const validationSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
-});
+import { Form } from "@/components/ui/form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const router = useRouter();
+  const [status, setStatus] = useState({
+    error: "",
+    success: "",
+  });
+
+  const form = useForm({
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const submit = async ({ email }: any) => {
+    setIsSubmitting(true);
+
+    const response = await fetch(`${apiBaseUrl}/auth/forgot-password`, {
+      method: "POST",
+      body: JSON.stringify({ email }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      setStatus({
+        error: response.statusText,
+        success: "",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    setStatus({
+      error: "",
+      success: "Password reset link sent to your email",
+    });
+
+    setIsSubmitting(false);
+  };
 
   const banner = {
     backgroundImage: `url('/images/forgothero.jpeg')`,
@@ -42,56 +75,39 @@ const Page = () => {
               </p>
             </div>
 
-            <Formik
-              initialValues={{ email: "" }}
-              validationSchema={validationSchema}
-              onSubmit={(values) => {
-                setIsSubmitting(true);
-                console.log("values = ", values);
-                if (values.email) {
-                  router.push("/login");
-                }
-                setIsSubmitting(false);
-              }}
-            >
-              {({ errors: formErrors, touched }) => (
-                <Form className="mt-6 space-y-4">
-                  <div>
-                    <label
-                      className="block font-semibold mb-1 text-white"
-                      htmlFor="email"
-                    >
-                      Email address
-                    </label>
-                    <Field name="email">
-                      {({ field }: any) => (
-                        <Input
-                          {...field}
-                          type="email"
-                          className={`bg-white ${
-                            formErrors.email && touched.email
-                              ? "border-primary"
-                              : ""
-                          }`}
-                        />
-                      )}
-                    </Field>
-                    {formErrors.email && touched.email && (
-                      <p className="mt-1 text-sm text-primary">
-                        {formErrors.email}
-                      </p>
-                    )}
-                  </div>
-                  <Button
-                    type="submit"
-                    className="w-full uppercase bg-primary"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? "Please wait..." : "Send Reset Email"}
-                  </Button>
-                </Form>
-              )}
-            </Formik>
+            {status.error.length ? (
+              <Alert type="failed">{status.error}</Alert>
+            ) : (
+              ""
+            )}
+            {status.success.length ? (
+              <Alert type="success">{status.success}</Alert>
+            ) : (
+              ""
+            )}
+
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(submit)}
+                className="space-y-3 pt-2"
+              >
+                <TextInput
+                  control={form.control}
+                  label="Email address"
+                  required
+                  name={"email"}
+                  type={"email"}
+                  className="bg-white"
+                  labelClassName="!text-white"
+                />
+                <Button
+                  disabled={isSubmitting}
+                  className="w-full text-lg font-semibold"
+                >
+                  Send Reset Email
+                </Button>
+              </form>
+            </Form>
           </div>
         </div>
       </div>

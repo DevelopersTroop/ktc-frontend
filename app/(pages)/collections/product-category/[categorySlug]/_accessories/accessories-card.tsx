@@ -1,11 +1,14 @@
 "use client";
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
 import AccessoriesCardDescription from "./accessories-card-description";
+import { useState } from "react";
 
 const AccessoriesCard = ({ product }: { product: TInventoryItem }) => {
   const productLink = `/collections/product/${product.slug}`;
+  const [imageErr, setImageErr] = useState(false);
+
   return (
     <div
       className={
@@ -13,21 +16,26 @@ const AccessoriesCard = ({ product }: { product: TInventoryItem }) => {
       }
     >
       <Link className="inline-block" href={productLink}>
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center p-2">
           <Image
-            className={"mx-auto d-block  w-full h-[280px] object-cover py-12"}
+            className={"mx-auto d-block  w-full object-cover "}
             height={238}
             width={238}
             alt="accessories image"
             src={
-              product.item_image !== ""
-                ? product.item_image
-                : "/not-available.webp"
+              imageErr
+                ? "/accessory-not-available.webp"
+                : product.thumbnail.length
+                  ? product.thumbnail
+                  : product.image_url1.length
+                    ? product.image_url1
+                    : "/accessory-not-available.webp"
             }
+            onError={() => setImageErr(true)}
           ></Image>
         </div>
         <div className="absolute top-0 left-0 bg-gray-600 text-white px-3 py-1 group-hover:bg-primary group-hover:pr-8">
-          <p className="text-xl"> ${product?.price} </p>
+          <p className="text-xl"> ${product?.msrp} </p>
         </div>
         <AccessoriesCardDescription product={product} />
       </Link>

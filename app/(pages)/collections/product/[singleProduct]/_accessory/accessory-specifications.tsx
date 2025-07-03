@@ -1,4 +1,4 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 
 const AccessorySpecifications = ({ product }: { product: TInventoryItem }) => {
   console.log(product);
@@ -10,7 +10,7 @@ const AccessorySpecifications = ({ product }: { product: TInventoryItem }) => {
       <div className="mt-2">
         <p className="text-base text-gray-600">
           {/* {product?.specifications?.partNumber} */}
-          1234567
+          {product?.manufacturer_part_number}
         </p>
       </div>
     </div>

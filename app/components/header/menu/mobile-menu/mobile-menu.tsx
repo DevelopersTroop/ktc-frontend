@@ -2,6 +2,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -15,14 +16,20 @@ const MobileMenu = () => {
   const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false);
   const [isBrandsDropdownOpen, setIsBrandsDropdownOpen] = useState(false);
   const [isResourcesDropdownOpen, setIsResourcesDropdownOpen] = useState(false);
+  const [open , setIsOpen] = useState(false);
+
+  const handleSheetClose = () => {
+    setIsOpen(false);
+  }
+
 
   return (
     <div className="block min-[1160px]:hidden">
-      <Sheet>
-        <SheetTrigger asChild>
-          <MdOutlineMenu className="text-3xl text-gray-800" />
-        </SheetTrigger>
-        <SheetContent side="left" className="bg-gray-100">
+      <Sheet open={open} onOpenChange={setIsOpen}>
+        <div>
+          <MdOutlineMenu onClick={()=> setIsOpen(!open)} className="text-3xl text-gray-800" />
+        </div>
+        <SheetContent side="left" className="bg-gray-100 w-[85%]">
           <SheetHeader className="sr-only">
             <SheetTitle>Navigation Menu</SheetTitle>
           </SheetHeader>
@@ -33,7 +40,7 @@ const MobileMenu = () => {
                   onClick={() => setIsShopDropdownOpen(!isShopDropdownOpen)}
                   className="flex justify-between text-start w-full"
                 >
-                  <span className="text-2xl font-bold text-gray-800 border-t border-emerald-500 pt-2 uppercase">
+                  <span className="text-2xl font-bold text-gray-800 border-t border-primary pt-2 uppercase">
                     Shop
                   </span>
                   <svg
@@ -65,8 +72,9 @@ const MobileMenu = () => {
                 {isShopDropdownOpen && (
                   <div className="">
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/wheels"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -74,8 +82,9 @@ const MobileMenu = () => {
                       </Link>
                     </div>
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/tires"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -83,18 +92,19 @@ const MobileMenu = () => {
                       </Link>
                     </div>
 
-                    <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                    {/* <div className="pl-12 py-2">
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/suspensions"
                         className="block text-2xl font-semibold text-gray-800"
                       >
                         Suspension
                       </Link>
-                    </div>
+                    </div> */}
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/accessories"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -104,20 +114,21 @@ const MobileMenu = () => {
                   </div>
                 )}
               </div>
-
               <div>
-                <div className="w-[70px] pb-2 border-t border-emerald-500 "></div>
+                <div className="w-[70px] pb-2 border-t border-primary "></div>
                 <Link
+                onClick={handleSheetClose}
                   href="/add-login"
                   className="text-2xl font-bold text-gray-800"
                 >
                   Add My Truck
                 </Link>
               </div>
-
+         
               <div>
-                <div className="w-[70px] pb-2 border-t border-emerald-500 "></div>
+                <div className="w-[70px] pb-2 border-t border-primary "></div>
                 <Link
+                  onClick={handleSheetClose}
                   href="/ktc-audio-gallery"
                   className="text-2xl font-bold text-gray-800"
                 >
@@ -130,7 +141,7 @@ const MobileMenu = () => {
                   onClick={() => setIsBrandsDropdownOpen(!isBrandsDropdownOpen)}
                   className="flex justify-between text-start w-full"
                 >
-                  <span className="text-2xl font-bold text-gray-800 border-t border-emerald-500 pt-2 uppercase">
+                  <span className="text-2xl font-bold text-gray-800 border-t border-primary pt-2 uppercase">
                     Brands
                   </span>
                   <svg
@@ -162,8 +173,9 @@ const MobileMenu = () => {
                 {isBrandsDropdownOpen && (
                   <div className="">
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/wheels"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -171,8 +183,9 @@ const MobileMenu = () => {
                       </Link>
                     </div>
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/tires"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -180,33 +193,34 @@ const MobileMenu = () => {
                       </Link>
                     </div>
 
-                    <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                    {/* <div className="pl-12 py-2">
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/suspensions"
                         className="block text-2xl font-semibold text-gray-800"
                       >
                         Suspension
                       </Link>
-                    </div>
+                    </div> */}
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/collections/product-category/accessories"
                         className="block text-2xl font-semibold text-gray-800"
                       >
                         Accessories
                       </Link>
                     </div>
-                    <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                    {/* <div className="pl-12 py-2">
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
                         href="/collections/product-category/wheels"
                         className="block text-2xl font-semibold text-gray-800"
                       >
                         View All
                       </Link>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>
@@ -218,7 +232,7 @@ const MobileMenu = () => {
                   }
                   className="flex justify-between text-start w-full"
                 >
-                  <span className="text-2xl font-bold text-gray-800 border-t border-emerald-500 pt-2 uppercase">
+                  <span className="text-2xl font-bold text-gray-800 border-t border-primary pt-2 uppercase">
                     Resources
                   </span>
                   <svg
@@ -250,8 +264,9 @@ const MobileMenu = () => {
                 {isResourcesDropdownOpen && (
                   <div className="">
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/about"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -259,8 +274,9 @@ const MobileMenu = () => {
                       </Link>
                     </div>
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="/track-order"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -269,8 +285,9 @@ const MobileMenu = () => {
                     </div>
 
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
+                        onClick={handleSheetClose}
                         href="#"
                         className="block text-2xl font-semibold text-gray-800"
                       >
@@ -278,9 +295,10 @@ const MobileMenu = () => {
                       </Link>
                     </div>
                     <div className="pl-12 py-2">
-                      <div className="w-[70px] pt-1 border-t border-emerald-500 "></div>
+                      <div className="w-[70px] pt-1 border-t border-primary "></div>
                       <Link
-                        href="/contact-us"
+                        onClick={handleSheetClose}
+                        href="/contact"
                         className="block text-2xl font-semibold text-gray-800"
                       >
                         Contact

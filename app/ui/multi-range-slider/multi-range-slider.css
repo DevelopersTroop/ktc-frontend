@@ -23,7 +23,7 @@
 }
 
 .slider__range {
-    background-color: #E52727;
+    background-color: #0BA6D5;
     z-index: 2;
 }
 
@@ -74,7 +74,7 @@
     border-radius: 50%;
     cursor: pointer;
     height: 20px;
-    border: 7px solid #E52727;
+    border: 7px solid #0BA6D5;
     width: 20px;
     margin-top: 4px;
     pointer-events: all;
@@ -87,7 +87,7 @@
     border-radius: 50%;
     cursor: pointer;
     height: 20px;
-    border: 7px solid #E52727;
+    border: 7px solid #0BA6D5;
     width: 20px;
     margin-top: 4px;
     pointer-events: all;

@@ -1,5 +1,35 @@
-import { TInventoryItem } from "@/app/types/product";
 import { camelCaseToWords } from "@/app/utils/string";
+import { TInventoryItem } from "@/types/product";
+
+const tire_specs_key: keyof TInventoryItem[] = [
+  "manufacturer_part_number",
+  "load_index",
+  "speed_rating",
+  "upc",
+  "width",
+  "section_width",
+  "size",
+  "load_index",
+  "load_rating_metric",
+  "load_rating_standard",
+  "max_pressure",
+  "ply",
+  "speed_rating",
+  "rim_diameter",
+  "series",
+  "max_load",
+  "division",
+  "tread_depth",
+  "weight",
+  "finish_warranty",
+  "structural_warranty",
+  "mileage_warranty",
+
+];
+
+const filterKeyValue = (key: keyof TInventoryItem, value: string | number) => {
+  if (tire_specs_key.includes(key)) return true;
+};
 
 const TireSpecifications = ({ product }: { product: TInventoryItem }) => {
   return (
@@ -12,28 +42,35 @@ const TireSpecifications = ({ product }: { product: TInventoryItem }) => {
           <p>
             <span className=" font-medium text-gray-600 text-lg">Brand: </span>{" "}
             <span className="text-gray-600 text-base">
-              {" "}
-              {product.title?.brand}
+              {product?.brand}
             </span>
           </p>
           <p>
             <span className=" font-medium text-gray-600 text-lg">Model: </span>{" "}
             <span className="text-gray-600 text-base">
-              {" "}
-              {product.title?.model}
+              {product.model}
             </span>
           </p>
         </div>
-        {Object.entries(product.specifications || {}).map(([key, value]) => (
-          <div key={key} className="flex items-center">
-            <p>
-              <span className=" font-medium text-gray-600 text-lg">
-                {camelCaseToWords(key)}:{" "}
-              </span>{" "}
-              <span className="text-gray-600 text-base"> {value}</span>
-            </p>
-          </div>
-        ))}
+        {Object.entries(product).map(([key, value]) => {
+          if (filterKeyValue(key as keyof TInventoryItem, value)) {
+            return (
+              <div key={key} className="flex items-center">
+                <p>
+                  <span className="text-lg font-medium text-gray-600">
+                    {camelCaseToWords(key)}:{" "}
+                  </span>{" "}
+                  <span className="text-base text-gray-600">
+                    {" "}
+                    {value as string}
+                  </span>
+                </p>
+              </div>
+            );
+          } else {
+            return null;
+          }
+        })}
       </div>
     </div>
   );

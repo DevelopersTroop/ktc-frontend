@@ -1,4 +1,4 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
 import Container from "@/app/ui/container/container";
@@ -77,10 +77,10 @@ const SingleProduct = async ({
           </div>
           <div className="px-2">
             <p className="text-4xl font-medium">
-              {galleryProduct.title?.brand}
+              {galleryProduct.title}
             </p>
             <p className="font-medium">
-              {galleryProduct.title?.model} | {galleryProduct.title?.subtitle}
+              {galleryProduct.title} | {galleryProduct.title}
             </p>
           </div>
           <GalleryDetails product={galleryProduct} />

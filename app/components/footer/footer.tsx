@@ -26,7 +26,7 @@ export default function Footer() {
                 <div>
                   <p className="text-gray-600">Email Address</p>
                   <p className="text-gray-700 font-semibold">
-                    khalik.aymen@gmail.com
+                    info@ktcaudio.com
                   </p>
                 </div>
               </div>
@@ -55,25 +55,25 @@ export default function Footer() {
             </h3>
             <div className="space-y-2">
               <Link
-                href="/terms-of-service"
+                href="#"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Terms of service
               </Link>
               <Link
-                href="/shipping-policy"
+                href="#"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Shipping Policy
               </Link>
               <Link
-                href="/refund-policy"
+                href="#"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Refund policy
               </Link>
               <Link
-                href="/jprivacy-policy"
+                href="#"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Privacy policy
@@ -99,19 +99,19 @@ export default function Footer() {
             </h3>
             <div className="space-y-2">
               <Link
-                href="/order-history"
+                href="/dashboard/orders"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Order History
               </Link>
               <Link
-                href="/wishlist"
+                href="/dashboard/save-product"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Wishlist
               </Link>
               <Link
-                href="/special-offers"
+                href="#"
                 className="block text-gray-600 hover:text-gray-900"
               >
                 Special Offers
@@ -134,13 +134,13 @@ export default function Footer() {
                 href="https://www.facebook.com/ktcaudiocustomwheelsandtires"
                 target="_blank"
               >
-                <Facebook className="w-6 h-6 text-gray-600 hover:text-emerald-500 cursor-pointer" />
+                <Facebook className="w-6 h-6 text-gray-600 hover:text-primary cursor-pointer" />
               </Link>
               <Link href="https://www.youtube.com/@ktcaudio313" target="_blank">
-                <Youtube className="w-6 h-6 text-gray-600 hover:text-emerald-500 cursor-pointer" />
+                <Youtube className="w-6 h-6 text-gray-600 hover:text-primary cursor-pointer" />
               </Link>
-              <Instagram className="w-6 h-6 text-gray-600 hover:text-emerald-500 cursor-pointer" />
-              <Twitter className="w-6 h-6 text-gray-600 hover:text-blue-400 cursor-pointer" />
+              <Instagram className="w-6 h-6 text-gray-600 hover:text-primary cursor-pointer" />
+              <Twitter className="w-6 h-6 text-gray-600 hover:text-primary cursor-pointer" />
             </div>
 
             {/* Brand Logos */}
@@ -170,27 +170,27 @@ export default function Footer() {
 
         <div className="mt-12 pt-4 border-t text-sm text-gray-600 text-center">
           <div className="space-x-2">
-            <Link href="/terms" className="hover:underline">
+            <Link href="#" className="hover:underline">
               Terms of Use
             </Link>
             <span>|</span>
-            <Link href="/terms-conditions" className="hover:underline">
+            <Link href="#" className="hover:underline">
               Terms and Conditions
             </Link>
             <span>|</span>
-            <Link href="/privacy" className="hover:underline">
+            <Link href="#" className="hover:underline">
               Privacy Policy
             </Link>
             <span>|</span>
-            <Link href="/ccpa" className="hover:underline">
+            <Link href="#" className="hover:underline">
               California Consumer Privacy Act
             </Link>
             <span>|</span>
-            <Link href="/ccpa-opt-out" className="hover:underline">
+            <Link href="#" className="hover:underline">
               CCPA Opt Out
             </Link>
             <span>|</span>
-            <span>© 2025 KTC Audio Custom Wheels</span>
+            <span>© 2025 KTC Audio</span>
           </div>
         </div>
       </div>

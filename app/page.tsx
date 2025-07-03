@@ -1,5 +1,4 @@
 import HeroSection from "./components/home-page/hero-section";
-import SuspensionSection from "./components/home-page/suspension-section";
 import ViewGallery from "./components/home-page/view-gallery";
 import WheelsGallery from "./components/home-page/wheels-gallery";
 import WheelsSection from "./components/home-page/wheels-section";
@@ -11,7 +10,7 @@ const page = () => {
       <ViewGallery />
       <WheelsSection />
       <WheelsGallery />
-      <SuspensionSection />
+      {/* <SuspensionSection /> */}
     </div>
   );
 };

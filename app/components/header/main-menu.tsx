@@ -6,53 +6,53 @@ import MenuItemHasChildren from "./menu/menu-item-has-children/menu-item-has-chi
 
 const MainMenu = () => {
   return (
-    <nav className={"w-full flex justify-between h-full"}>
-      <ul className={"flex items-center h-full"}>
+    <nav className={"flex h-full w-full justify-between"}>
+      <ul className={"flex h-full items-center"}>
         <MenuItemHasChildren>
           <DesktopMenuLink
             className={
-              "mt-[] h-full flex items-center text-white font-bold uppercase text-[15px] hover:underline hover:bg-emerald-500 px-6 duration-500"
+              "mt-[] flex h-full items-center px-6 text-[15px] font-bold uppercase text-white duration-500 hover:bg-primary hover:underline"
             }
             href="/collections/product-category/wheels"
           >
             Shop <MdKeyboardArrowDown className="text-2xl" />
           </DesktopMenuLink>
           <DesktopMenu className="absolute w-44 bg-gray-700">
-            <ul className="flex flex-col  items-start filter-shadow text-[15px] text-white">
-              <li className="w-full inline-block text-left">
+            <ul className="filter-shadow flex flex-col items-start text-[15px] text-white">
+              <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium  px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="/collections/product-category/wheels"
                 >
                   Wheels
                 </DesktopMenuLink>
               </li>
-              <li className="w-full inline-block text-left">
+              <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="/collections/product-category/tires"
                 >
                   Tires
                 </DesktopMenuLink>
               </li>
-              <li className="w-full inline-block text-left">
+              {/* <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="/collections/product-category/suspension"
                 >
                   Suspension
                 </DesktopMenuLink>
-              </li>
-              <li className="w-full inline-block text-left">
+              </li> */}
+              <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="/collections/product-category/accessories"
                 >
@@ -63,14 +63,10 @@ const MainMenu = () => {
           </DesktopMenu>
         </MenuItemHasChildren>
 
-        <li
-          className={
-            "h-full text-center hover:bg-emerald-500 px-6 duration-500"
-          }
-        >
+        <li className={"h-full px-6 text-center duration-500 hover:bg-primary"}>
           <DesktopMenuLink
             className={
-              "mt-[] h-full flex items-center text-white font-bold uppercase text-[15px] hover:underline"
+              "mt-[] flex h-full items-center text-[15px] font-bold uppercase text-white hover:underline"
             }
             href="/add-login"
           >
@@ -78,14 +74,10 @@ const MainMenu = () => {
           </DesktopMenuLink>
         </li>
 
-        <li
-          className={
-            "h-full text-center hover:bg-emerald-500 px-6 duration-500"
-          }
-        >
+        <li className={"h-full px-6 text-center duration-500 hover:bg-primary"}>
           <DesktopMenuLink
             className={
-              "mt-[] h-full flex items-center text-white font-bold uppercase text-[15px] hover:underline"
+              "mt-[] flex h-full items-center text-[15px] font-bold uppercase text-white hover:underline"
             }
             href="/ktc-audio-gallery"
           >
@@ -96,64 +88,64 @@ const MainMenu = () => {
         <MenuItemHasChildren>
           <DesktopMenuLink
             className={
-              "mt-[] h-full flex items-center text-white font-bold uppercase text-[15px] hover:underline hover:bg-emerald-500 px-6 duration-500"
+              "mt-[] flex h-full items-center px-6 text-[15px] font-bold uppercase text-white duration-500 hover:bg-primary hover:underline"
             }
             href="#"
           >
             Brands <MdKeyboardArrowDown className="text-2xl" />
           </DesktopMenuLink>
           <DesktopMenu className="absolute w-44 bg-gray-700">
-            <ul className="flex flex-col  items-start filter-shadow text-[15px] text-white">
-              <li className="w-full inline-block text-left">
+            <ul className="filter-shadow flex flex-col items-start text-[15px] text-white">
+              <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium  px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="/collections/product-category/wheels"
                 >
                   Wheels
                 </DesktopMenuLink>
               </li>
-              <li className="w-full inline-block text-left">
+              <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="/collections/product-category/tires"
                 >
                   Tires
                 </DesktopMenuLink>
               </li>
-              <li className="w-full inline-block text-left">
+              {/* <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="/collections/product-category/suspension"
                 >
                   Suspension
                 </DesktopMenuLink>
-              </li>
-              <li className="w-full inline-block text-left">
+              </li> */}
+              <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-green-400"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="/collections/product-category/accessories"
                 >
                   Accessories
                 </DesktopMenuLink>
               </li>
-              <li className="w-full inline-block text-left">
+              {/* <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="#"
                 >
                   View All
                 </DesktopMenuLink>
-              </li>
+              </li> */}
             </ul>
           </DesktopMenu>
         </MenuItemHasChildren>
@@ -162,50 +154,50 @@ const MainMenu = () => {
         <MenuItemHasChildren>
           <DesktopMenuLink
             className={
-              "-mt-6 h-full flex items-center text-white font-bold uppercase text-[15px] hover:underline hover:bg-emerald-500 px-6 duration-500"
+              "flex h-full items-center px-6 text-[15px] font-bold uppercase text-white duration-500 hover:bg-primary hover:underline"
             }
             href="#"
           >
             Resources <MdKeyboardArrowDown className="text-2xl" />
           </DesktopMenuLink>
           <DesktopMenu className="absolute w-44 bg-gray-700">
-            <ul className="flex flex-col  items-start filter-shadow text-[15px] text-white">
-              <li className="w-full inline-block text-left">
+            <ul className="filter-shadow flex flex-col items-start text-[15px] text-white">
+              <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium  px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="/about"
                 >
                   About Us
                 </DesktopMenuLink>
               </li>
-              <li className="w-full inline-block text-left">
+              <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="/track-order"
                 >
                   Track Your Order
                 </DesktopMenuLink>
               </li>
-              <li className="w-full inline-block text-left">
+              <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
                   href="#"
                 >
                   Videos
                 </DesktopMenuLink>
               </li>
-              <li className="w-full inline-block text-left">
+              <li className="inline-block w-full text-left">
                 <DesktopMenuLink
                   className={
-                    "w-full hidden group-hover:inline-block font-medium px-2.5 py-4 uppercase hover:bg-emerald-500"
+                    "hidden w-full px-2.5 py-4 font-medium uppercase hover:bg-primary group-hover:inline-block"
                   }
-                  href="/contact-us"
+                  href="/contact"
                 >
                   Contact
                 </DesktopMenuLink>

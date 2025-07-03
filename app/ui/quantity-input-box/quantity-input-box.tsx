@@ -13,9 +13,9 @@ type QuantityInputBoxProps = {
     id: string,
     borderColor?: string
 }
-const QuantityInputBox = ({ borderColor = "border-btext", onIncrease, onDecrease, inputName, id, className="", onInputChange, inputValue, quantityStep, maxInputValue }: QuantityInputBoxProps) => {
+const QuantityInputBox = ({ borderColor = "border-[#cfcfcf]", onIncrease, onDecrease, inputName, id, className="", onInputChange, inputValue, quantityStep, maxInputValue }: QuantityInputBoxProps) => {
     return (
-        <div className={`${className} h-[45px] inline-flex items-center border ${borderColor} justify-between overflow-hidden`}>
+        <div className={`${className} h-[45px] inline-flex items-center border ${borderColor} justify-between rounded-xl overflow-hidden`}>
             <button onClick={onIncrease} className={`border-r ${borderColor} px-3 -mt-px h-full text-3xl font-light `}>-</button>
             <input
                 onChange={onInputChange}
@@ -23,7 +23,7 @@ const QuantityInputBox = ({ borderColor = "border-btext", onIncrease, onDecrease
                 step={quantityStep}
                 min={quantityStep}
                 max={maxInputValue}
-                className={'w-14 -mt-0.5  h-full text-center appearance-none-input-number focus:outline-none'}
+                className={'w-14 -mt-0.5  h-full text-center appearance-none focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none'}
                 type="number"
                 name={inputName}
                 id={id} />

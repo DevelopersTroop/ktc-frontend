@@ -1,8 +1,9 @@
 "use client";
-import { TSingleFilter } from "@/app/types/filter";
+import { TSingleFilter } from "@/types/filter";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useRef } from "react";
+import { useFilterSync } from "../store";
 // import useFilter from "../filter-store/useFilter";
 
 type SelectFilterTemplateProps = {
@@ -19,16 +20,11 @@ const SelectFilterTemplate = ({
   acceptMultipleValues = true,
 }: SelectFilterTemplateProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  //   const { filters, toggleFilterValue } = useFilter();
-  //   const currentSelectedValues = filters[filterKey]?.split(",") ?? [];
-
-  console.log("filterKey = ", filterKey);
-  console.log("acceptMultipleValues = ", acceptMultipleValues);
+  const { filters, toggleFilterValue } = useFilterSync()
+  const currentSelectedValues = filters[filterKey]?.split(",") ?? []
 
   const onCheckboxChange = (checked: boolean, value: string) => {
-    // toggleFilterValue(filterKey, value, acceptMultipleValues);
-    console.log("checked = ", checked);
-    console.log("value = ", value);
+    toggleFilterValue(filterKey, value, acceptMultipleValues);
   };
 
   let modifiedFilterData: TSingleFilter[] = [];
@@ -50,10 +46,8 @@ const SelectFilterTemplate = ({
     }
   }
   modifiedFilterData = Array.from(new Set(modifiedFilterData));
-  console.log(modifiedFilterData);
 
   const shouldScroll = modifiedFilterData.length > 5;
-  console.log("shouldScroll = ", shouldScroll);
 
   return (
     <ScrollArea className={shouldScroll ? "h-[18.5rem] w-full" : "w-full"}>
@@ -65,13 +59,13 @@ const SelectFilterTemplate = ({
                 <Checkbox
                   id={data.value.toString()}
                   disabled={disabled}
-                  //   checked={currentSelectedValues?.includes(
-                  //     data.value.toString()
-                  //   )}
+                  checked={currentSelectedValues?.includes(
+                    data.value.toString()
+                  )}
                   onCheckedChange={(checked) =>
                     onCheckboxChange(checked as boolean, data.value.toString())
                   }
-                  className="border-gray-400 data-[state=checked]:bg-red-500 data-[state=checked]:border-red-500 rounded-none shadow-sm"
+                  className="border-gray-400 data-[state=checked]:bg-primary data-[state=checked]:border-primary rounded-none shadow-sm"
                 />
                 <label
                   htmlFor={data.value.toString()}

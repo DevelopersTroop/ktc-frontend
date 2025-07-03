@@ -1,6 +1,6 @@
 "use client";
 
-import { TSingleFilter } from "@/app/types/filter";
+import { TSingleFilter } from "@/types/filter";
 import GalleryTireHeight from "./widgets/gallery-tire-height";
 import GalleryTireWidth from "./widgets/gallery-tire-width";
 import GalleryTypeOfStance from "./widgets/gallery-type-of-stance";

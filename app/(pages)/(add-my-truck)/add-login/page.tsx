@@ -1,11 +1,16 @@
 "use client";
+import { setAccessToken, setRefreshToken, setUserDetails } from "@/app/globalRedux/features/user/user-slice";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useAuth from "@/hooks/useAuth";
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import { userLogin } from "../../(auth)/login/login";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -13,8 +18,29 @@ const validationSchema = Yup.object().shape({
 });
 
 const AddTruckLoginPage: React.FC = () => {
+  const dispatch = useDispatch();
+  const { user } = useAuth()
+  const [errors, setErrors] = useState<
+    {
+      name: string;
+      message: string;
+    }[]
+  >([]);
+  const [success, setSuccess] = useState<{
+    isSuccess: boolean;
+    message: string;
+  }>({
+    message: "",
+    isSuccess: false,
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/add-my-truck");
+    }
+  }, [user, router]);
 
   return (
     <div className="w-full flex flex-col px-2 mx-auto text-center my-12 gap-6">
@@ -29,17 +55,46 @@ const AddTruckLoginPage: React.FC = () => {
 
       <div className="w-full lg:w-[45%] mx-auto">
         <h2 className="text-2xl font-bold text-gray-600 uppercase">Login</h2>
+          {errors.length > 0 &&
+                        errors.map((error) => (
+                          <Alert
+                            variant="destructive"
+                            key={error.message}
+                            className="mt-4"
+                          >
+                            <AlertDescription>{error.message}</AlertDescription>
+                          </Alert>
+                        ))}
+                      {success.isSuccess && (
+                        <Alert className="mt-4">
+                          <AlertDescription>{success.message}</AlertDescription>
+                        </Alert>
+                      )}
 
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
             setIsSubmitting(true);
-            console.log("values = ", values);
-            if (values.email && values.password) {
-              router.push("/");
-            }
-            setIsSubmitting(false);
+            userLogin({ email: values.email, password: values.password })
+              .then(async (data) => {
+                if (Array.isArray(data)) {
+                  setSuccess({ isSuccess: false, message: "" });
+                  return setErrors(data);
+                }
+                setErrors([]);
+                setSuccess({ isSuccess: true, message: "Login successful" });
+                dispatch(setAccessToken({ accessToken: data.token.accessToken }));
+                dispatch(
+                  setRefreshToken({ refreshToken: data.token.refreshToken })
+                );
+                dispatch(setUserDetails({ userDetails: data.user }));
+
+                router.push("/add-my-truck");
+              })
+              .finally(() => {
+                setIsSubmitting(false);
+              });
           }}
         >
           {({ errors: formErrors, touched }) => (
@@ -58,16 +113,15 @@ const AddTruckLoginPage: React.FC = () => {
                         {...field}
                         type="email"
                         placeholder="Email Address"
-                        className={`bg-white ${
-                          formErrors.email && touched.email
-                            ? "border-red-500"
-                            : ""
-                        }`}
+                        className={`bg-white ${formErrors.email && touched.email
+                          ? "border-red-500"
+                          : ""
+                          }`}
                       />
                     )}
                   </Field>
                   {formErrors.email && touched.email && (
-                    <p className="mt-1 text-sm text-primary">
+                    <p className="mt-1 text-sm text-red-500">
                       {formErrors.email}
                     </p>
                   )}
@@ -88,16 +142,15 @@ const AddTruckLoginPage: React.FC = () => {
                         {...field}
                         type="password"
                         placeholder="Password"
-                        className={`bg-white ${
-                          formErrors.password && touched.password
-                            ? "border-primary"
-                            : ""
-                        }`}
+                        className={`bg-white ${formErrors.password && touched.password
+                          ? "border-red-500"
+                          : ""
+                          }`}
                       />
                     )}
                   </Field>
                   {formErrors.password && touched.password && (
-                    <p className="mt-1 text-sm text-primary">
+                    <p className="mt-1 text-sm text-red-500">
                       {formErrors.password}
                     </p>
                   )}

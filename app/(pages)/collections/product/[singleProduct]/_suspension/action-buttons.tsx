@@ -1,5 +1,5 @@
 "use client";
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import React from "react";
 import wait from "wait";
 // import { CenterCapContext } from "./context/CenterCapProvider";
@@ -9,7 +9,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
   //   const dispatch = useDispatch();
   //   const { quantity } = useContext(CenterCapContext);
   //   const { year, make, model } = useSelector(
-  //     (state: RootState) => state.persisted.yearMakeModel
+  //     (state: RootState) => state.yearMakeModel
   //   );
 
   //   const cartProducts = useSelector(
@@ -69,7 +69,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
               setAddToCartText("Added to cart");
             });
           }}
-          className={"bg-emerald-500 py-3 text-white text-xl rounded w-full"}
+          className={"bg-primary py-3 text-white text-xl rounded w-full"}
         >
           {addToCartText}
         </button>

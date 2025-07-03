@@ -1,6 +1,6 @@
 "use client";
 
-import { TSingleFilter } from "@/app/types/filter";
+import { TSingleFilter } from "@/types/filter";
 import SuspensionBrand from "./widgets/suspension/suspension-brand";
 import SuspensionLiftSize from "./widgets/suspension/suspension-lift-size";
 import SuspensionPriceRange from "./widgets/suspension/suspension-price-range";
@@ -64,7 +64,7 @@ const SuspensionFilters = () => {
         }
       >
         <p>Action Filter</p>
-        <p className="text-sm text-primary cursor-pointer hidden md:block">
+        <p className="text-sm text-primary hover:text-primary-hover cursor-pointer hidden md:block">
           Clear filter
         </p>
       </div>

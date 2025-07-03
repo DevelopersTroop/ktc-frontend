@@ -1,34 +1,41 @@
 "use client";
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import CardDescription from "./card-description";
 
 const ProductCard = ({ product }: { product: TInventoryItem }) => {
   const productLink = `/collections/product/${product.slug}`;
+  const [imageErr, setImageErr] = useState(false);
   return (
     <div
       className={
-        "w-full min-[600px]:w-[250px] flex flex-row min-[600px]:flex-col border border-white shadow px-4 py-4"
+        "flex w-full flex-row overflow-hidden rounded-xl border border-[#cfcfcf] bg-white px-4 min-[600px]:w-[250px] min-[600px]:flex-col"
       }
     >
-      <div className="w-full flex justify-center items-center">
+      <div className="flex w-full items-center justify-center pt-5">
         <Link href={productLink}>
           <Image
-            className={"mx-auto d-block rounded-xl w-full object-cover"}
+            className={"d-block mx-auto w-full rounded-xl object-cover"}
             height={238}
             width={238}
             alt="product image"
             src={
-              product.item_image !== ""
-                ? product.item_image
-                : "/not-available.webp"
+              imageErr
+                ? "/not-available.webp"
+                : product.thumbnail.length
+                  ? product.thumbnail
+                  : product.image_url1.length
+                    ? product.image_url1
+                    : "/not-available.webp"
             }
+            onError={() => setImageErr(true)}
           ></Image>
         </Link>
       </div>
 
-      <Link href={productLink}>
+      <Link href={productLink} className="py-6">
         <CardDescription product={product} />
       </Link>
     </div>

@@ -1,74 +1,192 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {
+  Address,
+  BillingAddress,
+  Dealer,
+  Order,
+  OrderData,
+  OrderInfo,
+  RequestedDealer,
+} from "@/types/order";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-
-export type TShippingMethod = {
-    _id: string;
-    title: string;
-    amount: number;
-    estimatedDelivery: string;
-    description: string;
-    updatedBy: string;
-    deletedBy: null;
-    isDelete: boolean;
-    createdAt: string;
-    updatedAt: string;
-}
-
-export type TBillingAddress = {
-    email?: string;
-    phone?: string;
-    firstName?: string;
-    lastName?: string;
-    companyName?: string;
-    country?: string;
-    apartment?: string;
-    [key: string]: string | undefined;
-}
-
-export type TDealer = {
-    Addressee: string;
-    "Address Phone": string;
-    "Address 1": string;
-    "Address 2"?: string;
-    City: string;
-    "State/Province": {
-        text: string;
-        value: string;
-    };
-    "State/Province Display Name": {
-        text: string;
-        value: string;
-    };
-    "Zip Code": string;
-    Country: {
-        text: string;
-        value: string;
-    };
-    "Country Code": string;
+export type TCheckoutState = OrderData & {
+  orderSuccessData: Order | undefined;
 };
-export type TCheckoutState = {
-    billingAddress?: TBillingAddress,
-    shippingMethod?: TShippingMethod,
-    shippingDealer?: TDealer,
-}
 
-const initialState = {} as TCheckoutState
+const initialState: TCheckoutState = {
+  discount: 0,
+  selectedDealer: undefined,
+  shippingProtection: 0,
+  billingAddress: {
+    address1: "",
+    cityState: "",
+    country: "",
+    email: "",
+    fname: "",
+    lname: "",
+    name: "",
+    phone: "",
+    zipCode: "",
+    address2: "",
+    company: "",
+  },
+  shippingAddress: {
+    address1: "",
+    cityState: "",
+    country: "",
+    email: "",
+    fname: "",
+    lname: "",
+    name: "",
+    phone: "",
+    zipCode: "",
+    address2: "",
+    company: "",
+  },
+  isAccountCreated: false,
+  netCost: "",
+  totalCost: "",
+  orderInfo: {
+    fitmentDetails: "",
+    newsLetter: "",
+    newsLetterText: false,
+    orderInfoText: false,
+    phone: "",
+    salesSpecialistName: "",
+    termsAndConditions: false,
+  },
+  paymentStatus: "",
+  productsInfo: [],
+  selectedOption: 1,
+  shippingMethod: undefined,
+  selectedOptionTitle: undefined,
+  requestedDealer: undefined,
+  selectedDealerInfo: undefined,
+  cartType: "",
+  orderSuccessData: undefined,
+  deliveryCharge: 0,
+  isCouponApplied: false,
+  couponCode: "",
+  couponDiscount: 0,
+};
 
 const checkoutSlice = createSlice({
-    name: 'checkout',
-    initialState,
-    reducers: {
-        setBillingAddress: (state: TCheckoutState, action: { payload: { billingAddress: TBillingAddress } }) => {
-            state.billingAddress = action.payload.billingAddress;
-        },
-
-        setShippingMethod: (state: TCheckoutState, action: { payload: { shippingMethod: TShippingMethod } }) => {
-            state.shippingMethod = action.payload.shippingMethod;
-        },
-        setShippingDealer: (state: TCheckoutState, action: { payload: { shippingDealer: TDealer | undefined } }) => {
-            state.shippingDealer = action.payload.shippingDealer;
+  name: "checkout",
+  initialState,
+  reducers: {
+    setBillingAddress: (
+      state: TCheckoutState,
+      action: PayloadAction<BillingAddress>
+    ) => {
+      state.billingAddress = action.payload;
+    },
+    setShippingAddress: (
+      state: TCheckoutState,
+      action: PayloadAction<Partial<Address>>
+    ) => {
+      state.shippingAddress = {
+        ...state.shippingAddress,
+        ...action.payload,
+      };
+    },
+    setSelectedDealerInfo: (
+      state: TCheckoutState,
+      action: PayloadAction<Dealer>
+    ) => {
+      state.selectedDealer = action.payload["Address Phone"];
+      state.selectedDealerInfo = action.payload;
+    },
+    setRequestedDealer: (
+      state: TCheckoutState,
+      action: PayloadAction<RequestedDealer>
+    ) => {
+      state.requestedDealer = action.payload;
+    },
+    setSelectedOptionTitle: (
+      state: TCheckoutState,
+      action: PayloadAction<string>
+    ) => {
+      state.selectedOptionTitle = action.payload;
+    },
+    setSelectedOption: (
+      state: TCheckoutState,
+      action: PayloadAction<number>
+    ) => {
+      state.selectedOption = action.payload;
+    },
+    setShippingMethod: (
+      state: TCheckoutState,
+      action: PayloadAction<{ option: number; title: string }>
+    ) => {
+      state.shippingMethod = action.payload;
+    },
+    updateDiscount: (state, action: PayloadAction<number>) => {
+      if (state.isCouponApplied) {
+        state.discount += action.payload;
+      } else {
+        state.discount = action.payload;
+      }
+    },
+    updateProductFromCart: (state, action: PayloadAction<any[]>) => {
+      state.productsInfo = action.payload;
+    },
+    initiateCheckout: () => {},
+    setOrderInfo: (state, action: PayloadAction<OrderInfo>) => {
+      state.orderInfo = {
+        ...state.orderInfo,
+        ...action.payload,
+      };
+    },
+    setIsAccountCreated: (state, action: PayloadAction<boolean>) => {
+      state.isAccountCreated = action.payload;
+    },
+    updateOrderSuccessData: (state, action: PayloadAction<Order>) => {
+      state.orderSuccessData = action.payload;
+    },
+    updateCouponCode: (
+      state,
+      action: PayloadAction<{ couponDiscount: number; couponCode: string }>
+    ) => {
+      if (state.isCouponApplied) return;
+      state.isCouponApplied = true;
+      state.couponCode = action.payload.couponCode;
+      state.couponDiscount = action.payload.couponDiscount;
+      state.discount += action.payload.couponDiscount;
+    },
+    revokeCouponCode: (state) => {
+      if (state.isCouponApplied) {
+        state.isCouponApplied = false;
+        state.couponCode = "";
+        if (state.discount >= state.couponDiscount) {
+          state.discount -= state.couponDiscount;
+        } else {
+          state.discount = 0;
         }
-    }
+      }
+    },
+    updateShippingProtection: (state, action: PayloadAction<number>) => {
+      state.shippingProtection = action.payload;
+    },
+  },
 });
+
 export default checkoutSlice.reducer;
-export const { setBillingAddress, setShippingMethod, setShippingDealer } = checkoutSlice.actions;
+
+export const {
+  setBillingAddress,
+  setSelectedDealerInfo,
+  setShippingAddress,
+  setRequestedDealer,
+  setSelectedOptionTitle,
+  setSelectedOption,
+  setShippingMethod,
+  updateDiscount,
+  updateProductFromCart,
+  initiateCheckout,
+  setOrderInfo,
+  updateOrderSuccessData,
+  setIsAccountCreated,
+  updateCouponCode,
+  revokeCouponCode,
+  updateShippingProtection,
+} = checkoutSlice.actions;

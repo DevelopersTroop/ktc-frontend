@@ -1,5 +1,7 @@
+import { CheckoutProvider } from "@/context/CheckoutContext";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import Footer from "./components/footer/footer";
 import DiscountBanner from "./components/header/discount-banner";
 import Header from "./components/header/header";
@@ -33,11 +35,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col justify-between antialiased`}
       >
         <StoreProvider>
-          <TopHeader />
-          <Header />
-          <DiscountBanner />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <CheckoutProvider>
+            <TopHeader />
+            <Header />
+            <DiscountBanner />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <Toaster richColors />
+          </CheckoutProvider>
         </StoreProvider>
       </body>
     </html>

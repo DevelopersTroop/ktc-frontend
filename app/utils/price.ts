@@ -25,7 +25,7 @@ export function calculateCartTotal<T = string>(products: TCartState['products'],
     let totalPrice = 0;
     for (let sku in products) {
         const product = products[sku];
-        totalPrice += product.price * product.quantity;
+        totalPrice += product.msrp * product.quantity;
     }
     return format ? formatPrice(totalPrice) as T : totalPrice as T;
 }

@@ -1,4 +1,4 @@
-import { TUser } from "@/app/types/user";
+import { TUser } from "@/types/user";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: {

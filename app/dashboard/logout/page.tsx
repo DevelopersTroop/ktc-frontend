@@ -1,19 +1,19 @@
 "use client";
 import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
-import { useRouter } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
 import { useEffect } from "react";
 
 const Logout = () => {
-  const router = useRouter();
+  const { logout } = useAuth();
   useEffect(() => {
     setTimeout(() => {
-      router.push("/login");
+      logout(true);
     }, 1000);
   }, []);
   return (
     <div className="w-full">
       <LoadingSpinner />
-      <h1 className="text-center text-2xl text-primary mt-10">Please Wait</h1>
+      <h1 className="mt-10 text-center text-2xl text-primary">Please Wait</h1>
     </div>
   );
 };

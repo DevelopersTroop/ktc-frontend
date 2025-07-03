@@ -1,4 +1,12 @@
+'use client';
+import { useState } from "react";
+import HomeYmm from "./home-ymm";
+import WheelsBySizeAndBrand from "./home-wheels-by-size-and-brand";
+
 export default function HeroSection() {
+
+  const [activeTab, setActiveTab] = useState('vehicle');
+
   const banner = {
     backgroundImage: `url('/images/hero.jpeg')`,
     backgroundPosition: "center",
@@ -17,42 +25,23 @@ export default function HeroSection() {
             </h1>
           </div>
 
-          <div className="w-full flex flex-col items-center bg-gray-900/80 md:px-8 pb-8 rounded-lg text-white">
+          <div className="w-full flex flex-col items-center bg-gray-900/80  pb-8 rounded-lg text-white">
             <div className="w-full flex flex-row">
-              <div className="w-full p-4 bg-primary">
-                <h2 className="uppercase text-xl">SEARCH VEHICLE</h2>
+              <div
+                className={`w-full p-4 cursor-pointer ${activeTab === 'vehicle' ? 'bg-primary hover:bg-primary-hover' : 'bg-black'}`}
+                onClick={() => setActiveTab('vehicle')}
+              >
+                <h2 className="uppercase text-base sm:text-xl">SEARCH VEHICLE</h2>
               </div>
-              <div className="w-full p-4 bg-black">
-                <h2 className="uppercase text-xl">WHEELS BY SIZE & BRAND</h2>
-              </div>
-            </div>
-
-            <div className="w-full p-4">
-              <div className="w-full flex flex-col md:flex-row gap-4 mt-4">
-                <select className="w-full p-2 rounded bg-white text-xl text-black">
-                  <option value="">Year</option>
-                  {/* Add options for years */}
-                </select>
-                <select className="w-full p-2 rounded bg-white text-xl text-black">
-                  <option value="">Make</option>
-                  {/* Add options for makes */}
-                </select>
-                <select className="w-full p-2 rounded bg-white text-xl text-black">
-                  <option value="">Model</option>
-                  {/* Add options for models */}
-                </select>
-                <select className="w-full p-2 rounded bg-white text-xl text-black">
-                  <option value="">Drive/Trim</option>
-                  {/* Add options for trims */}
-                </select>
+              <div
+                className={`w-full p-4 cursor-pointer ${activeTab === 'wheels' ? 'bg-primary hover:bg-primary-hover' : 'bg-black'}`}
+                onClick={() => setActiveTab('wheels')}
+              >
+                <h2 className="uppercase text-base sm:text-xl">WHEELS BY SIZE & BRAND</h2>
               </div>
             </div>
 
-            <div className="w-full p-4">
-              <button className="w-full bg-primary text-white py-3 text-lg uppercase ">
-                Shop wheels
-              </button>
-            </div>
+            {activeTab === 'vehicle' ? <HomeYmm /> : <WheelsBySizeAndBrand />}
           </div>
         </div>
       </div>

@@ -1,9 +1,17 @@
 "use client";
+import { removeUser } from "@/app/globalRedux/features/user/user-slice";
+import Container from "@/app/ui/container/container";
 import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
-import { Input } from "@/components/ui/input";
-import { Field, Form, Formik } from "formik";
+import { apiBaseUrl } from "@/app/utils/api";
+import { TextInput } from "@/components/shared/text-input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import useAuth from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 type ChangePasswordValues = {
   currentPassword: string;
@@ -12,119 +20,134 @@ type ChangePasswordValues = {
 };
 
 const ChangePassword = () => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<
+    {
+      message: string;
+    }[]
+  >([]);
+  const { user } = useAuth();
   const router = useRouter();
+  const form = useForm({
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+    mode: "onSubmit",
+    reValidateMode: "onChange",
+  });
 
-  const handleSubmit = (values: ChangePasswordValues) => {
-    setLoading(true);
-    console.log("values = ", values);
+  const handleLogout = () => {
+    dispatch(removeUser());
     router.push("/login");
-    setLoading(false);
+  };
+
+  const changePasswordApi = async (values: ChangePasswordValues) => {
+    try {
+      setLoading(true);
+      setErrors([]);
+      const response = await fetch(`${apiBaseUrl}/auth/change-password`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.accessToken}`,
+        },
+        body: JSON.stringify({
+          oldPassword: values.currentPassword,
+          newPassword: values.newPassword,
+        }),
+      });
+      if (response.ok) {
+        handleLogout();
+      } else {
+        const errorData = await response.json();
+        // setErrors(errorData.errors);
+        // throw new Error(errorData.errors || "Failed to change password.");
+        if (Array.isArray(errorData.errors)) {
+          setErrors(errorData.errors);
+        } else {
+          setErrors([
+            { message: errorData.message || "Failed to change password." },
+          ]);
+        }
+
+        throw new Error(errorData.message || "Failed to change password.");
+      }
+    } catch (err) {
+      // setError((err as Error).message);
+      setErrors((prevErrors) => [
+        ...prevErrors,
+        { message: (err as Error).message || "Something went wrong." },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSubmit = (values: ChangePasswordValues) => {
+    if (values.newPassword !== values.confirmPassword) {
+      setErrors([
+        { message: "New password and confirm password do not match." },
+      ]);
+      return;
+    }
+    changePasswordApi(values);
   };
 
   return (
-    <div className="border p-8 w-full sm:w-[80%] md:w-[50%] mx-auto">
-      {loading ? (
-        <div className="w-full">
-          <LoadingSpinner />
-          <h1 className="text-center text-2xl text-primary mt-10">
-            Please Wait
-          </h1>
-        </div>
-      ) : (
-        <Formik
-          initialValues={{
-            newPassword: "",
-            currentPassword: "",
-            confirmPassword: "",
-          }}
-          validate={(values) => {
-            const errors: Partial<ChangePasswordValues> = {};
-            if (!values.currentPassword) {
-              errors.currentPassword = "Current password is required.";
-            }
-            if (!values.newPassword) {
-              errors.newPassword = "New password is required.";
-            }
-            if (values.newPassword !== values.confirmPassword) {
-              errors.confirmPassword = "Passwords do not match.";
-            }
-            return errors;
-          }}
-          onSubmit={handleSubmit}
-        >
-          {() => (
-            <Form>
-              <div className="space-y-4 mt-4">
-                <h1 className="text-2xl font-semibold">Password Change</h1>
-                <div>
-                  <label
-                    className="block font-semibold mb-1 text-black "
-                    htmlFor="password"
-                  >
-                    New password (leave blank to leave unchanged)
-                  </label>
-                  <Field name="newPassword">
-                    {({ field }: any) => (
-                      <Input
-                        {...field}
-                        type="newPassword"
-                        className={`bg-white`}
-                      />
-                    )}
-                  </Field>
-                </div>
-
-                <div>
-                  <label
-                    className="block font-semibold mb-1 text-black "
-                    htmlFor="password"
-                  >
-                    Current password (leave blank to leave unchanged)
-                  </label>
-                  <Field name="currentPassword">
-                    {({ field }: any) => (
-                      <Input
-                        {...field}
-                        type="currentPassword"
-                        className={`bg-white`}
-                      />
-                    )}
-                  </Field>
-                </div>
-
-                <div>
-                  <label
-                    className="block font-semibold mb-1 text-black "
-                    htmlFor="password"
-                  >
-                    Confirm new password
-                  </label>
-                  <Field name="confirmPassword">
-                    {({ field }: any) => (
-                      <Input
-                        {...field}
-                        type="confirmPassword"
-                        className={`bg-white`}
-                      />
-                    )}
-                  </Field>
-                </div>
-              </div>
-              <div className="mt-8">
-                <button
-                  className={"box-button disabled:bg-red-300"}
-                  type="submit"
-                  disabled={loading}
+    <Container>
+      <div className="border-x border-b p-8">
+        {loading ? (
+          <div className="w-full">
+            <LoadingSpinner />
+            <h1 className="mt-10 text-center text-2xl text-primary">
+              Please Wait
+            </h1>
+          </div>
+        ) : (
+          <>
+            {errors.length > 0 &&
+              errors.map((error) => (
+                <Alert
+                  variant="destructive"
+                  key={error.message}
+                  className="mt-4"
                 >
-                  Save changes
-                </button>
-              </div>
+                  <AlertDescription>{error.message}</AlertDescription>
+                </Alert>
+              ))}
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col gap-y-4"
+              >
+                <TextInput
+                  control={form.control}
+                  type="password"
+                  name="currentPassword"
+                  label="Current Password (leave blank to leave unchanged)"
+                />
+                <TextInput
+                  control={form.control}
+                  type="password"
+                  name="newPassword"
+                  label="New Password (leave blank to leave unchanged)"
+                />
+                <TextInput
+                  control={form.control}
+                  type="password"
+                  name="confirmPassword"
+                  label="Confirm new Password"
+                />
+                <Button className="w-full text-lg font-semibold">Save</Button>
+              </form>
             </Form>
-          )}
-        </Formik>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+    </Container>
   );
 };
 

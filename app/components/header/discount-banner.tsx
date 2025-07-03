@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 
 export default function DiscountBanner() {
   const [isVisible, setIsVisible] = useState(true);
-  console.log("isVisible = ", isVisible);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -16,7 +15,7 @@ export default function DiscountBanner() {
   }, []);
 
   return (
-    <div className="bg-emerald-500 text-white text-xl font-semibold py-2 overflow-hidden">
+    <div className="overflow-hidden bg-primary hover:bg-primary-hover py-2 text-xl font-semibold text-white">
       <motion.div
         initial={{ x: "100%" }}
         animate={{ x: "-100%" }}

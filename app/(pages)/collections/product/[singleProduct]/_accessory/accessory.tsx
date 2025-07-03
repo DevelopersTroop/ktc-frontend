@@ -1,4 +1,4 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
 import ImageGallery from "../image-gallery";
@@ -7,10 +7,12 @@ import AccessoryDetails from "./accessory-details";
 import AccessorySpecifications from "./accessory-specifications";
 import AccessoryTitle from "./accessory-title";
 import ActionButtons from "./action-buttons";
+import AccessoryProvider from "./context/AccessoryProvider";
+import { Reviews } from "@/components/shared/reviews/Reviews";
 
 const Accessory = ({ product }: { product: TInventoryItem }) => {
   return (
-    <>
+    <AccessoryProvider>
       <Breadcrumb>
         <Item href={"/"}>Home</Item>
         <Item href={"/collections/product-category/accessories"}>
@@ -20,7 +22,7 @@ const Accessory = ({ product }: { product: TInventoryItem }) => {
           Accessories
         </Item>
         <Item href={`/collections/product/${product.slug}`}>
-          {product.title?.subtitle}
+          {product?.sku}
         </Item>
       </Breadcrumb>
       <div className="w-full flex flex-col gap-4 mt-4 lg:border sm:p-4">
@@ -29,7 +31,7 @@ const Accessory = ({ product }: { product: TInventoryItem }) => {
           {/* image gallery */}
           <div className="w-full">
             <div>
-              <ImageGallery product={product} />
+              <ImageGallery product={product} fallbackImage="/accessory-not-available.webp" />
             </div>
             <div className="hidden lg:block mt-4">
               <AccessorySpecifications product={product} />
@@ -37,6 +39,9 @@ const Accessory = ({ product }: { product: TInventoryItem }) => {
 
             <div className="hidden lg:block mt-4">
               <AccessoryDescription product={product} />
+            </div>
+            <div className="hidden lg:block mt-4">
+              <Reviews productId={product._id} />
             </div>
           </div>
           {/* product details */}
@@ -55,8 +60,11 @@ const Accessory = ({ product }: { product: TInventoryItem }) => {
         <div className="mt-4 lg:hidden">
           <AccessoryDescription product={product} />
         </div>
+        <div className="mt-4 lg:hidden">
+          <Reviews productId={product._id} />
+        </div>
       </div>
-    </>
+    </AccessoryProvider>
   );
 };
 

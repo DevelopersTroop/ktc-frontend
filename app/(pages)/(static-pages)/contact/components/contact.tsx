@@ -45,7 +45,7 @@ const Contact: React.FC = () => {
             <div>
               <h4 className="font-normal">Email address</h4>
               <p className="text-gray-500">
-                khalik.aymen@gmail.com
+                info@ktcaudio.com
               </p>
             </div>
           </div>

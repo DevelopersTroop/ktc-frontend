@@ -1,8 +1,7 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 import Link from "next/link";
-import { AiOutlineDollarCircle } from "react-icons/ai";
 import { LiaShippingFastSolid } from "react-icons/lia";
-import { MdOutlineLocalPhone, MdOutlineShoppingCart } from "react-icons/md";
+import { MdOutlineLocalPhone } from "react-icons/md";
 import { PiHandCoinsDuotone } from "react-icons/pi";
 
 const WheelDetails = ({ product }: { product: TInventoryItem }) => {
@@ -10,25 +9,25 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
     <div className="flex flex-col gap-5">
       <div>
         <p className="text-gray-700">
-          <span className="font-semibold text-2xl">$315.00</span> each{" "}
-          <span className="font-semibold text-2xl">
-            /${product.price.toFixed(2)}
+          <span className="text-2xl font-semibold">${product?.msrp}</span> each{" "}
+          <span className="text-2xl font-semibold">
+            /${(product?.msrp * 4).toFixed(2)}
           </span>{" "}
           set
         </p>
       </div>
 
-      <div className=" flex items-center gap-2">
+      {/* <div className=" flex items-center gap-2">
         <div className={"rounded-full p-1 inline-block bg-primary"}>
           <AiOutlineDollarCircle className={"text-white"} />
         </div>
         <p className="text-base uppercase text-gray-600">
-          {product.item_promo}
+          {product.price}
         </p>
-      </div>
+      </div> */}
 
-      <div className=" flex items-center gap-2">
-        <div className={"rounded-full p-1 inline-block bg-primary"}>
+      <div className="flex items-center gap-2">
+        <div className={"inline-block rounded-full bg-primary p-1"}>
           <LiaShippingFastSolid className={"text-white"} />
         </div>
         <div className="text-base uppercase">
@@ -38,29 +37,28 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
         </div>
       </div>
 
-      <div className=" flex items-center gap-2">
+      {/* <div className=" flex items-center gap-2">
         <div className={"rounded-full p-1 inline-block bg-primary"}>
           <MdOutlineShoppingCart className={"text-white"} />
         </div>
         <div className="text-base uppercase">
-          <p className="text-gray-600">{product.item_shipping}</p>
+          <p className="text-gray-600">{product.price}</p>
           <p className="text-gray-600">
             <span className="text-black font-semibold">
-              {product.delivery_date}
             </span>{" "}
             to the lower 48
           </p>
         </div>
-      </div>
+      </div> */}
 
-      <div className=" flex items-center gap-2">
-        <div className={"rounded-full p-1 inline-block bg-primary"}>
+      <div className="flex items-center gap-2">
+        <div className={"inline-block rounded-full bg-primary p-1"}>
           <PiHandCoinsDuotone className={"text-white"} />
         </div>
         <div className="text-base">
           <p className="text-gray-800">
             Starting at $79/mo or 0% APR with{" "}
-            <span className="text-btext font-bold">affirm</span>{" "}
+            <span className="font-bold text-btext">affirm</span>{" "}
             <Link href="#" className="text-gray-900">
               Check your purchasing power
             </Link>
@@ -68,8 +66,8 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
         </div>
       </div>
 
-      <div className=" flex items-center gap-2">
-        <div className={"rounded-full p-1 inline-block bg-primary"}>
+      <div className="flex items-center gap-2">
+        <div className={"inline-block rounded-full bg-primary p-1"}>
           <PiHandCoinsDuotone className={"text-white"} />
         </div>
         <div className="text-base">
@@ -79,17 +77,17 @@ const WheelDetails = ({ product }: { product: TInventoryItem }) => {
               <img
                 src="/paypal.svg"
                 alt="paypal"
-                className="h-5 inline-block"
+                className="inline-block h-5"
               />
               <br />
-              <span className="underline text-primary">Learn More</span>{" "}
+              <span className="text-primary underline">Learn More</span>{" "}
             </p>
           </Link>
         </div>
       </div>
 
-      <div className=" flex items-center gap-2">
-        <div className={"rounded-full p-1 inline-block bg-primary"}>
+      <div className="flex items-center gap-2">
+        <div className={"inline-block rounded-full bg-primary p-1"}>
           <MdOutlineLocalPhone className={"text-white"} />
         </div>
         <p className="text-base uppercase text-gray-600">

@@ -1,13 +1,13 @@
-import { TInventoryItem } from "@/app/types/product";
+import { TInventoryItem } from "@/types/product";
 
 const WheelDescription = ({ product }: { product: TInventoryItem }) => {
   return (
     <div className="w-full">
-      <h2 className="text-4xl text-gray-700 font-bold">
+      <h2 className="text-4xl font-bold text-gray-700">
         {" "}
-        About The {product.title?.brand}{" "}
+        About The {product.brand}{" "}
       </h2>
-      <p className="text-base text-gray-600 mt-2">{product?.description}</p>
+      <p className="mt-2 text-base text-gray-600">{product?.title}</p>
     </div>
   );
 };
