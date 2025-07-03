@@ -102,7 +102,11 @@ jobs:
             rm -rf .next/ &&
             npm install --legacy-peer-deps &&
             npm run build &&
-            pm2 restart ktc-frontend &&
+            if pm2 show ktc-web | grep -q 'online'; then
+              pm2 restart ktc-web
+            else
+              pm2 start ecosystem.config.js --only ktc-web
+            fi &&
             pm2 save
           "
           rm private_key.pem
