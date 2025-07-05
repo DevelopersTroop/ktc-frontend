@@ -24,10 +24,10 @@ const navMenus: NavMenu[] = [
           },
           {
             label: "Wheels",
-            href: "#",
+            href: "/collections/product-category/wheels",
             children: [
               {
-                href: "#",
+                href: "/collections/product-category/wheels",
                 label: "Shop all wheels",
               },
               {
@@ -40,11 +40,11 @@ const navMenus: NavMenu[] = [
       },
       {
         label: "Tires",
-        href: "#",
+        href: "/collections/product-category/tires",
         children: [
           {
             label: "Shop all Tires",
-            href: "#",
+            href: "/collections/product-category/tires",
           },
           {
             label: "All-Season",
@@ -74,11 +74,11 @@ const navMenus: NavMenu[] = [
       },
       {
         label: "Suspension",
-        href: "#",
+        href: "/collections/product-category/suspension",
         children: [
           {
             label: "Shop All Suspension",
-            href: "#",
+            href: "/collections/product-category/suspension",
           },
           {
             label: "Leveling Kits",
@@ -250,15 +250,15 @@ const navMenus: NavMenu[] = [
           },
           {
             label: "Wheel Accessories",
-            href: "#",
+            href: "/collections/product-category/accessories",
             children: [
               {
                 label: "Center Caps",
-                href: "#",
+                href: "/collections/product-category/accessories",
               },
               {
                 label: "Lug Nuts",
-                href: "#",
+                href: "/collections/product-category/accessories",
               },
               {
                 label: "Wheel Spacers",
@@ -266,7 +266,7 @@ const navMenus: NavMenu[] = [
               },
               {
                 label: "Wheel Adapters",
-                href: "#",
+                href: "/collections/product-category/accessories",
               },
             ],
           },
@@ -275,11 +275,11 @@ const navMenus: NavMenu[] = [
     ],
   },
   {
-    href: "#",
+    href: "/add-my-truck",
     label: "ADD MY TRUCK",
   },
   {
-    href: "#",
+    href: "/ktc-audio-gallery",
     label: "SEARCH GALLERY",
   },
   {
@@ -289,15 +289,15 @@ const navMenus: NavMenu[] = [
     children: [
       {
         label: "Wheels",
-        href: "#",
+        href: "/collections/product-category/wheels",
       },
       {
         label: "Tires",
-        href: "#",
+        href: "/collections/product-category/tires",
       },
       {
         label: "Accessories",
-        href: "#",
+        href: "/collections/product-category/accessories",
       },
     ],
   },

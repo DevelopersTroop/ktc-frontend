@@ -9,7 +9,6 @@ import QuantityInput from "./quantity-input";
 import { TireContext } from "./context/TireProvider";
 import { CartData } from "../_wheels/normal-action";
 import { useRouter } from "next/navigation";
-import { Router } from "lucide-react";
 // import { CenterCapContext } from "./context/CenterCapProvider";
 
 const ActionButtons = ({ product }: { product: TInventoryItem }) => {
