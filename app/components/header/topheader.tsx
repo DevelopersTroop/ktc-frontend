@@ -3,7 +3,7 @@ import { useTypedSelector } from "@/app/globalRedux/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useAuth from "@/hooks/useAuth";
-import { Phone, Search, ShoppingCart, User } from "lucide-react";
+import { Phone, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import MobileMenu from "./menu/mobile-menu/mobile-menu";

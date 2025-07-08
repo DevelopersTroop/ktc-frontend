@@ -1,9 +1,8 @@
 "use client";
 import { ProductCardRating } from "@/components/shared/reviews/ProductCardRating";
-import { ProductRating } from "@/components/shared/reviews/ProductRating";
 import { TInventoryItem } from "@/types/product";
-import { FaStar } from "react-icons/fa6";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { FaDollarSign } from "react-icons/fa6";
 
 const CardDescription = ({ product }: { product: TInventoryItem }) => {
   return (
@@ -39,23 +38,39 @@ const CardDescription = ({ product }: { product: TInventoryItem }) => {
       </div>
 
       <div className="mt-3 flex flex-col gap-3">
-        {/* <div className="flex items-center gap-2">
-          <div className={"inline-block rounded-full bg-primary p-1"}>
-            <AiOutlineDollarCircle className={"text-white"} />
-          </div>
-          <p className="text-xs uppercase text-gray-800">
-            {product.item_promo}
-          </p>
-        </div> */}
+        <div className="flex items-center gap-2">
+                <div className={"inline-block rounded-full bg-primary p-1"}>
+                  <FaDollarSign className={"text-white"} />
+                </div>
+                <div className="text-xs uppercase">
+                  <p className="text-gray-600">
+                    Save up to <span className="font-semibold"> $20</span> When adding tires to package
+                  </p>
+                </div>
+              </div>
         <div className="flex items-center gap-2">
           <div className={"inline-block rounded-full bg-primary p-1"}>
             <MdOutlineShoppingCart className={"text-white"} />
           </div>
           <div className="text-xs uppercase">
-            <p className="text-gray-800">{product.item_shipping}</p>
-            <p className="font-semibold">
+            <p className="text-gray-800">In Stock & Free Quick Delivery </p>
+            <p className="">
               {" "}
-              {product.delivery_date} to the lower 48{" "}
+              As Fast As: <span className="font-semibold">  {(() => {
+                                      const today = new Date();
+                                      const start = new Date(today);
+                                      start.setDate(today.getDate() + 3);
+                                      const end = new Date(today);
+                                      end.setDate(today.getDate() + 7);
+
+                                      const format = (date: Date) =>
+                                        date.toLocaleString("en-US", {
+                                          month: "short",
+                                          day: "2-digit",
+                                        });
+
+                                      return `${format(start)} - ${format(end)}`;
+                                    })()} </span> to the lower 48{" "}
             </p>
           </div>
         </div>

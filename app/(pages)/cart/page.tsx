@@ -15,11 +15,12 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { useSelector } from "react-redux";
 import Quantity from "./_components/quantity";
 import EmptyCart from "./empty-cart";
+import { TCartProduct } from "@/types/cart";
 const Cart = () => {
   const { saveAllProductFromCart } = useWishlist();
   const [isShippingProtectionChecked, setIsShippingProtectionChecked] =
     useState<boolean>(false);
-  const shippingProtectionCost = 6.0;
+  const shippingProtectionCost = 65.0;
 
   const cart = useSelector((state: RootState) => state.persisted.cart);
   const cartProducts = useTypedSelector(
@@ -37,14 +38,29 @@ const Cart = () => {
 
   console.log('cart product = ', cartProducts);
 
+  const [shippingOption, setShippingOption] = useState<Record<string, "standard" | "speedy">>({});
+  const speedyShippingCost = 32.0;
+  const handleShippingOptionChange = (cartSerial: string, option: "standard" | "speedy") => {
+      setShippingOption((prev) => ({
+        ...prev,
+        [cartSerial]: option,
+      }));
+    };
+
+  const totalSpeedyShipping = Object.values(cartProducts).reduce((sum, product: TCartProduct) => {
+  return shippingOption[product.cartSerial] === "speedy" ? sum + speedyShippingCost : sum;
+}, 0);
+
   useEffect(() => {
     const numericSubTotal = Number(subTotalCost); // Ensure it's a clean number
-    const updatedTotal = isShippingProtectionChecked
-      ? numericSubTotal + shippingProtectionCost
-      : numericSubTotal;
+    let updatedTotal = numericSubTotal + totalSpeedyShipping;
+    if(isShippingProtectionChecked) updatedTotal += shippingProtectionCost;
+    // const updatedTotal = isShippingProtectionChecked
+    //   ? numericSubTotal + shippingProtectionCost
+    //   : numericSubTotal;
 
     setTotalCost(updatedTotal); // Format properly
-  }, [isShippingProtectionChecked, subTotalCost]);
+  }, [isShippingProtectionChecked, subTotalCost, totalSpeedyShipping]);
 
   const dispatch = useAppDispatch();
 
@@ -58,7 +74,7 @@ const Cart = () => {
     } else {
       dispatch(updateShippingProtection(0))
     }
-  }, [isShippingProtectionChecked])
+  }, [isShippingProtectionChecked, dispatch])
 
   return (
     <div>
@@ -183,16 +199,64 @@ const Cart = () => {
                                   <input
                                     className="h-5 w-5"
                                     type="checkbox"
-                                    id={`delivery-option-${product._id}`}
-                                    name="delivery-option"
-                                    defaultChecked
+                                    id={`delivery-option-standard-${product._id}`}
+                                    name={`delivery-option-${product.cartSerial}`}
+                                    checked={shippingOption[product.cartSerial] !== "speedy"}
+                                    onChange={() => handleShippingOptionChange(product.cartSerial, "standard")}
                                   />
                                 </div>
                                 <div className="flex flex-col text-lg">
                                   <p className="font-semibold text-primary">
-                                    Tuesday, Jan 21
+                                    {(() => {
+                                      const today = new Date();
+                                      const start = new Date(today);
+                                      start.setDate(today.getDate() + 3);
+                                      const end = new Date(today);
+                                      end.setDate(today.getDate() + 7);
+
+                                      const format = (date: Date) =>
+                                        date.toLocaleString("en-US", {
+                                          month: "short",
+                                          day: "2-digit",
+                                        });
+
+                                      return `${format(start)} - ${format(end)}`;
+                                    })()}
                                   </p>
-                                  <p>Standard Shipping</p>
+                                  <p>Free Standard Shipping</p>
+                                </div>
+                              </div>
+                              <div className="flex flex-row items-center gap-2 p-5 shadow-2xl md:p-0 md:shadow-none pt-10">
+                                <div>
+                                  <input
+                                    className="h-5 w-5"
+                                    type="checkbox"
+                                    id={`delivery-option-speedy-${product._id}`}
+                                    name={`delivery-option-${product.cartSerial}`}
+                                    checked={shippingOption[product.cartSerial] === "speedy"}
+                                    onChange={() => handleShippingOptionChange(product.cartSerial, "speedy")}
+                                  />
+                                </div>
+                                <div className="flex flex-col text-lg">
+                                  <p className="font-semibold text-primary">
+                                    {(() => {
+                                      const today = new Date();
+                                      const start = new Date(today);
+                                      start.setDate(today.getDate() + 1);
+                                      const end = new Date(today);
+                                      end.setDate(today.getDate() + 3);
+
+                                      const format = (date: Date) =>
+                                        date.toLocaleString("en-US", {
+                                          month: "short",
+                                          day: "2-digit",
+                                        });
+
+                                      return `${format(start)} - ${format(end)}`;
+                                    })()}
+                                  </p>
+                                  <p className="font-semibold" >$32</p>
+                                  <p>Speedy Shipping</p>
                                 </div>
                               </div>
                             </div>
@@ -249,7 +313,9 @@ const Cart = () => {
                     </div>
                     <div className="flex justify-between text-start text-xl font-medium">
                       <p className="uppercase">Shipping</p>
-                      <p>$0.00</p>
+                      <p>
+                        <p>${totalSpeedyShipping.toFixed(2)}</p>
+                      </p>
                     </div>
                     <div className="flex justify-between text-start text-xl font-medium">
                       <p className="uppercase">Shipping Protection</p>

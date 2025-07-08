@@ -301,43 +301,25 @@ const navMenus: NavMenu[] = [
       },
     ],
   },
-  //   {
-  //     label: "In Stock",
-  //     href: "/collections/product-category/in-stock-wheels",
-  //     meagMenu: false,
-  //     children: [
-  //       {
-  //         label: "Wheels",
-  //         href: "/collections/product-category/in-stock-wheels",
-  //         children: [
-  //           {
-  //             label: "Passenger",
-  //             href: "/collections/product-category/in-stock-wheels?forging_style=Passenger%2CSignature+Series%2CSignature+XL+Series%2CAXL+Concave%2CWire+Wheels",
-  //           },
-  //           {
-  //             label: "Off-Road",
-  //             href: "/collections/product-category/in-stock-wheels?forging_style=Off-Road",
-  //           },
-  //           {
-  //             label: "Dually",
-  //             href: "/collections/product-category/in-stock-wheels?forging_style=Dually",
-  //           },
-  //           {
-  //             label: "Wire Wheels",
-  //             href: "/collections/product-category/in-stock-wheels?forging_style=Wire+Wheels",
-  //           },
-  //           {
-  //             label: "Browse All",
-  //             href: "/collections/product-category/in-stock-wheels",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         label: "Steering Wheels",
-  //         href: "/collections/product-category/in-stock-steering-wheel",
-  //       },
-  //     ],
-  //   }
+  {
+    label: "RESOURCES",
+    href: "#",
+    meagMenu: false,
+    children: [
+      {
+        label: "About Us",
+        href: "/about",
+      },
+      {
+        label: "Track Your Order",
+        href: "/track-order",
+      },
+      {
+        label: "Contact",
+        href: "/contact",
+      },
+    ],
+  },
 ];
 
 export default navMenus;

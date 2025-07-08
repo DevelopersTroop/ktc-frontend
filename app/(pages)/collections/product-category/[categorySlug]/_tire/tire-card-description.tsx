@@ -3,6 +3,7 @@ import { ProductCardRating } from "@/components/shared/reviews/ProductCardRating
 import { TInventoryItem } from "@/types/product";
 import { FaStar } from "react-icons/fa6";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { PiTireBold } from "react-icons/pi";
 // import { PiTireBold } from "react-icons/pi";
 
 const TireCardDescription = ({ product }: { product: TInventoryItem }) => {
@@ -46,7 +47,7 @@ const TireCardDescription = ({ product }: { product: TInventoryItem }) => {
             {product.item_promo}
           </p>
         </div> */}
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <div className={"inline-block rounded-full bg-primary p-1"}>
             <MdOutlineShoppingCart className={"text-white"} />
           </div>
@@ -57,21 +58,47 @@ const TireCardDescription = ({ product }: { product: TInventoryItem }) => {
               {product.delivery_date} to the lower 48{" "}
             </p>
           </div>
+        </div> */}
+        <div className="flex items-center gap-2">
+          <div className={"inline-block rounded-full bg-primary p-1"}>
+            <MdOutlineShoppingCart className={"text-white"} />
+          </div>
+          <div className="text-xs uppercase">
+            <p className="text-gray-800">In Stock & Free Quick Delivery </p>
+            <p className="">
+              {" "}
+              As Fast As: <span className="font-semibold">  {(() => {
+                                      const today = new Date();
+                                      const start = new Date(today);
+                                      start.setDate(today.getDate() + 3);
+                                      const end = new Date(today);
+                                      end.setDate(today.getDate() + 7);
+
+                                      const format = (date: Date) =>
+                                        date.toLocaleString("en-US", {
+                                          month: "short",
+                                          day: "2-digit",
+                                        });
+
+                                      return `${format(start)} - ${format(end)}`;
+                                    })()} </span> to the lower 48{" "}
+            </p>
+          </div>
         </div>
-        {/* <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <div className={"inline-block rounded-full bg-primary p-1"}>
             <PiTireBold className={"text-white"} />
           </div>
           <p className="text-xs uppercase text-gray-800">
-            {product?.tire_type}
+            {"Performance"}
           </p>
-        </div> */}
-        {/* <div className="flex items-center gap-2">
+        </div>
+        <div className="flex items-center gap-2">
           <div className={"inline-block rounded-full bg-primary p-1"}>
             <FaStar className={"text-white"} />
           </div>
-          <p className="text-xs uppercase text-gray-800">{product?.warranty}</p>
-        </div> */}
+          <p className="text-xs uppercase text-gray-800">{"Manufacturer Mileage Warranty"}</p>
+        </div>
       </div>
 
       {/* product pricing */}
