@@ -93,6 +93,19 @@ const Cart = () => {
               <div className="flex w-full flex-col gap-4 min-[1100px]:flex-row min-[1100px]:gap-20">
                 <div className="order-2 flex w-full flex-col gap-6 px-[5%] min-[1100px]:order-1 min-[1100px]:w-4/6 min-[1100px]:px-0">
                   {Object.values(cartProducts).map((product, index) => {
+                    const categoryTitle = product?.category?.title?.toLowerCase();
+                    console.log("categoryTitle =====   ", categoryTitle);
+                    let emptyThumbnail = "";
+                    if (categoryTitle === "wheels") {
+                      emptyThumbnail = "/not-available.webp";
+                    } else if (categoryTitle === "tires") {
+                      emptyThumbnail = "/tire-not-available.webp";
+                    } else if (categoryTitle === "accessories") {
+                      emptyThumbnail = "/accessory-not-available.webp";
+                    }else{
+                      emptyThumbnail = "/not-available.webp";
+                    }
+
                     return (
                       <div key={index} className="w-full bg-white p-4">
                         <div className="flex gap-4 text-black">
@@ -116,19 +129,26 @@ const Cart = () => {
                           <div className="order-2 w-full md:order-1 md:w-4/6">
                             <div className="flex w-full items-center gap-5 md:items-start">
                               <div className="min-w-[100px]">
-                                <Image
-                                  className={
-                                    "h-full w-[100px] rounded-xl object-cover"
-                                  }
-                                  height={100}
-                                  width={100}
-                                  alt="product image"
-                                  src={
-                                    product.thumbnail
-                                      ? product.thumbnail
-                                      : "/not-available.webp"
-                                  }
-                                ></Image>
+                                {
+                                  product?.thumbnail && product.thumbnail !== "" ? (
+                                    <Image
+                                      className="h-full w-[100px] rounded-xl object-cover"
+                                      height={100}
+                                      width={100}
+                                      alt="product image"
+                                      src={product.thumbnail}
+                                    />
+                                  ) : (
+                                    <Image
+                                      className="h-full w-[100px] rounded-xl object-cover"
+                                      height={100}
+                                      width={100}
+                                      alt={product?.category?.title}
+                                      src={emptyThumbnail}
+                                    />
+                                  )
+                                }
+                                
                               </div>
                               <div className="hidden md:block">
                                 <p className="text-xl font-semibold">
@@ -226,7 +246,7 @@ const Cart = () => {
                                   <p>Free Standard Shipping</p>
                                 </div>
                               </div>
-                              <div className="flex flex-row items-center gap-2 p-5 shadow-2xl md:p-0 md:shadow-none pt-10">
+                              <div className="flex flex-row items-center gap-2 p-5 shadow-2xl md:p-0 md:shadow-none mt-4">
                                 <div>
                                   <input
                                     className="h-5 w-5"

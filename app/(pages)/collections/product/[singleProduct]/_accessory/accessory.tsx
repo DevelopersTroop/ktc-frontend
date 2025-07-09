@@ -37,15 +37,15 @@ const Accessory = ({ product }: { product: TInventoryItem }) => {
               <AccessorySpecifications product={product} />
             </div>
 
-            <div className="hidden lg:block mt-4">
+            {/* <div className="hidden lg:block mt-4">
               <AccessoryDescription product={product} />
             </div>
             <div className="hidden lg:block mt-4">
               <Reviews productId={product._id} />
-            </div>
+            </div> */}
           </div>
           {/* product details */}
-          <div className="max-w-[330px] mx-auto p-2 flex flex-col gap-4">
+          <div className="mx-auto flex max-w-[330px] flex-col gap-4 p-2">
             <AccessoryDetails product={product} />
             <div>
               <ActionButtons product={product} />
@@ -57,10 +57,10 @@ const Accessory = ({ product }: { product: TInventoryItem }) => {
           <AccessorySpecifications product={product} />
         </div>
 
-        <div className="mt-4 lg:hidden">
+        <div className="mt-4 ">
           <AccessoryDescription product={product} />
         </div>
-        <div className="mt-4 lg:hidden">
+        <div className="mt-4">
           <Reviews productId={product._id} />
         </div>
       </div>

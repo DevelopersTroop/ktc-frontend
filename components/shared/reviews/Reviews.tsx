@@ -85,12 +85,12 @@ export const Reviews: React.FC<{ productId: string }> = ({ productId }) => {
                         <div className='bg-gray-500 text-white text-center py-1 my-2'>
                             <p>Product Reviews ({data?.count})</p>
                         </div>
-                        <div className='grid grid-cols-12 gap-30'>
+                        <div className='w-full flex flex-col lg:flex-row gap-30'>
 
 
                             {
                                 data?.reviews?.length ? (
-                                    <div className='col-span-6 flex flex-col gap-y-4'>
+                                    <div className='w-full lg:w-[50%] flex flex-col gap-y-4'>
                                         <div className='text-xl font-semibold'>
                                             {data?.average}
                                             <h2>OUT OF 5</h2>
@@ -125,12 +125,12 @@ export const Reviews: React.FC<{ productId: string }> = ({ productId }) => {
                                         })}
                                     </div>
                                 ) : (
-                                    <div className='col-span-6 '>
+                                    <div className='w-full lg:w-[50%] '>
                                         <p>No reveiws yet</p>
                                     </div>
                                 )
                             }
-                            <div className='col-span-6'>
+                            <div className='w-full lg:w-[50%]'>
                                 <div className="grid grid-cols-1  text-black items-center">
                                     <div className="space-y-xs pl-[2rem] ">
                                         <p className='text-xl font-semibold'>Overall Rankings</p>

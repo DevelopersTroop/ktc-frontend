@@ -74,11 +74,11 @@ const navMenus: NavMenu[] = [
       },
       {
         label: "Suspension",
-        href: "/collections/product-category/suspension",
+        href: "#",
         children: [
           {
             label: "Shop All Suspension",
-            href: "/collections/product-category/suspension",
+            href: "#",
           },
           {
             label: "Leveling Kits",
