@@ -232,10 +232,10 @@ const useYmm = () => {
 
 
 
-    const onYearChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const onYearChange = (data: ChangeEvent<HTMLSelectElement> | string) => {
         setSelectedVehicle((prev) => ({
             ...prev,
-            year: e.target.value,
+            year: typeof data === 'string' ? data : data.target.value,
             make: "",
             model: "",
             bodyType: "",
@@ -271,10 +271,10 @@ const useYmm = () => {
         })
         setIsDisabledSubmit(true);
     }
-    const onMakeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const onMakeChange = (data: ChangeEvent<HTMLSelectElement> | string) => {
         setSelectedVehicle((prev) => ({
             ...prev,
-            make: e.target.value,
+            make: typeof data === 'string' ? data : data.target.value,
             model: "",
             bodyType: "",
         }))
@@ -308,10 +308,10 @@ const useYmm = () => {
         })
         setIsDisabledSubmit(true);
     }
-    const onModelChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const onModelChange = (data: ChangeEvent<HTMLSelectElement> | string) => {
         setSelectedVehicle((prev) => ({
             ...prev,
-            model: e.target.value,
+            model: typeof data === 'string' ? data : data.target.value,
             bodyType: "",
         }))
         // empty all other list
@@ -344,10 +344,10 @@ const useYmm = () => {
         setIsDisabledSubmit(true);
 
     }
-    const onBodyTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const onBodyTypeChange = (data: ChangeEvent<HTMLSelectElement> | string) => {
         setSelectedVehicle((prev) => ({
             ...prev,
-            bodyType: e.target.value,
+            bodyType: typeof data === 'string' ? data : data.target.value,
         }))
         // empty all other list
         dispatch(setYmm({
@@ -376,11 +376,12 @@ const useYmm = () => {
         })
         setIsDisabledSubmit(true);
     }
-    const onSubModelChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const onSubModelChange = (data: ChangeEvent<HTMLSelectElement> | string) => {
+        const value = typeof data === 'string' ? data : data.target.value;
         if (ymm.list?.subModels) {
             setSelectedVehicle((prev) => ({
                 ...prev,
-                subModel: ymm.list.subModels?.find(subModel => subModel.SubModel === e.target.value) as typeof ymm.list.subModels[0]
+                subModel: ymm.list.subModels?.find(subModel => subModel.SubModel === value) as typeof ymm.list.subModels[0]
             }))
         }
     }

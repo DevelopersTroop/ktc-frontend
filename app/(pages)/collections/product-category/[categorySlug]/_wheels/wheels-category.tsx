@@ -26,7 +26,8 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   const { filters } = useFilterSync();
   const ymm = useTypedSelector(state => state.yearMakeModel);
   const parsedFilter = wrapWheelFilters(filters, Number.isNaN(page) ? 1 : page, filters["vehicle"] ? ymm.vehicleInformation : {})
-  const { data, isLoading: loading } = useGetProductListQuery(parsedFilter)
+  const { data, isLoading: loading } = useGetProductListQuery(parsedFilter);
+  console.log("filters", filters)
   return (
     <>
       <div className="flex justify-center items-center my-2.5">

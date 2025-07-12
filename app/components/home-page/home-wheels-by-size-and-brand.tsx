@@ -11,6 +11,7 @@ import { z } from "zod";
 const WheelsBySizeAndBrand = () => {
   const { filters, loading } = useFetchFilters("wheels");
   const router = useRouter();
+  console.log("filters", filters)
 
   const form = useForm({
     defaultValues: {
@@ -28,7 +29,6 @@ const WheelsBySizeAndBrand = () => {
       }),
     ),
   });
-
   return (
     <>
       <div className="w-full p-4">

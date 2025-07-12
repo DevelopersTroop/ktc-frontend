@@ -77,7 +77,7 @@ const AddTruckSignUpPage: React.FC = () => {
               lastName: values.lastName,
               email: values.email,
               password: values.password,
-              role: 2,
+              role: "admin/customer",
             })
               .then((response) => {
                 const { statusCode, data, errors } = response;

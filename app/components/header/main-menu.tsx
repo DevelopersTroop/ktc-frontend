@@ -70,7 +70,7 @@ const MainMenu = () => {
             }
             href="/add-login"
           >
-            Add My Truck
+            Add My Vehicle
           </DesktopMenuLink>
         </li>
 

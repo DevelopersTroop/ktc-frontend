@@ -53,7 +53,7 @@ export default function Header() {
           </DropdownMenu>
 
           <Link href="/add-login" className="px-4 py-2 hover:bg-gray-800">
-            ADD MY TRUCK
+            ADD MY VEHICLE
           </Link>
 
           <Link

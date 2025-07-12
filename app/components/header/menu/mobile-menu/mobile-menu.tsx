@@ -121,7 +121,7 @@ const MobileMenu = () => {
                   href="/add-login"
                   className="text-2xl font-bold text-gray-800"
                 >
-                  Add My Truck
+                  Add My Vehicle
                 </Link>
               </div>
          
