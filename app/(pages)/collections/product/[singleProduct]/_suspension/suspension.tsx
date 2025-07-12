@@ -7,6 +7,7 @@ import SuspensionDescription from "./suspension-description";
 import SuspensionDetails from "./suspension-details";
 import SuspensionSpecifications from "./suspension-specifications";
 import SuspensionTitle from "./suspension-title";
+import { Reviews } from "@/components/shared/reviews/Reviews";
 
 const Suspension = ({ product }: { product: TInventoryItem }) => {
   return (
@@ -38,6 +39,9 @@ const Suspension = ({ product }: { product: TInventoryItem }) => {
             <div className="hidden lg:block mt-4">
               <SuspensionDescription product={product} />
             </div>
+            <div className="hidden lg:block mt-4">
+              <Reviews productId={product._id} />
+            </div>
           </div>
           {/* product details */}
           <div className="max-w-[330px] mx-auto p-2 flex flex-col gap-4">
@@ -54,6 +58,9 @@ const Suspension = ({ product }: { product: TInventoryItem }) => {
 
         <div className="mt-4 lg:hidden">
           <SuspensionDescription product={product} />
+        </div>
+        <div className="mt-4 lg:hidden">
+          <Reviews productId={product._id} />
         </div>
       </div>
     </>

@@ -1,4 +1,5 @@
 "use client";
+import { ProductCardRating } from "@/components/shared/reviews/ProductCardRating";
 import { TInventoryItem } from "@/types/product";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { PiHandCoinsDuotone } from "react-icons/pi";
@@ -21,6 +22,9 @@ const SuspensionCardDescription = ({
           {product.title?.subtitle}
         </h3>
       </div>
+
+
+      <ProductCardRating productId={product._id} />
 
       <div className="flex flex-col gap-3 mt-3">
         <div className=" flex items-center gap-2">

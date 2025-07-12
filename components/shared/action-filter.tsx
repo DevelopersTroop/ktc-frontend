@@ -10,7 +10,7 @@ export const ActionFilter = () => {
     clearFilters,
   } = useFilterSync();
 
-  const queryParamsObject = {
+  const queryParamsObject: Record<string, string> = {
     "title,asc": "Name (A to Z)",
     "title,desc": "Name (Z to A)",
     "msrp,asc": "Price (low to high)",

@@ -77,10 +77,10 @@ const SingleProduct = async ({
           </div>
           <div className="px-2">
             <p className="text-4xl font-medium">
-              {galleryProduct.title?.brand}
+              {galleryProduct.title}
             </p>
             <p className="font-medium">
-              {galleryProduct.title?.model} | {galleryProduct.title?.subtitle}
+              {galleryProduct.title} | {galleryProduct.title}
             </p>
           </div>
           <GalleryDetails product={galleryProduct} />
