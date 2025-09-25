@@ -51,7 +51,7 @@ const WheelSpecifications = ({ product }: { product: TInventoryItem }) => {
           </p>
         </div>
         {Object.entries(product).map(([key, value]) => {
-          console.log("TCL: TireSpecifications -> key", key);
+          console.log("TCL: TireSpecifications -> key", key, value);
           if (filterKeyValue(key as keyof TInventoryItem, value)) {
             return (
               <div key={key} className="flex items-center">
