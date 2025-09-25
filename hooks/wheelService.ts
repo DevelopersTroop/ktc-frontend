@@ -6,7 +6,7 @@ export const wrapWheelFilters = (
   page: number,
   vehicleInformation: Partial<TYmmVehicleInformation>
 ) => {
-  const shouldArray = ["brand", "model", "color", "diameter"];
+  const shouldArray = ["brand", "model", "color", "diameter", "brand_desc"];
   const price =
     minPrice !== undefined || maxPrice !== undefined
       ? {

@@ -1,12 +1,4 @@
-import {
-  fetchTireFailure,
-  fetchTireStart,
-  fetchTireSuccess,
-} from "@/app/globalRedux/features/tire";
-import { AppDispatch, RootState } from "@/app/globalRedux/store";
-import { customFetch } from "@/lib/common-fetch";
-import { TInventoryItem } from "@/types/product";
-import { IApiRes } from "@/types/redux-helper";
+import { RootState } from "@/app/globalRedux/store";
 
 export const wrapTireFilters = (
   { minPrice, maxPrice, ...filters }: RootState["tire"]["filters"],
@@ -20,6 +12,7 @@ export const wrapTireFilters = (
     "rim_diameter",
     "width",
     "load_index",
+    "brand_desc",
   ];
   const price =
     minPrice !== undefined || maxPrice !== undefined

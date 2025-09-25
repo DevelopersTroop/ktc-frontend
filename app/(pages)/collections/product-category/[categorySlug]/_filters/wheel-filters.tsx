@@ -37,34 +37,40 @@ const WheelFilters = React.memo(() => {
         />
       </div>
       <div className={"border-y border-gray-300 px-5 py-3"}>
-        <WheelWidth
-          filterKey={"width"}
-          width={filters?.width || []}
-        />
+        <WheelWidth filterKey={"width"} width={filters?.width || []} />
       </div>
       <div className={"border-y border-gray-300 px-5 py-3"}>
-        <WheelOffset
-          filterKey={"offset"}
-          offset={filters?.offset || []}
-        />
+        <WheelOffset filterKey={"offset"} offset={filters?.offset || []} />
       </div>
       <div className={"border-y border-gray-300 px-5 py-3"}>
         <WheelBrand
-          filterKey={"brand"}
-          brand={filters?.brand || []}
+          filterKey={"brand_desc"}
+          brand={filters?.brand_desc || []}
         />
       </div>
       <div className={"border-y border-gray-300 px-5 py-3"}>
-        <WheelModel filterKey={"display_model_no"} model={filters?.display_model_no || []} />
+        <WheelModel
+          filterKey={"display_model_no"}
+          model={filters?.display_model_no || []}
+        />
       </div>
       <div className={"border-y border-gray-300 px-5 py-3"}>
-        <WheelFinish filterKey={"fancy_finish_desc"} finish={filters?.fancy_finish_desc || []} />
+        <WheelFinish
+          filterKey={"fancy_finish_desc"}
+          finish={filters?.fancy_finish_desc || []}
+        />
       </div>
       <div className={"border-y border-gray-300 px-5 py-3"}>
-        <WheelBoltPattern filterKey={"bolt_pattern_metric"} boltPattern={filters?.bolt_pattern_metric || []} />
+        <WheelBoltPattern
+          filterKey={"bolt_pattern_metric"}
+          boltPattern={filters?.bolt_pattern_metric || []}
+        />
       </div>
       <div className={"border-b border-gray-300 px-5 py-3"}>
-        <WheelMaterial filterKey={"material"} material={filters?.material || []} />
+        <WheelMaterial
+          filterKey={"material"}
+          material={filters?.material || []}
+        />
       </div>
     </div>
   );
