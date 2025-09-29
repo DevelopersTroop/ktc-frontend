@@ -11,13 +11,13 @@ export const wrapWheelFilters = (
     "model",
     "color",
     "diameter",
-    "brand_desc",
-    "suspension_brand",
-    "wheel_diameter",
-    "wheel_width",
-    "tire_height",
-    "tire_width",
-    "wheel_offset",
+    "brandDesc",
+    "suspensionBrand",
+    "wheelDiameter",
+    "wheelWidth",
+    "tireHeight",
+    "tireWidth",
+    "wheelOffset",
   ];
   const price =
     minPrice !== undefined || maxPrice !== undefined
