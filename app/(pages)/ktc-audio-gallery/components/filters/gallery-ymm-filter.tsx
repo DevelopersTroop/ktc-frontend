@@ -95,7 +95,7 @@ const GalleryYMMFilters = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {years.map((year) => (
+                      {years?.map((year) => (
                         <SelectItem key={`year-${year}`} value={year}>
                           {year}
                         </SelectItem>

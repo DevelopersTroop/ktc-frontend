@@ -179,3 +179,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+.main-swiper .swiper-button-next,
+.main-swiper .swiper-button-prev {
+  color: white;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 9999px;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.thumbs-swiper .swiper-slide-thumb-active {
+  border: 2px solid #2563eb; /* Tailwind blue-600 */
+}
+
+.custom-gallery .image-gallery-image {
+  height: 100%;
+  max-height: 500px !important;
+  object-fit: cover;
+}
