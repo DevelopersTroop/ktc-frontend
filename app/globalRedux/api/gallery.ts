@@ -83,7 +83,7 @@ export const gallery = baseApi.injectEndpoints({
       any
     >({
       query: (params) => ({
-        url: "/galleries/list",
+        url: "/galleries/client-list",
         params,
       }),
       providesTags: ["Gallery"],
