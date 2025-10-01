@@ -1,10 +1,13 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import SidebarFilters from "../collections/product-category/[categorySlug]/_filters/mobile-filters/sidebar-filters";
 import GalleryFilters from "./components/filters/gallery-filters";
 import Gallery from "./components/gallery";
+import { Button } from "@/components/ui/button";
+import { CreateGalleryModal } from "./components/CreateGalleryModal";
 
 const KtcAudioGalleryPage: React.FC = () => {
+  const [open, setOpen] = useState(false);
   return (
     <div className="">
       <div className="w-full text-center text-2xl py-4">
@@ -15,13 +18,16 @@ const KtcAudioGalleryPage: React.FC = () => {
           <SidebarFilters>
             <GalleryFilters />
           </SidebarFilters>
+          <Button onClick={() => setOpen(true)}>Submit your gallery</Button>
         </div>
         <div className="hidden md:flex flex-col gap-3 md:w-[400px] h-full max-w-[300px]">
           {/* <GalleryYMMFilters /> */}
           <GalleryFilters />
+          <Button onClick={() => setOpen(true)}>Submit your gallery</Button>
         </div>
         <Gallery />
       </div>
+      <CreateGalleryModal open={open} setOpen={setOpen} />
     </div>
   );
 };

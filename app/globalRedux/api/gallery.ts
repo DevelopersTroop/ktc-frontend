@@ -1,10 +1,13 @@
 import { TPaginatedResponse } from "@/types/response";
 import { baseApi } from "./base";
+import { successMessage } from "@/lib/toast";
 
 export interface IGallery {
   _id: string;
   title: string;
   galleryImages?: string[];
+  name?: string;
+  email?: string;
   item_image?: string;
   slug: string;
   subtitle: string;
@@ -83,6 +86,7 @@ export const gallery = baseApi.injectEndpoints({
         url: "/galleries/list",
         params,
       }),
+      providesTags: ["Gallery"],
     }),
     getGallery: builder.query<{ gallery: IGallery }, string>({
       query: (id) => ({
@@ -110,6 +114,23 @@ export const gallery = baseApi.injectEndpoints({
         return { error: { status: 500, data: "Invalid response structure" } };
       },
     }),
+
+    createGallery: builder.mutation<any, Record<string, any>>({
+      query: (data) => ({
+        url: "/galleries",
+        method: "POST",
+        data: data,
+      }),
+      async onQueryStarted(_, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          successMessage(data?.message || "Gallery submitted successfully");
+        } catch {
+          // handle error globally if needed
+        }
+      },
+      invalidatesTags: ["Gallery"],
+    }),
   }),
 });
 
@@ -117,4 +138,5 @@ export const {
   useGetGalleriesQuery,
   useGetFilterListQuery,
   useGetGalleryQuery,
+  useCreateGalleryMutation,
 } = gallery;
