@@ -50,27 +50,27 @@ const TireFilters = () => {
           diameter={filters?.rim_diameter}
         />
       </div>
-      <div className={"border-b border-gray-300 px-5 py-3"}>
+      {/* <div className={"border-b border-gray-300 px-5 py-3"}>
         <TireHeight filterKey={"tire_height"} height={filters?.tire_height || []} />
-      </div>
+      </div> */}
       <div className={"border-b border-gray-300 px-5 py-3"}>
         <TireWidth filterKey={"width"} width={filters?.width || []} />
       </div>
       <div className={"border-b border-gray-300 px-5 py-3"}>
         <TireType filterKey={"tire_type"} tireType={filters?.tire_type || []} />
       </div>
-      <div className={"border-b border-gray-300 px-5 py-3"}>
+      {/* <div className={"border-b border-gray-300 px-5 py-3"}>
         <TireLoadRange filterKey={"load_range"} loadRange={filters?.load_range || []} />
-      </div>
+      </div> */}
       <div className={"border-b border-gray-300 px-5 py-3"}>
         <TireLoadIndex
           filterKey={"load_index"}
           loadIndex={filters?.load_index || []}
         />
       </div>
-      <div className={"border-b border-gray-300 px-5 py-3"}>
+      {/* <div className={"border-b border-gray-300 px-5 py-3"}>
         <TireBrand filterKey={"brand_desc"} brand={filters?.brand_desc || []} />
-      </div>
+      </div> */}
       <div className={"border-b border-gray-300 px-5 py-3"}>
         <TireModel filterKey={"display_model_no"} model={filters?.display_model_no || []} />
       </div>

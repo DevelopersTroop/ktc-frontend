@@ -41,4 +41,4 @@ const product = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetProductListQuery, useGetProductDetailsQuery } = product;
+export const { useGetProductListQuery, useLazyGetProductListQuery, useGetProductDetailsQuery } = product;

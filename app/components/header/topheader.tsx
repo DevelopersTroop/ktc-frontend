@@ -74,7 +74,7 @@ export default function TopHeader() {
           >
             <Search className="h-6 w-6" />
           </Button> */}
-          <HeaderSearchButton />
+          <HeaderSearchButton aria-label="Search product" isHomepage={false} />
 
           <div className="hidden items-center gap-2 md:flex">
             <Phone className="h-5 w-5 text-gray-600" />
