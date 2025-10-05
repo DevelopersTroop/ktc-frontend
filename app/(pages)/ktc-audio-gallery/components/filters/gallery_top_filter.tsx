@@ -23,9 +23,6 @@ const GalleryTopFilter: React.FC = () => {
         <option value="sort_by_year_old_to_new">
           SORT BY YEAR (OLD TO NEW)
         </option>
-        <option value="sort_by_video">SORT BY VIDEO</option>
-        <option value="sort_by_most_views">SORT BY MOST VIEWS</option>
-        <option value="sort_by_availability">SORT BY AVAILABILITY</option>
       </select>
     </div>
   );

@@ -1,6 +1,6 @@
 import ClientComponent from "@/app/(pages)/checkout/ClientComponent";
 export const metadata={
-    title:'Checkout - Amani Forged Wheels',
+    title:'Checkout - KTC Audio',
 }
 export default function Page() {
     return (

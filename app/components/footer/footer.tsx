@@ -90,6 +90,13 @@ export default function Footer() {
               >
                 About Us
               </Link>
+
+              <Link
+                href="/blog"
+                className="block text-gray-600 hover:text-gray-900"
+              >
+                Blogs
+              </Link>
             </div>
           </div>
 
