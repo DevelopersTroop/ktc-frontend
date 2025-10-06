@@ -25,14 +25,14 @@ const cartSlice = createSlice({
 
       if (existingProduct) {
         // If the product exists, update its quantity
-        if(existingProduct.metaData?.isFrontWheel){
+        if (existingProduct.metaData?.isFrontWheel) {
           state.products[existingProduct.cartSerial].quantity += 2;
         }
 
-        if(existingProduct.metaData?.isRearWheel){
+        if (existingProduct.metaData?.isRearWheel) {
           state.products[existingProduct.cartSerial].quantity += 2;
         }
-        if(existingProduct.metaData?.isSquare){
+        if (existingProduct.metaData?.isSquare) {
           state.products[existingProduct.cartSerial].quantity += 4;
         }
         state.products[existingProduct.cartSerial].quantity += product.quantity;
@@ -52,8 +52,7 @@ const cartSlice = createSlice({
         return;
       }
 
-
-      const { category, cartPackage, item_class } = state.products[cartSerial];
+      const { cartPackage } = state.products[cartSerial];
 
       const removeItemsByCondition = (condition: (product: any) => boolean) => {
         Object.keys(state.products).forEach((serial) => {
@@ -63,9 +62,7 @@ const cartSlice = createSlice({
         });
       };
 
-      removeItemsByCondition(
-        (product) => product.cartPackage === cartPackage
-      );
+      removeItemsByCondition((product) => product.cartPackage === cartPackage);
 
       // if (state.products[cartSerial].category === "Tire") {
       //     // delete all `tire` of same package id

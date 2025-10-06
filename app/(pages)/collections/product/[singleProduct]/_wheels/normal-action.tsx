@@ -1,5 +1,8 @@
 import { addToCart } from "@/app/globalRedux/features/cart/cart-slice";
-import store, { useAppDispatch } from "@/app/globalRedux/store";
+import store, {
+  useAppDispatch,
+  useTypedSelector,
+} from "@/app/globalRedux/store";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { TInventoryItem } from "@/types/product";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useState } from "react";
 import { PiShoppingCartLight } from "react-icons/pi";
 import { v4 as uuidv4 } from "uuid";
@@ -16,6 +19,7 @@ import { WheelContext } from "./context/WheelProvider";
 import QuantityInput from "./quantity-input";
 import { YmmSelector } from "./ymm";
 import useYmm from "@/hooks/use-ymm";
+import { addPackage } from "@/app/globalRedux/features/package";
 
 type NormalActionButtonProps = {
   setIsStaggered: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,14 +35,33 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
   setIsStaggered,
   product,
 }) => {
+  const searchParams = useSearchParams();
+  const packages = useTypedSelector((state) => state.persisted.package);
+  const cartPackage = searchParams.get("cartPackage") as string;
+  const tire = packages[cartPackage]?.tire;
+  console.log("TCL: tire", tire);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
   const ymm = useYmm();
   const [openFitmentModal, setOpenFitmentModal] = useState(false);
+  const [addTire, setAddTire] = useState(false);
   const { quantity } = useContext(WheelContext);
-  const addProductToCart = async (checkYmm:boolean = true, meta: Record<string, string> = {}, customQuantity: number = quantity) => {
-    if (checkYmm && !(ymm.year && ymm.make && ymm.model && ymm.bodyType && ymm.subModel?.SubModel)) {
+  const addProductToCart = async (
+    checkYmm: boolean = true,
+    meta: Record<string, string> = {},
+    customQuantity: number = quantity
+  ) => {
+    if (
+      checkYmm &&
+      !(
+        ymm.year &&
+        ymm.make &&
+        ymm.model &&
+        ymm.bodyType &&
+        ymm.subModel?.SubModel
+      )
+    ) {
       setOpenFitmentModal(true);
       return;
     }
@@ -53,7 +76,7 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
           model: ymm.model,
           bodyType: ymm.bodyType,
           subModel: ymm.subModel,
-          ...(meta ?? {})
+          ...(meta ?? {}),
         };
         dispatch(
           addToCart({
@@ -66,14 +89,14 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
               quantity: customQuantity,
               metaData,
             },
-          }),
+          })
         );
         setTimeout(() => {
           const updatedProducts = store.getState().persisted.cart.products;
           const addedProduct = Object.values(updatedProducts).find(
             (p) =>
               p._id === product._id &&
-              JSON.stringify(p.metaData) === JSON.stringify(metaData),
+              JSON.stringify(p.metaData) === JSON.stringify(metaData)
           );
           resolve({
             cartSerial: addedProduct?.cartSerial || cartSerial,
@@ -87,23 +110,70 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
     return data;
   };
 
-  const handleAddTires = (checkYmm:boolean = true) => {
-  
-    addProductToCart(checkYmm, {}, 4).then((res) => {
-      if (res) {
-        router.push(
-          `/collections/product-category/tires?rim_diameter=${product.diameter}&cartPackage=${res.cartPackage}&cartSerial=${res.cartSerial}`,
-          // `/collections/product-category/tires?rim_diameter=${product.diameter}`,
-        );
-      }
-    });
-  }
+  const handleAddTires = (checkYmm: boolean = true) => {
+    setAddTire(true);
+    if (
+      checkYmm &&
+      !(
+        ymm.year &&
+        ymm.make &&
+        ymm.model &&
+        ymm.bodyType &&
+        ymm.subModel?.SubModel
+      )
+    ) {
+      setOpenFitmentModal(true);
+      return;
+    }
 
+    // ✅ Step 2: Use Promise to simulate async behavior
+    new Promise<{ packageId: string; cartSerial: string }>((resolve) => {
+      const packageId = uuidv4();
+      const cartSerial = uuidv4();
+
+      resolve({ packageId, cartSerial });
+    })
+      .then(({ packageId, cartSerial }) => {
+        dispatch(
+          addPackage({
+            packageId,
+            wheel: {
+              ...product,
+              cartPackage: packageId,
+            },
+          })
+        );
+        // ✅ Step 3: Use generated values in router.push
+        router.push(
+          `/collections/product-category/tires?rim_diameter=${product.diameter}&cartPackage=${packageId}&cartSerial=${cartSerial}`
+        );
+      })
+      .catch((err) => {
+        console.error("Error adding tires:", err);
+      });
+  };
 
   // const [addToCartText, setAddToCartText] = useState(
   //     "Add Tires & Save up to $81!"
   // );
   const [addToCartText, setAddToCartText] = useState("Add To Cart");
+
+  const addWheels = () => {
+    new Promise<{ cartPackage: string }>((res) => {
+      dispatch(
+        addPackage({
+          packageId: cartPackage,
+          wheel: {
+            ...product,
+            cartPackage,
+          },
+        })
+      );
+      res({ cartPackage });
+    }).then((res) => {
+      router.push(`/wheel-and-tire-package?cartPackage=${res.cartPackage}`);
+    });
+  };
   return (
     <div className="flex flex-col gap-y-4">
       <YmmSelector ymm={ymm} />
@@ -113,17 +183,15 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
           inventoryAvailable={20}
           name={"quantity"}
           id={"quantity"}
-        // isDually={product?.dually}
+          // isDually={product?.dually}
         />
         <button
           onClick={() => {
             setAddToCartText("Adding to cart...");
             addProductToCart().then((res) => {
-              if (res)
-                setAddToCartText("Added to cart");
-              else
-                setAddToCartText("Add to cart");
-            })
+              if (res) setAddToCartText("Added to cart");
+              else setAddToCartText("Add to cart");
+            });
           }}
           className="relative flex min-h-14 w-full flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-3 transition duration-300 ease-in-out hover:bg-primary-hover hover:text-white"
         >
@@ -136,12 +204,25 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
           </p>
         </button>
       </div>
-      <button
-        onClick={() => handleAddTires()}
-        className={"w-full rounded py-1 outline outline-1 outline-primary"}
-      >
-        Add Tires
-      </button>
+      {tire?._id ? (
+        <button
+          onClick={addWheels}
+          className={"w-full rounded py-1 outline outline-1 outline-primary"}
+        >
+          Add to pacakge
+        </button>
+      ) : null}
+
+      {!tire?._id ? (
+        <button
+          onClick={() => {
+            handleAddTires();
+          }}
+          className={"w-full rounded py-1 outline outline-1 outline-primary"}
+        >
+          Add Tires
+        </button>
+      ) : null}
       <button
         onClick={() => setIsStaggered(true)}
         className={
@@ -168,14 +249,44 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
             </Button>
             <Button
               onClick={() => {
-                addProductToCart(false).then((res) => {
-                  console.log("res", res)
-                  if (res) {
-                    router.push(
-                      `/cart?cartPackage=${res.cartPackage}&cartSerial=${res.cartSerial}`,
-                    );
-                  }
-                });
+                if (addTire) {
+                  new Promise<{ packageId: string; cartSerial: string }>(
+                    (resolve) => {
+                      const packageId = uuidv4();
+                      const cartSerial = uuidv4();
+
+                      resolve({ packageId, cartSerial });
+                    }
+                  )
+                    .then(({ packageId, cartSerial }) => {
+                      console.log("Generated IDs:", { packageId, cartSerial });
+                      dispatch(
+                        addPackage({
+                          packageId,
+                          wheel: {
+                            ...product,
+                            cartPackage: packageId,
+                          },
+                        })
+                      );
+                      // ✅ Step 3: Use generated values in router.push
+                      router.push(
+                        `/collections/product-category/tires?rim_diameter=${product.diameter}&cartPackage=${packageId}&cartSerial=${cartSerial}`
+                      );
+                    })
+                    .catch((err) => {
+                      console.error("Error adding tires:", err);
+                    });
+                } else {
+                  addProductToCart(false).then((res) => {
+                    console.log("res", res);
+                    if (res) {
+                      router.push(
+                        `/cart?cartPackage=${res.cartPackage}&cartSerial=${res.cartSerial}`
+                      );
+                    }
+                  });
+                }
               }}
               className="h-10 border-black text-xl font-bold capitalize hover:bg-transparent"
               variant={"outline"}

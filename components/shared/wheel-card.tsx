@@ -4,7 +4,7 @@ import { TCartProduct } from "@/types/cart";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import CardPrice from "./card-price";
 import DeliveryWithStock from "./delivery-with-stock";
@@ -24,7 +24,11 @@ const WheelCard = ({
   const [openModal, setOpenModal] = useState(false);
   const pathname = usePathname();
 
-  const category = cartProduct.category;
+  const isObject = useMemo(() => {
+    return "slug" in cartProduct.category;
+  }, [cartProduct.category]);
+
+  const category = isObject ? cartProduct.category.title : cartProduct.category;
   let productType = "wheel";
   let frontRear = "Front";
 

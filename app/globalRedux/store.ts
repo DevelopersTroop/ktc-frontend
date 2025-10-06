@@ -13,6 +13,7 @@ import tirePackageReducer from "@/app/globalRedux/features/tire-package/tire-pac
 import userReducer from "@/app/globalRedux/features/user/user-slice";
 import yearMakeModelModalReducer from "@/app/globalRedux/features/year-make-model-modal/year-make-model-modal-slice";
 import yearMakeModelReducer from "@/app/globalRedux/features/year-make-model/year-make-model-slice";
+import packageReducer from "./features/package";
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
@@ -45,6 +46,7 @@ const presistingReducer = combineReducers({
   tirePackage: tirePackageReducer,
   user: userReducer,
   checkout: checkoutReducer,
+  package: packageReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, presistingReducer);

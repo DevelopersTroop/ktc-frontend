@@ -4,9 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import TireCardDescription from "./tire-card-description";
+import { useSearchParams } from "next/navigation";
 
 const TireCard = ({ product }: { product: TInventoryItem }) => {
-  const productLink = `/collections/product/${product.slug}`;
+  const searchparams = useSearchParams();
+  const cartPackage = searchparams.get("cartPackage");
+  const productLink = `/collections/product/${product.slug}?cartPackage=${cartPackage}`;
   const [imageErr, setImageErr] = useState(false);
   return (
     <div
@@ -25,8 +28,8 @@ const TireCard = ({ product }: { product: TInventoryItem }) => {
               imageErr
                 ? "/tire-not-available.webp"
                 : product.thumbnail !== ""
-                  ? product.thumbnail
-                  : "/tire-not-available.webp"
+                ? product.thumbnail
+                : "/tire-not-available.webp"
             }
             onError={() => setImageErr(true)}
           ></Image>

@@ -4,9 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import CardDescription from "./card-description";
+import { useSearchParams } from "next/navigation";
 
-const ProductCard = ({ product }: { product: TInventoryItem }) => {
-  const productLink = `/collections/product/${product.slug}`;
+export const ProductCard = ({ product }: { product: TInventoryItem }) => {
+  const searchParams = useSearchParams();
+  const cartPackage = searchParams.get("cartPackage");
+  const productLink = `/collections/product/${product.slug}?cartPackage=${cartPackage}`;
   const [imageErr, setImageErr] = useState(false);
   return (
     <div
@@ -25,10 +28,10 @@ const ProductCard = ({ product }: { product: TInventoryItem }) => {
               imageErr
                 ? "/not-available.webp"
                 : product.thumbnail.length
-                  ? product.thumbnail
-                  : product.image_url1.length
-                    ? product.image_url1
-                    : "/not-available.webp"
+                ? product.thumbnail
+                : product.image_url1.length
+                ? product.image_url1
+                : "/not-available.webp"
             }
             onError={() => setImageErr(true)}
           ></Image>
