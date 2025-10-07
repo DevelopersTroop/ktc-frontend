@@ -34,6 +34,10 @@ const navMenus: NavMenu[] = [
                 href: "#",
                 label: "Shop by brands",
               },
+              {
+                label: "Make your wheel and tire packages now",
+                href: "/collections/product-category/wheels",
+              },
             ],
           },
         ],

@@ -12,7 +12,6 @@ const SearchSuggestion = ({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   searchInput: string;
 }) => {
-  console.log("TCL: SearchSuggestion -> searchInput", searchInput);
   const router = useRouter();
   // const { getProducts } = useProductFetch(); // Using the custom hook to fetch products
 

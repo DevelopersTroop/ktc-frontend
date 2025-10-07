@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import MobileMenu from "./menu/mobile-menu/mobile-menu";
 import HeaderSearchButton from "./search/search";
+import MobileNavbar from "./mobile-menu";
 
 export default function TopHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function TopHeader() {
   const cartQuantity = useMemo(() => {
     return Object.values(products).reduce(
       (acc, product) => acc + product.quantity,
-      0,
+      0
     );
   }, [JSON.stringify(products)]);
 
@@ -40,7 +41,7 @@ export default function TopHeader() {
 
       <div className="mx-auto max-w-7xl px-4 py-3">
         <div className="flex items-center justify-between gap-4">
-          <MobileMenu />
+          <MobileNavbar />
 
           <Link href="/" className="flex-shrink-0">
             <img
