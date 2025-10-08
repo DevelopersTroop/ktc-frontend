@@ -293,15 +293,15 @@ const navMenus: NavMenu[] = [
     children: [
       {
         label: "Wheels",
-        href: "/collections/product-category/wheels",
+        href: "/brands?query=wheels",
       },
       {
         label: "Tires",
-        href: "/collections/product-category/tires",
+        href: "/brands?query=tire",
       },
       {
         label: "Accessories",
-        href: "/collections/product-category/accessories",
+        href: "/brands?query=accessories",
       },
     ],
   },
