@@ -53,7 +53,7 @@ export default function Page() {
       ) : (
         // ✅ Empty state
         <div className="col-span-12 text-center py-12">
-          <h2 className="text-gray-500 text-lg">Not found</h2>
+          <h2 className="text-gray-500 text-2xl">No result found</h2>
         </div>
       )}
     </div>

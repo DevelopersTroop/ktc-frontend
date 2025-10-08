@@ -297,7 +297,7 @@ const navMenus: NavMenu[] = [
       },
       {
         label: "Tires",
-        href: "/brands?query=tire",
+        href: "/brands?query=tires",
       },
       {
         label: "Accessories",
