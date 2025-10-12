@@ -15,7 +15,7 @@ import {
 } from "@/app/globalRedux/features/checkout/checkout-slice";
 import { useTypedSelector } from "@/app/globalRedux/store";
 import { customFetch } from "@/lib/common-fetch";
-import { Order } from "@/types/order";
+import { TOrder } from "@/types/order";
 import { IApiRes } from "@/types/redux-helper";
 import { OrderConfirmation } from "./OrderConfirmation";
 import { OrderSummary } from "./OrderSummary";
@@ -27,7 +27,7 @@ export const FinalStep: React.FC = () => {
    * Redux Store & Dispatch hook
    */
   const { orderSuccessData } = useTypedSelector(
-    (state) => state.persisted.checkout,
+    (state) => state.persisted.checkout
   );
   const dispatch = useDispatch();
 
@@ -46,8 +46,9 @@ export const FinalStep: React.FC = () => {
       orderId: searchParams.get("order_id"),
       paymentId: searchParams.get("paymentId"),
       PayerID: searchParams.get("PayerID"),
+      method: searchParams.get("method"),
     }),
-    [searchParams],
+    [searchParams]
   );
 
   const { sessionId, orderId, paymentId, PayerID } = queryParams;
@@ -76,15 +77,23 @@ export const FinalStep: React.FC = () => {
         let response;
         if (sessionId) {
           response = await customFetch<
-            IApiRes<{ order: Order; payment: PaymentData }>
+            IApiRes<{ order: TOrder; payment: PaymentData }>
           >(
-            `payments/stripe/verify-payment?sessionId=${sessionId}&orderId=${orderId}`,
+            `payments/stripe/verify-payment?sessionId=${sessionId}&orderId=${orderId}`
+          );
+        } else if (queryParams.method === "pay_tomorrow") {
+          response = await customFetch(
+            `/payments/pay-tomorrow/status?orderId=${orderId}`
+          );
+        } else if (queryParams.method === "snap_finance") {
+          response = await customFetch(
+            `/payments/snap-finance/status?orderId=${orderId}`
           );
         } else {
           response = await customFetch<
-            IApiRes<{ order: Order; payment: PaymentData }>
+            IApiRes<{ order: TOrder; payment: PaymentData }>
           >(
-            `payments/verify-paypal-payment?paymentId=${paymentId}&PayerID=${PayerID}&orderId=${orderId}`,
+            `payments/verify-paypal-payment?paymentId=${paymentId}&PayerID=${PayerID}&orderId=${orderId}`
           );
         }
 
@@ -158,6 +167,20 @@ export const FinalStep: React.FC = () => {
 
   return (
     <div>
+      {searchParams.get("method") === "pay_tomorrow" && (
+        <div className="rounded-2xl border border-blue-300 bg-blue-50 p-4 mt-4">
+          <h3 className="text-lg font-semibold text-primary">
+            Your Order is Being Processed
+          </h3>
+          <p className="text-sm text-primary mt-1">
+            You’ve chosen <strong>Pay Tomorrow</strong> as your payment method.
+            This option allows you to complete your purchase through a loan
+            system. We’ll wait for <strong>verification and funding</strong> to
+            be completed before shipping your order. Stay tuned — we’ll update
+            you by email once your order is cleared for shipment.
+          </p>
+        </div>
+      )}
       <div className="grid grid-cols-11 gap-6 pb-20 pt-8 lg:gap-8">
         <div className="col-span-11 lg:col-span-7">
           <OrderConfirmation

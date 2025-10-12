@@ -1,4 +1,6 @@
-export type OrderInfo = {
+import { TUser } from "./user";
+
+export type TOrderInfo = {
   phone: string;
   orderInfoText: boolean;
   newsLetterText: boolean;
@@ -8,51 +10,53 @@ export type OrderInfo = {
   termsAndConditions: boolean;
 };
 
-export interface Dealer {
-  "Address 1": any;
-  "Address 2"?: any;
-  "Address Phone": any;
-  Addressee: any;
-  City: any;
-  Country: {
-    text: any;
-    value: any;
-  };
-  "Country Code": any;
-  "State/Province": {
-    text: any;
-    value: any;
-  };
-  "State/Province Display Name": {
-    text: any;
-    value: any;
-  };
-  "Zip Code": any;
-  distance: any;
-  coordinates: [any, any];
-}
+export type TDealer = {
+  address: string;
+  address1: string;
+  address2: string;
+  addressPhone: string;
+  city: string;
+  coordinates: { latitude: number; longitude: number };
+  country: string;
+  countryCode: string;
+  createdAt: string;
+  deletedBy: null | string;
+  distance: null | number;
+  isDelete: boolean;
+  customer_internal_id: string;
+  address_internal_id: string;
+  stateProvince: string;
+  stateProvinceDisplayName: string;
+  updatedAt: string;
+  updatedBy: null | string;
+  zipCode: string;
+};
 
-export type BillingAddress = {
+export type TBillingAddress = {
   name: string;
   fname: string;
   lname: string;
   company?: string;
   address1: string;
   address2?: string;
+  city: string;
   country: string;
   cityState: string;
   phone: string;
   email: string;
   zipCode: string;
+
+  ssn?: string;
+  dob?: string;
 };
 
-export type Address = BillingAddress & {
+export type TAddress = TBillingAddress & {
   isPrimaryPhone?: boolean;
   password?: string;
   primaryPhone?: string;
 };
 
-export type ProductInfo = {
+export type TProductInfo = {
   _id: string;
   title: string;
   slug: string;
@@ -130,7 +134,7 @@ export type ProductInfo = {
   isDelete: boolean;
   createdAt: string;
   updatedAt: string;
-  category: string;
+  category: any;
   id: string;
   image: string;
   maxInventory: number;
@@ -140,19 +144,24 @@ export type ProductInfo = {
   quantity: number;
   cartPackage: string;
   cartSerial: string;
+  metaData: {
+    [key: string]: any;
+  };
 };
 
-export type RequestedDealer = {
+export type TRequestedDealer = {
   businessName: string;
   website: string;
   contact: string;
 };
 
-export type OrderData = {
-  orderInfo: OrderInfo;
-  shippingAddress: Address;
-  billingAddress: BillingAddress;
-  productsInfo: ProductInfo[];
+export type TOrderData = {
+  shippingProtection?: number;
+  orderInfo: TOrderInfo;
+  shippingAddress: TAddress;
+  billingAddress: TBillingAddress;
+  productsInfo: TProductInfo[];
+  affiliateDiscount: number;
   discount: number;
   cartType: string;
   totalCost: string;
@@ -160,26 +169,44 @@ export type OrderData = {
   netCost: string;
   selectedDealer?: string;
   selectedOptionTitle?: string;
-  selectedDealerInfo?: Dealer;
-  requestedDealer?: RequestedDealer;
+  selectedDealerInfo?: TDealer;
+  requestedDealer?: TRequestedDealer;
   paymentStatus: string;
   selectedOption: number;
   deliveryCharge: number;
   isCouponApplied: boolean;
-  shippingProtection: number;
   couponCode: string;
   shippingMethod?: { option: number; title: string };
   couponDiscount: number;
+  localDealerSelected: boolean;
+  taxAmount?: number;
+  totalWithTax?: number;
+  productBasedDiscount: number;
+  paymentMethod?: string;
+  productBasedDiscountApplied: boolean;
+  localDealerInfo?: {
+    name: string;
+    phone: string;
+    website: string;
+    address: string;
+  };
+  user?: TUser | null;
+  dealerDiscountApplied: boolean;
+  vehicleInformation: string;
+  existingOrderId: string;
+  referralCode: string;
 };
 
-export type Order = {
+export type TOrder = {
   _id: string;
   email: string;
-  data: OrderData;
+  data: TOrderData;
+  orderId: string;
   status: string;
   updatedBy: string | null;
   deletedBy: string | null;
   isDelete: boolean;
   createdAt: string;
+  currentSnapStep: "verification-needed" | "verication-data-submitted";
   updatedAt: string;
 };

@@ -322,6 +322,10 @@ const navMenus: NavMenu[] = [
         label: "Contact",
         href: "/contact",
       },
+      {
+        label: "Financing",
+        href: "/financing",
+      },
     ],
   },
 ];
