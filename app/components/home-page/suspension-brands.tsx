@@ -67,6 +67,14 @@ const SuspensionBrands = () => {
           </button>
         </Swiper>
       </div>
+
+      <div className="text-center mt-4">
+        <button className="px-4 py-2 text-primary bg-white bg-opacity-50 text-2xl font-semibold uppercase outline outline-1 outline-primary hover:bg-primary hover:text-white">
+          <Link href="/collections/product-category/accessories">
+            Shop suspenssion
+          </Link>
+        </button>
+      </div>
       {/* ))} */}
     </div>
   );
