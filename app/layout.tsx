@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import Footer from "./components/footer/footer";
 import DiscountBanner from "./components/header/discount-banner";
 import Header from "./components/header/header";
+import TopHeaderOne from "./components/header/top-header";
 import TopHeader from "./components/header/topheader";
 import StoreProvider from "./globalRedux/store-provider";
 import "./globals.css";
@@ -36,6 +37,7 @@ export default function RootLayout({
       >
         <StoreProvider>
           <CheckoutProvider>
+            <TopHeaderOne />
             <TopHeader />
             <Header />
             <DiscountBanner />

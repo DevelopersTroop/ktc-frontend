@@ -4,54 +4,71 @@ import { useEffect, useState } from "react";
 import Gallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
-const ImageGallery = ({ product, fallbackImage }: { product: TInventoryItem, fallbackImage: string }) => {
+interface ImageGalleryProps {
+  product: TInventoryItem;
+  fallbackImage: string;
+}
+
+const ImageGallery = ({ product, fallbackImage }: ImageGalleryProps) => {
   const [productImages, setProductImages] = useState<
     { original: string; thumbnail: string }[]
-  >([]);
+  >([{ original: fallbackImage, thumbnail: fallbackImage }]); // 👈 prevent flicker
 
+  // ✅ Browser-safe image validator
   const validateImage = (url: string): Promise<string> => {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => resolve(url);
-    img.onerror = () => resolve(fallbackImage);
-    img.src = url;
-  });
-};
+    return new Promise((resolve) => {
+      if (!url) return resolve(fallbackImage);
+      const img = new window.Image();
+      img.onload = () => resolve(url);
+      img.onerror = () => resolve(fallbackImage);
+      img.src = url;
+    });
+  };
 
   useEffect(() => {
-    const loadImages = async () => {
-      const imagesToValidate: string[] = [];
+    if (!product) return;
 
-      // Main thumbnail first
-      if (product.thumbnail) {
-        const thumbnailUrl = product.thumbnail;
-        imagesToValidate.push(thumbnailUrl);
+    const loadImages = async () => {
+      // Collect possible image URLs
+      const urls = new Set<string>();
+
+      // Prioritize main thumbnail and image fields
+      const mainImage =
+        product.thumbnail || product.image_url || product.image_url1;
+      if (mainImage) urls.add(mainImage);
+
+      // Add gallery images if array
+      if (Array.isArray(product.galleryImages)) {
+        product.galleryImages.forEach((img) => {
+          if (img) urls.add(img);
+        });
       }
 
-      // Gallery images
-      const galleryImages = product.galleryImages || [];
-      galleryImages.forEach((img) => {
-        const url = img;
-        imagesToValidate.push(url);
-      });
-
-      // Validate all
-      const validated = await Promise.all(imagesToValidate.map(validateImage));
-
-      // Format for react-image-gallery
-      const formatted = validated.map((url) => ({
-        original: url,
-        thumbnail: url,
-      }));
-
-      // Fallback if all are broken
-      setProductImages(
-        formatted.length > 0 ? formatted : [{ original: fallbackImage, thumbnail: fallbackImage }]
+      // Validate URLs and build final image list
+      const validated = await Promise.all(
+        Array.from(urls).map((url) => validateImage(url))
       );
+
+      const formatted =
+        validated.length > 0
+          ? validated.map((url) => ({
+              original: url,
+              thumbnail: url,
+            }))
+          : [{ original: fallbackImage, thumbnail: fallbackImage }];
+
+      setProductImages(formatted);
     };
 
     loadImages();
-  }, [product, fallbackImage]);
+    // Only rerun when these change
+  }, [
+    product.thumbnail,
+    product.image_url,
+    product.image_url1,
+    product.galleryImages,
+    fallbackImage,
+  ]);
 
   return (
     <div className="flex justify-center">

@@ -112,15 +112,15 @@ const HeaderSearchButton: React.FC<HeaderSearchButtonProps> = ({
       )}
 
       {/* HEADER SEARCH AREA */}
-      <div className="h-full flex items-center">
-        <form className="h-full flex items-center w-full">
+      <div className="h-full flex items-center flex-1 justify-end">
+        <form className="h-full flex items-center w-full max-w-2xl">
           {/* DESKTOP SEARCH BAR */}
-          <div className="mx-4 hidden max-w-xl flex-1 lg:flex">
+          <div className="mx-4 hidden  flex-1 lg:flex">
             <div className="relative flex-1">
               <Input
                 type="text"
                 placeholder="Search wheels"
-                className="w-full pl-4 pr-10"
+                className="w-full pl-4 pr-10 h-12"
               />
               <Button
                 type="submit"

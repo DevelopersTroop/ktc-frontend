@@ -14,7 +14,7 @@ export const ProductCard = ({ product }: { product: TInventoryItem }) => {
   return (
     <div
       className={
-        "flex w-full flex-row overflow-hidden rounded-xl border border-[#cfcfcf] bg-white px-4 min-[600px]:w-[250px] min-[600px]:flex-col"
+        "flex w-full flex-row overflow-hidden rounded-xl border border-[#cfcfcf] bg-white px-4 min-[600px]:w-[250px] min-[600px]:flex-col shadow-xl"
       }
     >
       <div className="flex w-full items-center justify-center pt-5">

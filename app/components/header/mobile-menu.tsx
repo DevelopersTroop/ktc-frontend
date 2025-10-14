@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Menu, X, ChevronDown, ChevronUp, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import navMenus from "./mega-menu/nav";
+import navMenus, { NavMenu } from "./mobile-nav";
 
 // Recursive Mobile Navbar with Drawer
 export default function MobileNavbar() {
@@ -21,15 +21,7 @@ export default function MobileNavbar() {
   /**
    * Recursive renderer for menu items
    */
-  const renderMenuItems = (
-    items: {
-      label: string;
-      href: string;
-      children?: any[];
-      target?: string;
-    }[],
-    level: number = 0
-  ) => {
+  const renderMenuItems = (items: NavMenu[], level: number = 0) => {
     return (
       <ul
         className={cn(
@@ -54,7 +46,7 @@ export default function MobileNavbar() {
               >
                 {/* Navigation Link */}
                 <Link
-                  href={item.href}
+                  href={item.href ?? "#"}
                   target={item.target}
                   onClick={() => {
                     if (!item.children) setIsOpen(false);
