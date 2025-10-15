@@ -1,6 +1,9 @@
 "use client";
 import { removeFromCart } from "@/app/globalRedux/features/cart/cart-slice";
-import { initiateCheckout, updateShippingProtection } from "@/app/globalRedux/features/checkout/checkout-slice";
+import {
+  initiateCheckout,
+  updateShippingProtection,
+} from "@/app/globalRedux/features/checkout/checkout-slice";
 import {
   RootState,
   useAppDispatch,
@@ -16,6 +19,7 @@ import { useSelector } from "react-redux";
 import Quantity from "./_components/quantity";
 import EmptyCart from "./empty-cart";
 import { TCartProduct } from "@/types/cart";
+import { getProductImage } from "@/lib/utils";
 const Cart = () => {
   const { saveAllProductFromCart } = useWishlist();
   const [isShippingProtectionChecked, setIsShippingProtectionChecked] =
@@ -24,11 +28,11 @@ const Cart = () => {
 
   const cart = useSelector((state: RootState) => state.persisted.cart);
   const cartProducts = useTypedSelector(
-    (state) => state.persisted.cart.products,
+    (state) => state.persisted.cart.products
   );
 
   const subTotalCost = Number(
-    calculateCartTotal(cart.products).replace(/,/g, ""),
+    calculateCartTotal(cart.products).replace(/,/g, "")
   );
   const [totalCost, setTotalCost] = useState<number>(subTotalCost);
 
@@ -36,25 +40,35 @@ const Cart = () => {
     setIsShippingProtectionChecked((prevChecked) => !prevChecked);
   };
 
-  console.log('cart product = ', cartProducts);
+  console.log("cart product = ", cartProducts);
 
-  const [shippingOption, setShippingOption] = useState<Record<string, "standard" | "speedy">>({});
+  const [shippingOption, setShippingOption] = useState<
+    Record<string, "standard" | "speedy">
+  >({});
   const speedyShippingCost = 32.0;
-  const handleShippingOptionChange = (cartSerial: string, option: "standard" | "speedy") => {
-      setShippingOption((prev) => ({
-        ...prev,
-        [cartSerial]: option,
-      }));
-    };
+  const handleShippingOptionChange = (
+    cartSerial: string,
+    option: "standard" | "speedy"
+  ) => {
+    setShippingOption((prev) => ({
+      ...prev,
+      [cartSerial]: option,
+    }));
+  };
 
-  const totalSpeedyShipping = Object.values(cartProducts).reduce((sum, product: TCartProduct) => {
-  return shippingOption[product.cartSerial] === "speedy" ? sum + speedyShippingCost : sum;
-}, 0);
+  const totalSpeedyShipping = Object.values(cartProducts).reduce(
+    (sum, product: TCartProduct) => {
+      return shippingOption[product.cartSerial] === "speedy"
+        ? sum + speedyShippingCost
+        : sum;
+    },
+    0
+  );
 
   useEffect(() => {
     const numericSubTotal = Number(subTotalCost); // Ensure it's a clean number
     let updatedTotal = numericSubTotal + totalSpeedyShipping;
-    if(isShippingProtectionChecked) updatedTotal += shippingProtectionCost;
+    if (isShippingProtectionChecked) updatedTotal += shippingProtectionCost;
     // const updatedTotal = isShippingProtectionChecked
     //   ? numericSubTotal + shippingProtectionCost
     //   : numericSubTotal;
@@ -70,11 +84,11 @@ const Cart = () => {
 
   useEffect(() => {
     if (isShippingProtectionChecked) {
-      dispatch(updateShippingProtection(shippingProtectionCost))
+      dispatch(updateShippingProtection(shippingProtectionCost));
     } else {
-      dispatch(updateShippingProtection(0))
+      dispatch(updateShippingProtection(0));
     }
-  }, [isShippingProtectionChecked, dispatch])
+  }, [isShippingProtectionChecked, dispatch]);
 
   return (
     <div>
@@ -93,7 +107,8 @@ const Cart = () => {
               <div className="flex w-full flex-col gap-4 min-[1100px]:flex-row min-[1100px]:gap-20">
                 <div className="order-2 flex w-full flex-col gap-6 px-[5%] min-[1100px]:order-1 min-[1100px]:w-4/6 min-[1100px]:px-0">
                   {Object.values(cartProducts).map((product, index) => {
-                    const categoryTitle = product?.category?.title?.toLowerCase();
+                    const categoryTitle =
+                      product?.category?.title?.toLowerCase();
                     console.log("categoryTitle =====   ", categoryTitle);
                     let emptyThumbnail = "";
                     if (categoryTitle === "wheels") {
@@ -102,14 +117,16 @@ const Cart = () => {
                       emptyThumbnail = "/tire-not-available.webp";
                     } else if (categoryTitle === "accessories") {
                       emptyThumbnail = "/accessory-not-available.webp";
-                    }else{
+                    } else {
                       emptyThumbnail = "/not-available.webp";
                     }
 
                     return (
                       <div key={index} className="w-full bg-white p-4">
                         <div className="flex gap-4 text-black">
-                          <p className="text-xl font-semibold">{product?.category?.title}</p>
+                          <p className="text-xl font-semibold">
+                            {product?.category?.title}
+                          </p>
                           <p className="hidden font-medium md:block">
                             Vehicle: {product.brand}
                           </p>
@@ -129,26 +146,13 @@ const Cart = () => {
                           <div className="order-2 w-full md:order-1 md:w-4/6">
                             <div className="flex w-full items-center gap-5 md:items-start">
                               <div className="min-w-[100px]">
-                                {
-                                  product?.thumbnail && product.thumbnail !== "" ? (
-                                    <Image
-                                      className="h-full w-[100px] rounded-xl object-cover"
-                                      height={100}
-                                      width={100}
-                                      alt="product image"
-                                      src={product.thumbnail}
-                                    />
-                                  ) : (
-                                    <Image
-                                      className="h-full w-[100px] rounded-xl object-cover"
-                                      height={100}
-                                      width={100}
-                                      alt={product?.category?.title}
-                                      src={emptyThumbnail}
-                                    />
-                                  )
-                                }
-                                
+                                <Image
+                                  className="h-full w-[100px] rounded-xl object-cover"
+                                  height={100}
+                                  width={100}
+                                  alt="product image"
+                                  src={getProductImage(false, product)}
+                                />
                               </div>
                               <div className="hidden md:block">
                                 <p className="text-xl font-semibold">
@@ -203,7 +207,9 @@ const Cart = () => {
                               <p className="flex items-start text-primary">
                                 $
                                 <span className="text-2xl font-semibold">
-                                  {(product?.msrp * product?.quantity).toFixed(2)}
+                                  {(product?.msrp * product?.quantity).toFixed(
+                                    2
+                                  )}
                                 </span>
                               </p>
                             </div>
@@ -221,8 +227,16 @@ const Cart = () => {
                                     type="checkbox"
                                     id={`delivery-option-standard-${product._id}`}
                                     name={`delivery-option-${product.cartSerial}`}
-                                    checked={shippingOption[product.cartSerial] !== "speedy"}
-                                    onChange={() => handleShippingOptionChange(product.cartSerial, "standard")}
+                                    checked={
+                                      shippingOption[product.cartSerial] !==
+                                      "speedy"
+                                    }
+                                    onChange={() =>
+                                      handleShippingOptionChange(
+                                        product.cartSerial,
+                                        "standard"
+                                      )
+                                    }
                                   />
                                 </div>
                                 <div className="flex flex-col text-lg">
@@ -240,7 +254,9 @@ const Cart = () => {
                                           day: "2-digit",
                                         });
 
-                                      return `${format(start)} - ${format(end)}`;
+                                      return `${format(start)} - ${format(
+                                        end
+                                      )}`;
                                     })()}
                                   </p>
                                   <p>Free Standard Shipping</p>
@@ -253,8 +269,16 @@ const Cart = () => {
                                     type="checkbox"
                                     id={`delivery-option-speedy-${product._id}`}
                                     name={`delivery-option-${product.cartSerial}`}
-                                    checked={shippingOption[product.cartSerial] === "speedy"}
-                                    onChange={() => handleShippingOptionChange(product.cartSerial, "speedy")}
+                                    checked={
+                                      shippingOption[product.cartSerial] ===
+                                      "speedy"
+                                    }
+                                    onChange={() =>
+                                      handleShippingOptionChange(
+                                        product.cartSerial,
+                                        "speedy"
+                                      )
+                                    }
                                   />
                                 </div>
                                 <div className="flex flex-col text-lg">
@@ -272,10 +296,12 @@ const Cart = () => {
                                           day: "2-digit",
                                         });
 
-                                      return `${format(start)} - ${format(end)}`;
+                                      return `${format(start)} - ${format(
+                                        end
+                                      )}`;
                                     })()}
                                   </p>
-                                  <p className="font-semibold" >$32</p>
+                                  <p className="font-semibold">$32</p>
                                   <p>Speedy Shipping</p>
                                 </div>
                               </div>
@@ -352,7 +378,9 @@ const Cart = () => {
                     <h2 className="mt-2 text-2xl font-medium uppercase">
                       Total Before Tax
                     </h2>
-                    <p className="mt-2 text-4xl font-semibold">${totalCost.toFixed(2)}</p>
+                    <p className="mt-2 text-4xl font-semibold">
+                      ${totalCost.toFixed(2)}
+                    </p>
                     <p className="mt-4 text-sm">
                       Tax is calculated during checkout
                     </p>

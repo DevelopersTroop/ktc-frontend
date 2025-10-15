@@ -1,5 +1,6 @@
 import { useGetProductListQuery } from "@/app/globalRedux/api/product";
 import { useDebounce } from "@/hooks/use-debounce";
+import { getProductImage } from "@/lib/utils";
 // import { getProductThumbnail, isCustomProduct, isCustomWheel } from "@/app/utils/product";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -86,7 +87,7 @@ const SearchSuggestion = ({
                     <div className="w-[60px]">
                       <Image
                         className="rounded w-full"
-                        src={imageURL ?? ""}
+                        src={getProductImage(false, product)}
                         alt={product?.title ?? ""}
                         width={60}
                         height={60}

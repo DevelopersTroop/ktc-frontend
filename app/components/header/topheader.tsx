@@ -40,10 +40,10 @@ export default function TopHeader() {
         )}
 
         <div className="px-4 py-3">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
             <MobileNavbar />
 
-            <div className="flex items-center w-1/2">
+            <div className="flex items-center">
               <Link href="/" className="flex-shrink-0">
                 <img
                   src="/images/logo.jpeg"
@@ -51,14 +51,17 @@ export default function TopHeader() {
                   className="h-8 md:h-16"
                 />
               </Link>
-              <HeaderSearchButton
-                aria-label="Search product"
-                isHomepage={false}
-              />
             </div>
+            <HeaderSearchButton
+              aria-label="Search product"
+              isHomepage={false}
+            />
 
             <div className="flex items-center gap-8">
-              <Link href={"/dashboard/save-product"} className="hidden items-center gap-2 md:flex">
+              <Link
+                href={"/dashboard/save-product"}
+                className="hidden items-center gap-2 md:flex"
+              >
                 <HeartIcon size={34} className=" text-gray-600" />
               </Link>
 
