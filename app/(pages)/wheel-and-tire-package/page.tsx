@@ -59,8 +59,8 @@ export default function Page() {
         Wheel & Tire Package
       </h2>
       <div className="grid grid-cols-12 gap-10">
-        <div className="col-span-8 flex flex-col gap-y-8">
-          <div className="flex gap-4 ">
+        <div className=" col-span-12 lg:col-span-8 flex flex-col gap-y-8">
+          <div className="flex flex-col md:flex-row gap-4 ">
             <div>
               <div className="flex flex-col gap-2">
                 <h3 className="text-2xl flex gap-2">
@@ -138,7 +138,7 @@ export default function Page() {
             </div>
           )}
         </div>
-        <div className="col-span-4 flex flex-col w-full">
+        <div className=" col-span-12 lg:col-span-4 flex flex-col w-full">
           <div className="mx-auto flex flex-col gap-4 p-2">
             <PackageDetails wheel={packageData.wheel} tire={packageData.tire} />
           </div>
