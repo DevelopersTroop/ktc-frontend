@@ -21,7 +21,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
   totalWithTax,
 }) => {
   return (
-    <div className="bg-[#F7F7F7] h-fit py-5 rounded-xs">
+    <div className="bg-[#F7F7F7] h-fit py-5 rounded-xs px-4">
       {/* Container for order summary details */}
       <div className="space-y-2">
         {/* Display total cost if available */}

@@ -33,6 +33,8 @@ import { Input } from "./StepOne";
 import { getSnapFinanceToken } from "@/lib/snap-finance";
 import { usePaytomorrowCheckout } from "@/hooks/use-pay-tomorrow-checkout";
 import Image from "next/image";
+import { StripePaymentElement } from "@stripe/stripe-js";
+import { PaymentElement } from "@stripe/react-stripe-js";
 
 export const StepTwo: React.FC<any> = () => {
   const [activeAccordion, setActiveAccordion] = useState("card");
@@ -43,6 +45,11 @@ export const StepTwo: React.FC<any> = () => {
   const billingAddressUpdate = useSelector(
     (state: RootState) => state.persisted.checkout.billingAddress
   );
+  // Modify stripe
+  const paymentElement = useRef<StripePaymentElement | null>(null);
+  useEffect(() => {
+    if (paymentElement?.current) paymentElement?.current.collapse();
+  }, [activeAccordion]);
   const [triggerPayment, setTriggerPayment] = useState(false);
 
   const { getSnapFinanceTransactionData, placeOrderWithSnapFinance } =
@@ -256,12 +263,6 @@ export const StepTwo: React.FC<any> = () => {
   // Extracted Payment Processing Logic
   const processPayment = async () => {
     switch (activeAccordion) {
-      case "card":
-      case "affirm":
-      case "cashapp":
-      case "klarna":
-        await initiateCheckout();
-        break;
       case "paypal":
         await initiatePaypalCheckout();
         break;
@@ -272,7 +273,7 @@ export const StepTwo: React.FC<any> = () => {
         await handleSnapFinanceCheckout();
         break;
       default:
-        console.warn("No valid payment method selected.");
+        await initiateCheckout();
     }
   };
 
@@ -299,34 +300,22 @@ export const StepTwo: React.FC<any> = () => {
   const shouldDisableButton = useMemo(() => {
     if (isLoading) return true;
 
-    const paymentMethodsRequiringValidation = new Set([
-      "card",
-      "affirm",
-      "cashapp",
-      "klarna",
-      "paypal",
-    ]);
+    const requiredFields: (keyof TBillingAddress)[] = [
+      "address1",
+      "zipCode",
+      "country",
+      "cityState",
+      "phone",
+      "email",
+      "fname",
+      "lname",
+    ];
 
-    if (paymentMethodsRequiringValidation.has(activeAccordion)) {
-      const requiredFields: (keyof TBillingAddress)[] = [
-        "address1",
-        "zipCode",
-        "country",
-        "cityState",
-        "phone",
-        "email",
-        "fname",
-        "lname",
-      ];
+    const hasAllRequiredFields = requiredFields.every(
+      (field) => formValues[field]?.trim().length
+    );
 
-      const hasAllRequiredFields = requiredFields.every(
-        (field) => formValues[field]?.trim().length
-      );
-
-      return !hasAllRequiredFields || !orderInfo.termsAndConditions;
-    }
-
-    return false;
+    return !hasAllRequiredFields || !orderInfo.termsAndConditions;
   }, [isLoading, activeAccordion, formValues, orderInfo.termsAndConditions]); // Depend on formValues
 
   useEffect(() => {
@@ -372,20 +361,23 @@ export const StepTwo: React.FC<any> = () => {
       <div
         key={method}
         onClick={() => toggleAccordion(method)}
-        className="relative border rounded-lg p-2.5 cursor-pointer"
+        className="relative border border-[#e5e5e5] rounded-[12px] px-2.5 h-[48px] cursor-pointer"
       >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center cursor-pointer min-w-0">
-            <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
-              <span
-                className={`inline-block w-5 h-5 rounded-full border ${
-                  activeAccordion === method
-                    ? "border-4 border-black"
-                    : "border-gray-600"
-                }`}
-              />
+        <div className="flex items-center justify-between h-full">
+          <div className="flex items-center cursor-pointer min-w-0 gap-3">
+            <div className="ml-2 flex items-center">
+              {activeAccordion === method ? (
+                <div className="relative w-[15px] h-[15px]">
+                  <span className="absolute inset-0 rounded-full border-2 border-black"></span>
+                  <span className="absolute inset-[4px] rounded-full bg-black"></span>
+                </div>
+              ) : (
+                <span
+                  className={`inline-block w-[15px] h-[15px] rounded-full border-[2px] border-[#6d6e78]`}
+                />
+              )}
             </div>
-            <div className="flex items-center pl-10">
+            <div className="flex items-center h-full">
               {icon}
               {label && (
                 <span className="font-semibold text-gray-900 text-xl truncate">
@@ -429,15 +421,21 @@ export const StepTwo: React.FC<any> = () => {
           {/* <CheckoutForm/> */}
           <div>
             <div className="flex flex-col space-y-4">
-              {renderPaymentOption(
-                "card",
-                "Stripe",
-                <img
-                  src="https://js.stripe.com/v3/fingerprinted/img/card-ce24697297bd3c6a00fdd2fb6f760f0d.svg"
-                  className="w-4 h-4 mr-2"
-                  alt="Credit Card"
-                />
-              )}
+              <PaymentElement
+                onFocus={() => {
+                  setActiveAccordion("");
+                }}
+                onReady={(element) => {
+                  paymentElement.current = element;
+                }}
+                options={{
+                  layout: {
+                    type: "accordion",
+                    spacedAccordionItems: true,
+                    radios: true,
+                  },
+                }}
+              />
 
               {renderPaymentOption(
                 "pay-tomorrow",

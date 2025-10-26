@@ -51,10 +51,10 @@ export const FinalStep: React.FC = () => {
     [searchParams]
   );
 
-  const { sessionId, orderId, paymentId, PayerID } = queryParams;
+  const { sessionId, orderId, paymentId, PayerID, method } = queryParams;
 
   useEffect(() => {
-    if (!orderId || (!sessionId && (!paymentId || !PayerID))) {
+    if (!orderId || !method) {
       return; // Prevent unnecessary effect execution
     }
 
@@ -75,19 +75,17 @@ export const FinalStep: React.FC = () => {
         }, 200);
 
         let response;
-        if (sessionId) {
-          response = await customFetch<
-            IApiRes<{ order: TOrder; payment: PaymentData }>
-          >(
-            `payments/stripe/verify-payment?sessionId=${sessionId}&orderId=${orderId}`
-          );
-        } else if (queryParams.method === "pay_tomorrow") {
+        if (method === "stripe") {
           response = await customFetch(
-            `/payments/pay-tomorrow/status?orderId=${orderId}`
+            `payments/stripe/verify-payment?orderId=${orderId}`
           );
-        } else if (queryParams.method === "snap_finance") {
+        } else if (method === "pay_tomorrow") {
           response = await customFetch(
-            `/payments/snap-finance/status?orderId=${orderId}`
+            `payments/pay-tomorrow/status?orderId=${orderId}`
+          );
+        } else if (method === "snap_finance") {
+          response = await customFetch(
+            `payments/snap-finance/status?orderId=${orderId}`
           );
         } else {
           response = await customFetch<
@@ -106,6 +104,8 @@ export const FinalStep: React.FC = () => {
         }
 
         const result = response.data;
+        console.log("TCL: verifyPayment -> result", result);
+
         if (result?.order) {
           setProgress(100);
           dispatch(updateOrderSuccessData(result.order));
@@ -214,6 +214,13 @@ export const FinalStep: React.FC = () => {
         <div className="sticky top-0 col-span-11 flex flex-col gap-8 lg:col-span-4">
           <OrderSummary
             totalCost={orderSuccessData?.data?.totalCost}
+            taxAmount={orderSuccessData?.data?.taxAmount}
+            totalWithTax={
+              orderSuccessData?.data?.totalWithTax ||
+              (orderSuccessData?.data?.netCost
+                ? parseFloat(orderSuccessData?.data?.netCost)
+                : parseFloat("0.00"))
+            }
             netCost={orderSuccessData?.data?.netCost}
             cartType={orderSuccessData?.data?.cartType}
             discount={orderSuccessData?.data?.discount}
