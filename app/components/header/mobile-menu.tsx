@@ -5,6 +5,8 @@ import { Menu, X, ChevronDown, ChevronUp, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import navMenus, { NavMenu } from "./mobile-nav";
+import HeaderSearchButton from "./search/search";
+import SearchUnderMenu from "./search/searchUnderMenu";
 
 // Recursive Mobile Navbar with Drawer
 export default function MobileNavbar() {
@@ -51,7 +53,7 @@ export default function MobileNavbar() {
                   onClick={() => {
                     if (!item.children) setIsOpen(false);
                   }}
-                  className="flex-1 text-left"
+                  className="flex-1 text-left relative after:absolute after:h-[2px] after:w-[15%] after:bg-primary after:bottom-0 after:left-0"
                 >
                   {item.label}
                 </Link>
@@ -115,7 +117,9 @@ export default function MobileNavbar() {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <span className="font-bold text-xl">Menu</span>
+          <span className="font-bold text-xl">
+            <img src="/images/logo.jpeg" className="w-10" />
+          </span>
           <button
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
@@ -124,9 +128,17 @@ export default function MobileNavbar() {
             <X className="w-6 h-6" />
           </button>
         </div>
+        <Link
+          onClick={() => setIsOpen(false)}
+          className="uppercase bg-primary text-white w-full inline-block text-center py-2 text-xl"
+          href={"/login"}
+        >
+          Sign in or Create Account
+        </Link>
+        <SearchUnderMenu isHomepage={false} />
 
         {/* Navigation */}
-        <nav className="py-2">{renderMenuItems(navMenus)}</nav>
+        <nav className="py-2 uppercase">{renderMenuItems(navMenus)}</nav>
       </div>
     </>
   );

@@ -91,6 +91,10 @@ const WheelsGallery = () => {
                         alt={product.title}
                         className="w-full p-4 h-auto object-cover"
                       />
+
+                      <h4 className="text-lg font-semibold mt-2 text-center">
+                        {product?.title}
+                      </h4>
                       <h4 className="text-lg font-semibold mt-2 text-center">
                         {product?.sku}
                       </h4>

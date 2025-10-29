@@ -1,3 +1,4 @@
+import { Categories } from "./components/home-page/categories";
 import HeroSection from "./components/home-page/hero-section";
 import SuspensionBrands from "./components/home-page/suspension-brands";
 import SuspensionSection from "./components/home-page/suspension-section";
@@ -12,7 +13,7 @@ const page = () => {
       <HeroSection />
       <ViewGallery />
       <WheelsSection />
-
+      <Categories />
       <TodaysDeals />
       <WheelsGallery />
       <SuspensionBrands />

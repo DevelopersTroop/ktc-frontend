@@ -72,6 +72,9 @@ const TodaysDeals = () => {
                       className="w-full p-4 h-auto object-cover"
                     />
                     <h4 className="text-lg font-semibold mt-2 text-center">
+                      {product?.title}
+                    </h4>
+                    <h4 className="text-lg font-semibold mt-2 text-center">
                       {product?.sku}
                     </h4>
                   </div>
@@ -87,7 +90,7 @@ const TodaysDeals = () => {
       <div className="text-center mt-4">
         <button className="px-4 py-2 text-primary bg-white bg-opacity-50 text-2xl font-semibold uppercase outline outline-1 outline-primary hover:bg-primary hover:text-white">
           <Link href="/collections/product-category/wheels">
-            View popular wheels
+            View todays deals
           </Link>
         </button>
       </div>
