@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-const useYmm = () => {
+const useYmm = (isWheel:boolean = true) => {
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -36,6 +36,7 @@ const useYmm = () => {
             rearCenterBore: string;
             maxWheelLoad: string;
             tireSizes: Record<"front" | "rear", string>[];
+            tireSizesList?: string[]
         }
     } | null>(null);
 
@@ -389,18 +390,25 @@ const useYmm = () => {
 
     const onSubmit = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
         e.preventDefault();
+        if(!isWheel && selectedVehicle?.vehicleInformation){
+            selectedVehicle.vehicleInformation.tireSizesList = Array.from(new Set(Object.values(selectedVehicle?.vehicleInformation?.tireSizes ?? {}).flatMap((sizes: Record<"front" | "rear", string>) => [sizes.front.replace(/(\/\d+)[A-Z]+(\d+)/, '$1-$2'), sizes.rear.replace(/(\/\d+)[A-Z]+(\d+)/, '$1-$2')])))
+        }
+        const vehicleInformation = isWheel ? { ...(selectedVehicle?.vehicleInformation ?? {}), tireSizes: [] } : { ...(selectedVehicle?.vehicleInformation ?? {}), supportedWheels: [] }
         dispatch(setYmm({
             year: selectedVehicle?.year,
             make: selectedVehicle?.make,
             model: selectedVehicle?.model,
             bodyType: selectedVehicle?.bodyType,
             subModel: selectedVehicle?.subModel,
-            vehicleInformation: { ...(selectedVehicle?.vehicleInformation ?? {}), tireSizes: [] }
+            vehicleInformation
         }))
         if (selectedVehicle?.subModel?.DRChassisID && !isLoading.vehicleData) {
             dispatch(submitYmm({}));
-            router.push("/collections/product-category/wheels?vehicle=selectedVehicleInformation");
-
+            if(isWheel){
+                router.push("/collections/product-category/wheels?vehicle=selectedVehicleInformation");
+            } else {
+                router.push("/collections/product-category/tires?tire_size="+selectedVehicle?.vehicleInformation?.tireSizesList?.join(','));
+            }
         }
     }
 

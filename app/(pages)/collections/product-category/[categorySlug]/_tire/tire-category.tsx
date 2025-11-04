@@ -10,6 +10,8 @@ import SidebarFilters from "../_filters/mobile-filters/sidebar-filters";
 import SortByFilter from "../_filters/sort-by-filter";
 import { useFilterSync } from "../_filters/store";
 import TireFilters from "../_filters/tire-filters";
+import MobileYmmFilter from "../_filters/mobile-ymm/mobile-ymm-filter";
+import TireYMMFilters from "../_filters/widgets/tires/tire-ymm-filter";
 import ProductCardSkeleton from "../_loading/product-card-skeleton";
 import NoProductsFound from "../no-products-found";
 import TireCard from "./tire-card";
@@ -29,11 +31,16 @@ const TireCategory: React.FC<{ page: number }> = ({ page = 1 }) => {
             <TireFilters />
           </SidebarFilters>
 
-          <div className="w-full max-w-[165px]">
+          <MobileYmmFilter>
+            <TireYMMFilters />
+          </MobileYmmFilter>
+
+          <div className="w-full">
             <SortByFilter />
           </div>
         </div>
         <div className="hidden h-full flex-col gap-3 md:flex md:w-[400px]">
+          <TireYMMFilters />
           <TireFilters />
         </div>
         {loading ? (
