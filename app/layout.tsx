@@ -5,9 +5,11 @@ import { Toaster } from "sonner";
 import Footer from "./components/footer/footer";
 import DiscountBanner from "./components/header/discount-banner";
 import Header from "./components/header/header";
+import TopHeaderOne from "./components/header/top-header";
 import TopHeader from "./components/header/topheader";
 import StoreProvider from "./globalRedux/store-provider";
 import "./globals.css";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +38,7 @@ export default function RootLayout({
       >
         <StoreProvider>
           <CheckoutProvider>
+            <TopHeaderOne />
             <TopHeader />
             <Header />
             <DiscountBanner />
@@ -44,6 +47,10 @@ export default function RootLayout({
             <Toaster richColors />
           </CheckoutProvider>
         </StoreProvider>
+        <Script
+          src="//code.tidio.co/ylns3q2pbrzhwklnx08n2v5oezbmhf7g.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

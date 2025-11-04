@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Stepper } from "./_components/Stepper";
 import { Renderer } from "./_components/StepRenderer";
+import StripeProvider from "./_components/stripe/StripeProvider";
 
 const Page: React.FC = () => {
   const router = useRouter();
@@ -34,7 +35,7 @@ const Page: React.FC = () => {
   useEffect(() => {
     if (Object.keys(products).length === 0 && step !== 3) {
       toast.error(
-        "Your cart is empty. Please add items before proceeding to checkout.",
+        "Your cart is empty. Please add items before proceeding to checkout."
       );
       router.push("/cart");
       return;
@@ -62,7 +63,9 @@ const Page: React.FC = () => {
     <div className="my-10 w-full">
       <Container>
         <Stepper currentStep={step} steps={steps} setStep={setStep} />
-        <Renderer setStep={setStep} step={step} />
+        <StripeProvider>
+          <Renderer setStep={setStep} step={step} />
+        </StripeProvider>
       </Container>
     </div>
   );

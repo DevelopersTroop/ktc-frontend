@@ -15,6 +15,7 @@ import TireLoadRange from "./widgets/tire/tire-load-range";
 
 const TireFilters = () => {
   const { filters } = useFetchFilters("tires");
+	console.log("TCL: TireFilters -> filters", filters)
 
   return (
     <div className={"filter-shadow bg-gray-200"}>

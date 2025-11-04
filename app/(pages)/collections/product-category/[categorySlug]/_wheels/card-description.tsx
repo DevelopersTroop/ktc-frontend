@@ -59,9 +59,9 @@ const CardDescription = ({ product }: { product: TInventoryItem }) => {
               As Fast As: <span className="font-semibold">  {(() => {
                                       const today = new Date();
                                       const start = new Date(today);
-                                      start.setDate(today.getDate() + 3);
+                                      start.setDate(today.getDate());
                                       const end = new Date(today);
-                                      end.setDate(today.getDate() + 7);
+                                      end.setDate(today.getDate() + 5);
 
                                       const format = (date: Date) =>
                                         date.toLocaleString("en-US", {

@@ -34,6 +34,10 @@ const navMenus: NavMenu[] = [
                 href: "#",
                 label: "Shop by brands",
               },
+              {
+                label: "Make your wheel and tire packages now",
+                href: "/collections/product-category/wheels",
+              },
             ],
           },
         ],
@@ -289,15 +293,15 @@ const navMenus: NavMenu[] = [
     children: [
       {
         label: "Wheels",
-        href: "/collections/product-category/wheels",
+        href: "/brands?query=wheels",
       },
       {
         label: "Tires",
-        href: "/collections/product-category/tires",
+        href: "/brands?query=tires",
       },
       {
         label: "Accessories",
-        href: "/collections/product-category/accessories",
+        href: "/brands?query=accessories",
       },
     ],
   },
@@ -317,6 +321,10 @@ const navMenus: NavMenu[] = [
       {
         label: "Contact",
         href: "/contact",
+      },
+      {
+        label: "Financing",
+        href: "/financing",
       },
     ],
   },

@@ -4,14 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import CardDescription from "./card-description";
+import { useSearchParams } from "next/navigation";
 
-const ProductCard = ({ product }: { product: TInventoryItem }) => {
-  const productLink = `/collections/product/${product.slug}`;
+export const ProductCard = ({ product }: { product: TInventoryItem }) => {
+  const searchParams = useSearchParams();
+  const cartPackage = searchParams.get("cartPackage");
+  const productLink = `/collections/product/${product.slug}?cartPackage=${cartPackage}`;
   const [imageErr, setImageErr] = useState(false);
   return (
     <div
       className={
-        "flex w-full flex-row overflow-hidden rounded-xl border border-[#cfcfcf] bg-white px-4 min-[600px]:w-[250px] min-[600px]:flex-col"
+        "flex w-full flex-row overflow-hidden rounded-xl border border-[#cfcfcf] bg-white px-4 min-[600px]:w-[250px] min-[600px]:flex-col shadow-xl"
       }
     >
       <div className="flex w-full items-center justify-center pt-5">
@@ -25,10 +28,10 @@ const ProductCard = ({ product }: { product: TInventoryItem }) => {
               imageErr
                 ? "/not-available.webp"
                 : product.thumbnail.length
-                  ? product.thumbnail
-                  : product.image_url1.length
-                    ? product.image_url1
-                    : "/not-available.webp"
+                ? product.thumbnail
+                : product.image_url1.length
+                ? product.image_url1
+                : "/not-available.webp"
             }
             onError={() => setImageErr(true)}
           ></Image>

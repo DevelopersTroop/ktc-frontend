@@ -1,9 +1,8 @@
 "use client";
-import debounce from "lodash/debounce"; // Use lodash for better debounce handling
+import debounce from "lodash/debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-// Define filter type
 type Filters = Record<string, string>;
 
 export const useFilterSync = () => {
@@ -12,98 +11,124 @@ export const useFilterSync = () => {
   const pathname = usePathname();
 
   const [localFilters, setLocalFilters] = useState<Filters>({});
+	console.log("TCL: useFilterSync -> localFilters", localFilters)
 
-  // Convert searchParams to an object
+  /**
+   * ✅ Extract only your "filter keys"
+   * Example: ignore cartPackage, cartSerial, session, etc.
+   */
   const parsedFilters = useMemo<Filters>(() => {
     const params: Filters = {};
     searchParams.forEach((value, key) => {
-      if (key === "cartPackage" || key === "cartSerial") {
-        return;
-      }
+      // only include keys you want to treat as filters
+      if (["cartPackage", "cartSerial"].includes(key)) return;
       params[key] = value;
     });
     return params;
   }, [searchParams]);
 
-  // Sync state with URL parameters
+  // ✅ Sync local state with URL for only managed filters
   useEffect(() => {
     setLocalFilters(parsedFilters);
   }, [parsedFilters]);
 
-  // Toggle filter value (handles multiple selections)
+  /**
+   * ✅ Debounced query updater
+   * - Starts with existing URL params
+   * - Removes only managed filters
+   * - Re-adds updated filters
+   */
+  const updateQueryParams = useMemo(
+    () =>
+      debounce((filters: Filters) => {
+        // 1️⃣ start with full query (so we keep cartPackage, cartSerial, etc.)
+        const params = new URLSearchParams(searchParams.toString());
+
+        // 2️⃣ remove all keys we manage (clean slate for filters)
+        Object.keys(parsedFilters).forEach((key) => params.delete(key));
+
+        // 3️⃣ add updated filters
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value && value.trim()) params.set(key, value);
+        });
+
+        // 4️⃣ build final URL
+        const queryString = params.toString();
+        const url = queryString ? `${pathname}?${queryString}` : pathname;
+
+        router.replace(url, { scroll: false });
+      }, 150),
+    [router, pathname, searchParams, parsedFilters],
+  );
+
+  // ✅ Cleanup debounce
+  useEffect(() => {
+    return () => updateQueryParams.cancel();
+  }, [updateQueryParams]);
+
+  // ✅ Auto-update URL when filters change
+  useEffect(() => {
+    updateQueryParams(localFilters);
+  }, [localFilters, updateQueryParams]);
+
+  // ✅ Toggle logic
   const toggleFilterValue = useCallback(
-    (key: string, value: string, acceptMultiple: boolean = true) => {
+    (key: string, value: string, acceptMultiple = true) => {
       setLocalFilters((prev) => {
-        const prevValues = prev[key] ? prev[key].split(",") : [];
-        let finalValue: string;
+        const prevValues = prev[key]?.split(",").filter(Boolean) || [];
+        let newValues: string[];
 
         if (acceptMultiple) {
-          if (prevValues.includes(value)) {
-            finalValue = prevValues.filter((val) => val !== value).join(",");
-          } else {
-            finalValue = [...prevValues, value].join(",");
-          }
+          newValues = prevValues.includes(value)
+            ? prevValues.filter((v) => v !== value)
+            : [...prevValues, value];
         } else {
-          finalValue = value;
+          newValues = [value];
         }
 
-        const updatedFilters = { ...prev, [key]: finalValue };
-
-        // Remove empty filters
-        if (!finalValue) {
-          delete updatedFilters[key];
+        const updated = { ...prev };
+        if (newValues.length === 0) {
+          delete updated[key];
+        } else {
+          updated[key] = newValues.join(",");
         }
 
-        return updatedFilters;
+        return updated;
       });
     },
     [],
   );
 
-  const handleSearch = (key: string, value: string) => {
-    const updatedFilters = { ...parsedFilters, ...localFilters, [key]: value };
-    setLocalFilters(updatedFilters);
-    updateQueryParams(updatedFilters);
-  };
+  // ✅ For search field / inputs
+  const handleSearch = useCallback((key: string, value: string) => {
+    setLocalFilters((prev) => {
+      const updated = { ...prev };
+      if (!value.trim()) delete updated[key];
+      else updated[key] = value;
+      return updated;
+    });
+  }, []);
 
-  // Debounced function to update URL query params
-  const updateQueryParams = useCallback(
-    debounce((filters: Filters) => {
-      const query = new URLSearchParams();
+  // ✅ Helpers
+  const removeKey = useCallback((key: string) => {
+    setLocalFilters((prev) => {
+      const updated = { ...prev };
+      delete updated[key];
+      return updated;
+    });
+  }, []);
 
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value) query.set(key, value); // Use set() instead of append() for unique keys
-      });
+  const removeSorting = useCallback(() => removeKey("sort"), [removeKey]);
 
-      router.replace(`${pathname}?${decodeURIComponent(query.toString())}`, {
-        scroll: false,
-      });
-    }, 0),
-    [router, pathname],
-  );
-
-  // Update query params when filters change
-  useEffect(() => {
-    updateQueryParams(localFilters);
-    return () => updateQueryParams.cancel(); // Cleanup debounce on unmount
-  }, [localFilters, updateQueryParams]);
-
-  const removeSorting = () => {
-    const updatedFilters = { ...localFilters };
-    delete updatedFilters["sort"];
-    setLocalFilters(updatedFilters);
-    updateQueryParams(updatedFilters);
-  };
-
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setLocalFilters({});
-    updateQueryParams({});
-  };
+  }, []);
 
   return {
     filters: localFilters,
     toggleFilterValue,
     handleSearch,
+    removeKey,
     removeSorting,
     clearFilters,
   };

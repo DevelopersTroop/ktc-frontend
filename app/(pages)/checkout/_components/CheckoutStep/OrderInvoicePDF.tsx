@@ -1,5 +1,6 @@
 "use client";
-import { Order } from "@/types/order";
+import { getPrice } from "@/app/utils/price";
+import { TOrder } from "@/types/order";
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import React from "react";
 
@@ -115,7 +116,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const OrderInvoicePDF: React.FC<{ order: Order | undefined }> = ({ order }) => {
+const OrderInvoicePDF: React.FC<{ order: TOrder | undefined }> = ({
+  order,
+}) => {
   if (!order) return null;
 
   const formatDate = (dateString: string) => {
@@ -127,7 +130,10 @@ const OrderInvoicePDF: React.FC<{ order: Order | undefined }> = ({ order }) => {
   };
 
   const formatCurrency = (amount: number) => {
-    return `$${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return `$${amount.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
   };
 
   return (
@@ -156,7 +162,7 @@ const OrderInvoicePDF: React.FC<{ order: Order | undefined }> = ({ order }) => {
               <Text style={styles.sectionTitle}>Shipping Address</Text>
               <View style={styles.sectionContent}>
                 <Text style={styles.addressText}>
-                  {order.data.selectedDealerInfo?.Addressee ||
+                  {order.data.selectedDealerInfo?.address ||
                     order.data.shippingAddress.name}
                 </Text>
                 {order.data.shippingAddress.company && (
@@ -165,30 +171,30 @@ const OrderInvoicePDF: React.FC<{ order: Order | undefined }> = ({ order }) => {
                   </Text>
                 )}
                 <Text style={styles.addressText}>
-                  {order.data.selectedDealerInfo?.["Address 1"] ||
+                  {order.data.selectedDealerInfo?.address1 ||
                     order.data.shippingAddress.address1}
                 </Text>
-                {(order.data.selectedDealerInfo?.["Address 2"] ||
+                {(order.data.selectedDealerInfo?.address2 ||
                   order.data.shippingAddress.address2) && (
                   <Text style={styles.addressText}>
-                    {order.data.selectedDealerInfo?.["Address 2"] ||
+                    {order.data.selectedDealerInfo?.address2 ||
                       order.data.shippingAddress.address2}
                   </Text>
                 )}
                 <Text style={styles.addressText}>
-                  {order.data.selectedDealerInfo?.["State/Province"].value ||
+                  {order.data.selectedDealerInfo?.stateProvince ||
                     order.data.shippingAddress.cityState}
                 </Text>
                 <Text style={styles.addressText}>
-                  {order.data.selectedDealerInfo?.Country.text ||
+                  {order.data.selectedDealerInfo?.country ||
                     order.data.shippingAddress.country}{" "}
                   -{" "}
                   {order.data.shippingAddress.zipCode ||
-                    order.data.selectedDealerInfo?.["Zip Code"]}
+                    order.data.selectedDealerInfo?.zipCode}
                 </Text>
                 <Text style={styles.addressText}>
                   Phone:{" "}
-                  {order.data.selectedDealerInfo?.["Address Phone"] ||
+                  {order.data.selectedDealerInfo?.addressPhone ||
                     order.data.shippingAddress.phone}
                 </Text>
                 {order.data.shippingAddress.email && (
@@ -254,7 +260,7 @@ const OrderInvoicePDF: React.FC<{ order: Order | undefined }> = ({ order }) => {
                   {product.sku}
                 </Text>
                 <Text style={[styles.tableCell, styles.priceCell]}>
-                  {formatCurrency(product.price)}
+                  {formatCurrency(getPrice(product.msrp, product.price))}
                 </Text>
                 <Text style={[styles.tableCell, styles.qtyCell]}>
                   {product.quantity}

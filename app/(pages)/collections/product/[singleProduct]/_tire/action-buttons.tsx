@@ -1,6 +1,9 @@
 "use client";
 import { addToCart } from "@/app/globalRedux/features/cart/cart-slice";
-import store, { useAppDispatch } from "@/app/globalRedux/store";
+import store, {
+  useAppDispatch,
+  useTypedSelector,
+} from "@/app/globalRedux/store";
 import { TInventoryItem } from "@/types/product";
 import { v4 as uuidv4 } from "uuid";
 import React, { useContext } from "react";
@@ -8,13 +11,18 @@ import wait from "wait";
 import QuantityInput from "./quantity-input";
 import { TireContext } from "./context/TireProvider";
 import { CartData } from "../_wheels/normal-action";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { addPackage } from "@/app/globalRedux/features/package";
 // import { CenterCapContext } from "./context/CenterCapProvider";
 
 const ActionButtons = ({ product }: { product: TInventoryItem }) => {
-  console.log("product = ", product);
+  const searhcParams = useSearchParams();
+  const cartPackage = searhcParams.get("cartPackage") as string;
+  const packages = useTypedSelector((state) => state.persisted.package);
   const dispatch = useAppDispatch();
-  const {quantity} = useContext(TireContext);
+  const { quantity } = useContext(TireContext);
+
+  const wheel = packages[cartPackage]?.wheel;
 
   const router = useRouter();
   //   const { quantity } = useContext(CenterCapContext);
@@ -42,14 +50,14 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
               quantity: quantity,
               metaData,
             },
-          }),
+          })
         );
         setTimeout(() => {
           const updatedProducts = store.getState().persisted.cart.products;
           const addedProduct = Object.values(updatedProducts).find(
             (p) =>
               p._id === product._id &&
-              JSON.stringify(p.metaData) === JSON.stringify(metaData),
+              JSON.stringify(p.metaData) === JSON.stringify(metaData)
           );
           resolve({
             cartSerial: addedProduct?.cartSerial || cartSerial,
@@ -63,14 +71,50 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
     return data;
   };
 
-  const [addToCartText, setAddToCartText] = React.useState(
-    "Buy Tires Only"
-  );
+  const [addToCartText, setAddToCartText] = React.useState("Buy Tires Only");
+
+  const addWheels = () => {
+    new Promise<{ cartPackage: string }>((res) => {
+      const cartPackage = uuidv4();
+      const cartSerial = uuidv4();
+      dispatch(
+        addPackage({
+          packageId: cartPackage,
+          tire: {
+            ...product,
+            cartPackage,
+          },
+        })
+      );
+      res({ cartPackage });
+    }).then((res) => {
+      router.push(
+        `/collections/product-category/wheels?diameter=${product.rim_diameter}&cartPackage=${res.cartPackage}`
+      );
+    });
+  };
+
+  const addTires = () => {
+    new Promise<{ cartPackage: string }>((res) => {
+      dispatch(
+        addPackage({
+          packageId: cartPackage,
+          tire: {
+            ...product,
+            cartPackage,
+          },
+        })
+      );
+      res({ cartPackage });
+    }).then((res) => {
+      router.push(`/wheel-and-tire-package?cartPackage=${res.cartPackage}`);
+    });
+  };
 
   return (
     <>
       <div className="flex flex-col justify-center gap-4">
-        <div className="max-w-52" >
+        <div className="max-w-52">
           <QuantityInput
             product={product}
             inventoryAvailable={20}
@@ -78,20 +122,22 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
             id={"quantity"}
           />
         </div>
-        {/* <button
-          onClick={() => {}}
-          className={"w-full rounded py-1 outline outline-1 outline-primary"}
-        >
-          Add Tires
-        </button> */}
-        <button
-          onClick={() => {
-            router.push("/collections/product-category/wheels")
-          }}
-          className={"bg-primary py-3 text-white rounded text-xl w-full"}
-        >
-          Add Wheels & Save More !
-        </button>
+        {wheel?._id ? (
+          <button
+            onClick={addTires}
+            className={"w-full rounded py-1 outline outline-1 outline-primary"}
+          >
+            Add Tires to your package
+          </button>
+        ) : null}
+        {wheel?._id ? null : (
+          <button
+            onClick={addWheels}
+            className={"bg-primary py-3 text-white rounded text-xl w-full"}
+          >
+            Add Wheels & Save More !
+          </button>
+        )}
       </div>
       <div className="mt-4">
         <button
@@ -99,12 +145,10 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
             wait(400).then(() => {
               addProductToCart();
               setAddToCartText("Loading..");
-              router.push('/cart')
+              router.push("/cart");
             });
           }}
-          className={
-            " py-1 rounded outline outline-1 outline-primary w-full"
-          }
+          className={" py-1 rounded outline outline-1 outline-primary w-full"}
         >
           {addToCartText}
         </button>
