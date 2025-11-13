@@ -13,6 +13,7 @@ export type TCheckoutState = TOrderData & {
   orderSuccessData: TOrder | undefined;
   newCoupon: string | undefined | null;
   orderId: string;
+  funnelId: string;
 };
 
 const initialState: TCheckoutState = {
@@ -86,12 +87,16 @@ const initialState: TCheckoutState = {
   newCoupon: null,
   affiliateDiscount: 0,
   orderId: "",
+  funnelId: "",
 };
 
 const checkoutSlice = createSlice({
   name: "checkout",
   initialState,
   reducers: {
+    setFunnel: (state, action: PayloadAction<string>) => {
+      state.funnelId = action.payload;
+    },
     setBillingAddress: (
       state: TCheckoutState,
       action: PayloadAction<TBillingAddress>
@@ -326,6 +331,16 @@ const checkoutSlice = createSlice({
     setOrderId(state, action: PayloadAction<string>) {
       state.orderId = action.payload;
     },
+    setTaxAmount(
+      state,
+      action: PayloadAction<{ taxAmount: number; totalWithTax: number }>
+    ) {
+      state.taxAmount = action.payload.taxAmount;
+      state.totalWithTax = action.payload.totalWithTax;
+    },
+    setPaymentMethod: (state, action: PayloadAction<string>) => {
+      state.paymentMethod = action.payload;
+    },
     updateShippingProtection(state, action: PayloadAction<number>) {
       state.shippingProtection = action.payload;
     },
@@ -362,5 +377,8 @@ export const {
   clearAffiliateDiscount,
   clearDealerDiscount,
   setOrderId,
+  setFunnel,
+  setTaxAmount,
+  setPaymentMethod,
   updateShippingProtection,
 } = checkoutSlice.actions;

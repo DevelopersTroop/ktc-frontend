@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Stepper } from "./_components/Stepper";
 import { Renderer } from "./_components/StepRenderer";
-import StripeProvider from "./_components/stripe/StripeProvider";
+import { GoogleLibraryLoader } from "@/components/shared/goolge-library-loader";
 
 const Page: React.FC = () => {
   const router = useRouter();
@@ -62,10 +62,10 @@ const Page: React.FC = () => {
   return (
     <div className="my-10 w-full">
       <Container>
-        <Stepper currentStep={step} steps={steps} setStep={setStep} />
-        <StripeProvider>
+        <GoogleLibraryLoader>
+          <Stepper currentStep={step} steps={steps} setStep={setStep} />
           <Renderer setStep={setStep} step={step} />
-        </StripeProvider>
+        </GoogleLibraryLoader>
       </Container>
     </div>
   );

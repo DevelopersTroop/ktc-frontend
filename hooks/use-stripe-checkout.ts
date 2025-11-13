@@ -1,13 +1,11 @@
 "use client";
-
-import { useStripeContext } from "@/app/(pages)/checkout/_components/stripe/StripeProvider";
+import { apiInstance } from "@/app/globalRedux/api/base";
 import { useTypedSelector } from "@/app/globalRedux/store";
-import { apiBaseUrl } from "@/app/utils/api";
 import { useCheckout } from "@/context/CheckoutContext";
+import { useStripeContext } from "@/context/StripeProvider";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { toast } from "sonner";
 import useAuth from "./useAuth";
-import { apiInstance } from "@/app/globalRedux/api/base";
 
 export const useStripeCheckout = () => {
   const { cartType, subTotalCost, totalCost } = useCheckout();
@@ -39,6 +37,10 @@ export const useStripeCheckout = () => {
     existingOrderId,
     referralCode,
     affiliateDiscount,
+    funnelId,
+    taxAmount,
+    totalWithTax,
+    paymentMethod,
   } = useTypedSelector((state) => state.persisted.checkout);
   const initiateCheckout = async () => {
     try {
@@ -65,13 +67,16 @@ export const useStripeCheckout = () => {
         user,
         localDealerSelected,
         localDealerInfo,
-        paymentMethod: "Stripe",
+        paymentMethod: paymentMethod ?? "Stripe",
         vehicleInformation,
         productBasedDiscount,
         productBasedDiscountApplied,
         existingOrderId,
         referralCode,
         affiliateDiscount,
+        funnelId,
+        taxAmount,
+        totalWithTax,
       };
       const response = await apiInstance.post<{ data: { orderId: string } }>(
         "/payments/stripe/create-order",
@@ -83,16 +88,15 @@ export const useStripeCheckout = () => {
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?step=3&order_id=${response.data.data.orderId}&method=stripe`,
+          return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?step=4&order_id=${response.data.data.orderId}&method=stripe`,
         },
-        redirect: "if_required",
       });
       if (error && error.message) {
-        // window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?step=2&order_status=false`;
+        window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?step=3&order_status=false`;
       }
     } catch (err) {
-      // window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?step=2&order_status=false`;
-      toast("Error", {
+      window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/checkout?step=3&order_status=false`;
+      toast.error("Error", {
         description: (err as Error).message,
       });
     }

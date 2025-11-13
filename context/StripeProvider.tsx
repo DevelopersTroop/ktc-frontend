@@ -1,19 +1,14 @@
-import React, {
-  createContext,
-  useContext,
-  useRef,
-  useState,
-  useEffect,
-} from "react";
-import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { useCheckout } from "./CheckoutContext";
+import { useAppDispatch, useTypedSelector } from "@/app/globalRedux/store";
 import { apiInstance } from "@/app/globalRedux/api/base";
 import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
-import { useCheckout } from "@/context/CheckoutContext";
+import { Elements } from "@stripe/react-stripe-js";
+import { setTaxAmount } from "@/app/globalRedux/features/checkout/checkout-slice";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
-// --------------------
-// Types
-// --------------------
 type TStripeContext = {
   clientSecret?: string;
   paymentIntentId?: string;
@@ -32,34 +27,78 @@ const stripePromise = loadStripe(
 // Provider Component
 // --------------------
 export default function StripeProvider({ children }: React.PropsWithChildren) {
-  const { totalCost } = useCheckout();
+  const { totalCost, step } = useCheckout();
+  const { billingAddress, shippingAddress } = useTypedSelector(
+    (state) => state.persisted.checkout
+  );
+  const [loading, setLoading] = useState(false);
   const [clientSecret, setClientSecret] = useState<string>("");
   const [paymentIntentId, setPaymentIntentId] = useState<string>("");
   const hasFetched = useRef(false);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [err, setErr] = useState("");
 
   useEffect(() => {
-    if (!totalCost || hasFetched.current) return;
+    if (
+      !totalCost ||
+      hasFetched.current ||
+      (!billingAddress && !shippingAddress)
+    )
+      return;
     hasFetched.current = true;
+    setLoading(true);
 
     const amount = Math.round(parseFloat(totalCost) * 100); // always integer cents
 
     apiInstance
-      .post<{ data: { secret: string; id: string } }>(
-        "/payments/stripe/intent",
-        { amount, currency: "USD" }
-      )
+      .post<{
+        data: {
+          secret: string;
+          id: string;
+          taxAmount: number;
+          totalWithTax: number;
+        };
+      }>("/payments/stripe/intent", {
+        amount,
+        currency: "USD",
+        billingAddress,
+        shippingAddress,
+      })
       .then((res) => {
         console.log("StripeProvider -> PaymentIntent created:", res.data);
         setClientSecret(res.data.data.secret);
         setPaymentIntentId(res.data.data.id);
+        dispatch(
+          setTaxAmount({
+            taxAmount: res.data.data.taxAmount / 100,
+            totalWithTax: res.data.data.totalWithTax / 100,
+          })
+        );
       })
       .catch((err) => {
-        console.error("Failed to create PaymentIntent:", err);
+        setErr(
+          err.response.data.errors.map((c: any) => c.message).join("") as string
+        );
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }, [totalCost]);
+  }, [totalCost, billingAddress, shippingAddress, dispatch, step]);
 
   // Wait until clientSecret is ready
-  if (!clientSecret) return <LoadingSpinner />;
+  if (loading) return <LoadingSpinner />;
+
+  if (!clientSecret || err) {
+    return (
+      <div className="text-center py-10 text-2xl font-semibold text-black">
+        <h2>{err ?? "You don't have valid shipping or billing address"}</h2>
+        {err.includes("tax") && (
+          <Button onClick={() => router.push("?step=1")}>Go back</Button>
+        )}
+      </div>
+    );
+  }
 
   // Stripe Element appearance and options
   const options: StripeElementsOptions = {

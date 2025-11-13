@@ -53,7 +53,7 @@ export default function Navbar() {
   return (
     <nav className={cn("bg-transparent w-full text-white ml-4 flex items-center justify-between")}>
       {/* Navigation menu list */}
-      <ul className="flex space-x-6 py-4 items-center relative">
+      <ul className="flex space-x-6 py-4 items-center relative uppercase">
         {navMenus.map((menu) => (
           <li
             key={menu.label}

@@ -7,15 +7,18 @@ import {
 } from "@/app/globalRedux/features/checkout/checkout-slice";
 import { RootState, useTypedSelector } from "@/app/globalRedux/store";
 import Container from "@/app/ui/container/container";
-import { Flex } from "@/components/shared/flex";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useCheckout } from "@/context/CheckoutContext";
+import { usePaytomorrowCheckout } from "@/hooks/use-pay-tomorrow-checkout";
 import { usePaypalCheckout } from "@/hooks/use-paypal-checkout";
 import { useStripeCheckout } from "@/hooks/use-stripe-checkout";
 import { getLatestOrderId, useSnapFinanceOrderData } from "@/lib/order";
+import { getSnapFinanceToken } from "@/lib/snap-finance";
 import { TBillingAddress } from "@/types/order";
+import { PaymentElement } from "@stripe/react-stripe-js";
+import { StripePaymentElement } from "@stripe/stripe-js";
 import {
   AlertCircle,
   ChevronLeft,
@@ -23,22 +26,16 @@ import {
   ShoppingBasket,
   X,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import { Input } from "./StepOne";
-import { getSnapFinanceToken } from "@/lib/snap-finance";
-import { usePaytomorrowCheckout } from "@/hooks/use-pay-tomorrow-checkout";
-import Image from "next/image";
-import { StripePaymentElement } from "@stripe/stripe-js";
-import { PaymentElement } from "@stripe/react-stripe-js";
 
 export const StepTwo: React.FC<any> = () => {
   const [activeAccordion, setActiveAccordion] = useState("card");
-  const [shippingSameAsBilling, setShippingSameAsBilling] = useState(true);
   const [showTermsAlert, setShowTermsAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const termsRef = useRef<HTMLDivElement>(null);
@@ -96,8 +93,14 @@ export const StepTwo: React.FC<any> = () => {
   /**
    * Redux Store And Dispatch Hook
    */
-  const { billingAddress, shippingAddress, orderInfo, shippingProtection } =
-    useTypedSelector((state) => state.persisted.checkout);
+  const {
+    billingAddress,
+    shippingAddress,
+    orderInfo,
+    shippingProtection,
+    taxAmount,
+    totalWithTax,
+  } = useTypedSelector((state) => state.persisted.checkout);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -326,36 +329,6 @@ export const StepTwo: React.FC<any> = () => {
     return () => subscription.unsubscribe();
   }, [watch, trigger]);
 
-  useEffect(() => {
-    if (shippingSameAsBilling) {
-      setValue("fname", shippingAddress.fname);
-      setValue("lname", shippingAddress.lname);
-      setValue("zipCode", shippingAddress.zipCode);
-      setValue("name", shippingAddress.name);
-      setValue("country", "USA");
-      setValue("cityState", shippingAddress.cityState);
-      setValue("company", shippingAddress.company);
-      setValue("phone", shippingAddress.phone);
-      setValue("email", shippingAddress.email);
-      setValue("address1", shippingAddress.address1);
-      setValue("address2", shippingAddress.address2);
-    } else {
-      reset({
-        address1: "",
-        address2: "",
-        cityState: "",
-        company: "",
-        country: "",
-        email: "",
-        fname: "",
-        lname: "",
-        name: "",
-        phone: "",
-        zipCode: "",
-      });
-    }
-  }, [shippingSameAsBilling, setValue, reset, shippingAddress]);
-
   const renderPaymentOption = useCallback(
     (method: string, label: string, icon: React.ReactNode) => (
       <div
@@ -485,110 +458,6 @@ export const StepTwo: React.FC<any> = () => {
                 </div>
               </div> */}
             </div>
-
-            <div className="flex flex-col gap-y-8 pt-8">
-              <h2 className="text-xl font-bold">Billing Info</h2>
-              <div
-                className="flex cursor-pointer items-center gap-1 py-2"
-                onClick={() => setShippingSameAsBilling((prev) => !prev)}
-              >
-                <Checkbox
-                  checked={shippingSameAsBilling}
-                  className="h-5 w-5 border-black data-[state=checked]:bg-black"
-                />
-                <span className="text-lg">Same as shipping address</span>
-              </div>
-              <div className="space-y-8">
-                <div className="flex flex-col gap-y-8">
-                  <div className="flex gap-4">
-                    <Input
-                      label="First Name"
-                      required
-                      error={errors.fname?.message}
-                      {...register("fname", {
-                        required: "First name is required",
-                      })}
-                    />
-                    <Input
-                      label="Last Name"
-                      required
-                      error={errors.lname?.message}
-                      {...register("lname", {
-                        required: "Last name is required",
-                      })}
-                    />
-                  </div>
-                  <Input label="Company/Care of" {...register("company")} />
-                  <Flex>
-                    <div className="w-full space-y-3">
-                      <Input
-                        label="Address Line 1"
-                        required
-                        error={errors.address1?.message}
-                        {...register("address1", {
-                          required: "Address is required",
-                        })}
-                      />
-                      <div className="text-sm text-muted">
-                        Note: Cannot be a P.O. box, except at APO/FPO addresses.
-                      </div>
-                    </div>
-                    <Input label="Address Line 2" {...register("address2")} />
-                  </Flex>
-                  <Input
-                    label="ZIP/Postal Code"
-                    required
-                    error={errors.zipCode?.message}
-                    {...register("zipCode", {
-                      required: "ZIP/Postal Code is required",
-                    })}
-                  />
-                  <Flex>
-                    <Input
-                      label="Country"
-                      required
-                      error={errors.country?.message}
-                      {...register("country", {
-                        required: "Country is required",
-                      })}
-                      placeholder="Enter country name or wait for auto-detection"
-                    />
-                    <Input
-                      label="City/State"
-                      required
-                      error={errors.cityState?.message}
-                      {...register("cityState", {
-                        required: "City/State is required",
-                      })}
-                    />
-                  </Flex>
-                  <Flex>
-                    <Input
-                      label="Phone Number"
-                      type="tel"
-                      required
-                      error={errors.phone?.message}
-                      {...register("phone", {
-                        required: "Phone number is required",
-                      })}
-                    />
-                    <Input
-                      label="Email Address"
-                      required
-                      type="email"
-                      error={errors.email?.message}
-                      {...register("email", {
-                        required: "Email address is required",
-                        pattern: {
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: "Please enter a valid email address",
-                        },
-                      })}
-                    />
-                  </Flex>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -641,10 +510,24 @@ export const StepTwo: React.FC<any> = () => {
                   </div>
                   <div className="relative flex items-baseline gap-0">
                     <h4 className="text-xl font-bold leading-[29px] text-[#210203]">
-                      {shippingProtection?.toFixed(2)}
+                      {shippingProtection
+                        ? shippingProtection?.toFixed(2)
+                        : "Free"}
                     </h4>
                   </div>
                 </div>
+                {taxAmount ? (
+                  <div className="flex justify-between items-baseline px-6">
+                    <div className="flex gap-2 items-center">
+                      <span className="text-[#210203] text-base font-normal">
+                        Sales Tax :
+                      </span>
+                    </div>
+                    <h4 className="text-2xl leading-[29px] text-[#210203] font-normal">
+                      ${taxAmount.toFixed(2)}
+                    </h4>
+                  </div>
+                ) : null}
                 {discount ? (
                   <div className="px-md flex justify-between">
                     <span className="">Discount:</span>
@@ -663,7 +546,7 @@ export const StepTwo: React.FC<any> = () => {
                   <div className="relative flex items-baseline gap-0">
                     <p className="text-xl leading-[38px] text-[#210203]">
                       <span className="font-bold">
-                        ${totalCost?.toFixed(2)}
+                        ${totalWithTax?.toFixed(2)}
                       </span>
                     </p>
                   </div>
