@@ -1,23 +1,31 @@
-export type TReviewStatus = "pending" | "approved" | "rejected";
+export type TProductSummary = {
+  id: string;
+  name: string;
+};
 
-interface TUserSummary {
-  _id: string;
+export type TUserSummary = {
+  id: string;
   firstName: string;
   lastName: string;
-  email: string;
-}
+};
 
-interface TProductSummary {
-  _id: string;
-}
+export type TReviewStatus = "pending" | "approved" | "rejected";
 
+/**
+ * Updated TReview interface
+ * Added optional photos and videos string arrays
+ */
 export interface TReview {
-  _id: string;
+  id: string;
   productId: TProductSummary;
-  userId: TUserSummary;
+  userId?: TUserSummary;
+  name?: string;
+  email?: string;
   rating: number;
   comment: string;
   status: TReviewStatus;
+  photos?: string[]; // <-- ADDED
+  videos?: string[]; // <-- ADDED
   createdAt: string; // ISO Date string
   updatedAt: string; // ISO Date string
 }

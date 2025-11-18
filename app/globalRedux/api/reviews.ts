@@ -5,15 +5,15 @@ import { TPaginatedResponse } from "@/types/response";
 
 const reviews = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    createReview: builder.mutation<
-      { review: TReview },
-      { productId: string; comment: string; rating: number }
-    >({
+    createReview: builder.mutation<{ review: TReview }, FormData>({
       query(data) {
         return {
           url: "/reviews",
           method: "POST",
           data,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         };
       },
       onQueryStarted: async (_, { queryFulfilled }) => {

@@ -1,82 +1,87 @@
-import StarRating from "./StarRating";
 import { useGetReviewsQuery } from "@/app/globalRedux/api/reviews";
 import { formatDistanceToNow } from "date-fns";
-import { useMemo, useState } from "react";
-import ReviewPagination from "./ReviewPagination";
+import { FC, useState } from "react";
+import StarRating from "./StarRating";
 import { WriteAReview } from "./WriteAReview";
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { DialogTitle } from "@radix-ui/react-dialog";
-import { StarIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import useAuth from "@/hooks/useAuth";
-import { toast } from "sonner";
 
-export const Reviews: React.FC<{ productId: string }> = ({ productId }) => {
-  const { user } = useAuth();
+// Mock ReviewPagination
+const ReviewPagination: FC<{
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}> = ({ currentPage, totalPages, onPageChange }) => (
+  <div className="flex gap-2 mt-4">
+    <button
+      disabled={currentPage === 1}
+      onClick={() => onPageChange(currentPage - 1)}
+      className="px-3 py-1 border rounded disabled:opacity-50"
+    >
+      Previous
+    </button>
+    <span className="px-3 py-1">
+      Page {currentPage} of {totalPages}
+    </span>
+    <button
+      disabled={currentPage === totalPages}
+      onClick={() => onPageChange(currentPage + 1)}
+      className="px-3 py-1 border rounded disabled:opacity-50"
+    >
+      Next
+    </button>
+  </div>
+);
+
+// --- END MOCKED DEPENDENCIES ---
+
+export const Reviews: React.FC<{ productId: string | undefined }> = ({
+  productId,
+}) => {
   const [page, setPage] = useState(1);
-  const { isLoading, isFetching, data } = useGetReviewsQuery({
-    productId,
-    page: 1,
-  });
-  const getPercentage = useMemo(() => {
-    if (!data?.ratingBreakdown || !data.count) {
-      return {
-        5: "",
-      };
+  const { isLoading, isFetching, data } = useGetReviewsQuery(
+    {
+      productId: productId ?? "",
+      page: page, // Use state 'page'
+    },
+    {
+      skip: !productId,
     }
-    const totalRatings = data?.count || 0;
+  );
 
-    const calculateWidthClass = (count: number) => {
-      const percentage = totalRatings > 0 ? (count / totalRatings) * 100 : 0;
-      return `w-[${Math.round(percentage)}%]`;
-    };
-
-    return {
-      5: calculateWidthClass(data?.ratingBreakdown[5]),
-      4: calculateWidthClass(data?.ratingBreakdown[4]),
-      3: calculateWidthClass(data?.ratingBreakdown[3]),
-      2: calculateWidthClass(data?.ratingBreakdown[2]),
-      1: calculateWidthClass(data?.ratingBreakdown[1]),
-    };
-  }, [data?.ratingBreakdown, data?.count]);
-  const [open, setOpen] = useState(false);
   return (
-    <div className="space-y-2">
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              <h2 className="text-xl font-semibold border-b py-1">
-                Write your review
-              </h2>
-            </DialogTitle>
-          </DialogHeader>
-          <WriteAReview setOpen={setOpen} productId={productId} />
-        </DialogContent>
-      </Dialog>
+    <div className="my-6">
+      <div className="space-y-2">
+        <WriteAReview productId={productId} />
+      </div>
+      <h2 className="text-2xl font-semibold mb-4 pb-1 border-b">
+        Customer Reviews
+      </h2>
       {isLoading || isFetching ? (
-        <div>
-          {Array.from({ length: 10 }).map((_, id) => {
+        <div className="space-y-4">
+          {Array.from({ length: 3 }).map((_, id) => {
             return (
               <div
                 key={id}
-                className="space-y-2 border-b last:border-none animate-pulse"
+                className="space-y-2 border-b last:border-none animate-pulse py-4"
               >
                 <div className="flex items-center gap-2 font-semibold">
                   <div className="w-10 h-10 rounded-full bg-gray-300" />
                   <div className="h-4 bg-gray-300 rounded w-32" />
                 </div>
 
-                <div className="space-y-2 ml-10">
+                <div className="space-y-3 ml-12">
                   {/* Star rating placeholders */}
                   <div className="flex gap-1">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <div key={i} className="w-6 h-6 bg-gray-300 rounded" />
+                      <div key={i} className="w-5 h-5 bg-gray-300 rounded-sm" />
                     ))}
                   </div>
 
-                  <div className="flex justify-between items-center">
+                  <div className="space-y-2">
                     <div className="h-4 bg-gray-300 rounded w-3/4" />
+                    <div className="h-4 bg-gray-300 rounded w-1/2" />
+                  </div>
+
+                  <div className="flex justify-between items-center pt-1">
                     <div className="h-3 bg-gray-200 rounded w-20" />
                   </div>
                 </div>
@@ -84,191 +89,93 @@ export const Reviews: React.FC<{ productId: string }> = ({ productId }) => {
             );
           })}
         </div>
-      ) : (
+      ) : data?.reviews.length ? (
         <div>
-          <div className="bg-gray-500 text-white text-center py-1 my-2">
-            <p>Product Reviews ({data?.count})</p>
-          </div>
-          <div className="w-full flex flex-col lg:flex-row gap-30">
-            {data?.reviews?.length ? (
-              <div className="w-full lg:w-[50%] flex flex-col gap-y-4">
-                <div className="text-xl font-semibold">
-                  {data?.average}
-                  <h2>OUT OF 5</h2>
-                  <p className="font-normal text-lg">STARS OVERALL</p>
-                </div>
-                {data?.reviews.map((review) => {
-                  return (
-                    <div
-                      className="space-y-2 border-b last:border-none py-1"
-                      key={review._id}
-                    >
-                      <p className="flex items-center gap-2 font-semibold">
-                        <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center">
-                          {review.userId.firstName.split("")[0]}
-                          {review.userId.lastName.split("")[0]}
-                        </div>
-                        {review.userId.firstName + " " + review.userId.lastName}
-                      </p>
-                      <div className="space-y-1 ml-10">
-                        <StarRating className="gap-1" rating={review.rating} />
-                        <div className="flex justify-between items-center">
-                          <p>{review.comment}</p>
-                          <p className="text-gray-500">
-                            {formatDistanceToNow(review.createdAt, {
-                              addSuffix: true,
-                            })}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="w-full lg:w-[50%] ">
-                <p>No reveiws yet</p>
-              </div>
-            )}
-            <div className="w-full lg:w-[50%]">
-              <div className="grid grid-cols-1  text-black items-center">
-                <div className="space-y-xs pl-[2rem] ">
-                  <p className="text-xl font-semibold">Overall Rankings</p>
-                  <div className="flex space-x-3 items-center">
-                    <div className="w-[3.5rem] flex items-center gap-1">
-                      <h3 className="text-[1.5rem] font-semibold text-muted">
-                        5
-                      </h3>
-                      <StarIcon
-                        size={20}
-                        className="fill-[#ffc107] stroke-[#ffc107] text-xl"
-                      />
-                    </div>
-                    <div className="relative w-full">
-                      <div
-                        className={`bg-[#FFC107] ${getPercentage[5]} h-4  absolute z-20 top-1/2 -translate-y-1/2 left-0`}
-                      />
-                      <div
-                        className={`bg-gray-400 w-full h-4  absolute top-1/2 -translate-y-1/2 left-0 z-10`}
-                      />
-                    </div>
-                    <div>
-                      <p>{data?.ratingBreakdown[5]}</p>
-                    </div>
+          {data?.reviews.map((review) => {
+            if (!review.userId?.firstName && !review.name) return null;
+            return (
+              <div
+                className="space-y-2 border-b last:border-none py-4"
+                key={review.id}
+              >
+                <p className="flex items-center gap-2 font-semibold">
+                  <span className="w-10 h-10 rounded-full bg-gray-700 text-white flex items-center justify-center text-sm font-bold">
+                    {review.userId?.firstName.split("")[0] ||
+                      review?.name?.split(" ")[0]?.charAt(0) ||
+                      review?.name?.charAt(0)}
+                    {review.userId?.lastName.split("")[0] ||
+                      review?.name?.split(" ")[1]?.charAt(0)}
+                  </span>
+                  {review?.userId?.firstName
+                    ? review.userId?.firstName + " " + review.userId?.lastName
+                    : review?.name}
+                </p>
+                <div className="space-y-2 ml-12">
+                  {" "}
+                  {/* Changed to ml-12 to align with skeleton */}
+                  <StarRating className="gap-1" rating={review.rating} />
+                  <div className="flex justify-between items-start">
+                    <p className="flex-1 pr-4">{review.comment}</p>
+                    <p className="text-gray-500 text-sm shrink-0">
+                      {formatDistanceToNow(new Date(review.createdAt), {
+                        addSuffix: true,
+                      })}
+                    </p>
                   </div>
-                  <div className="flex space-x-3 items-center">
-                    <div className="w-[3.5rem] flex items-center gap-1">
-                      <h3 className="text-[1.5rem] font-semibold text-muted">
-                        4
-                      </h3>
-                      <StarIcon
-                        size={20}
-                        className="fill-[#ffc107] stroke-[#ffc107] text-xl"
-                      />
+                  {/* --- NEW MEDIA GALLERY --- */}
+                  {(review?.photos?.length && review?.photos?.length > 0) ||
+                  (review?.videos?.length && review?.videos?.length > 0) ? (
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {/* Render Photos */}
+                      {review.photos?.map((photoUrl, index) => (
+                        <a
+                          href={photoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          key={`photo-${index}`}
+                          className="hover:opacity-80 transition-opacity"
+                        >
+                          <img
+                            src={photoUrl}
+                            alt={`Review photo ${index + 1}`}
+                            className="w-20 h-20 object-cover rounded-md border"
+                            loading="lazy"
+                            onError={(e) =>
+                              (e.currentTarget.src =
+                                "https://placehold.co/100x100/EEE/31343C?text=Invalid")
+                            }
+                          />
+                        </a>
+                      ))}
+
+                      {/* Render Videos */}
+                      {review.videos?.map((videoUrl, index) => (
+                        <video
+                          key={`video-${index}`}
+                          controls
+                          src={videoUrl}
+                          className="w-24 h-20 object-cover rounded-md border bg-black"
+                          preload="metadata"
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                      ))}
                     </div>
-                    <div className="relative w-full">
-                      <div
-                        className={`bg-[#FFC107] ${getPercentage[4]} h-4  absolute z-20 top-1/2 -translate-y-1/2 left-0`}
-                      />
-                      <div
-                        className={`bg-gray-400 w-full h-4  absolute top-1/2 -translate-y-1/2 left-0 z-10`}
-                      />
-                    </div>
-                    <div>
-                      <p>{data?.ratingBreakdown[4]}</p>
-                    </div>
-                  </div>
-                  <div className="flex space-x-3 items-center">
-                    <div className="w-[3.5rem] flex items-center gap-1">
-                      <h3 className="text-[1.5rem] font-semibold text-muted">
-                        3
-                      </h3>
-                      <StarIcon
-                        size={20}
-                        className="fill-[#ffc107] stroke-[#ffc107] text-xl"
-                      />
-                    </div>
-                    <div className="relative w-full">
-                      <div
-                        className={`bg-[#FFC107] ${getPercentage[3]} h-4  absolute z-20 top-1/2 -translate-y-1/2 left-0`}
-                      />
-                      <div
-                        className={`bg-gray-400 w-full h-4  absolute top-1/2 -translate-y-1/2 left-0 z-10`}
-                      />
-                    </div>
-                    <div>
-                      <p>{data?.ratingBreakdown[3]}</p>
-                    </div>
-                  </div>
-                  <div className="flex space-x-3 items-center">
-                    <div className="w-[3.5rem] flex items-center gap-1">
-                      <h3 className="text-[1.5rem] font-semibold text-muted">
-                        2
-                      </h3>
-                      <StarIcon
-                        size={20}
-                        className="fill-[#ffc107] stroke-[#ffc107] text-xl"
-                      />
-                    </div>
-                    <div className="relative w-full">
-                      <div
-                        className={`bg-[#FFC107] ${getPercentage[2]} h-4  absolute z-20 top-1/2 -translate-y-1/2 left-0`}
-                      />
-                      <div
-                        className={`bg-gray-400 w-full h-4  absolute top-1/2 -translate-y-1/2 left-0 z-10`}
-                      />
-                    </div>
-                    <div>
-                      <p>{data?.ratingBreakdown[2]}</p>
-                    </div>
-                  </div>
-                  <div className="flex space-x-3 items-center">
-                    <div className="w-[3.5rem] flex items-center gap-1">
-                      <h3 className="text-[1.5rem] font-semibold text-muted">
-                        1
-                      </h3>
-                      <StarIcon
-                        size={20}
-                        className="fill-[#ffc107] stroke-[#ffc107] text-xl"
-                      />
-                    </div>
-                    <div className="relative w-full">
-                      <div
-                        className={`bg-[#FFC107] ${getPercentage[1]} h-4  absolute z-20 top-1/2 -translate-y-1/2 left-0`}
-                      />
-                      <div
-                        className={`bg-gray-400 w-full h-4  absolute top-1/2 -translate-y-1/2 left-0 z-10`}
-                      />
-                    </div>
-                    <div>
-                      <p>{data?.ratingBreakdown[1]}</p>
-                    </div>
-                  </div>
-                  <div className="w-full mt-2">
-                    <Button
-                      onClick={() => {
-                        if (!user?._id) {
-                          toast.error("You must login to submit a review");
-                        } else {
-                          setOpen(true);
-                        }
-                      }}
-                      className="w-full rounded-none bg-white text-black border shadow-none"
-                    >
-                      Write a review
-                    </Button>
-                  </div>
+                  ) : null}
+                  {/* --- END MEDIA GALLERY --- */}
                 </div>
               </div>
-            </div>
-          </div>
-          {data?.reviews?.length ? (
-            <ReviewPagination
-              currentPage={data.currentPage}
-              onPageChange={setPage}
-              totalPages={data.pages}
-            />
-          ) : null}
+            );
+          })}
+          <ReviewPagination
+            currentPage={data.currentPage}
+            onPageChange={setPage}
+            totalPages={data.pages}
+          />
+        </div>
+      ) : (
+        <div className="py-4">
+          <p>There are no reviews for this product yet.</p>
         </div>
       )}
     </div>
