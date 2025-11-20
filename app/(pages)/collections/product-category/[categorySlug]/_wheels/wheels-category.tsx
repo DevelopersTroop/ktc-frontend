@@ -1,47 +1,47 @@
 "use client";
-import { useAppDispatch, useTypedSelector } from "@/app/globalRedux/store";
+import { useTypedSelector } from "@/app/globalRedux/store";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
-import { fetchWheelData } from "@/hooks/wheelService";
-import React, { useEffect } from "react";
+import { wrapWheelFilters } from "@/hooks/wheelService";
+import React from "react";
 import SidebarFilters from "../_filters/mobile-filters/sidebar-filters";
 import WheelFilters from "../_filters/wheel-filters";
 import WheelYMMFilters from "../_filters/widgets/wheels/wheel-ymm-filter";
 import NoProductsFound from "../no-products-found";
 import ProductCard from "./product-card";
 // import Loading from '../../../product/[singleProduct]/loading';
+import { useGetProductListQuery } from "@/app/globalRedux/api/product";
 import { Paginate } from "@/components/shared/paginate";
+import { TInventoryItem } from "@/types/product";
 import { useSearchParams } from "next/navigation";
+import SortByFilter from "../_filters/sort-by-filter";
 import { useFilterSync } from "../_filters/store";
 import ProductCardSkeleton from "../_loading/product-card-skeleton";
-import SortByFilter from "../_filters/sort-by-filter";
-import { TInventoryItem } from "@/types/product";
-import { TYmmVehicleInformation } from "@/types/ymm";
+import MobileYmmFilter from "../_filters/mobile-ymm/mobile-ymm-filter";
 type ProductsPageProps = {
   page?: number;
 };
 const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   const searchParams = useSearchParams();
-  const dispatch = useAppDispatch();
-  const { data, loading } = useTypedSelector((state) => state.wheel);
   const { filters } = useFilterSync();
   const ymm = useTypedSelector(state => state.yearMakeModel);
-  useEffect(() => {
-    let vehicleInformation = {} as Partial<TYmmVehicleInformation>;
-    if(filters['vehicle'] !== undefined){
-      vehicleInformation = ymm.vehicleInformation
-    }
-    fetchWheelData(dispatch, filters, Number.isNaN(page) ? 1 : page, vehicleInformation);
-  }, [filters, dispatch, page, ymm.submitYmm]);
-
+  const parsedFilter = wrapWheelFilters(filters, Number.isNaN(page) ? 1 : page, filters["vehicle"] ? ymm.vehicleInformation : {})
+  const { data, isLoading: loading } = useGetProductListQuery(parsedFilter);
+  console.log("filters", filters)
   return (
     <>
-      <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 py-6 md:flex-row">
-        <div className="w-full flex flex-row justify-between  md:hidden">
+      <div className="flex justify-center items-center my-2.5">
+        <h1 className="text-[20px] font-semibold">Truck Wheels and Rims</h1>
+      </div>
+      <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 pb-6 pt-2 md:flex-row">
+        <div className="w-full flex flex-row gap-2 justify-between  md:hidden">
           <SidebarFilters>
             <WheelFilters />
           </SidebarFilters>
-          <div className="w-full max-w-[165px]">
+          <MobileYmmFilter>
+            <WheelYMMFilters />
+          </MobileYmmFilter>
+          <div className="w-full">
             <SortByFilter />
           </div>
         </div>
@@ -88,7 +88,7 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
                 }
               >
                 {data?.products.map((product: TInventoryItem) => (
-                <ProductCard product={product} key={product._id} />
+                  <ProductCard product={product} key={product._id} />
                 ))}
               </div>
               <div className="mt-8 flex w-full flex-row flex-wrap justify-center gap-4">

@@ -4,9 +4,11 @@ import { TInventoryItem } from "@/types/product";
 import { useState } from "react";
 import { NormalActionButton } from "./normal-action";
 import { StaggeredActionButton } from "./stagger-action";
+import { useRouter } from "next/navigation";
 
 const ActionButtons = ({ product }: { product: TInventoryItem }) => {
   const { saveToLater } = useWishlist();
+  const router = useRouter();
 
   const [isStaggered, setIsStaggered] = useState(false);
 
@@ -17,7 +19,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
       ) : (
         <NormalActionButton product={product} setIsStaggered={setIsStaggered} />
       )}
-      <div>
+      {/* <div>
         <button
           onClick={() => {
             console.log("clicked");
@@ -28,11 +30,11 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
         >
           Learn more about Factory Reproductions Wheels
         </button>
-      </div>
+      </div> */}
 
       <button
         onClick={() => {
-          console.log("clicked");
+          router.push("/ktc-audio-gallery")
         }}
         className={
           "w-full rounded bg-gray-100 py-1 text-gray-600 outline outline-1 outline-gray-300"

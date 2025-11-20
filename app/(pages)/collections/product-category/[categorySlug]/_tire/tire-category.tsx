@@ -1,41 +1,46 @@
 "use client";
-import { useAppDispatch, useTypedSelector } from "@/app/globalRedux/store";
+import { useGetProductListQuery } from "@/app/globalRedux/api/product";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
 import { Paginate } from "@/components/shared/paginate";
-import { fetchTireData } from "@/hooks/tireService";
+import { wrapTireFilters } from "@/hooks/tireService";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 import SidebarFilters from "../_filters/mobile-filters/sidebar-filters";
+import SortByFilter from "../_filters/sort-by-filter";
 import { useFilterSync } from "../_filters/store";
 import TireFilters from "../_filters/tire-filters";
+import MobileYmmFilter from "../_filters/mobile-ymm/mobile-ymm-filter";
+import TireYMMFilters from "../_filters/widgets/tires/tire-ymm-filter";
 import ProductCardSkeleton from "../_loading/product-card-skeleton";
 import NoProductsFound from "../no-products-found";
 import TireCard from "./tire-card";
-import SortByFilter from "../_filters/sort-by-filter";
 
 const TireCategory: React.FC<{ page: number }> = ({ page = 1 }) => {
   const searchParams = useSearchParams();
-  const { data, loading } = useTypedSelector((state) => state.tire);
   const { filters } = useFilterSync();
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    fetchTireData(dispatch, filters, Number.isNaN(page) ? 1 : page);
-  }, [filters, dispatch, page]);
-
+  const { data, isLoading: loading } = useGetProductListQuery(wrapTireFilters(filters, Number.isNaN(page) ? 1 : page))
   return (
     <>
-      <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 py-6 md:flex-row">
-        <div className="w-full flex flex-row justify-between  md:hidden">
+      <div className="flex justify-center items-center my-2.5">
+        <h1 className="text-[20px] font-semibold">Aftermarket Truck Tires</h1>
+      </div>
+      <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 pb-6 pt-2 md:flex-row">
+        <div className="w-full flex flex-row gap-2 justify-between  md:hidden">
           <SidebarFilters>
             <TireFilters />
           </SidebarFilters>
 
-          <div className="w-full max-w-[165px]">
-              <SortByFilter />
+          <MobileYmmFilter>
+            <TireYMMFilters />
+          </MobileYmmFilter>
+
+          <div className="w-full">
+            <SortByFilter />
           </div>
         </div>
         <div className="hidden h-full flex-col gap-3 md:flex md:w-[400px]">
+          <TireYMMFilters />
           <TireFilters />
         </div>
         {loading ? (
@@ -57,7 +62,7 @@ const TireCategory: React.FC<{ page: number }> = ({ page = 1 }) => {
         ) : (
           <>
             <div className="flex w-full flex-col">
-            <div className="flex w-full flex-row justify-between"> 
+              <div className="flex w-full flex-row justify-between">
                 <div className="p-2">
                   <Breadcrumb>
                     <Item href={"/"}>Home</Item>

@@ -1,13 +1,33 @@
 import { camelCaseToWords } from "@/app/utils/string";
 import { TInventoryItem } from "@/types/product";
 
-const wheel_specs_key : keyof TInventoryItem[] = ["manufacturer_part_number","size", "diameter", "lug_count", "bolt_pattern_metric", "bolt_pattern_standard", "offset","upc", "backspacing", "centerbore", "hubBore", "material", "style", "cap_part_no", "load_rating_metric", "load_rating_standard", "division", "weight", "box_label_desc", "color", "width", "trueDirectional" ];
+const wheel_specs_key: string[] = [
+  "manufacturer_part_number",
+  "size",
+  "diameter",
+  "lug_count",
+  "bolt_pattern_metric",
+  "bolt_pattern_standard",
+  "offset",
+  "upc",
+  "backspacing",
+  "centerbore",
+  "hubBore",
+  "material",
+  "style",
+  "cap_part_no",
+  "load_rating_metric",
+  "load_rating_standard",
+  "division",
+  "weight",
+  "box_label_desc",
+  "color",
+  "width",
+  "trueDirectional",
+];
 
-const filterKeyValue = (key: keyof TInventoryItem, value: string | number) => {
-  if (
-    wheel_specs_key.includes(key)
-  )
-    return true;
+const filterKeyValue = (key: keyof TInventoryItem, value: any) => {
+  if (wheel_specs_key.includes(key)) return true;
 };
 
 const WheelSpecifications = ({ product }: { product: TInventoryItem }) => {
@@ -20,7 +40,10 @@ const WheelSpecifications = ({ product }: { product: TInventoryItem }) => {
         <div className="flex flex-col">
           <p>
             <span className="text-lg font-medium text-gray-600">Brand: </span>{" "}
-            <span className="text-base text-gray-600"> {product.brand}</span>
+            <span className="text-base text-gray-600">
+              {" "}
+              {product.brand_desc}
+            </span>
           </p>
           <p>
             <span className="text-lg font-medium text-gray-600">Model: </span>{" "}
@@ -28,6 +51,7 @@ const WheelSpecifications = ({ product }: { product: TInventoryItem }) => {
           </p>
         </div>
         {Object.entries(product).map(([key, value]) => {
+          console.log("TCL: TireSpecifications -> key", key, value);
           if (filterKeyValue(key as keyof TInventoryItem, value)) {
             return (
               <div key={key} className="flex items-center">

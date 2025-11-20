@@ -10,14 +10,14 @@ export const ActionFilter = () => {
     clearFilters,
   } = useFilterSync();
 
-  const queryParamsObject = {
+  const queryParamsObject: Record<string, string> = {
     "title,asc": "Name (A to Z)",
     "title,desc": "Name (Z to A)",
     "msrp,asc": "Price (low to high)",
     "msrp,desc": "Price (high to low)",
   };
   const manipulatedObject = useMemo(() => {
-    return Object.entries(activeFilters).map(([key, value]) => {
+    return Object.entries(activeFilters).filter(([key]) => key !== "packageId" && key !== "selectedVehicleInformation").map(([key, value]) => {
       if (key !== "sort" && value.split(",").length) {
         return value.split(",").map((item) => ({ key, value: item }));
       } else if (key === "sort") {

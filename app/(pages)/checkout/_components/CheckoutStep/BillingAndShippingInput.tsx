@@ -1,0 +1,540 @@
+"use client";
+import {
+  setBillingAddress,
+  setShippingAddress,
+} from "@/app/globalRedux/features/checkout/checkout-slice";
+import { useAppDispatch, useTypedSelector } from "@/app/globalRedux/store";
+import { GooglePlacesInput } from "@/components/shared/google-place-input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FormField, FormItem } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useCheckout } from "@/context/CheckoutContext";
+import { US_STATES } from "@/states";
+import { TBillingAddress } from "@/types/order";
+import debounce from "lodash.debounce";
+import isEqual from "lodash.isequal";
+import React, { useEffect, useMemo, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { Input } from "./Input";
+import { PhoneInput } from "./PhoneInput";
+
+interface ICompProps {
+  setBillingSameAsShipping: React.Dispatch<React.SetStateAction<boolean>>;
+  billingSameAsShipping: boolean;
+  setShouldDisableButton: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const BillingAndShippingInput: React.FC<ICompProps> = ({
+  setBillingSameAsShipping,
+  billingSameAsShipping,
+  setShouldDisableButton,
+}) => {
+  const { orderInfo, billingAddress, shippingAddress, selectedOptionTitle } =
+    useTypedSelector((state) => state.persisted.checkout);
+  const { setValidatedZipCode } = useCheckout();
+  const dispatch = useAppDispatch();
+  const prevShippingRef = useRef<TBillingAddress | null>(null);
+
+  // Default values
+  const billingDefaultValues = useMemo(
+    () => ({ ...billingAddress, country: billingAddress?.country || "US" }),
+    [billingAddress]
+  );
+  const shippingDefaultValues = useMemo(
+    () => ({ ...shippingAddress, country: shippingAddress?.country || "US" }),
+    [shippingAddress]
+  );
+
+  // Shipping Form
+  const {
+    register: shippingRegister,
+    formState: { errors: shippingErrors },
+    watch: shippingWatch,
+    setValue: shippingSetValue,
+    getValues: getValuesShipping,
+    control: shippingControl,
+  } = useForm<TBillingAddress>({
+    defaultValues: shippingDefaultValues,
+    mode: "onChange",
+  });
+
+  // Billing Form
+  const {
+    register: billingRegister,
+    formState: { errors: billingErrors },
+    watch: billingWatch,
+    setValue: billingSetValue,
+    getValues: getValuesBilling,
+    control: billingControl,
+  } = useForm<TBillingAddress>({
+    defaultValues: billingDefaultValues,
+    mode: "onChange",
+  });
+
+  /**
+   * ✅ Debounced real-time sync
+   */
+  const debouncedSync = useMemo(
+    () =>
+      debounce(() => {
+        const billingData = getValuesBilling();
+        const shippingData = getValuesShipping();
+
+        const finalBilling = {
+          ...billingData,
+          name: `${billingData.fname?.trim() || ""} ${
+            billingData.lname?.trim() || ""
+          }`.trim(),
+        };
+        const finalShipping = {
+          ...shippingData,
+          name: `${shippingData.fname?.trim() || ""} ${
+            shippingData.lname?.trim() || ""
+          }`.trim(),
+        };
+
+        if (!isEqual(billingAddress, finalBilling)) {
+          dispatch(setBillingAddress(finalBilling));
+        }
+        if (!isEqual(shippingAddress, finalShipping)) {
+          dispatch(setShippingAddress(finalShipping));
+        }
+      }, 400), // debounce interval (ms)
+    [
+      dispatch,
+      billingAddress,
+      shippingAddress,
+      getValuesBilling,
+      getValuesShipping,
+    ]
+  );
+
+  // Subscribe to watch changes — update Redux with debounce
+  useEffect(() => {
+    const subB = billingWatch(() => debouncedSync());
+    const subS = shippingWatch(() => debouncedSync());
+    return () => {
+      subB.unsubscribe();
+      subS.unsubscribe();
+      debouncedSync.cancel();
+    };
+  }, [billingWatch, shippingWatch, debouncedSync]);
+
+  // Handle “Same as Shipping”
+  useEffect(() => {
+    if (
+      billingSameAsShipping &&
+      selectedOptionTitle === "Direct To Customer" &&
+      !isEqual(prevShippingRef.current, shippingAddress)
+    ) {
+      const merged = { ...shippingAddress, country: "US" };
+      Object.entries(merged).forEach(([key, value]) => {
+        billingSetValue(key as keyof TBillingAddress, value as any, {
+          shouldValidate: false,
+          shouldDirty: false,
+        });
+      });
+      dispatch(setBillingAddress(merged));
+      prevShippingRef.current = merged;
+    }
+  }, [
+    billingSameAsShipping,
+    selectedOptionTitle,
+    shippingAddress,
+    billingSetValue,
+    dispatch,
+  ]);
+
+  // Validation state control (error-based)
+  const requiredFields: (keyof TBillingAddress)[] = [
+    "address1",
+    "zipCode",
+    "country",
+    "cityState",
+    "phone",
+    "email",
+    "fname",
+    "lname",
+  ];
+
+  const billingValues = billingWatch();
+  const shippingValues = shippingWatch();
+
+  useEffect(() => {
+    // 🧩 Check billing form completeness and errors
+    const hasBillingInvalid = requiredFields.some((field) => {
+      const value = billingValues[field];
+      // console.log('TCL: value', value);
+      const isEmpty = !value || value.toString().trim().length === 0;
+      const hasError = !!billingErrors[field];
+      return isEmpty || hasError;
+    });
+
+    // 🧩 Check shipping form completeness and errors (when applicable)
+    let hasShippingInvalid = false;
+    if (selectedOptionTitle === "Direct To Customer") {
+      hasShippingInvalid = requiredFields.some((field) => {
+        const value = shippingValues[field];
+        console.log("TCL: value", value);
+        const isEmpty = !value || value.toString().trim().length === 0;
+        const hasError = !!shippingErrors[field];
+        return isEmpty || hasError;
+      });
+    }
+
+    // 🔥 Disable button if anything missing/invalid or terms not accepted
+    const shouldDisable = hasBillingInvalid || hasShippingInvalid;
+    setShouldDisableButton(shouldDisable);
+  }, [
+    billingValues, // ✅ now changes on every keystroke
+    shippingValues, // ✅ now changes on every keystroke
+    billingErrors,
+    shippingErrors,
+    orderInfo.termsAndConditions,
+    selectedOptionTitle,
+  ]);
+
+  const zipCode = shippingValues.zipCode || billingValues.zipCode;
+
+  useEffect(() => {
+    setValidatedZipCode(zipCode);
+  }, [zipCode]);
+
+  return (
+    <div className="w-full">
+      {/* ===== SHIPPING INFO ===== */}
+      {selectedOptionTitle === "Direct To Customer" && (
+        <div className="flex flex-col gap-y-2 pt-8">
+          <h2 className="text-xl font-bold">Shipping Info</h2>
+          <div className="space-y-8 max-w-xl w-full">
+            <div className="flex flex-col gap-y-8 w-full">
+              {/* First & Last Name */}
+              <div className="flex gap-4 w-full">
+                <Input
+                  label="First Name"
+                  required
+                  error={shippingErrors.fname?.message}
+                  placeholder="John"
+                  {...shippingRegister("fname", {
+                    required: "First name is required",
+                  })}
+                />
+                <Input
+                  label="Last Name"
+                  required
+                  placeholder="Doe"
+                  error={shippingErrors.lname?.message}
+                  {...shippingRegister("lname", {
+                    required: "Last name is required",
+                  })}
+                />
+              </div>
+
+              <Input
+                placeholder="Company/Care of"
+                label="Company/Care of"
+                {...shippingRegister("company")}
+              />
+
+              <div className="flex flex-col gap-3">
+                <GooglePlacesInput
+                  label="Address Line 1"
+                  error={shippingErrors.address1?.message}
+                  value={shippingWatch("address1")}
+                  onSelect={(address) => {
+                    console.log("TCL: address", address);
+                    address.addressLines.forEach((line, i) => {
+                      shippingSetValue(`address${i + 1}` as any, line);
+                    });
+                    shippingSetValue("cityState", address.state);
+                    shippingSetValue("city", address.city);
+                    shippingSetValue("zipCode", address.zipcode);
+                    shippingSetValue("country", "US");
+                  }}
+                  {...shippingRegister("address1", {
+                    required: "Address is required",
+                  })}
+                />
+                <div className="text-sm text-muted">
+                  Select an address from suggestions if possible
+                </div>
+              </div>
+
+              <Input
+                placeholder="Address Line 2"
+                label="Address Line 2"
+                {...shippingRegister("address2")}
+              />
+
+              <Input
+                label="ZIP/Postal Code"
+                required
+                placeholder="33425"
+                error={shippingErrors.zipCode?.message}
+                {...shippingRegister("zipCode", {
+                  required: "ZIP/Postal Code is required",
+                })}
+              />
+
+              <Input
+                label="Country"
+                disabled
+                required
+                placeholder="Enter country"
+                error={shippingErrors.country?.message}
+                {...shippingRegister("country", {
+                  required: "Country is required",
+                })}
+              />
+
+              <Input
+                label="City"
+                required
+                placeholder="Tampa"
+                error={shippingErrors.city?.message}
+                {...shippingRegister("city", { required: "City is required" })}
+              />
+
+              <FormField
+                render={({ field, fieldState }) => {
+                  return (
+                    <FormItem>
+                      <Label className="block text-lg mb-1 font-medium leading-[24px]">
+                        State <span className="text-red-600">*</span>
+                      </Label>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="h-14">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {US_STATES.map((s) => {
+                            return (
+                              <SelectItem
+                                key={s.abbreviation}
+                                value={s.abbreviation}
+                              >
+                                {s.name}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
+                      {fieldState.error?.message && (
+                        <p className="text-red-600">
+                          {fieldState.error?.message}
+                        </p>
+                      )}
+                    </FormItem>
+                  );
+                }}
+                control={shippingControl}
+                name="cityState"
+              />
+
+              <PhoneInput
+                billingErrors={shippingErrors}
+                billingRegister={shippingRegister}
+              />
+
+              <Input
+                label="Email Address"
+                required
+                type="email"
+                placeholder="you@example.com"
+                error={shippingErrors.email?.message}
+                {...shippingRegister("email", {
+                  required: "Email address is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Please enter a valid email address",
+                  },
+                })}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===== BILLING INFO ===== */}
+      <div className="flex flex-col gap-y-2 pt-8">
+        <h2 className="text-xl font-bold">Billing Info</h2>
+
+        {selectedOptionTitle === "Direct To Customer" && (
+          <div
+            className="flex items-center gap-1 cursor-pointer py-2"
+            onClick={() => setBillingSameAsShipping((prev) => !prev)}
+          >
+            <Checkbox
+              checked={billingSameAsShipping}
+              className="data-[state=checked]:bg-black border-black w-5 h-5"
+            />
+            <span className="text-lg">Same as shipping address</span>
+          </div>
+        )}
+
+        {selectedOptionTitle === "Direct To Customer" &&
+        billingSameAsShipping ? null : (
+          <div className="space-y-8 max-w-xl w-full">
+            <div className="flex flex-col gap-y-8 w-full">
+              <div className="flex gap-4 w-full">
+                <Input
+                  label="First Name"
+                  required
+                  error={billingErrors.fname?.message}
+                  placeholder="John"
+                  {...billingRegister("fname", {
+                    required: "First name is required",
+                  })}
+                />
+                <Input
+                  label="Last Name"
+                  required
+                  placeholder="Doe"
+                  error={billingErrors.lname?.message}
+                  {...billingRegister("lname", {
+                    required: "Last name is required",
+                  })}
+                />
+              </div>
+
+              <Input
+                placeholder="Company/Care of"
+                label="Company/Care of"
+                {...billingRegister("company")}
+              />
+
+              <div className="flex flex-col gap-3">
+                <GooglePlacesInput
+                  label="Address Line 1"
+                  error={billingErrors.address1?.message}
+                  value={billingWatch("address1")}
+                  onSelect={(address) => {
+                    address.addressLines.forEach((line, i) => {
+                      billingSetValue(`address${i + 1}` as any, line);
+                    });
+                    billingSetValue("cityState", address.state);
+                    billingSetValue("city", address.city);
+                    billingSetValue("zipCode", address.zipcode);
+                    billingSetValue("country", "US");
+                  }}
+                  {...billingRegister("address1", {
+                    required: "Address is required",
+                  })}
+                />
+                <div className="text-sm text-muted">
+                  Select an address from suggestions if possible
+                </div>
+              </div>
+
+              <Input
+                placeholder="Address Line 2"
+                label="Address Line 2"
+                {...billingRegister("address2")}
+              />
+
+              <Input
+                label="ZIP/Postal Code"
+                required
+                placeholder="33425"
+                error={billingErrors.zipCode?.message}
+                {...billingRegister("zipCode", {
+                  required: "ZIP/Postal Code is required",
+                })}
+              />
+
+              <Input
+                label="Country"
+                required
+                placeholder="Enter country"
+                error={billingErrors.country?.message}
+                {...billingRegister("country", {
+                  required: "Country is required",
+                })}
+              />
+
+              <Input
+                label="City"
+                required
+                placeholder="Tampa"
+                error={billingErrors.city?.message}
+                {...billingRegister("city", { required: "City is required" })}
+              />
+
+              <FormField
+                render={({ field, fieldState }) => {
+                  return (
+                    <FormItem>
+                      <Label className="block text-lg mb-1 font-medium leading-[24px]">
+                        State <span className="text-red-600">*</span>
+                      </Label>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="h-14">
+                          <SelectValue
+                            placeholder="Select state"
+                            className="text-[24px]"
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {US_STATES.map((s) => {
+                            return (
+                              <SelectItem
+                                key={s.abbreviation}
+                                value={s.abbreviation}
+                              >
+                                {s.name}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
+                      {fieldState.error?.message && (
+                        <p className="text-red-600">
+                          {fieldState.error?.message}
+                        </p>
+                      )}
+                    </FormItem>
+                  );
+                }}
+                control={billingControl}
+                name="cityState"
+              />
+
+              <PhoneInput
+                billingErrors={billingErrors}
+                billingRegister={billingRegister}
+              />
+
+              <Input
+                label="Email Address"
+                required
+                type="email"
+                placeholder="you@example.com"
+                error={billingErrors.email?.message}
+                {...billingRegister("email", {
+                  required: "Email address is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Please enter a valid email address",
+                  },
+                })}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

@@ -9,6 +9,11 @@ import PriceRange from "./widgets/price-range";
 import WheelDiameter from "./widgets/wheels/wheel-diameter";
 import WheelFinish from "./widgets/wheels/wheel-finish";
 import WheelModel from "./widgets/wheels/wheel-model";
+import WheelWidth from "./widgets/wheels/wheel-width";
+import WheelOffset from "./widgets/wheels/wheel-offset";
+import WheelBrand from "./widgets/wheels/wheel-brand";
+import WheelMaterial from "./widgets/wheels/wheel-material";
+import WheelBoltPattern from "./widgets/wheels/wheel-bolt-pattern";
 
 const WheelFilters = React.memo(() => {
   const { filters } = useFetchFilters("wheels");
@@ -16,6 +21,9 @@ const WheelFilters = React.memo(() => {
   const query = searchParams.get("q") || "";
   const [searchKey, setSearchKey] = useState(query);
   useSearchFilter(searchKey, setSearchKey, query);
+
+  // console.log("filters  =====   ", filters);
+
   return (
     <div className={"filter-shadow bg-gray-200"}>
       <ActionFilter />
@@ -28,11 +36,41 @@ const WheelFilters = React.memo(() => {
           diameter={filters?.diameter || []}
         />
       </div>
-      <div className={"border-b border-gray-300 px-5 py-3"}>
-        <WheelModel filterKey={"model"} model={filters?.model || []} />
+      <div className={"border-y border-gray-300 px-5 py-3"}>
+        <WheelWidth filterKey={"width"} width={filters?.width || []} />
+      </div>
+      <div className={"border-y border-gray-300 px-5 py-3"}>
+        <WheelOffset filterKey={"offset"} offset={filters?.offset || []} />
+      </div>
+      <div className={"border-y border-gray-300 px-5 py-3"}>
+        <WheelBrand
+          filterKey={"brand_desc"}
+          brand={filters?.brand_desc || []}
+        />
+      </div>
+      <div className={"border-y border-gray-300 px-5 py-3"}>
+        <WheelModel
+          filterKey={"display_model_no"}
+          model={filters?.display_model_no || []}
+        />
+      </div>
+      <div className={"border-y border-gray-300 px-5 py-3"}>
+        <WheelFinish
+          filterKey={"fancy_finish_desc"}
+          finish={filters?.fancy_finish_desc || []}
+        />
+      </div>
+      <div className={"border-y border-gray-300 px-5 py-3"}>
+        <WheelBoltPattern
+          filterKey={"bolt_pattern_metric"}
+          boltPattern={filters?.bolt_pattern_metric || []}
+        />
       </div>
       <div className={"border-b border-gray-300 px-5 py-3"}>
-        <WheelFinish filterKey={"color"} finish={filters?.color || []} />
+        <WheelMaterial
+          filterKey={"material"}
+          material={filters?.material || []}
+        />
       </div>
     </div>
   );

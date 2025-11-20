@@ -1,7 +1,7 @@
 import { camelCaseToWords } from "@/app/utils/string";
 import { TInventoryItem } from "@/types/product";
 
-const tire_specs_key: keyof TInventoryItem[] = [
+const tire_specs_key: string[] = [
   "manufacturer_part_number",
   "load_index",
   "speed_rating",
@@ -24,10 +24,9 @@ const tire_specs_key: keyof TInventoryItem[] = [
   "finish_warranty",
   "structural_warranty",
   "mileage_warranty",
-
 ];
 
-const filterKeyValue = (key: keyof TInventoryItem, value: string | number) => {
+const filterKeyValue = (key: keyof TInventoryItem, value: any) => {
   if (tire_specs_key.includes(key)) return true;
 };
 
@@ -42,14 +41,12 @@ const TireSpecifications = ({ product }: { product: TInventoryItem }) => {
           <p>
             <span className=" font-medium text-gray-600 text-lg">Brand: </span>{" "}
             <span className="text-gray-600 text-base">
-              {product?.brand}
+              {product?.brand_desc}
             </span>
           </p>
           <p>
             <span className=" font-medium text-gray-600 text-lg">Model: </span>{" "}
-            <span className="text-gray-600 text-base">
-              {product.model}
-            </span>
+            <span className="text-gray-600 text-base">{product.model}</span>
           </p>
         </div>
         {Object.entries(product).map(([key, value]) => {

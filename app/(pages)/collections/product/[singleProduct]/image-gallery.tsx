@@ -1,63 +1,74 @@
 "use client";
-import { s3BucketUrl } from "@/app/utils/api";
 import { TInventoryItem } from "@/types/product";
 import { useEffect, useState } from "react";
 import Gallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
-const ImageGallery = ({ product }: { product: TInventoryItem }) => {
-  const isCustomProduct = false;
-  const [thumbnail, setThumbnail] = useState<
-    { original: string; thumbnail: string }[]
-  >([]);
-  const [galleryImages, setGalleryImages] = useState<typeof thumbnail>([]);
-  const productImages = [...thumbnail, ...galleryImages];
-  const imageNotFound = [
-    {
-      original: "/not-available.webp",
-      thumbnail: "/not-available.webp",
-    },
-  ];
+interface ImageGalleryProps {
+  product: TInventoryItem;
+  fallbackImage: string;
+}
 
-  // add gallery Images
+const ImageGallery = ({ product, fallbackImage }: ImageGalleryProps) => {
+  const [productImages, setProductImages] = useState<
+    { original: string; thumbnail: string }[]
+  >([{ original: fallbackImage, thumbnail: fallbackImage }]); // 👈 prevent flicker
+
+  // ✅ Browser-safe image validator
+  const validateImage = (url: string): Promise<string> => {
+    return new Promise((resolve) => {
+      if (!url) return resolve(fallbackImage);
+      const img = new window.Image();
+      img.onload = () => resolve(url);
+      img.onerror = () => resolve(fallbackImage);
+      img.src = url;
+    });
+  };
+
   useEffect(() => {
-    const galleryImages = product.galleryImages || [];
-    if (galleryImages?.length > 0) {
-      interface Image {
-        original: string;
-        thumbnail: string;
+    if (!product) return;
+
+    const loadImages = async () => {
+      // Collect possible image URLs
+      const urls = new Set<string>();
+
+      // Prioritize main thumbnail and image fields
+      const mainImage =
+        product.thumbnail || product.image_url || product.image_url1;
+      if (mainImage) urls.add(mainImage);
+
+      // Add gallery images if array
+      if (Array.isArray(product.galleryImages)) {
+        product.galleryImages.forEach((img) => {
+          if (img) urls.add(img);
+        });
       }
 
-      const images: Image[] = [];
-      galleryImages.forEach((imageLink) => {
-        images.push({
-          original: isCustomProduct ? `${s3BucketUrl}/${imageLink}` : imageLink,
-          thumbnail: isCustomProduct
-            ? `${s3BucketUrl}/${imageLink}`
-            : imageLink,
-        });
-      });
-      setGalleryImages(images);
-    }
-  }, [product.galleryImages]);
+      // Validate URLs and build final image list
+      const validated = await Promise.all(
+        Array.from(urls).map((url) => validateImage(url))
+      );
 
-  // add thumbnail
-  useEffect(() => {
-    if (product.thumbnail !== "") {
-      setThumbnail([
-        {
-          original: product.thumbnail,
-          thumbnail: product.thumbnail,
-          // isCustomProduct
-          //   ? `${s3BucketUrl}/${product.thumbnail}`
-          //   : product.thumbnail,
-          // thumbnail: isCustomProduct
-          //   ? `${s3BucketUrl}/${product.thumbnail}`
-          //   : product.thumbnail,
-        },
-      ]);
-    }
-  }, [product.thumbnail]);
+      const formatted =
+        validated.length > 0
+          ? validated.map((url) => ({
+              original: url,
+              thumbnail: url,
+            }))
+          : [{ original: fallbackImage, thumbnail: fallbackImage }];
+
+      setProductImages(formatted);
+    };
+
+    loadImages();
+    // Only rerun when these change
+  }, [
+    product.thumbnail,
+    product.image_url,
+    product.image_url1,
+    product.galleryImages,
+    fallbackImage,
+  ]);
 
   return (
     <div className="flex justify-center">
@@ -66,7 +77,7 @@ const ImageGallery = ({ product }: { product: TInventoryItem }) => {
           showPlayButton={false}
           showNav={true}
           showFullscreenButton={false}
-          items={productImages.length > 0 ? productImages : imageNotFound}
+          items={productImages}
         />
       </div>
     </div>

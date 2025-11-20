@@ -6,10 +6,39 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-const useYmm = () => {
+const useYmm = (isWheel:boolean = true) => {
     const router = useRouter();
     const dispatch = useDispatch();
 
+    const [selectedVehicle, setSelectedVehicle] = useState<{
+        year?: string,
+        make?: string,
+        model?: string,
+        bodyType?: string,
+        subModel?: {
+            SubModel?: string,
+            DRChassisID?: string,
+            DRModelID?: string
+        },
+        vehicleInformation?: {
+            supportedWheels: {
+                diameter: number;
+                width: number;
+                upStepType: string;
+                minOffset: number;
+                maxOffset: number;
+                comments: string;
+            }[];
+            boltPattern: string;
+            frontRimSize: string;
+            rearRimSize: string;
+            frontCenterBore: string;
+            rearCenterBore: string;
+            maxWheelLoad: string;
+            tireSizes: Record<"front" | "rear", string>[];
+            tireSizesList?: string[]
+        }
+    } | null>(null);
 
     const [isLoading, setIsLoading] = useState({
         year: true,
@@ -39,17 +68,26 @@ const useYmm = () => {
                         vehicleData: true
                     })
                 })
+        } else {
+            setIsLoading({
+                year: false,
+                make: true,
+                model: true,
+                bodyType: true,
+                subModel: true,
+                vehicleData: true
+            })
         }
     }, [isLoading.year]);
 
     // fetch makes
     useEffect(() => {
-        if (isLoading.make === true && ymm.year !== "") {
-            getMakes(ymm.year).then((makes) => {
+        if (isLoading.make === true && selectedVehicle && selectedVehicle?.year) {
+            getMakes(selectedVehicle?.year).then((makes) => {
                 dispatch(setYmm({ list: { makes } }))
             })
                 .finally(() => {
-                    if(ymm.year){
+                    if (selectedVehicle?.year) {
                         setIsLoading({
                             year: false,
                             make: false,
@@ -70,16 +108,16 @@ const useYmm = () => {
                     }
                 })
         }
-    }, [JSON.stringify(ymm.year), isLoading.make]);
+    }, [JSON.stringify(selectedVehicle?.year), isLoading.make]);
 
     // fetch model
     useEffect(() => {
-        if (isLoading.model === true && ymm.year !== "" && ymm.make !== "") {
-            getModels(ymm.year, ymm.make).then((models) => {
+        if (isLoading.model === true && selectedVehicle && selectedVehicle?.year && selectedVehicle?.make) {
+            getModels(selectedVehicle?.year, selectedVehicle.make).then((models) => {
                 dispatch(setYmm({ list: { models } }))
             })
                 .finally(() => {
-                    if (ymm.make) {
+                    if (selectedVehicle?.make) {
                         setIsLoading({
                             year: false,
                             make: false,
@@ -100,16 +138,16 @@ const useYmm = () => {
                     }
                 })
         }
-    }, [JSON.stringify(ymm.make), isLoading.model])
+    }, [JSON.stringify(selectedVehicle?.make), isLoading.model])
 
     // fetch getBodyTypes
     useEffect(() => {
-        if (isLoading.bodyType === true && ymm.year !== "" && ymm.make !== "" && ymm.model !== "") {
-            getBodyTypes(ymm.year, ymm.make, ymm.model).then((bodyTypes) => {
+        if (isLoading.bodyType === true && selectedVehicle && selectedVehicle?.year && selectedVehicle?.make && selectedVehicle?.model) {
+            getBodyTypes(selectedVehicle?.year, selectedVehicle?.make, selectedVehicle?.model).then((bodyTypes) => {
                 dispatch(setYmm({ list: { bodyTypes } }))
             })
                 .finally(() => {
-                    if (ymm.model) {
+                    if (selectedVehicle?.model) {
                         setIsLoading({
                             year: false,
                             make: false,
@@ -131,16 +169,16 @@ const useYmm = () => {
 
                 })
         }
-    }, [JSON.stringify(ymm.model), isLoading.bodyType])
+    }, [JSON.stringify(selectedVehicle?.model), isLoading.bodyType])
 
     // get getSubModels
     useEffect(() => {
-        if (isLoading.subModel === true && ymm.year !== "" && ymm.make !== "" && ymm.model !== "" && ymm.bodyType !== "") {
-            getSubModels(ymm.year, ymm.make, ymm.model, ymm.bodyType).then((subModels) => {
+        if (isLoading.subModel === true && selectedVehicle && selectedVehicle?.year && selectedVehicle?.make && selectedVehicle?.model && selectedVehicle?.bodyType) {
+            getSubModels(selectedVehicle?.year, selectedVehicle?.make, selectedVehicle?.model, selectedVehicle?.bodyType).then((subModels) => {
                 dispatch(setYmm({ list: { subModels } }))
             })
                 .finally(() => {
-                    if (ymm.bodyType !== "") {
+                    if (selectedVehicle?.bodyType) {
                         setIsLoading({
                             year: false,
                             make: false,
@@ -163,21 +201,24 @@ const useYmm = () => {
                 })
         }
 
-    }, [JSON.stringify(ymm.bodyType), isLoading.subModel]);
+    }, [JSON.stringify(selectedVehicle?.bodyType), isLoading.subModel]);
 
     //get getVehicleData
     useEffect(() => {
-        if (ymm.subModel.DRChassisID !== "" && ymm.subModel.DRModelID !== "") {
+        if (selectedVehicle?.subModel?.DRChassisID && selectedVehicle?.subModel?.DRModelID) {
             setIsDisabledSubmit(true);
-            getVehicleData(ymm.subModel?.DRModelID ?? "", ymm.subModel?.DRChassisID ?? "").then((vehicleInformation) => {
-                dispatch(setYmm({ vehicleInformation }));
+            getVehicleData(selectedVehicle?.subModel?.DRModelID ?? "", selectedVehicle?.subModel?.DRChassisID ?? "").then((vehicleInformation) => {
+                setSelectedVehicle((prev) => ({
+                    ...prev,
+                    vehicleInformation: vehicleInformation
+                }))
             })
         }
-    }, [JSON.stringify(ymm.subModel)]);
+    }, [JSON.stringify(selectedVehicle?.subModel)]);
 
     // enable submit button when vehicleData (bolt pattern) is available
     useEffect(() => {
-        if (ymm.vehicleInformation.boltPattern !== "") {
+        if (selectedVehicle?.vehicleInformation?.boltPattern) {
             setIsDisabledSubmit(false);
             setIsLoading({
                 year: false,
@@ -188,12 +229,18 @@ const useYmm = () => {
                 vehicleData: false
             })
         }
-    }, [JSON.stringify(ymm.vehicleInformation)])
+    }, [JSON.stringify(selectedVehicle?.vehicleInformation)])
 
 
 
-    const onYearChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setYmm({ year: e.target.value, make: "", model: "", bodyType: "", subModel: { SubModel: "", DRChassisID: "", DRModelID: "" } }));
+    const onYearChange = (data: ChangeEvent<HTMLSelectElement> | string) => {
+        setSelectedVehicle((prev) => ({
+            ...prev,
+            year: typeof data === 'string' ? data : data.target.value,
+            make: "",
+            model: "",
+            bodyType: "",
+        }))
         // empty all other list
         dispatch(setYmm({
             list: {
@@ -225,8 +272,13 @@ const useYmm = () => {
         })
         setIsDisabledSubmit(true);
     }
-    const onMakeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setYmm({ make: e.target.value, model: "", bodyType: "", subModel: { SubModel: "", DRChassisID: "", DRModelID: "" } }));
+    const onMakeChange = (data: ChangeEvent<HTMLSelectElement> | string) => {
+        setSelectedVehicle((prev) => ({
+            ...prev,
+            make: typeof data === 'string' ? data : data.target.value,
+            model: "",
+            bodyType: "",
+        }))
         // empty all other list
         dispatch(setYmm({
             list: {
@@ -257,8 +309,12 @@ const useYmm = () => {
         })
         setIsDisabledSubmit(true);
     }
-    const onModelChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setYmm({ model: e.target.value, bodyType: "", subModel: { SubModel: "", DRChassisID: "", DRModelID: "" } }));
+    const onModelChange = (data: ChangeEvent<HTMLSelectElement> | string) => {
+        setSelectedVehicle((prev) => ({
+            ...prev,
+            model: typeof data === 'string' ? data : data.target.value,
+            bodyType: "",
+        }))
         // empty all other list
         dispatch(setYmm({
             list: {
@@ -289,8 +345,11 @@ const useYmm = () => {
         setIsDisabledSubmit(true);
 
     }
-    const onBodyTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setYmm({ bodyType: e.target.value, subModel: { SubModel: "", DRChassisID: "", DRModelID: "" } }));
+    const onBodyTypeChange = (data: ChangeEvent<HTMLSelectElement> | string) => {
+        setSelectedVehicle((prev) => ({
+            ...prev,
+            bodyType: typeof data === 'string' ? data : data.target.value,
+        }))
         // empty all other list
         dispatch(setYmm({
             list: {
@@ -318,24 +377,41 @@ const useYmm = () => {
         })
         setIsDisabledSubmit(true);
     }
-    const onSubModelChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const onSubModelChange = (data: ChangeEvent<HTMLSelectElement> | string) => {
+        const value = typeof data === 'string' ? data : data.target.value;
         if (ymm.list?.subModels) {
-            dispatch(setYmm({ subModel: ymm.list.subModels.find(subModel => subModel.SubModel === e.target.value) as typeof ymm.list.subModels[0] }));
+            setSelectedVehicle((prev) => ({
+                ...prev,
+                subModel: ymm.list.subModels?.find(subModel => subModel.SubModel === value) as typeof ymm.list.subModels[0]
+            }))
         }
     }
 
- 
+
     const onSubmit = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
-        if (ymm.subModel.DRChassisID && !isLoading.vehicleData) {
+        e.preventDefault();
+        if(!isWheel && selectedVehicle?.vehicleInformation){
+            selectedVehicle.vehicleInformation.tireSizesList = Array.from(new Set(Object.values(selectedVehicle?.vehicleInformation?.tireSizes ?? {}).flatMap((sizes: Record<"front" | "rear", string>) => [sizes.front.replace(/(\/\d+)[A-Z]+(\d+)/, '$1-$2'), sizes.rear.replace(/(\/\d+)[A-Z]+(\d+)/, '$1-$2')])))
+        }
+        const vehicleInformation = isWheel ? { ...(selectedVehicle?.vehicleInformation ?? {}), tireSizes: [] } : { ...(selectedVehicle?.vehicleInformation ?? {}), supportedWheels: [] }
+        dispatch(setYmm({
+            year: selectedVehicle?.year,
+            make: selectedVehicle?.make,
+            model: selectedVehicle?.model,
+            bodyType: selectedVehicle?.bodyType,
+            subModel: selectedVehicle?.subModel,
+            vehicleInformation
+        }))
+        if (selectedVehicle?.subModel?.DRChassisID && !isLoading.vehicleData) {
             dispatch(submitYmm({}));
-            router.push("/collections/product-category/wheels?vehicle=selectedVehicleInformation");
-
+            if(isWheel){
+                router.push("/collections/product-category/wheels?vehicle=selectedVehicleInformation");
+            } else {
+                router.push("/collections/product-category/tires?tire_size="+selectedVehicle?.vehicleInformation?.tireSizesList?.join(','));
+            }
         }
     }
 
-    useEffect(() => {
-        console.log(ymm.list.years)
-    }, [ymm.list.years])
 
     return {
         isYearLoading: isLoading.year,
@@ -343,7 +419,7 @@ const useYmm = () => {
         isModelLoading: ymm.make && !isLoading.make && isLoading.model,
         isBodyTypeLoading: ymm.model && !isLoading.model && isLoading.bodyType,
         isSubmodelLoading: ymm.bodyType && !isLoading.bodyType && isLoading.subModel,
-        shouldShowSubmit: ymm.subModel.DRChassisID && !isLoading.vehicleData || !Boolean(ymm.subModel.DRChassisID),
+        shouldShowSubmit: selectedVehicle?.subModel?.DRChassisID && !isLoading.vehicleData || !Boolean(selectedVehicle?.subModel?.DRChassisID),
         onYearChange,
         onMakeChange,
         onModelChange,
@@ -351,7 +427,8 @@ const useYmm = () => {
         onSubModelChange,
         onSubmit,
         isDisabledSubmit,
-        ...ymm
+        ...ymm,
+        ...selectedVehicle
     }
 
 }

@@ -12,9 +12,9 @@ const SidebarFilters = ({ children }: SidebarProps) => {
   const [isOpenFilter, setIsOpenFilter] = useState(false);
 
   return (
-    <div className="">
+    <div className="w-full md:hidden">
       <button
-        className="box-button"
+        className="w-full text-primary px-auto py-[5px] border-2 border-primary hover:bg-primary-hover hover:text-white transition-colors duration-300 rounded-md text-base font-normal uppercase"
         onClick={() => setIsOpenFilter((prev) => !prev)}
       >
         Filtes

@@ -42,6 +42,10 @@ const nextConfig: NextConfig = {
         hostname: "assets.wheelpros.com",
         protocol: "https",
       },
+      {
+        hostname: "ktc-staging.s3.us-east-2.amazonaws.com",
+        protocol: "https",
+      },
     ],
   },
 };

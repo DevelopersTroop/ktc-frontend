@@ -8,6 +8,7 @@ import TireDetails from "./tire-details";
 import TireSpecifications from "./tire-specifications";
 import TireTitle from "./tire-title";
 import TireProvider from "./context/TireProvider";
+import { Reviews } from "@/components/shared/reviews/Reviews";
 
 export const step = 4;
 export const duallyStep = 6;
@@ -20,7 +21,7 @@ const Tire = ({ product }: { product: TInventoryItem }) => {
         <Item href={"/collections/product-category/tires"}>Collection</Item>
         <Item href={"/collections/product-category/tires"}>Tire</Item>
         <Item href={`/collections/product/${product.slug}`}>
-          {product?.brand}
+          {product?.sku}
         </Item>
       </Breadcrumb>
       <div className="mt-4 flex w-full flex-col gap-4 sm:p-4 lg:border">
@@ -29,7 +30,7 @@ const Tire = ({ product }: { product: TInventoryItem }) => {
           {/* image gallery */}
           <div className="w-full">
             <div>
-              <ImageGallery product={product} />
+              <ImageGallery product={product} fallbackImage="/tire-not-available.webp" />
             </div>
             <div className="mt-4 hidden lg:block">
               <TireSpecifications product={product} />
@@ -50,6 +51,9 @@ const Tire = ({ product }: { product: TInventoryItem }) => {
 
         <div className="mt-4">
           <TireDescription product={product} />
+        </div>
+        <div className="mt-4">
+          <Reviews productId={product._id} />
         </div>
       </div>
     </TireProvider>

@@ -1,5 +1,6 @@
+import StripeProvider from "@/context/StripeProvider";
 import { FinalStep } from "./CheckoutStep/FinalStep";
-import StepOne from "./CheckoutStep/StepOne";
+import { StepOne } from "./CheckoutStep/StepOne";
 import { StepTwo } from "./CheckoutStep/StepTwo";
 
 interface RendererProps {
@@ -24,15 +25,17 @@ export const Renderer: React.FC<RendererProps> = ({ step, setStep }) => {
   };
   switch (step) {
     case 1:
-      return <StepOne />;
+      return <StepOne handleContinue={handleContinue} setStep={setStep} />;
     case 2:
       return (
-        <StepTwo
-          handleBack={handleBack}
-          handleContinue={handleContinue}
-          setStep={setStep}
-          step={step}
-        />
+        <StripeProvider>
+          <StepTwo
+            handleBack={handleBack}
+            handleContinue={handleContinue}
+            setStep={setStep}
+            step={step}
+          />
+        </StripeProvider>
       );
     case 3:
       return <FinalStep />;

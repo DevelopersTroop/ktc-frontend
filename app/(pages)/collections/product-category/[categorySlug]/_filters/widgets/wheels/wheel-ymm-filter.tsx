@@ -28,7 +28,7 @@ const WheelYMMFilters = () => {
     <div className={"filter-shadow bg-gray-200"}>
       <div
         className={
-          "flex justify-between items-center font-medium text-gray-900 hover:text-gray-600 transition-colors pr-5 pb-3 border-y"
+          "hidden md:flex justify-between items-center font-medium text-gray-900 hover:text-gray-600 transition-colors pr-5 pb-3 border-y"
         }
       >
         <div className="uppercase bg-primary hover:bg-primary-hover text-white pl-3 pr-7 py-1">
@@ -40,7 +40,7 @@ const WheelYMMFilters = () => {
         </p>
       </div>
 
-      <div className="px-10 pb-10 pt-2 border-y">
+      <div className="px-10 pb-10 pt-5 md:pt-2 border-y">
         <div className="w-full flex flex-col gap-1 mt-4">
           <select
             value={year}

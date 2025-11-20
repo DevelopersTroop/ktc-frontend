@@ -1,11 +1,13 @@
 "use client";
+import { IGallery } from "@/app/globalRedux/api/gallery";
 import { s3BucketUrl } from "@/app/utils/api";
+import { normalizeImageUrl } from "@/lib/utils";
 import { TInventoryItem } from "@/types/product";
 import { useEffect, useState } from "react";
 import Gallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
-const ImageGallery = ({ product }: { product: TInventoryItem }) => {
+const ImageGallery = ({ product }: { product: TInventoryItem | IGallery }) => {
   const isCustomProduct = false;
   const [thumbnail, setThumbnail] = useState<
     { original: string; thumbnail: string }[]
@@ -21,7 +23,7 @@ const ImageGallery = ({ product }: { product: TInventoryItem }) => {
 
   // add gallery Images
   useEffect(() => {
-    const galleryImages = product.gallery_images || [];
+    const galleryImages = product?.galleryImages || [];
     if (galleryImages?.length > 0) {
       interface Image {
         original: string;
@@ -39,7 +41,7 @@ const ImageGallery = ({ product }: { product: TInventoryItem }) => {
       });
       setGalleryImages(images);
     }
-  }, [product.gallery_images]);
+  }, [product.galleryImages]);
 
   // add thumbnail
   useEffect(() => {
@@ -48,10 +50,10 @@ const ImageGallery = ({ product }: { product: TInventoryItem }) => {
         {
           original: isCustomProduct
             ? `${s3BucketUrl}/${product.item_image}`
-            : product.item_image,
+            : normalizeImageUrl(product.item_image || product.thumbnail || ""),
           thumbnail: isCustomProduct
             ? `${s3BucketUrl}/${product.item_image}`
-            : product.item_image,
+            : normalizeImageUrl(product.item_image || product.thumbnail || ""),
         },
       ]);
     }
@@ -64,6 +66,7 @@ const ImageGallery = ({ product }: { product: TInventoryItem }) => {
           showPlayButton={false}
           showNav={true}
           showFullscreenButton={true}
+          additionalClass="custom-gallery"
           items={productImages.length > 0 ? productImages : imageNotFound}
           renderLeftNav={(onClick, disabled) => (
             <button

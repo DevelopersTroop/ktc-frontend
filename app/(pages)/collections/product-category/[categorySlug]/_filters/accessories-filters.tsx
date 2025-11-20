@@ -27,7 +27,7 @@ const AccessoriesFilters = () => {
         />
       </div>
       <div className={"border-b border-gray-300 px-5 py-3"}>
-        <AccessoriesBrand filterKey={"brand"} brand={filters?.brand || []} />
+        <AccessoriesBrand filterKey={"brand_desc"} brand={filters?.brand_desc || []} />
       </div>
 
       <div className={"border-b border-gray-300 px-5 py-3"}>

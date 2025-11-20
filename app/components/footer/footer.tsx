@@ -90,6 +90,13 @@ export default function Footer() {
               >
                 About Us
               </Link>
+
+              <Link
+                href="/blog"
+                className="block text-gray-600 hover:text-gray-900"
+              >
+                Blogs
+              </Link>
             </div>
           </div>
 
@@ -190,7 +197,7 @@ export default function Footer() {
               CCPA Opt Out
             </Link>
             <span>|</span>
-            <span>© 2025 KTC Audio Custom Wheels</span>
+            <span>© 2025 KTC Audio</span>
           </div>
         </div>
       </div>

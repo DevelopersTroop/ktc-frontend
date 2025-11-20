@@ -24,12 +24,12 @@ const AccessoriesCard = ({ product }: { product: TInventoryItem }) => {
             alt="accessories image"
             src={
               imageErr
-                ? "/not-available.webp"
+                ? "/accessory-not-available.webp"
                 : product.thumbnail.length
                   ? product.thumbnail
                   : product.image_url1.length
                     ? product.image_url1
-                    : "/not-available.webp"
+                    : "/accessory-not-available.webp"
             }
             onError={() => setImageErr(true)}
           ></Image>

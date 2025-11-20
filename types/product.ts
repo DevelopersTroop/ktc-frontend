@@ -19,6 +19,7 @@ export type TInventoryItem = {
   wheelExposedLugs: string;
   wheelMaterial: string;
   weight: number;
+  item_image?: string;
   wheelStructure: string;
   wheelSpokeNumber: number;
   boltPatterns: string[];

@@ -1,10 +1,9 @@
 "use client";
-
-import { Address } from "@/types/order";
+import { TAddress } from "@/types/order";
 import { Package } from "lucide-react";
 
 interface ShippingInfoProps {
-  shippingAddress?: Address;
+  shippingAddress?: TAddress;
   selectedDealer?: string;
 }
 
@@ -23,9 +22,7 @@ export const ShippingInfo: React.FC<ShippingInfoProps> = ({
         <div className="space-y-1">
           {shippingAddress?.name ? (
             <>
-              <p className="font-light text-gray-700">
-                {shippingAddress.name}
-              </p>
+              <p className="font-light text-gray-700">{shippingAddress.name}</p>
               {shippingAddress.address1 && (
                 <p className="font-light text-gray-700">
                   {shippingAddress.address1}

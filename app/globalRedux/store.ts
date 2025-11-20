@@ -13,19 +13,26 @@ import tirePackageReducer from "@/app/globalRedux/features/tire-package/tire-pac
 import userReducer from "@/app/globalRedux/features/user/user-slice";
 import yearMakeModelModalReducer from "@/app/globalRedux/features/year-make-model-modal/year-make-model-modal-slice";
 import yearMakeModelReducer from "@/app/globalRedux/features/year-make-model/year-make-model-slice";
+import packageReducer from "./features/package";
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import {
-    FLUSH, PAUSE,
-    PERSIST, persistReducer, persistStore, PURGE,
-    REGISTER, REHYDRATE
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import tireReducer from './features/tire';
+import tireReducer from "./features/tire";
 import wheelReducer from "./features/wheel";
-import accessoriesReducer from "./features/accessories"
+import accessoriesReducer from "./features/accessories";
 import { cartListenerMiddleware } from "./middleware/cart-listener";
+import { baseApi } from "./api/base";
 
 const rootPersistConfig = {
   key: "ktc-audio-store",
@@ -39,6 +46,7 @@ const presistingReducer = combineReducers({
   tirePackage: tirePackageReducer,
   user: userReducer,
   checkout: checkoutReducer,
+  package: packageReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, presistingReducer);
@@ -54,8 +62,9 @@ const rootReducer = combineReducers({
   newsletterModal: newsletterModalReducer,
   saveEmail: cartProductSaveEmailReducer,
   wheel: wheelReducer,
-  tire:tireReducer,
-  accessories: accessoriesReducer
+  tire: tireReducer,
+  accessories: accessoriesReducer,
+  [baseApi.reducerPath]: baseApi.reducer,
 });
 
 const store = configureStore({
@@ -65,7 +74,9 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).prepend(cartListenerMiddleware.middleware),
+    })
+      .prepend(cartListenerMiddleware.middleware)
+      .concat(baseApi.middleware),
 });
 
 export const persistor = persistStore(store);

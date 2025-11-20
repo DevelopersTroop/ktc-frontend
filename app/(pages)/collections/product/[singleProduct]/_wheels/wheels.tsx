@@ -9,6 +9,7 @@ import WheelDescription from "./wheel-description";
 import WheelSpecifications from "./wheel-specifications";
 import WheelDetails from "./wheels-details";
 import WheelsTitle from "./wheels-title";
+import { Reviews } from "@/components/shared/reviews/Reviews";
 
 const Wheels = ({ product }: { product: TInventoryItem }) => {
   return (
@@ -17,8 +18,8 @@ const Wheels = ({ product }: { product: TInventoryItem }) => {
         <Item href={"/"}>Home</Item>
         <Item href={"/collections/product-category/wheels"}>Collection</Item>
         <Item href={"/collections/product-category/wheels"}>Wheels</Item>
-        <Item href={`/collections/product/${product.slug}`}>
-          {product?.brand}
+        <Item href={`/collections/product/${product?.slug}`}>
+          {product?.sku}
         </Item>
       </Breadcrumb>
       <div className="mt-4 flex w-full flex-col gap-4 sm:p-4 lg:border">
@@ -27,7 +28,7 @@ const Wheels = ({ product }: { product: TInventoryItem }) => {
           {/* image gallery */}
           <div className="w-full">
             <div>
-              <ImageGallery product={product} />
+              <ImageGallery product={product} fallbackImage="/not-available.webp" />
             </div>
             <div className="mt-4 hidden lg:block">
               <WheelSpecifications product={product} />
@@ -48,6 +49,9 @@ const Wheels = ({ product }: { product: TInventoryItem }) => {
 
         <div className="mt-4">
           <WheelDescription product={product} />
+        </div>
+        <div className="mt-4">
+          <Reviews productId={product._id} />
         </div>
       </div>
     </WheelProvider>

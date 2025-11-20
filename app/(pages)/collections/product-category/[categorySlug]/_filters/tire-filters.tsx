@@ -9,9 +9,13 @@ import TireLoadIndex from "./widgets/tire/tire-load-index";
 import TireModel from "./widgets/tire/tire-model";
 import TireWheelDiameter from "./widgets/tire/tire-wheel-diameter";
 import TireWidth from "./widgets/tire/tire-width";
+import TireHeight from "./widgets/tire/tire-height";
+import TireType from "./widgets/tire/tire-type";
+import TireLoadRange from "./widgets/tire/tire-load-range";
 
 const TireFilters = () => {
   const { filters } = useFetchFilters("tires");
+	console.log("TCL: TireFilters -> filters", filters)
 
   return (
     <div className={"filter-shadow bg-gray-200"}>
@@ -48,16 +52,16 @@ const TireFilters = () => {
         />
       </div>
       {/* <div className={"border-b border-gray-300 px-5 py-3"}>
-        <TireHeight filterKey={"tire_height"} height={height} />
+        <TireHeight filterKey={"tire_height"} height={filters?.tire_height || []} />
       </div> */}
       <div className={"border-b border-gray-300 px-5 py-3"}>
         <TireWidth filterKey={"width"} width={filters?.width || []} />
       </div>
+      <div className={"border-b border-gray-300 px-5 py-3"}>
+        <TireType filterKey={"tire_type"} tireType={filters?.tire_type || []} />
+      </div>
       {/* <div className={"border-b border-gray-300 px-5 py-3"}>
-        <TireType filterKey={"tire_type"} tireType={tireType} />
-      </div> */}
-      {/* <div className={"border-b border-gray-300 px-5 py-3"}>
-        <TireLoadRange filterKey={"tire_loadRange"} loadRange={loadRange} />
+        <TireLoadRange filterKey={"load_range"} loadRange={filters?.load_range || []} />
       </div> */}
       <div className={"border-b border-gray-300 px-5 py-3"}>
         <TireLoadIndex
@@ -65,11 +69,11 @@ const TireFilters = () => {
           loadIndex={filters?.load_index || []}
         />
       </div>
+      {/* <div className={"border-b border-gray-300 px-5 py-3"}>
+        <TireBrand filterKey={"brand_desc"} brand={filters?.brand_desc || []} />
+      </div> */}
       <div className={"border-b border-gray-300 px-5 py-3"}>
-        <TireBrand filterKey={"brand"} brand={filters?.brand || []} />
-      </div>
-      <div className={"border-b border-gray-300 px-5 py-3"}>
-        <TireModel filterKey={"model"} model={filters?.model || []} />
+        <TireModel filterKey={"display_model_no"} model={filters?.display_model_no || []} />
       </div>
     </div>
   );

@@ -78,7 +78,7 @@ const EmailVerification = () => {
                             {sucessMessage}
                         </div>
                         <Link href={'/login'} className='text-center text-lg'>
-                            Redirecting to login page in <span className='text-primary'>
+                            Redirecting to login page in  <span className='text-primary'>
                                 {timer}
                             </span>
                         </Link>
