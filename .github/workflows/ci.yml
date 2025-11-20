@@ -95,7 +95,8 @@ jobs:
             npm install --legacy-peer-deps &&
             npm run build &&
             pm2 restart ktc-web &&
-            pm2 save
+            pm2 save && 
+            sudo rm -rf node_modules
           "
           rm private_key.pem
         shell: /usr/bin/bash -e {0}
