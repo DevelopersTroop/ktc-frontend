@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { BillingAndShippingInput } from "./BillingAndShippingInput";
 import { useCheckout } from "@/context/CheckoutContext";
+import { triggerGaAddShippingInfoEvent } from "@/app/utils/analytics";
 
 // StepThree Component
 export const StepOne: React.FC<any> = ({ setStep, handleContinue }) => {
@@ -245,11 +246,11 @@ export const StepOne: React.FC<any> = ({ setStep, handleContinue }) => {
               onClick={(e) => {
                 // handleContinue?.(e);
                 setStep(2);
-                // triggerGaAddShippingInfoEvent(
-                //   totalCost,
-                //   productsInfo,
-                //   "unknown"
-                // );
+                triggerGaAddShippingInfoEvent(
+                  totalCost,
+                  productsInfo,
+                  "unknown"
+                );
               }}
               className="w-full font-bold mt-4 h-14 rounded-xs flex items-center"
             >

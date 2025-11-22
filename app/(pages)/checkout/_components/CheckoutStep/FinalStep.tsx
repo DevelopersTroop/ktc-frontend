@@ -21,6 +21,12 @@ import { OrderConfirmation } from "./OrderConfirmation";
 import { OrderSummary } from "./OrderSummary";
 import { PaymentData, PaymentInfo } from "./PaymentInfo";
 import { ShippingInfo } from "./ShippingInfo";
+import { loadStripe } from "@stripe/stripe-js";
+import { triggerGaPurchaseEvent } from "@/app/utils/analytics";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
+);
 
 export const FinalStep: React.FC = () => {
   /**
@@ -64,6 +70,10 @@ export const FinalStep: React.FC = () => {
     const verifyPayment = async () => {
       try {
         // Start progress animation only if below 90
+        const stripe = await stripePromise;
+        const paymentIntentClientSecret = searchParams.get(
+          "payment_intent_client_secret"
+        );
         const interval = setInterval(() => {
           setProgress((prev) => {
             if (prev >= 90) {
@@ -75,6 +85,18 @@ export const FinalStep: React.FC = () => {
         }, 200);
 
         let response;
+
+        if (method === "stripe" && !stripe)
+          throw new Error("Expected stripe promise to be resolved");
+
+        const paymentIntentResult = await stripe?.retrievePaymentIntent(
+          paymentIntentClientSecret as string
+        );
+        const paymentIntent = paymentIntentResult?.paymentIntent;
+
+        if (method === "stripe" && !paymentIntent)
+          throw new Error("Expected payment intent to be resolved");
+
         if (method === "stripe") {
           response = await customFetch(
             `payments/stripe/verify-payment?orderId=${orderId}`
@@ -107,9 +129,16 @@ export const FinalStep: React.FC = () => {
         console.log("TCL: verifyPayment -> result", result);
 
         if (result?.order) {
+          setProgress(80);
+          if (method === "stripe" && paymentIntent?.status !== "succeeded") {
+            router.push("/checkout?step=3&order_status=false");
+            return;
+          }
+
           setProgress(100);
           dispatch(updateOrderSuccessData(result.order));
           setPaymentData(result.payment);
+          triggerGaPurchaseEvent(result.order);
           toast.success("Order Placed Successfully");
           dispatch(emptyCart());
           dispatch(revokeCouponCode());

@@ -8,17 +8,19 @@ import { v4 as uuidv4 } from "uuid";
 import { AccessoryContext } from "./context/AccessoryProvider";
 import QuantityInput from "./quantity-input";
 import { CartData } from "../_wheels/normal-action";
+import { triggerGaAddToCart } from "@/app/utils/analytics";
 // import { CenterCapContext } from "./context/CenterCapProvider";
 
 const ActionButtons = ({ product }: { product: TInventoryItem }) => {
   const dispatch = useAppDispatch();
-  const {quantity} = useContext(AccessoryContext);
+  const { quantity } = useContext(AccessoryContext);
   //   const { quantity } = useContext(CenterCapContext);
   //   const { year, make, model } = useSelector(
   //     (state: RootState) => state.yearMakeModel
   //   );
 
   const addProductToCart = async (meta?: any) => {
+    triggerGaAddToCart(product, quantity);
     const data = await new Promise<CartData>((resolve, reject) => {
       try {
         const packageId = uuidv4();
@@ -35,14 +37,14 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
               quantity: quantity,
               metaData,
             },
-          }),
+          })
         );
         setTimeout(() => {
           const updatedProducts = store.getState().persisted.cart.products;
           const addedProduct = Object.values(updatedProducts).find(
             (p) =>
               p._id === product._id &&
-              JSON.stringify(p.metaData) === JSON.stringify(metaData),
+              JSON.stringify(p.metaData) === JSON.stringify(metaData)
           );
           resolve({
             cartSerial: addedProduct?.cartSerial || cartSerial,
@@ -105,14 +107,14 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
   return (
     <>
       <div className="flex flex-col justify-center gap-4">
-        <div className="max-w-52"> 
-        <QuantityInput
-          product={product}
-          inventoryAvailable={20}
-          name={"quantity"}
-          id={"quantity"}
-          // isDually={product?.dually}
-        />
+        <div className="max-w-52">
+          <QuantityInput
+            product={product}
+            inventoryAvailable={20}
+            name={"quantity"}
+            id={"quantity"}
+            // isDually={product?.dually}
+          />
         </div>
         <button
           onClick={() => {

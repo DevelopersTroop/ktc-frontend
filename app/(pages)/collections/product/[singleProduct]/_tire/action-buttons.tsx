@@ -13,6 +13,7 @@ import { TireContext } from "./context/TireProvider";
 import { CartData } from "../_wheels/normal-action";
 import { useRouter, useSearchParams } from "next/navigation";
 import { addPackage } from "@/app/globalRedux/features/package";
+import { triggerGaAddToCart } from "@/app/utils/analytics";
 // import { CenterCapContext } from "./context/CenterCapProvider";
 
 const ActionButtons = ({ product }: { product: TInventoryItem }) => {
@@ -34,6 +35,7 @@ const ActionButtons = ({ product }: { product: TInventoryItem }) => {
   //     (state: RootState) => state.persisted.cart.products
   //   );
   const addProductToCart = async (meta?: any) => {
+    triggerGaAddToCart(product, quantity);
     const data = await new Promise<CartData>((resolve, reject) => {
       try {
         const packageId = uuidv4();

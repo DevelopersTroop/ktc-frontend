@@ -7,6 +7,7 @@ import {
 } from "@/app/globalRedux/features/checkout/checkout-slice";
 import { RootState, useTypedSelector } from "@/app/globalRedux/store";
 import Container from "@/app/ui/container/container";
+import { triggerGaAddPaymentInfoEvent } from "@/app/utils/analytics";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -41,6 +42,9 @@ export const StepTwo: React.FC<any> = () => {
   const termsRef = useRef<HTMLDivElement>(null);
   const billingAddressUpdate = useSelector(
     (state: RootState) => state.persisted.checkout.billingAddress
+  );
+  const { productsInfo } = useTypedSelector(
+    (state) => state.persisted.checkout
   );
   // Modify stripe
   const paymentElement = useRef<StripePaymentElement | null>(null);
@@ -213,6 +217,12 @@ export const StepTwo: React.FC<any> = () => {
       if (!isValid) {
         return toast.error("Please fill in all required fields");
       }
+
+      triggerGaAddPaymentInfoEvent(
+        totalWithTax ?? 0,
+        productsInfo,
+        activeAccordion ? activeAccordion : "Stripe"
+      );
 
       // Ensure form values are up-to-date
       await new Promise((resolve) => setTimeout(resolve, 0));
