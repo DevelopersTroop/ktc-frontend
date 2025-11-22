@@ -20,6 +20,7 @@ import Quantity from "./_components/quantity";
 import EmptyCart from "./empty-cart";
 import { TCartProduct } from "@/types/cart";
 import { getProductImage } from "@/lib/utils";
+import { triggerGaBeginCheckoutEvent } from "@/app/utils/analytics";
 const Cart = () => {
   const { saveAllProductFromCart } = useWishlist();
   const [isShippingProtectionChecked, setIsShippingProtectionChecked] =
@@ -34,6 +35,7 @@ const Cart = () => {
   const subTotalCost = Number(
     calculateCartTotal(cart.products).replace(/,/g, "")
   );
+  const costWithoutFormatic = calculateCartTotal(cart.products, 0, false);
   const [totalCost, setTotalCost] = useState<number>(subTotalCost);
 
   const handleCheckboxChange = () => {
@@ -388,6 +390,10 @@ const Cart = () => {
                   <div className="mx-[10%] my-4">
                     <Link
                       onClick={() => {
+                        triggerGaBeginCheckoutEvent(
+                          Number(costWithoutFormatic),
+                          Object.values(cart.products)
+                        );
                         dispatch(initiateCheckout());
                       }}
                       href="/checkout"

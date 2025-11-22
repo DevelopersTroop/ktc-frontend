@@ -26,6 +26,7 @@ import { z } from "zod";
 import { StarRatingInput } from "./StarRatingInput";
 import { Textarea } from "@/components/ui/textarea";
 import { TextInput } from "../text-input";
+import { triggerEvent } from "@/app/utils/analytics";
 
 // Mock reviewSchema and types
 
@@ -147,7 +148,18 @@ export const WriteAReview: React.FC<{ productId: string | undefined }> = ({
       formData.append("media", file);
     });
 
-    createReview(formData).unwrap();
+    createReview(formData)
+      .unwrap()
+      .then(() => {
+        triggerEvent("review_submitted", {
+          url: window.location.href,
+          userName: data.name,
+          email: data.email,
+          mediaCount: mediaFiles.length,
+          rating: data.rating,
+          comment: data.comment,
+        });
+      });
   };
 
   return (

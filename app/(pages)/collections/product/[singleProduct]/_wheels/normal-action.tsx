@@ -20,6 +20,7 @@ import QuantityInput from "./quantity-input";
 import { YmmSelector } from "./ymm";
 import useYmm from "@/hooks/use-ymm";
 import { addPackage } from "@/app/globalRedux/features/package";
+import { triggerGaAddToCart } from "@/app/utils/analytics";
 
 type NormalActionButtonProps = {
   setIsStaggered: React.Dispatch<React.SetStateAction<boolean>>;
@@ -52,6 +53,7 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
     meta: Record<string, string> = {},
     customQuantity: number = quantity
   ) => {
+    triggerGaAddToCart(product, customQuantity);
     if (
       checkYmm &&
       !(
