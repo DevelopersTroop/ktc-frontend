@@ -31,7 +31,7 @@ export const triggerEvent = (
 ) => {
   sendGtmEvent(eventName, {
     ...eventParams,
-    app_name: "Amani Forged",
+    app_name: "Wheel Tire USA",
   });
 };
 

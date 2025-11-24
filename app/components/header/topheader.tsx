@@ -46,9 +46,9 @@ export default function TopHeader() {
             <div className="flex items-center">
               <Link href="/" className="flex-shrink-0">
                 <img
-                  src="/images/logo.jpeg"
+                  src="/images/logo.png"
                   alt="Custom Offsets"
-                  className="h-8 md:h-16"
+                  className="h-10 md:h-20"
                 />
               </Link>
             </div>
