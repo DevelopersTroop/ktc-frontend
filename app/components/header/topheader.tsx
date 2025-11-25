@@ -48,7 +48,7 @@ export default function TopHeader() {
                 <img
                   src="/images/logo.png"
                   alt="Custom Offsets"
-                  className="h-10 md:h-20"
+                  className="h-6 md:h-12"
                 />
               </Link>
             </div>

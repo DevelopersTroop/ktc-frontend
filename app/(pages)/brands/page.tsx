@@ -29,7 +29,7 @@ export default function Page() {
   }, [query]);
 
   return (
-    <div className="grid grid-cols-12 container py-12 gap-4">
+    <div className="grid grid-cols-12 container py-12 gap-4 px-4">
       {loading ? (
         // ✅ Skeleton loading placeholders
         Array.from({ length: 12 }).map((_, i) => (
@@ -41,7 +41,7 @@ export default function Page() {
       ) : filters?.brand_desc?.length ? (
         // ✅ Visible, styled brand links
         filters.brand_desc.map((b, i) => (
-          <div key={i} className="col-span-3">
+          <div key={i} className="col-span-6 md:col-span-4 lg:col-span-3">
             <Link
               href={`${link}=${b.value}`}
               className="flex justify-center w-full bg-white border border-gray-200 hover:border-primary text-gray-700 hover:text-primary font-medium rounded-md h-12  items-center transition-all shadow-sm hover:shadow-md"

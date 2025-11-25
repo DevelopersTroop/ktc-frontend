@@ -18,20 +18,20 @@ const items = [
 
 export const Categories = () => {
   return (
-    <div className="container py-20">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-8 justify-items-center">
+    <div className="container py-20 px-4">
+      <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 lg:gap-8 justify-items-center">
         {items.map((item, index) => (
           <Link
             key={index}
             href={item.href}
-            className="group hover:scale-110 transition-all duration-300 text-center flex flex-col items-center"
+            className="group hover:scale-110 transition-all duration-300 text-center flex flex-col items-center bg-white shadow-md py-2 px-2"
           >
             <img
               src={`/images/categories/${index + 1}.webp`}
               alt={item.title}
-              className="object-contain w-[217px] h-[145px]"
+              className="object-contain lg:w-[217px] lg:h-[145px]"
             />
-            <h3 className="font-semibold text-xl group-hover:text-primary transition-all duration-300">
+            <h3 className="font-semibold text-xs lg:text-xl group-hover:text-primary transition-all duration-300">
               {item.title}
             </h3>
           </Link>

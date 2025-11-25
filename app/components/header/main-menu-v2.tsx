@@ -67,9 +67,8 @@ export default function Navbar() {
               target={menu.target}
               href={menu.href || "#"}
               className={cn(
-                "text-white p-2 flex items-center transition-all duration-300 hover:text-primary relative after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300",
-                isHomePage && "hover:text-white ",
-                openMenu === menu.label && "text-primary"
+                "text-white p-2 flex items-center transition-all duration-300 relative after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300",
+                isHomePage && "hover:text-white "
                 //after:bg-transparent hover:underline
               )}
             >

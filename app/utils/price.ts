@@ -34,3 +34,4 @@ export function calculateCartTotal<T = string>(
     ? (formatPrice(totalPrice - (discount ?? 0)) as T)
     : (totalPrice as T);
 }
+

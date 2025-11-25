@@ -5,12 +5,22 @@ import Link from "next/link";
 import { useState } from "react";
 import CardDescription from "./card-description";
 import { useSearchParams } from "next/navigation";
+import { isSale } from "@/app/utils/price";
 
-export const ProductCard = ({ product }: { product: TInventoryItem }) => {
+export const ProductCard = ({
+  product,
+  bestSeller = false,
+}: {
+  product: TInventoryItem;
+  bestSeller?: boolean;
+}) => {
   const searchParams = useSearchParams();
   const cartPackage = searchParams.get("cartPackage");
   const productLink = `/collections/product/${product.slug}?cartPackage=${cartPackage}`;
   const [imageErr, setImageErr] = useState(false);
+
+  const sales = isSale(product.msrp, product.price);
+
   return (
     <div
       className={
@@ -18,7 +28,7 @@ export const ProductCard = ({ product }: { product: TInventoryItem }) => {
       }
     >
       <div className="flex w-full items-center justify-center pt-5">
-        <Link href={productLink}>
+        <Link className="relative" href={productLink}>
           <Image
             className={"d-block mx-auto w-full rounded-xl object-cover"}
             height={238}
@@ -35,11 +45,22 @@ export const ProductCard = ({ product }: { product: TInventoryItem }) => {
             }
             onError={() => setImageErr(true)}
           ></Image>
+          {!sales && bestSeller && (
+            <div className="bg-primary max-w-fit px-4 py-1 uppercase absolute bottom-1 font-semibold text-white">
+              Best Seller!
+            </div>
+          )}
+
+          {sales && !bestSeller && (
+            <div className="bg-primary max-w-fit px-4 py-1 uppercase absolute bottom-1 font-semibold text-white">
+              Sale
+            </div>
+          )}
         </Link>
       </div>
 
       <Link href={productLink} className="py-6">
-        <CardDescription product={product} />
+        <CardDescription product={product} sales={sales} />
       </Link>
     </div>
   );

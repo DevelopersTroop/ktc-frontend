@@ -1,10 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DiscountBanner() {
   const [isVisible, setIsVisible] = useState(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -15,7 +18,12 @@ export default function DiscountBanner() {
   }, []);
 
   return (
-    <div className="overflow-hidden bg-primary hover:bg-primary-hover py-2 text-xl font-semibold text-white">
+    <div
+      onClick={() => {
+        router.push("/financing");
+      }}
+      className="overflow-hidden cursor-pointer bg-primary transition-all duration-300 hover:bg-primary-hover py-2 text-xl font-semibold text-white"
+    >
       <motion.div
         initial={{ x: "100%" }}
         animate={{ x: "-100%" }}
@@ -24,7 +32,7 @@ export default function DiscountBanner() {
           repeat: Infinity,
           ease: "linear",
         }}
-        className="whitespace-nowrap"
+        className="whitespace-nowrap "
       >
         ENJOY 0% FINANCING
       </motion.div>

@@ -24,10 +24,14 @@ type ProductsPageProps = {
 const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
   const searchParams = useSearchParams();
   const { filters } = useFilterSync();
-  const ymm = useTypedSelector(state => state.yearMakeModel);
-  const parsedFilter = wrapWheelFilters(filters, Number.isNaN(page) ? 1 : page, filters["vehicle"] ? ymm.vehicleInformation : {})
+  const ymm = useTypedSelector((state) => state.yearMakeModel);
+  const parsedFilter = wrapWheelFilters(
+    filters,
+    Number.isNaN(page) ? 1 : page,
+    filters["vehicle"] ? ymm.vehicleInformation : {}
+  );
   const { data, isLoading: loading } = useGetProductListQuery(parsedFilter);
-  console.log("filters", filters)
+  console.log("filters", filters);
   return (
     <>
       <div className="flex justify-center items-center my-2.5">
@@ -87,8 +91,12 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
                   "flex w-full flex-row flex-wrap justify-center gap-4"
                 }
               >
-                {data?.products.map((product: TInventoryItem) => (
-                  <ProductCard product={product} key={product._id} />
+                {data?.products.map((product: TInventoryItem, index) => (
+                  <ProductCard
+                    product={product}
+                    key={product._id}
+                    bestSeller={index % 4 === 0 || index % 3 === 0}
+                  />
                 ))}
               </div>
               <div className="mt-8 flex w-full flex-row flex-wrap justify-center gap-4">

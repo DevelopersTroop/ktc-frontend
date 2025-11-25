@@ -128,7 +128,7 @@ const HeaderSearchButton: React.FC<HeaderSearchButtonProps> = ({
       <div className="h-full flex items-center justify-end flex-1">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex items-center h-full w-full max-w-3xl"
+          className="flex items-center justify-end h-full w-full max-w-3xl"
         >
           {/* DESKTOP SEARCH BAR */}
           <div className="hidden lg:flex flex-1 mx-4">
@@ -174,7 +174,7 @@ const HeaderSearchButton: React.FC<HeaderSearchButtonProps> = ({
             }}
             aria-label={ariaLabel || "Open mobile search"}
           >
-            <Search className="h-6 w-6" />
+            <Search size={32} />
           </Button>
         </form>
       </div>
