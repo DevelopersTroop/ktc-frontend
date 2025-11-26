@@ -1,8 +1,9 @@
 import { useGetReviewsQuery } from "@/app/globalRedux/api/reviews";
 import { formatDistanceToNow } from "date-fns";
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 import { WriteAReview } from "./WriteAReview";
+import { useProductRating } from "@/hooks/useProductRating";
 
 // Mock ReviewPagination
 const ReviewPagination: FC<{
@@ -36,7 +37,9 @@ const ReviewPagination: FC<{
 export const Reviews: React.FC<{ productId: string | undefined }> = ({
   productId,
 }) => {
+  const { focus, setFocus } = useProductRating();
   const [page, setPage] = useState(1);
+  const reviewRef = useRef<HTMLDivElement>(null);
   const { isLoading, isFetching, data } = useGetReviewsQuery(
     {
       productId: productId ?? "",
@@ -47,8 +50,15 @@ export const Reviews: React.FC<{ productId: string | undefined }> = ({
     }
   );
 
+  useEffect(() => {
+    if (reviewRef.current && focus) {
+      reviewRef.current.scrollIntoView({ behavior: "smooth" });
+      setFocus();
+    }
+  }, [focus]);
+
   return (
-    <div className="my-6">
+    <div ref={reviewRef} className="my-6">
       <div className="space-y-2">
         <WriteAReview productId={productId} />
       </div>

@@ -223,7 +223,7 @@ const mobileNavMenus: NavMenu[] = [
     children: [
       {
         label: "About Us",
-        href: "/about-us",
+        href: "/about",
       },
       {
         label: "Financing",

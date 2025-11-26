@@ -4,33 +4,36 @@ import Link from "next/link";
 const WheelsSection = () => {
   return (
     <div
-      className="relative h-screen bg-cover bg-center"
+      className="relative lg:h-screen bg-cover bg-center"
       style={{
         backgroundImage: `url('/images/gallery/image9.jpeg')`,
       }}
     >
       <div className="h-full bg-white/40">
         <div className="container mx-auto sm:px-2 py-4 h-full flex items-center sm:items-start justify-end ">
-          <div className="max-w-2xl bg-gray-900/80 p-4 md:p-8 rounded-3xl text-white">
-            <div className="flex gap-4">
+          <div className="max-w-2xl bg-gray-400/70 p-4 md:p-8 lg:rounded-3xl text-white space-y-4">
+            <div className="flex gap-4 items-center">
               <img
-                src="/images/logo.jpeg"
+                src="/images/logo.png"
                 alt="ktc audio"
-                className="h-16 mb-6 inline-block"
+                className="h-8 mb-6 inline-block"
               />
-              <p className="text-3xl">KTC Audio Custom Wheels</p>
+              <p className="text-2xl">
+                WheelTireUSA – Your go-to place for wheels & tires
+              </p>
             </div>
             <p className="text-lg leading-relaxed mb-8">
-              KTC Audio Custom Wheels And Tires has been proudly serving the
-              community for over 30 years, we specialize in premium car audio
-              systems, custom wheels, and high-quality tires to enhance your
-              vehicle’s performance and style. Our decades of experience and
-              commitment to customer satisfaction make us the trusted choice for
-              all your automotive needs.
+              KAt WheelTireUSA, we make it easy to find the right wheels and
+              tires for your vehicle. We offer trusted brands, great prices, and
+              fast service so you can upgrade your car with confidence. Whether
+              you’re looking for custom wheels, all-season tires, or complete
+              wheel and tire packages, we’re here to help you get the perfect
+              fit. Shop with us for quality products, reliable support, and a
+              smooth, hassle-free experience every time.
             </p>
 
-            <Link href="/collections/product-category/wheels">
-              <Button className="bg-primary hover:bg-primary-hover text-black font-bold py-3 px-8 text-lg uppercase tracking-wider">
+            <Link className="mt-4 inline-block" href="/collections/product-category/wheels">
+              <Button className="bg-primary hover:bg-primary-hover text-white font-bold h-12 block px-8 text-lg uppercase tracking-wider">
                 Shop Wheels
               </Button>
             </Link>

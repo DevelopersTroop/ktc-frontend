@@ -139,6 +139,15 @@ export default function MobileNavbar() {
 
         {/* Navigation */}
         <nav className="py-2 uppercase">{renderMenuItems(navMenus)}</nav>
+
+        <div className="px-4 mt-6">
+          <Link
+            className="text-xl font-semibold"
+            href={"tel:+1 (303) 695-6305"}
+          >
+            Call:{"  "}+1 (303) 695-6305
+          </Link>
+        </div>
       </div>
     </>
   );

@@ -11,7 +11,7 @@ const TireCardDescription = ({ product }: { product: TInventoryItem }) => {
     <div>
       {/* product title */}
       <div>
-        <h3 className="text-sm font-semibold uppercase text-black">
+        <h3 className="text-xs font-semibold uppercase text-black">
           {product.title}
         </h3>
       </div>
@@ -24,14 +24,14 @@ const TireCardDescription = ({ product }: { product: TInventoryItem }) => {
         <div className="flex items-start gap-1">
           $
           <span className="text-3xl font-semibold">
-            {(product.msrp * 4).toFixed(2)}
+            {(product.msrp).toFixed(2)}
           </span>{" "}
           <span className="my-auto text-xs font-medium uppercase text-primary">
-            set of four
+            \ea
           </span>
         </div>
         <div>
-          <p className="text-sm">
+          <p className="text-xs">
             Starting at <span className="font-bold">$82</span>/MO{" "}
             <span className="font-bold">Affirm</span>{" "}
           </p>
@@ -105,15 +105,15 @@ const TireCardDescription = ({ product }: { product: TInventoryItem }) => {
       <div className="flex flex-col gap-3 min-[600px]:hidden">
         <div className="flex items-start gap-1">
           $
-          <span className="text-3xl font-semibold">
+          <span className="text-2xl font-semibold">
             {(product.msrp * 4).toFixed(2)}
           </span>{" "}
-          <span className="my-auto text-xs font-medium uppercase text-primary">
-            set of four
+          <span className="my-auto text-xs font-medium text-primary">
+            \ea
           </span>
         </div>
         <div>
-          <p className="text-sm">
+          <p className="text-xs">
             Starting at <span className="font-bold">$82</span>/MO{" "}
             <span className="font-bold">Affirm</span>{" "}
           </p>

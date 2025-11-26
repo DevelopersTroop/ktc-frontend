@@ -24,15 +24,15 @@ export const ProductCard = ({
   return (
     <div
       className={
-        "flex w-full flex-row overflow-hidden rounded-xl border border-[#cfcfcf] bg-white px-4 min-[600px]:w-[250px] min-[600px]:flex-col shadow-xl"
+        "flex w-full flex-row overflow-hidden md:rounded-xl md:border md:border-[#cfcfcf] md:bg-white min-[600px]:w-[250px] min-[600px]:flex-col md:shadow-xl gap-2 md:px-4"
       }
     >
       <div className="flex w-full items-center justify-center pt-5">
         <Link className="relative" href={productLink}>
           <Image
-            className={"d-block mx-auto w-full rounded-xl object-cover"}
-            height={238}
-            width={238}
+            className={"d-block mx-auto w-full rounded-xl object-contain"}
+            height={240}
+            width={240}
             alt="product image"
             src={
               imageErr
@@ -46,13 +46,13 @@ export const ProductCard = ({
             onError={() => setImageErr(true)}
           ></Image>
           {!sales && bestSeller && (
-            <div className="bg-primary max-w-fit px-4 py-1 uppercase absolute bottom-1 font-semibold text-white">
+            <div className="bg-primary max-w-fit px-4 py-1 uppercase absolute -bottom-2 md:bottom-0 font-semibold text-white">
               Best Seller!
             </div>
           )}
 
           {sales && !bestSeller && (
-            <div className="bg-primary max-w-fit px-4 py-1 uppercase absolute bottom-1 font-semibold text-white">
+            <div className="bg-primary max-w-fit px-4 py-1 uppercase absolute -bottom-2 md:bottom-0 font-semibold text-white">
               Sale
             </div>
           )}

@@ -11,11 +11,11 @@ const page = () => {
   return (
     <div>
       <HeroSection />
-      <ViewGallery />
       <WheelsSection />
       <Categories />
       <TodaysDeals />
       <WheelsGallery />
+      <ViewGallery />
       <SuspensionBrands />
       <SuspensionSection />
     </div>

@@ -128,7 +128,7 @@ const HeaderSearchButton: React.FC<HeaderSearchButtonProps> = ({
       <div className="h-full flex items-center justify-end flex-1">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex items-center justify-end h-full w-full max-w-3xl"
+          className="flex items-center justify-end h-full w-full max-w-xl xl:max-w-2xl 2xl:max-w-3xl"
         >
           {/* DESKTOP SEARCH BAR */}
           <div className="hidden lg:flex flex-1 mx-4">

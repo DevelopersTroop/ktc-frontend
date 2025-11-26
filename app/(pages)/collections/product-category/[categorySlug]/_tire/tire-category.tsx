@@ -19,13 +19,15 @@ import TireCard from "./tire-card";
 const TireCategory: React.FC<{ page: number }> = ({ page = 1 }) => {
   const searchParams = useSearchParams();
   const { filters } = useFilterSync();
-  const { data, isLoading: loading } = useGetProductListQuery(wrapTireFilters(filters, Number.isNaN(page) ? 1 : page))
+  const { data, isLoading: loading } = useGetProductListQuery(
+    wrapTireFilters(filters, Number.isNaN(page) ? 1 : page)
+  );
   return (
     <>
       <div className="flex justify-center items-center my-2.5">
         <h1 className="text-[20px] font-semibold">Aftermarket Truck Tires</h1>
       </div>
-      <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 pb-6 pt-2 md:flex-row">
+      <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 md:px-4 pb-6 pt-2 md:flex-row">
         <div className="w-full flex flex-row gap-2 justify-between  md:hidden">
           <SidebarFilters>
             <TireFilters />
@@ -82,7 +84,12 @@ const TireCategory: React.FC<{ page: number }> = ({ page = 1 }) => {
                 }
               >
                 {data?.products?.map((product) => (
-                  <TireCard product={product} key={product._id} />
+                  <div
+                    key={product._id}
+                    className="max-md:border max-md:border-b max-md:first:border-t max-md:border-t-0 max-md:border-l-0 max-md:border-r-0 max-md:px-2"
+                  >
+                    <TireCard product={product} key={product._id} />
+                  </div>
                 ))}
               </div>
 

@@ -30,10 +30,10 @@ const CardDescription = ({
         <div className="flex items-start gap-1">
           $
           <span className="text-3xl font-semibold">
-            {(product.msrp * 4).toFixed(2)}{" "}
+            {(product.msrp).toFixed(2)}{" "}
           </span>{" "}
-          <span className="my-auto text-xs font-medium uppercase text-primary">
-            set of four
+          <span className="my-auto text-xs font-medium text-primary">
+            \ea
           </span>
         </div>
         <div>
@@ -47,7 +47,7 @@ const CardDescription = ({
       <div className="mt-3 flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <div className={"inline-block rounded-full bg-primary p-1"}>
-            <FaDollarSign className={"text-white"} />
+            <FaDollarSign size={14} className={"text-white"} />
           </div>
           <div className="text-xs uppercase">
             <p className="text-gray-600">
@@ -58,7 +58,7 @@ const CardDescription = ({
         </div>
         <div className="flex items-center gap-2">
           <div className={"inline-block rounded-full bg-primary p-1"}>
-            <MdOutlineShoppingCart className={"text-white"} />
+            <MdOutlineShoppingCart size={14} className={"text-white"} />
           </div>
           <div className="text-xs uppercase">
             <p className="text-gray-800">In Stock & Free Quick Delivery </p>
@@ -94,10 +94,10 @@ const CardDescription = ({
         <div className="flex items-start gap-1">
           $
           <span className="text-3xl font-semibold">
-            {(getPrice(product.msrp, product.price) * 4).toFixed(2)}
+            {getPrice(product.msrp, product.price).toFixed(0)}
           </span>{" "}
-          <span className="my-auto text-xs font-medium uppercase text-primary">
-            set of four
+          <span className="my-auto text-xs font-medium text-primary">
+            \ea
           </span>
         </div>
 
@@ -113,7 +113,7 @@ const CardDescription = ({
           </div>
         )}
         <div>
-          <p className="text-sm">
+          <p className="text-xs">
             Starting at <span className="font-bold">$82</span>/MO{" "}
             <span className="font-bold">Affirm</span>{" "}
           </p>

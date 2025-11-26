@@ -48,16 +48,24 @@ export default function TopHeader() {
                 <img
                   src="/images/logo.png"
                   alt="Custom Offsets"
-                  className="h-6 md:h-12"
+                  className="h-8 md:h-12"
                 />
               </Link>
             </div>
-            <HeaderSearchButton
-              aria-label="Search product"
-              isHomepage={false}
-            />
 
-            <div className="flex items-center gap-8">
+            <div className="w-full hidden lg:block">
+              <HeaderSearchButton
+                aria-label="Search product"
+                isHomepage={false}
+              />
+            </div>
+            <div className="flex items-center justify-end">
+              <div className="lg:hidden">
+                <HeaderSearchButton
+                  aria-label="Search product"
+                  isHomepage={false}
+                />
+              </div>
               <Link
                 href={"/dashboard/save-product"}
                 className="hidden items-center gap-2 md:flex"
