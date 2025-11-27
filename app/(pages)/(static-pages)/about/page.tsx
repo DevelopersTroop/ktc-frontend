@@ -5,7 +5,7 @@ import React from "react";
 
 const AboutPage: React.FC = () => {
   return (
-    <div className="container mx-auto">
+    <div className="container px-4 mx-auto">
       <div className="p-2">
         <Breadcrumb>
           <Item href={"/"}>Home</Item>

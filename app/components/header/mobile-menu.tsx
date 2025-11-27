@@ -145,7 +145,8 @@ export default function MobileNavbar() {
             className="text-xl font-semibold"
             href={"tel:+1 (303) 695-6305"}
           >
-            Call:{"  "}+1 (303) 695-6305
+            Call us:{"  "}{" "}
+            <span className="text-primary">+1 (303) 695-6305</span>
           </Link>
         </div>
       </div>
