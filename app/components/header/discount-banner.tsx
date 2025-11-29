@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 const pathMap = {
   "/": "home",
+  "/about": "about",
 };
 
 export default function DiscountBanner() {

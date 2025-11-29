@@ -59,7 +59,7 @@ export default function TopHeader() {
                 isHomepage={false}
               />
             </div>
-            <div className="flex items-center justify-end w-full">
+            <div className="flex items-center justify-end">
               <div className="lg:hidden">
                 <HeaderSearchButton
                   aria-label="Search product"
