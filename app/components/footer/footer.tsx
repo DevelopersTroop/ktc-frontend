@@ -197,7 +197,7 @@ export default function Footer() {
               CCPA Opt Out
             </Link>
             <span>|</span>
-            <span>© 2025 KTC Audio</span>
+            <span>© 2025 Wheel Tire USA</span>
           </div>
         </div>
       </div>

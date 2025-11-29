@@ -48,7 +48,7 @@ export default function TopHeader() {
                 <img
                   src="/images/logo.png"
                   alt="Custom Offsets"
-                  className="h-8 md:h-12"
+                  className="h-6 min-[387px]:h-8 md:h-12"
                 />
               </Link>
             </div>
@@ -59,7 +59,7 @@ export default function TopHeader() {
                 isHomepage={false}
               />
             </div>
-            <div className="flex items-center justify-end">
+            <div className="flex items-center justify-end w-full">
               <div className="lg:hidden">
                 <HeaderSearchButton
                   aria-label="Search product"
