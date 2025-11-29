@@ -54,7 +54,7 @@ export default function DiscountBanner() {
           repeat: Infinity,
           ease: "linear",
         }}
-        className="whitespace-nowrap "
+        className="whitespace-nowrap uppercase"
       >
         {data.promoBar.title}
       </motion.div>
