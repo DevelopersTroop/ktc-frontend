@@ -52,6 +52,24 @@ export default function RootLayout({
         `,
           }}
         />
+        <Script
+          id="brevo-chat"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+          (function(d, w, c) {
+        w.BrevoConversationsID = '692a60c63198d933ca00c789';
+        w[c] = w[c] || function() {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        var s = d.createElement('script');
+        s.async = true;
+        s.src = 'https://conversations-widget.brevo.com/brevo-conversations.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'BrevoConversations');
+        `,
+          }}
+        />
         <StoreProvider>
           <CheckoutProvider>
             <TopHeaderOne />
@@ -65,10 +83,10 @@ export default function RootLayout({
           <Newsletter />
           <DynamicAnalytics />
         </StoreProvider>
-        <Script
+        {/* <Script
           src="//code.tidio.co/ylns3q2pbrzhwklnx08n2v5oezbmhf7g.js"
           strategy="afterInteractive"
-        />
+        /> */}
       </body>
     </html>
   );
