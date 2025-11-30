@@ -23,34 +23,93 @@ const navMenus: NavMenu[] = [
     meagMenu: true, // Indicates this is part of a mega menu
     children: [
       {
-        label: "",
+        label: "Shop Wheels",
+        href: "/collections/product-category/wheels",
         children: [
           {
-            label: "Shop Wheels", // Submenu for custom wheels
+            label: "Shop all wheels",
             href: "/collections/product-category/wheels",
-            children: [
-              {
-                label: "Shop all wheels",
-                href: "/collections/product-category/wheels",
-              },
-              {
-                label: "Shop by brands",
-                href: "/brands?query=wheels",
-              },
-            ],
           },
           {
-            label: "Make your wheel and tire packages now",
-            href: "/collections/product-category/wheels",
+            label: "Shop by brands",
+            href: "/brands?query=wheels",
           },
         ],
       },
       {
-        label: "",
-        megaeMenuImage: {
-          href: "#",
-          src: "/not-available.webp",
-        },
+        label: "Wheels By Brands",
+        children: [
+          {
+            label: "Arena",
+            href: "/collections/product-category/wheels?brand_desc=Arena",
+          },
+          {
+            label: "Azara",
+            href: "/collections/product-category/wheels?brand_desc=Azara",
+          },
+          {
+            label: "XF Off road",
+            href: "/collections/product-category/wheels?brand_desc=XF+Offroad",
+          },
+        ],
+      },
+      {
+        label: "Wheels By Vehicle Type",
+        children: [
+          {
+            label: "Passenger Car",
+            href: "/collections/product-category/wheels?q=Passenger Car",
+          },
+          {
+            label: "SUV/Crossover",
+            href: "/collections/product-category/wheels?q=SUV/Crossover",
+          },
+          {
+            label: "Truck",
+            href: "/collections/product-category/wheels?q=Truck",
+          },
+          {
+            label: "Off‑road/Jeep",
+            href: "/collections/product-category/wheels?q=Off‑road/Jeep",
+          },
+          {
+            label: "Sports/Performance",
+            href: "/collections/product-category/wheels?q=Sports/Performance",
+          },
+          {
+            label: "Luxury",
+            href: "/collections/product-category/wheels?q=Luxury",
+          },
+          {
+            label: "Winter Wheels",
+            href: "/collections/product-category/wheels?q=Winter Wheels",
+          },
+        ],
+      },
+      {
+        label: "Dually Wheels",
+        children: [
+          {
+            label: "Chevy Silverado 3500",
+            href: "/collections/product-category/wheels?1=Chevy Silverado 3500",
+          },
+          {
+            label: "Ford F350/450",
+            href: "/collections/product-category/wheels?q=Ford F350/450",
+          },
+          {
+            label: "Ford F450",
+            href: "/collections/product-category/wheels?q=Ford F450",
+          },
+          {
+            label: "GMC Sierra 3500",
+            href: "/collections/product-category/wheels?q=GMC Sierra 3500",
+          },
+          {
+            label: "Ram 3500",
+            href: "/collections/product-category/wheels?q=Ram 3500",
+          },
+        ],
       },
     ],
   },
@@ -110,10 +169,19 @@ const navMenus: NavMenu[] = [
         label: "Shop All Suspension",
         href: "/collections/product-category/accessories",
       },
-      { label: "Leveling Kits", href: "/collections/product-category/accessories" },
+      {
+        label: "Leveling Kits",
+        href: "/collections/product-category/accessories",
+      },
       { label: "Lift Kits", href: "/collections/product-category/accessories" },
-      { label: "Body Lifts", href: "/collections/product-category/accessories" },
-      { label: "Shop By Brand", href: "/collections/product-category/accessories" },
+      {
+        label: "Body Lifts",
+        href: "/collections/product-category/accessories",
+      },
+      {
+        label: "Shop By Brand",
+        href: "/collections/product-category/accessories",
+      },
     ],
   },
   {

@@ -1,6 +1,9 @@
+import { DynamicAnalytics } from "@/components/shared/dynamic-analytics";
+import Newsletter from "@/components/shared/newsletter";
 import { CheckoutProvider } from "@/context/CheckoutContext";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { Toaster } from "sonner";
 import Footer from "./components/footer/footer";
 import DiscountBanner from "./components/header/discount-banner";
@@ -9,8 +12,6 @@ import TopHeaderOne from "./components/header/top-header";
 import TopHeader from "./components/header/topheader";
 import StoreProvider from "./globalRedux/store-provider";
 import "./globals.css";
-import Script from "next/script";
-import { DynamicAnalytics } from "@/components/shared/dynamic-analytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Wheel Tire USA",
-  description: "At WheelTireUSA, our goal is simple: deliver the best wheels, tires, and vehicle accessories with service you can rely on. We’re passionate about helping drivers upgrade their vehicles with confidence — whether it’s for style, performance, safety, or all three.",
+  description:
+    "At WheelTireUSA, our goal is simple: deliver the best wheels, tires, and vehicle accessories with service you can rely on. We’re passionate about helping drivers upgrade their vehicles with confidence — whether it’s for style, performance, safety, or all three.",
 };
 
 export default function RootLayout({
@@ -60,7 +62,7 @@ export default function RootLayout({
             <Footer />
             <Toaster richColors />
           </CheckoutProvider>
-
+          <Newsletter />
           <DynamicAnalytics />
         </StoreProvider>
         <Script

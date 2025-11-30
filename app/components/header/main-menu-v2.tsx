@@ -51,7 +51,11 @@ export default function Navbar() {
     setSubmenuTimeout(setTimeout(() => setOpenMenu(null), 400)); // Slight delay before disappearing
   };
   return (
-    <nav className={cn("bg-transparent w-full text-white ml-4 flex items-center justify-between")}>
+    <nav
+      className={cn(
+        "bg-transparent w-full text-white ml-4 flex items-center justify-between"
+      )}
+    >
       {/* Navigation menu list */}
       <ul className="flex space-x-6 py-4 items-center relative uppercase">
         {navMenus.map((menu) => (
@@ -85,64 +89,62 @@ export default function Navbar() {
             {menu.meagMenu && (
               <div
                 className={cn(
-                  "absolute left-0 top-[75%] w-full text-black bg-white px-16 py-10 grid grid-cols-12 gap-16 shadow-lg transition-all duration-300 transform rounded-b-[20px]",
+                  "absolute left-0 top-[75%] w-full text-black bg-white px-16 py-10 grid grid-cols-12  gap-16 shadow-lg transition-all duration-300 transform rounded-b-[20px]",
                   openMenu === menu.label
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 pointer-events-none -translate-y-20"
                 )}
               >
-                <div className="flex flex-col justify-between col-span-6">
-                  {menu.children?.[0]?.children?.map((submenu, index) => (
-                    <div
-                      key={index}
-                      className={cn(
-                        "relative w-full",
-                        index === 1 && " border-black border-t-2 mt-2"
-                      )}
+                {menu.children?.map((submenu, index) => (
+                  <div
+                    key={index}
+                    className={cn(
+                      "col-span-6",
+                      (index === 3 || index === 2) &&
+                        " border-black border-t-2 mt-2 "
+                    )}
+                  >
+                    <Link
+                      // onClick={handleProductFilter}
+                      className="font-bold text-xl"
+                      href={submenu.href ?? "#"}
                     >
-                      <Link
-                        // onClick={handleProductFilter}
-                        className="font-bold text-xl"
-                        href={submenu.href ?? "#"}
-                      >
-                        {submenu.label}
-                      </Link>
-                      {submenu.children && (
-                        <div className="w-full bg-white transition-opacity duration-300">
-                          {submenu.children.map((subsub, i) => (
-                            <div
-                              key={subsub.label}
-                              className="relative"
-                              onMouseOver={() => {
-                                setCurrentlyHovering(i);
-                                setNestedHovering((prev) => ({
-                                  ...prev,
-                                  [subsub?.label ?? ""]: i,
-                                }));
-                              }}
-                            >
-                              <div className="w-full flex items-center justify-between">
-                                <Link
-                                  // onClick={handleProductFilter}
-                                  key={subsub.label}
-                                  href={subsub.href || ""}
-                                  className={cn(
-                                    `text-base flex w-fit items-center py-2 transition-all duration-300 hover:text-primary relative 
+                      {submenu.label}
+                    </Link>
+                    {submenu.children && (
+                      <div className="w-full bg-white transition-opacity duration-300">
+                        {submenu.children.map((subsub, i) => (
+                          <div
+                            key={subsub.label}
+                            className="relative"
+                            onMouseOver={() => {
+                              setCurrentlyHovering(i);
+                              setNestedHovering((prev) => ({
+                                ...prev,
+                                [subsub?.label ?? ""]: i,
+                              }));
+                            }}
+                          >
+                            <div className="w-full flex items-center justify-between">
+                              <Link
+                                // onClick={handleProductFilter}
+                                key={subsub.label}
+                                href={subsub.href || ""}
+                                className={cn(
+                                  `text-base flex w-fit items-center py-2 transition-all duration-300 hover:text-primary relative 
                                   after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-primary 
                                   after:scale-x-0 hover:after:scale-x-100 
-                                  after:origin-left after:transition-transform after:duration-300`,
-                                    index === 1 &&
-                                      "font-bold text-xl flex justify-between mb-1"
-                                  )}
-                                >
-                                  {subsub.label}
-                                  {subsub.children && (
-                                    <ChevronDown className="ml-2 w-4 h-4" />
-                                  )}
-                                </Link>
-                                {index === 1 && <ArrowRight />}
-                              </div>
-                              {subsub.children && (
+                                  after:origin-left after:transition-transform after:duration-300`
+                                )}
+                              >
+                                {subsub.label}
+                                {subsub.children && (
+                                  <ChevronDown className="ml-2 w-4 h-4" />
+                                )}
+                              </Link>
+                              {/* {index === 1 && <ArrowRight />} */}
+                            </div>
+                            {/* {subsub.children && (
                                 <ul
                                   className={cn(
                                     "pl-4 overflow-hidden transition-all duration-300 transform",
@@ -168,45 +170,13 @@ export default function Navbar() {
                                     </li>
                                   ))}
                                 </ul>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                {menu?.children?.[1]?.megaMenuVideo && (
-                  <Link
-                    // onClick={handleProductFilter}
-                    href={menu.children?.[1].megaMenuVideo?.href || ""}
-                    className="col-span-6 justify-end cursor-pointer"
-                  >
-                    <video
-                      src={menu.children?.[1].megaMenuVideo?.src || ""}
-                      className="h-[300px] w-full"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      controls={false}
-                      preload="true"
-                    />
-                  </Link>
-                )}
-
-                {menu?.children?.[1]?.megaeMenuImage && (
-                  <Link
-                    // onClick={handleProductFilter}
-                    href={menu.children?.[1].megaeMenuImage?.href || ""}
-                    className="col-span-6 justify-end cursor-pointer flex"
-                  >
-                    <img
-                      src={menu.children?.[1].megaeMenuImage?.src || ""}
-                      className="h-[300px] w-full max-w-[300px]"
-                    />
-                  </Link>
-                )}
+                              )} */}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
 

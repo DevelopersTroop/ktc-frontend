@@ -32,7 +32,7 @@ const navMenus: NavMenu[] = [
               },
               {
                 href: "#",
-                label: "Shop by brands",
+                label: "Wheels By Brands",
               },
               {
                 label: "Make your wheel and tire packages now",

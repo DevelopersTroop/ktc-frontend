@@ -1,7 +1,12 @@
-import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+"use client";
+import { openNewsletterModal } from "@/app/globalRedux/features/newsletter-modal/newsletter-modal-slice";
+import { useAppDispatch } from "@/app/globalRedux/store";
+import { Button } from "@/components/ui/button";
+import { Facebook, Instagram, MailCheck, Twitter, Youtube } from "lucide-react";
 import Link from "next/link";
 
 export default function Footer() {
+  const dispatch = useAppDispatch();
   return (
     <footer className="bg-white pt-12 pb-6">
       <div className="container mx-auto px-4">
@@ -149,7 +154,15 @@ export default function Footer() {
               <Instagram className="w-6 h-6 text-gray-600 hover:text-primary cursor-pointer" />
               <Twitter className="w-6 h-6 text-gray-600 hover:text-primary cursor-pointer" />
             </div>
-
+            <Button
+              onClick={() => {
+                dispatch(openNewsletterModal());
+              }}
+              className="font-semibold"
+            >
+              <MailCheck />
+              Subscribe to Newsletter
+            </Button>
             {/* Brand Logos */}
             {/* <div className="space-y-4">
               <img
