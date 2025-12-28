@@ -300,12 +300,23 @@ const OrderInvoicePDF: React.FC<{ order: TOrder | undefined }> = ({
             ) : (
               ""
             )}
+
+            {order.data.taxAmount ? (
+              <View style={styles.totalRow}>
+                <Text style={styles.totalLabel}>Tax:</Text>
+                <Text style={styles.totalAmount}>
+                  {formatCurrency(Number(order.data.taxAmount))}
+                </Text>
+              </View>
+            ) : (
+              ""
+            )}
             <View style={styles.totalRow}>
               <Text style={[styles.totalLabel, styles.grandTotal]}>
                 Grand Total:
               </Text>
               <Text style={[styles.totalAmount, styles.grandTotal]}>
-                {formatCurrency(Number(order.data.netCost))}
+                {formatCurrency(Number(order.data.totalWithTax))}
               </Text>
             </View>
           </View>

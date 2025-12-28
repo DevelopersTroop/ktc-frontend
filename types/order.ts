@@ -161,6 +161,7 @@ export type TOrderData = {
   shippingAddress: TAddress;
   billingAddress: TBillingAddress;
   productsInfo: TProductInfo[];
+  paymentIntentId: string;
   affiliateDiscount: number;
   discount: number;
   cartType: string;

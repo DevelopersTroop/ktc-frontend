@@ -14,15 +14,15 @@ import {
   updateOrderSuccessData,
 } from "@/app/globalRedux/features/checkout/checkout-slice";
 import { useTypedSelector } from "@/app/globalRedux/store";
+import { triggerGaPurchaseEvent } from "@/app/utils/analytics";
 import { customFetch } from "@/lib/common-fetch";
 import { TOrder } from "@/types/order";
 import { IApiRes } from "@/types/redux-helper";
+import { loadStripe } from "@stripe/stripe-js";
 import { OrderConfirmation } from "./OrderConfirmation";
 import { OrderSummary } from "./OrderSummary";
 import { PaymentData, PaymentInfo } from "./PaymentInfo";
 import { ShippingInfo } from "./ShippingInfo";
-import { loadStripe } from "@stripe/stripe-js";
-import { triggerGaPurchaseEvent } from "@/app/utils/analytics";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -131,7 +131,7 @@ export const FinalStep: React.FC = () => {
         if (result?.order) {
           setProgress(80);
           if (method === "stripe" && paymentIntent?.status !== "succeeded") {
-            router.push("/checkout?step=3&order_status=false");
+            router.push("/checkout?step=1&order_status=false");
             return;
           }
 
@@ -140,7 +140,7 @@ export const FinalStep: React.FC = () => {
           setPaymentData(result.payment);
           triggerGaPurchaseEvent(result.order);
           toast.success("Order Placed Successfully");
-          dispatch(emptyCart());
+          // dispatch(emptyCart());
           dispatch(revokeCouponCode());
         } else {
           throw new Error("Payment verification failed");
@@ -149,7 +149,7 @@ export const FinalStep: React.FC = () => {
         console.error("Payment verification error:", err);
         toast.error("Payment verification failed. Please try again.");
         if (isMounted) {
-          router.push("/checkout?step=2&order_status=false");
+          router.push("/checkout?step=1&order_status=false");
         }
       } finally {
         if (isMounted) {
