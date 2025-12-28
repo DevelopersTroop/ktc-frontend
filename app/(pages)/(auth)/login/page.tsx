@@ -85,7 +85,7 @@ const Page = () => {
               Login
             </h2>
             {errors.length > 0 &&
-              errors.map((error) => (
+              errors.map((error: any) => (
                 <Alert
                   variant='destructive'
                   key={error.message}
@@ -132,7 +132,7 @@ const Page = () => {
                   });
               }}
             >
-              {({ errors: formErrors, touched }) => (
+              {({ errors: formErrors, touched }: any) => (
                 <Form className='mt-6 space-y-4'>
                   <div>
                     <label
