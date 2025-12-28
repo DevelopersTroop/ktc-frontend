@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { userLogin } from "./login";
+import GoogleAuth from "@/components/shared/GoogleAuth";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -66,35 +67,35 @@ const Page = () => {
   };
 
   return (
-    <div className="px-4 pt-2 md:p-0" style={banner}>
-      <div className="flex w-full flex-col rounded-md bg-gray-400 bg-opacity-70 px-4 py-8 md:h-full md:flex-row md:bg-transparent md:p-0">
-        <div className="w-full text-white md:w-[60%] md:pt-2">
-          <h1 className="hidden text-center text-6xl uppercase md:block">
+    <div className='px-4 pt-2 md:p-0' style={banner}>
+      <div className='flex w-full flex-col rounded-md bg-gray-400 bg-opacity-70 px-4 py-8 md:h-full md:flex-row md:bg-transparent md:p-0'>
+        <div className='w-full text-white md:w-[60%] md:pt-2'>
+          <h1 className='hidden text-center text-6xl uppercase md:block'>
             Get Access
           </h1>
-          <h1 className="block text-center text-2xl uppercase md:hidden">
+          <h1 className='block text-center text-2xl uppercase md:hidden'>
             Welcome Back
           </h1>
-          <div className="h-2 w-full bg-primary"></div>
+          <div className='h-2 w-full bg-primary'></div>
         </div>
 
-        <div className="flex w-full items-center justify-center md:w-[40%] md:bg-gray-400 md:bg-opacity-90">
-          <div className="w-full pt-2 shadow-[0_1px_3px_0_rgba(0,0,0,0.09)] md:px-12 md:py-20">
-            <h2 className="border-b border-gray-200 pb-4 text-2xl font-bold uppercase text-white">
+        <div className='flex w-full items-center justify-center md:w-[40%] md:bg-gray-400 md:bg-opacity-90'>
+          <div className='w-full pt-2 shadow-[0_1px_3px_0_rgba(0,0,0,0.09)] md:px-12 md:py-20'>
+            <h2 className='border-b border-gray-200 pb-4 text-2xl font-bold uppercase text-white'>
               Login
             </h2>
             {errors.length > 0 &&
               errors.map((error) => (
                 <Alert
-                  variant="destructive"
+                  variant='destructive'
                   key={error.message}
-                  className="mt-4"
+                  className='mt-4'
                 >
                   <AlertDescription>{error.message}</AlertDescription>
                 </Alert>
               ))}
             {success.isSuccess && (
-              <Alert className="mt-4">
+              <Alert className='mt-4'>
                 <AlertDescription>{success.message}</AlertDescription>
               </Alert>
             )}
@@ -115,12 +116,12 @@ const Page = () => {
                       message: "Login successful",
                     });
                     dispatch(
-                      setAccessToken({ accessToken: data.token.accessToken }),
+                      setAccessToken({ accessToken: data.token.accessToken })
                     );
                     dispatch(
                       setRefreshToken({
                         refreshToken: data.token.refreshToken,
-                      }),
+                      })
                     );
                     dispatch(setUserDetails({ userDetails: data.user }));
 
@@ -132,19 +133,19 @@ const Page = () => {
               }}
             >
               {({ errors: formErrors, touched }) => (
-                <Form className="mt-6 space-y-4">
+                <Form className='mt-6 space-y-4'>
                   <div>
                     <label
-                      className="mb-1 block font-semibold text-white"
-                      htmlFor="email"
+                      className='mb-1 block font-semibold text-white'
+                      htmlFor='email'
                     >
                       Email address
                     </label>
-                    <Field name="email">
+                    <Field name='email'>
                       {({ field }: any) => (
                         <Input
                           {...field}
-                          type="email"
+                          type='email'
                           className={`bg-white ${
                             formErrors.email && touched.email
                               ? "border-red-500"
@@ -154,7 +155,7 @@ const Page = () => {
                       )}
                     </Field>
                     {formErrors.email && touched.email && (
-                      <p className="mt-1 text-sm text-red-500">
+                      <p className='mt-1 text-sm text-red-500'>
                         {formErrors.email}
                       </p>
                     )}
@@ -162,16 +163,16 @@ const Page = () => {
 
                   <div>
                     <label
-                      className="mb-1 block font-semibold text-white"
-                      htmlFor="password"
+                      className='mb-1 block font-semibold text-white'
+                      htmlFor='password'
                     >
                       Password
                     </label>
-                    <Field name="password">
+                    <Field name='password'>
                       {({ field }: any) => (
                         <Input
                           {...field}
-                          type="password"
+                          type='password'
                           className={`bg-white ${
                             formErrors.password && touched.password
                               ? "border-red-500"
@@ -181,21 +182,21 @@ const Page = () => {
                       )}
                     </Field>
                     {formErrors.password && touched.password && (
-                      <p className="mt-1 text-sm text-red-500">
+                      <p className='mt-1 text-sm text-red-500'>
                         {formErrors.password}
                       </p>
                     )}
                   </div>
-                  <div className="text-end">
-                    <p className="text-sm text-white">
-                      <Link href="/forgot-password" className="hover:underline">
+                  <div className='text-end'>
+                    <p className='text-sm text-white'>
+                      <Link href='/forgot-password' className='hover:underline'>
                         Forgot password?
                       </Link>
                     </p>
                   </div>
                   <Button
-                    type="submit"
-                    className="w-full bg-primary uppercase"
+                    type='submit'
+                    className='w-full bg-primary uppercase'
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Please wait..." : "Sign In"}
@@ -203,17 +204,20 @@ const Page = () => {
                 </Form>
               )}
             </Formik>
-            <div className="my-4 flex items-center justify-end gap-1">
-              <div className="w-full">
-                <hr className="border-t border-gray-200" />
+            <div className=' flex items-center justify-center'>
+              <GoogleAuth />
+            </div>
+            <div className='my-4 flex items-center justify-end gap-1'>
+              <div className='w-full'>
+                <hr className='border-t border-gray-200' />
               </div>
-              <p className="text-nowrap text-sm text-white">
-                <Link href="/register" className="hover:underline">
+              <p className='text-nowrap text-sm text-white'>
+                <Link href='/register' className='hover:underline'>
                   {"Don't have an account?"}
                 </Link>
               </p>
-              <div className="w-full">
-                <hr className="border-t border-gray-200" />
+              <div className='w-full'>
+                <hr className='border-t border-gray-200' />
               </div>
             </div>
           </div>
