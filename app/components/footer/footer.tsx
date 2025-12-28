@@ -24,7 +24,7 @@ export default function Footer() {
                 <div>
                   <p className="text-gray-600">Phone Number</p>
                   <p className="text-gray-700 font-semibold">
-                    +1 (303) 695-6305
+                    +1 (813) 812-5257
                   </p>
                 </div>
 
@@ -37,12 +37,12 @@ export default function Footer() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <div>
+                {/* <div>
                   <p className="text-gray-600">Our Location</p>
                   <p className="text-gray-700 font-semibold">
                     KTC AUDIO 2193 S. CHAMBERS RD AURORA, CO. 80014
                   </p>
-                </div>
+                </div> */}
 
                 <div>
                   <p className="text-gray-600">Working Hours</p>
