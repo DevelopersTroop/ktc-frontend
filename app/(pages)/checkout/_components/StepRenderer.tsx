@@ -25,19 +25,8 @@ export const Renderer: React.FC<RendererProps> = ({ step, setStep }) => {
   };
   switch (step) {
     case 1:
-      return <StepOne handleContinue={handleContinue} setStep={setStep} />;
+      return <StepTwo />;
     case 2:
-      return (
-        <StripeProvider>
-          <StepTwo
-            handleBack={handleBack}
-            handleContinue={handleContinue}
-            setStep={setStep}
-            step={step}
-          />
-        </StripeProvider>
-      );
-    case 3:
       return <FinalStep />;
     default:
       return null;

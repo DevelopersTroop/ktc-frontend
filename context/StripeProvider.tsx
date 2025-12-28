@@ -1,17 +1,30 @@
-import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { useCheckout } from "./CheckoutContext";
+import { useCheckout } from "@/context/CheckoutContext";
+import {
+  setPaymentIntentId,
+  setTaxAmount,
+} from "@/app/globalRedux/features/checkout/checkout-slice";
 import { useAppDispatch, useTypedSelector } from "@/app/globalRedux/store";
-import { apiInstance } from "@/app/globalRedux/api/base";
+import { TBillingAddress } from "@/types/order";
 import LoadingSpinner from "@/app/ui/loading-spinner/loading-spinner";
 import { Elements } from "@stripe/react-stripe-js";
-import { setTaxAmount } from "@/app/globalRedux/features/checkout/checkout-slice";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { loadStripe, Stripe, StripeElementsOptions } from "@stripe/stripe-js";
+import React, {
+  createContext,
+  use,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { apiInstance } from "@/app/globalRedux/api/base";
 
+// --------------------
+// Types
+// --------------------
 type TStripeContext = {
   clientSecret?: string;
   paymentIntentId?: string;
+  stripe: Stripe | null;
 };
 
 const StripeContext = createContext<TStripeContext | undefined>(undefined);
@@ -28,26 +41,71 @@ const stripePromise = loadStripe(
 // --------------------
 export default function StripeProvider({ children }: React.PropsWithChildren) {
   const { totalCost, step } = useCheckout();
-  const { billingAddress, shippingAddress } = useTypedSelector(
+  const { billingAddress, shippingAddress, paymentIntentId } = useTypedSelector(
     (state) => state.persisted.checkout
   );
+  console.log("TCL: StripeProvider -> shippingAddress", shippingAddress);
+
+  const stripe = use(stripePromise);
   const [loading, setLoading] = useState(false);
   const [clientSecret, setClientSecret] = useState<string>("");
-  const [paymentIntentId, setPaymentIntentId] = useState<string>("");
-  const hasFetched = useRef(false);
+  const lastFetchedAddresses = useRef<string>("");
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const [err, setErr] = useState("");
 
+  const requiredFields: (keyof TBillingAddress)[] = [
+    "address1",
+    "zipCode",
+    "country",
+    "cityState",
+    "phone",
+    "email",
+    "fname",
+    "lname",
+  ];
+
+  // Helper function to check if an address has all required fields
+  const hasAllRequiredFields = (address: TBillingAddress | null): boolean => {
+    if (!address) return false;
+    return requiredFields.every((field) => {
+      const value = address[field];
+      return value !== undefined && value !== null && value !== "";
+    });
+  };
+
+  // Check if addresses are complete
+  const isBillingComplete = hasAllRequiredFields(billingAddress);
+  const isShippingComplete = hasAllRequiredFields(shippingAddress);
+  const areAddressesComplete = isBillingComplete || isShippingComplete;
+
   useEffect(() => {
-    if (
-      !totalCost ||
-      hasFetched.current ||
-      (!billingAddress && !shippingAddress)
-    )
+    // Don't fetch if no totalCost
+    if (!totalCost) return;
+
+    // Don't fetch if addresses aren't complete
+    if (!areAddressesComplete) {
+      setClientSecret("");
+      setErr("");
       return;
-    hasFetched.current = true;
+    }
+
+    // Create a hash of the current addresses to detect changes
+    const currentAddressHash = JSON.stringify({
+      billing: billingAddress,
+      shipping: shippingAddress,
+      totalCost,
+    });
+
+    // Don't refetch if addresses haven't changed
+    if (lastFetchedAddresses.current === currentAddressHash) {
+      return;
+    }
+
+    // Update the last fetched addresses
+    lastFetchedAddresses.current = currentAddressHash;
+
     setLoading(true);
+    setErr("");
 
     const amount = Math.round(parseFloat(totalCost) * 100); // always integer cents
 
@@ -68,7 +126,7 @@ export default function StripeProvider({ children }: React.PropsWithChildren) {
       .then((res) => {
         console.log("StripeProvider -> PaymentIntent created:", res.data);
         setClientSecret(res.data.data.secret);
-        setPaymentIntentId(res.data.data.id);
+        dispatch(setPaymentIntentId(res.data.data.id));
         dispatch(
           setTaxAmount({
             taxAmount: res.data.data.taxAmount / 100,
@@ -77,25 +135,31 @@ export default function StripeProvider({ children }: React.PropsWithChildren) {
         );
       })
       .catch((err) => {
+        console.error("StripeProvider error:", err);
         setErr(
-          err.response.data.errors.map((c: any) => c.message).join("") as string
+          err?.error?.data?.errors?.map((c: any) => c.message).join(", ") ||
+            "Failed to create payment intent"
         );
+        setClientSecret("");
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [totalCost, billingAddress, shippingAddress, dispatch, step]);
+  }, [
+    totalCost,
+    JSON.stringify(billingAddress),
+    JSON.stringify(shippingAddress),
+    areAddressesComplete,
+    dispatch,
+  ]);
 
   // Wait until clientSecret is ready
   if (loading) return <LoadingSpinner />;
 
-  if (!clientSecret || err) {
+  if (!clientSecret) {
     return (
-      <div className="text-center py-10 text-2xl font-semibold text-black">
-        <h2>{err ?? "You don't have valid shipping or billing address"}</h2>
-        {err.includes("tax") && (
-          <Button onClick={() => router.push("?step=1")}>Go back</Button>
-        )}
+      <div className="text-left text-xl text-primary font-semibold">
+        <h2>{err || "Please enter your address to select payment methods"}</h2>
       </div>
     );
   }
@@ -115,7 +179,7 @@ export default function StripeProvider({ children }: React.PropsWithChildren) {
   };
 
   return (
-    <StripeContext.Provider value={{ clientSecret, paymentIntentId }}>
+    <StripeContext.Provider value={{ clientSecret, paymentIntentId, stripe }}>
       <Elements stripe={stripePromise} options={options}>
         {children}
       </Elements>
