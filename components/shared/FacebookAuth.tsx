@@ -3,15 +3,15 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { ImSpinner2 } from "react-icons/im";
 import {
   setAccessToken,
   setRefreshToken,
   setUserDetails,
 } from "@/app/globalRedux/features/user/user-slice";
 import { apiBaseUrl } from "@/app/utils/api";
+import { ImSpinner2 } from "react-icons/im";
 
-export default function LoginPage() {
+export default function FacebookAuth() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ export default function LoginPage() {
   }, [searchParams, router]);
 
   const handleGoogleLogin = () => {
-    window.location.href = `${apiBaseUrl}/auth/signin-with-google`;
+    window.location.href = `${apiBaseUrl}/auth/signin-with-facebook`;
   };
 
   return (
@@ -46,11 +46,7 @@ export default function LoginPage() {
         {loading ? (
           <ImSpinner2 className='w-6 h-6 m-auto animate-spin text-[#DB1922]' />
         ) : (
-          <img
-            src='/google-icon.webp'
-            alt='Google'
-            className='w-6 h-6 m-auto'
-          />
+          <img src='/facebook.png' alt='Google' className='w-6 h-6 m-auto' />
         )}
       </button>
 

@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { userLogin } from "./login";
 import GoogleAuth from "@/components/shared/GoogleAuth";
+import FacebookAuth from "@/components/shared/FacebookAuth";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -204,8 +205,9 @@ const Page = () => {
                 </Form>
               )}
             </Formik>
-            <div className=' flex items-center justify-center'>
+            <div className='flex gap-5 items-center justify-center'>
               <GoogleAuth />
+              <FacebookAuth />
             </div>
             <div className='my-4 flex items-center justify-end gap-1'>
               <div className='w-full'>
