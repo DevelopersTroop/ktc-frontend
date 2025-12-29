@@ -9,6 +9,11 @@ const HomeYmm = () => {
         isModelLoading,
         isBodyTypeLoading,
         isSubmodelLoading,
+        isYearDisabled,
+        isMakeDisabled,
+        isModelDisabled,
+        isBodyTypeDisabled,
+        isSubmodelDisabled,
         shouldShowSubmit,
         list: { years,
             makes,
@@ -28,23 +33,23 @@ const HomeYmm = () => {
     return (<>
         <div className="w-full p-4">
             <div className="w-full flex flex-col md:flex-row gap-4 mt-4">
-                <select value={year} onChange={onYearChange} className="w-full p-2 rounded bg-white text-xl text-black">
+                <select disabled={isYearDisabled} value={year} onChange={onYearChange} className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
                     <option value="">{isYearLoading ? "Loading..." : "Year"}</option>
                     {years?.map(year => <option key={year} value={year}>{year}</option>)}
                 </select>
-                <select value={make} onChange={onMakeChange} className="w-full p-2 rounded bg-white text-xl text-black">
+                <select disabled={isMakeDisabled} value={make} onChange={onMakeChange} className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
                     <option value="">{isMakeLoading ? "Loading..." : "Make"}</option>
                     {makes?.map(make => <option key={make} value={make}>{make}</option>)}
                 </select>
-                <select value={model} onChange={onModelChange} className="w-full p-2 rounded bg-white text-xl text-black">
+                <select disabled={isModelDisabled} value={model} onChange={onModelChange} className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
                     <option value="">{isModelLoading ? "Loading..." : "Model"}</option>
                     {models?.map(model => <option key={model} value={model}>{model}</option>)}
                 </select>
-                <select value={bodyType} onChange={onBodyTypeChange} className="w-full p-2 rounded bg-white text-xl text-black">
+                <select disabled={isBodyTypeDisabled} value={bodyType} onChange={onBodyTypeChange} className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
                     <option value="">{isBodyTypeLoading ? "Loading..." : "Body Type"}</option>
                     {bodyTypes?.map(bodyType => <option key={bodyType} value={bodyType}>{bodyType}</option>)}
                 </select>
-                <select value={subModel.SubModel} onChange={onSubModelChange} className="w-full p-2 rounded bg-white text-xl text-black">
+                <select disabled={isSubmodelDisabled} value={subModel?.SubModel ?? ""} onChange={onSubModelChange} className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
                     <option value="">{isSubmodelLoading ? "Loading..." : "Submodel"}</option>
                     {subModels?.map(subModel => <option key={subModel.SubModel} value={subModel.SubModel}>{subModel.SubModel}</option>)}
                 </select>

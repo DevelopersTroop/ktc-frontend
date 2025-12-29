@@ -17,6 +17,11 @@ export const YmmSelector: React.FC<{ymm: ReturnType<typeof useYmm>}> = ({ymm}) =
         isModelLoading,
         isBodyTypeLoading,
         isSubmodelLoading,
+        isYearDisabled,
+        isMakeDisabled,
+        isModelDisabled,
+        isBodyTypeDisabled,
+        isSubmodelDisabled,
         shouldShowSubmit,
         list: { years,
             makes,
@@ -37,7 +42,7 @@ export const YmmSelector: React.FC<{ymm: ReturnType<typeof useYmm>}> = ({ymm}) =
     return (
         <div className="pt-2 flex flex-col gap-2">
             <div>
-                <Select onValueChange={onYearChange} value={year} disabled={isYearLoading} >
+                <Select onValueChange={onYearChange} value={year} disabled={isYearDisabled} >
                     <SelectTrigger>
                         <SelectValue placeholder={isYearLoading ? "Loading" : "Select Year"} />
                     </SelectTrigger>
@@ -55,7 +60,7 @@ export const YmmSelector: React.FC<{ymm: ReturnType<typeof useYmm>}> = ({ymm}) =
                 <Select
                     onValueChange={onMakeChange}
                     value={make}
-                    disabled={!!isMakeLoading}
+                    disabled={isMakeDisabled}
                 >
                     <SelectTrigger>
                         <SelectValue
@@ -78,7 +83,7 @@ export const YmmSelector: React.FC<{ymm: ReturnType<typeof useYmm>}> = ({ymm}) =
                 <Select
                     onValueChange={onModelChange}
                     value={model}
-                    disabled={!!isModelLoading}
+                    disabled={isModelDisabled}
                 >
                     <SelectTrigger>
                         <SelectValue
@@ -100,7 +105,7 @@ export const YmmSelector: React.FC<{ymm: ReturnType<typeof useYmm>}> = ({ymm}) =
                 <Select
                     onValueChange={onBodyTypeChange}
                     value={bodyType}
-                    disabled={!!isBodyTypeLoading}
+                    disabled={isBodyTypeDisabled}
                 >
                     <SelectTrigger>
                         <SelectValue
@@ -121,8 +126,8 @@ export const YmmSelector: React.FC<{ymm: ReturnType<typeof useYmm>}> = ({ymm}) =
             <div>
                 <Select
                     onValueChange={onSubModelChange}
-                    value={subModel.SubModel}
-                    disabled={!!isSubmodelLoading}
+                    value={subModel?.SubModel ?? ""}
+                    disabled={isSubmodelDisabled}
                 >
                     <SelectTrigger>
                         <SelectValue

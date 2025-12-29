@@ -29,6 +29,11 @@ const AddMyTruckYMMFilters = () => {
     isModelLoading,
     isBodyTypeLoading,
     isSubmodelLoading,
+    isYearDisabled,
+    isMakeDisabled,
+    isModelDisabled,
+    isBodyTypeDisabled,
+    isSubmodelDisabled,
     shouldShowSubmit,
     list: { years,
       makes,
@@ -84,7 +89,7 @@ const AddMyTruckYMMFilters = () => {
       <div className="w-full flex flex-col gap-4 mt-4">
         <div className="w-full flex flex-row gap-2 items-center">
           <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Year</h2>
-          <select onChange={onYearChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black">
+          <select disabled={isYearDisabled} value={year} onChange={onYearChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
             <option value="">{isYearLoading ? "Loading..." : "Year"}</option>
             {years?.map(year => <option key={year} value={year}>{year}</option>)}
           </select>
@@ -92,7 +97,7 @@ const AddMyTruckYMMFilters = () => {
 
         <div className="w-full flex flex-row gap-2 items-center">
           <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Make</h2>
-          <select onChange={onMakeChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black">
+          <select disabled={isMakeDisabled} value={make} onChange={onMakeChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
             <option value="">{isMakeLoading ? "Loading..." : "Make"}</option>
             {makes?.map(make => <option key={make} value={make}>{make}</option>)}
           </select>
@@ -100,7 +105,7 @@ const AddMyTruckYMMFilters = () => {
 
         <div className="w-full flex flex-row gap-2 items-center">
           <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Model</h2>
-          <select onChange={onModelChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black">
+          <select disabled={isModelDisabled} value={model} onChange={onModelChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
             <option value="">{isModelLoading ? "Loading..." : "Model"}</option>
             {models?.map(model => <option key={model} value={model}>{model}</option>)}
           </select>
@@ -108,7 +113,7 @@ const AddMyTruckYMMFilters = () => {
 
         <div className="w-full flex flex-row gap-2 items-center">
           <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Body Type</h2>
-          <select onChange={onBodyTypeChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black">
+          <select disabled={isBodyTypeDisabled} value={bodyType} onChange={onBodyTypeChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
             <option value="">{isBodyTypeLoading ? "Loading..." : "Body Type"}</option>
             {bodyTypes?.map(bodyType => <option key={bodyType} value={bodyType}>{bodyType}</option>)}
           </select>
@@ -116,7 +121,7 @@ const AddMyTruckYMMFilters = () => {
 
         <div className="w-full flex flex-row gap-2 items-center">
           <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Sub Model</h2>
-          <select onChange={onSubModelChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black">
+          <select disabled={isSubmodelDisabled} value={subModel?.SubModel ?? ""} onChange={onSubModelChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
             <option value="">{isSubmodelLoading ? "Loading..." : "Submodel"}</option>
             {subModels?.map(subModel => <option key={subModel.SubModel} value={subModel.SubModel}>{subModel.SubModel}</option>)}
           </select>

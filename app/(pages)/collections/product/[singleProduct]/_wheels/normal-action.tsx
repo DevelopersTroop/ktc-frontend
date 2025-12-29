@@ -94,7 +94,7 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
           })
         );
         setTimeout(() => {
-          const updatedProducts = store.getState().persisted.cart.products;
+          const updatedProducts = store.getState().persisted?.cart?.products;
           const addedProduct = Object.values(updatedProducts).find(
             (p) =>
               p._id === product._id &&
@@ -220,7 +220,7 @@ export const NormalActionButton: React.FC<NormalActionButtonProps> = ({
           onClick={() => {
             handleAddTires();
           }}
-          className={"w-full rounded py-1 outline outline-1 outline-primary"}
+          className={"w-full rounded py-1 bg-primary text-white"}
         >
           Add Tires
         </button>
