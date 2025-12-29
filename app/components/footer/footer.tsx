@@ -4,10 +4,13 @@ import { useAppDispatch } from "@/app/globalRedux/store";
 import { Button } from "@/components/ui/button";
 import { Facebook, Instagram, MailCheck, Twitter, Youtube } from "lucide-react";
 import Link from "next/link";
+import FAQs from "./faq";
 
 export default function Footer() {
   const dispatch = useAppDispatch();
   return (
+    <>
+    <FAQs />
     <footer className="bg-white pt-12 pb-6">
       <div className="container mx-auto px-4">
         <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -24,7 +27,7 @@ export default function Footer() {
                 <div>
                   <p className="text-gray-600">Phone Number</p>
                   <p className="text-gray-700 font-semibold">
-                    +1 (303) 695-6305
+                    +1 (813) 812-5257
                   </p>
                 </div>
 
@@ -37,12 +40,12 @@ export default function Footer() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <div>
+                {/* <div>
                   <p className="text-gray-600">Our Location</p>
                   <p className="text-gray-700 font-semibold">
                     KTC AUDIO 2193 S. CHAMBERS RD AURORA, CO. 80014
                   </p>
-                </div>
+                </div> */}
 
                 <div>
                   <p className="text-gray-600">Working Hours</p>
@@ -215,5 +218,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    </>
   );
 }

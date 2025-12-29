@@ -37,9 +37,9 @@ export const ProductCard = ({
             src={
               imageErr
                 ? "/not-available.webp"
-                : product.thumbnail.length
+                : product.thumbnail?.length
                 ? product.thumbnail
-                : product.image_url1.length
+                : product.image_url1?.length
                 ? product.image_url1
                 : "/not-available.webp"
             }

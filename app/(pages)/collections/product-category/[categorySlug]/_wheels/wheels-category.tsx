@@ -20,8 +20,14 @@ import ProductCardSkeleton from "../_loading/product-card-skeleton";
 import MobileYmmFilter from "../_filters/mobile-ymm/mobile-ymm-filter";
 type ProductsPageProps = {
   page?: number;
+  topDescription?: string;
+  bottomDescription?: string;
 };
-const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
+const WheelsCategory: React.FC<ProductsPageProps> = ({
+  page = 1,
+  topDescription,
+  bottomDescription,
+}) => {
   const searchParams = useSearchParams();
   const { filters } = useFilterSync();
   const ymm = useTypedSelector((state) => state.yearMakeModel);
@@ -37,6 +43,12 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
       <div className="flex justify-center items-center my-2.5">
         <h1 className="text-[20px] font-semibold">Truck Wheels and Rims</h1>
       </div>
+      {topDescription && (
+        <div
+          className="container mx-auto px-4 my-6 text-center max-w-4xl text-gray-700 leading-relaxed text-sm md:text-base [&>p]:mb-4"
+          dangerouslySetInnerHTML={{ __html: topDescription }}
+        />
+      )}
       <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 md:px-4 pb-6 pt-2 md:flex-row">
         <div className="w-full flex flex-row gap-2 justify-between  md:hidden">
           <SidebarFilters>
@@ -112,6 +124,12 @@ const WheelsCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
           </>
         )}
       </div>
+      {bottomDescription && (
+        <div
+          className="container mx-auto px-4 my-4"
+          dangerouslySetInnerHTML={{ __html: bottomDescription }}
+        />
+      )}
     </>
   );
 };

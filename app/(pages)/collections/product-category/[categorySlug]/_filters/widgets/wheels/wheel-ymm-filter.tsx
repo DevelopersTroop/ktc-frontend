@@ -8,6 +8,11 @@ const WheelYMMFilters = () => {
     isModelLoading,
     isBodyTypeLoading,
     isSubmodelLoading,
+    isYearDisabled,
+    isMakeDisabled,
+    isModelDisabled,
+    isBodyTypeDisabled,
+    isSubmodelDisabled,
     shouldShowSubmit,
     list: { years,
       makes,
@@ -43,9 +48,10 @@ const WheelYMMFilters = () => {
       <div className="px-10 pb-10 pt-5 md:pt-2 border-y">
         <div className="w-full flex flex-col gap-1 mt-4">
           <select
+            disabled={isYearDisabled}
             value={year}
             onChange={onYearChange}
-            className="w-full p-2 rounded bg-white text-base text-black"
+            className="w-full p-2 rounded bg-white text-base text-black disabled:opacity-50"
           >
             <option value="">{isYearLoading ? "Loading..." : "Year"}</option>
             {years?.map((year) => (
@@ -55,9 +61,10 @@ const WheelYMMFilters = () => {
             ))}
           </select>
           <select
+            disabled={isMakeDisabled}
             value={make}
             onChange={onMakeChange}
-            className="w-full p-2 rounded bg-white text-base text-black"
+            className="w-full p-2 rounded bg-white text-base text-black disabled:opacity-50"
           >
             <option value="">{isMakeLoading ? "Loading..." : "Make"}</option>
             {makes?.map((make) => (
@@ -67,9 +74,10 @@ const WheelYMMFilters = () => {
             ))}
           </select>
           <select
+            disabled={isModelDisabled}
             value={model}
             onChange={onModelChange}
-            className="w-full p-2 rounded bg-white text-base text-black"
+            className="w-full p-2 rounded bg-white text-base text-black disabled:opacity-50"
           >
             <option value="">{isModelLoading ? "Loading..." : "Model"}</option>
             {models?.map((model) => (
@@ -79,9 +87,10 @@ const WheelYMMFilters = () => {
             ))}
           </select>
           <select
+            disabled={isBodyTypeDisabled}
             value={bodyType}
             onChange={onBodyTypeChange}
-            className="w-full p-2 rounded bg-white text-base text-black"
+            className="w-full p-2 rounded bg-white text-base text-black disabled:opacity-50"
           >
             <option value="">
               {isBodyTypeLoading ? "Loading..." : "Body Type"}
@@ -93,9 +102,10 @@ const WheelYMMFilters = () => {
             ))}
           </select>
           <select
-            value={subModel.SubModel}
+            disabled={isSubmodelDisabled}
+            value={subModel?.SubModel ?? ""}
             onChange={onSubModelChange}
-            className="w-full p-2 rounded bg-white text-base text-black"
+            className="w-full p-2 rounded bg-white text-base text-black disabled:opacity-50"
           >
             <option value="">
               {isSubmodelLoading ? "Loading..." : "Submodel"}

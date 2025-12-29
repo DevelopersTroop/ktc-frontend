@@ -20,6 +20,7 @@ const initialState: TCheckoutState = {
   discount: 0,
   selectedDealer: undefined,
   referralCode: "",
+  paymentIntentId: "",
   billingAddress: {
     address1: "",
     cityState: "",
@@ -69,7 +70,7 @@ const initialState: TCheckoutState = {
   productsInfo: [],
   selectedOption: 1,
   shippingMethod: undefined,
-  selectedOptionTitle: undefined,
+  selectedOptionTitle: "Direct To Customer",
   requestedDealer: undefined,
   selectedDealerInfo: undefined,
   cartType: "",
@@ -92,16 +93,19 @@ const initialState: TCheckoutState = {
 
 const checkoutSlice = createSlice({
   name: "checkout",
-  initialState,
+  initialState: {
+    ...initialState,
+    selectedOptionTitle: "Direct To Customer",
+  },
   reducers: {
     setFunnel: (state, action: PayloadAction<string>) => {
       state.funnelId = action.payload;
     },
     setBillingAddress: (
       state: TCheckoutState,
-      action: PayloadAction<TBillingAddress>
+      action: PayloadAction<Partial<TBillingAddress>>
     ) => {
-      state.billingAddress = action.payload;
+      state.billingAddress = action.payload as any;
     },
     setShippingAddress: (
       state: TCheckoutState,
@@ -112,56 +116,11 @@ const checkoutSlice = createSlice({
         ...action.payload,
       };
     },
-    setSelectedDealerInfo: (
-      state: TCheckoutState,
-      action: PayloadAction<TDealer | undefined>
-    ) => {
-      state.selectedDealer =
-        action.payload?.address || action.payload?.addressPhone
-          ? `${action.payload?.address}-${action.payload?.addressPhone}`
-          : "";
-      state.localDealerSelected = false;
-      state.selectedDealerInfo = action.payload;
-      state.shippingAddress = {
-        address1: "",
-        cityState: "",
-        country: "",
-        email: "",
-        fname: "",
-        lname: "",
-        name: "",
-        phone: "",
-        zipCode: "",
-        address2: "",
-        city: "",
-        company: "",
-        primaryPhone: "",
-        password: "",
-      };
-    },
     setRequestedDealer: (
       state: TCheckoutState,
       action: PayloadAction<TRequestedDealer>
     ) => {
       state.requestedDealer = action.payload;
-    },
-    setSelectedOptionTitle: (
-      state: TCheckoutState,
-      action: PayloadAction<string>
-    ) => {
-      state.selectedOptionTitle = action.payload;
-    },
-    setSelectedOption: (
-      state: TCheckoutState,
-      action: PayloadAction<number>
-    ) => {
-      state.selectedOption = action.payload;
-    },
-    setShippingMethod: (
-      state: TCheckoutState,
-      action: PayloadAction<{ option: number; title: string }>
-    ) => {
-      state.shippingMethod = action.payload;
     },
     updateDiscount: (
       state,
@@ -341,8 +300,14 @@ const checkoutSlice = createSlice({
     setPaymentMethod: (state, action: PayloadAction<string>) => {
       state.paymentMethod = action.payload;
     },
+    setPaymentIntentId: (state, action: PayloadAction<string>) => {
+      state.paymentIntentId = action.payload;
+    },
     updateShippingProtection(state, action: PayloadAction<number>) {
       state.shippingProtection = action.payload;
+    },
+    setSelectedOption(state) {
+      state.selectedOptionTitle = "Direct To Customer";
     },
   },
 });
@@ -351,12 +316,8 @@ export default checkoutSlice.reducer;
 
 export const {
   setBillingAddress,
-  setSelectedDealerInfo,
   setShippingAddress,
   setRequestedDealer,
-  setSelectedOptionTitle,
-  setSelectedOption,
-  setShippingMethod,
   updateDiscount,
   updateProductFromCart,
   initiateCheckout,
@@ -380,5 +341,7 @@ export const {
   setFunnel,
   setTaxAmount,
   setPaymentMethod,
+  setPaymentIntentId,
   updateShippingProtection,
+  setSelectedOption,
 } = checkoutSlice.actions;

@@ -11,7 +11,7 @@ const WheelsSection = () => {
     >
       <div className="h-full bg-white/40">
         <div className="container mx-auto sm:px-2 py-4 h-full flex items-center sm:items-start justify-end ">
-          <div className="max-w-2xl bg-gray-400/70 p-4 md:p-8 lg:rounded-3xl text-white space-y-4">
+          <div className="max-w-2xl bg-gray-400/70 p-4 md:p-8 lg:rounded-3xl text-black space-y-4">
             <div className="flex gap-4 items-center">
               {/* <img
                 src="/images/logo.png"

@@ -16,7 +16,11 @@ import ProductCardSkeleton from "../_loading/product-card-skeleton";
 import NoProductsFound from "../no-products-found";
 import TireCard from "./tire-card";
 
-const TireCategory: React.FC<{ page: number }> = ({ page = 1 }) => {
+const TireCategory: React.FC<{
+  page: number;
+  topDescription?: string;
+  bottomDescription?: string;
+}> = ({ page = 1, topDescription, bottomDescription }) => {
   const searchParams = useSearchParams();
   const { filters } = useFilterSync();
   const { data, isLoading: loading } = useGetProductListQuery(
@@ -27,6 +31,12 @@ const TireCategory: React.FC<{ page: number }> = ({ page = 1 }) => {
       <div className="flex justify-center items-center my-2.5">
         <h1 className="text-[20px] font-semibold">Aftermarket Truck Tires</h1>
       </div>
+      {topDescription && (
+        <div
+          className="container mx-auto px-4 my-4"
+          dangerouslySetInnerHTML={{ __html: topDescription }}
+        />
+      )}
       <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 md:px-4 pb-6 pt-2 md:flex-row">
         <div className="w-full flex flex-row gap-2 justify-between  md:hidden">
           <SidebarFilters>
@@ -105,6 +115,12 @@ const TireCategory: React.FC<{ page: number }> = ({ page = 1 }) => {
           </>
         )}
       </div>
+      {bottomDescription && (
+        <div
+          className="container mx-auto px-4 my-6 text-center max-w-4xl text-gray-700 leading-relaxed text-sm md:text-base [&>p]:mb-4"
+          dangerouslySetInnerHTML={{ __html: bottomDescription }}
+        />
+      )}
     </>
   );
 };

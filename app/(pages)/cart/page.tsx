@@ -2,6 +2,7 @@
 import { removeFromCart } from "@/app/globalRedux/features/cart/cart-slice";
 import {
   initiateCheckout,
+  setSelectedOption,
   updateShippingProtection,
 } from "@/app/globalRedux/features/checkout/checkout-slice";
 import {
@@ -395,6 +396,7 @@ const Cart = () => {
                           Object.values(cart.products)
                         );
                         dispatch(initiateCheckout());
+                        dispatch(setSelectedOption());
                       }}
                       href="/checkout"
                     >

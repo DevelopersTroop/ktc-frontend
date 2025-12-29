@@ -17,23 +17,8 @@ const Page: React.FC = () => {
   const products = useTypedSelector((state) => state.persisted.cart.products);
   const [isLoading, setIsLoading] = useState(true);
 
-  const steps = [
-    {
-      title: "Shipping Info",
-      subTitle: "Enter shipping info and a few additional details.",
-    },
-    {
-      title: "Secure payment options",
-      subTitle: "Check order details to ensure everything is correct.",
-    },
-    {
-      title: "Order Confirmation",
-      subTitle: "All information you need about your order.",
-    },
-  ];
-
   useEffect(() => {
-    if (Object.keys(products).length === 0 && step !== 3) {
+    if (Object.keys(products).length === 0 && step !== 2) {
       toast.error(
         "Your cart is empty. Please add items before proceeding to checkout."
       );
@@ -63,7 +48,6 @@ const Page: React.FC = () => {
     <div className="my-10 w-full">
       <Container>
         <GoogleLibraryLoader>
-          <Stepper currentStep={step} steps={steps} setStep={setStep} />
           <Renderer setStep={setStep} step={step} />
         </GoogleLibraryLoader>
       </Container>

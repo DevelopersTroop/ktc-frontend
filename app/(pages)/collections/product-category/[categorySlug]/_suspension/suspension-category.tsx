@@ -9,9 +9,9 @@ import SuspensionYMMFilters from "../_filters/widgets/suspension/suspension-ymm-
 import NoProductsFound from "../no-products-found";
 import SuspensionCard from "./suspension-card";
 
-const productData: TInventoryItem[] = [
+const productData: any[] = [
   {
-    _id: 1,
+    _id: "1",
     slug: "suspension",
     title: {
       subtitle: "Rough Country M1 Shock Shaft Protector | Pair",
@@ -21,7 +21,7 @@ const productData: TInventoryItem[] = [
     delivery_date: "Saturday, Jan 18",
   },
   {
-    _id: 2,
+    _id: "2",
     slug: "suspension",
     title: {
       subtitle: "Rough Country Wireless Air Bag Controller Kit w/Compressor",
@@ -31,7 +31,7 @@ const productData: TInventoryItem[] = [
     delivery_date: "Saturday, Jan 18",
   },
   {
-    _id: 3,
+    _id: "3",
     slug: "suspension",
     title: {
       subtitle: "Rough Country V2 Shock Shaft Protector",
@@ -41,7 +41,7 @@ const productData: TInventoryItem[] = [
     delivery_date: "Saturday, Jan 18",
   },
   {
-    _id: 4,
+    _id: "4",
     slug: "suspension",
     title: {
       subtitle: 'ReadyLIFT 1.5" Leveling Kit (19-24 Chevy/GMC 1500)',
@@ -51,7 +51,7 @@ const productData: TInventoryItem[] = [
     delivery_date: "Saturday, Jan 18",
   },
   {
-    _id: 5,
+    _id: "5",
     slug: "suspension",
     title: {
       subtitle:
@@ -62,7 +62,7 @@ const productData: TInventoryItem[] = [
     delivery_date: "Saturday, Jan 18",
   },
   {
-    _id: 6,
+    _id: "6",
     slug: "suspension",
     title: {
       subtitle:
@@ -73,7 +73,7 @@ const productData: TInventoryItem[] = [
     delivery_date: "Saturday, Jan 18",
   },
   {
-    _id: 7,
+    _id: "7",
     slug: "suspension",
     title: {
       subtitle:
@@ -84,7 +84,7 @@ const productData: TInventoryItem[] = [
     delivery_date: "Saturday, Jan 18",
   },
   {
-    _id: 8,
+    _id: "8",
     slug: "suspension",
     title: {
       subtitle: 'Rough Country Air Spring Spacers | 6"',
@@ -96,10 +96,24 @@ const productData: TInventoryItem[] = [
   // Add more products as needed
 ];
 
-const SuspensionCategory: React.FC = () => {
+type SuspensionCategoryProps = {
+  topDescription?: string;
+  bottomDescription?: string;
+};
+
+const SuspensionCategory: React.FC<SuspensionCategoryProps> = ({
+  topDescription,
+  bottomDescription,
+}) => {
   return (
     <>
-      <div className="w-full max-w-[1450px] flex flex-col md:flex-row gap-6 px-4 py-6 mx-auto">
+      {topDescription && (
+        <div
+          className="container mx-auto px-4 my-4"
+          dangerouslySetInnerHTML={{ __html: topDescription }}
+        />
+      )}
+      <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 md:px-4 pb-6 pt-2 md:flex-row">
         <div className="w-full md:hidden">
           <SidebarFilters>
             <SuspensionFilters />
@@ -138,6 +152,12 @@ const SuspensionCategory: React.FC = () => {
           </>
         )}
       </div>
+      {bottomDescription && (
+        <div
+          className="container mx-auto px-4 my-6 text-center max-w-4xl text-gray-700 leading-relaxed text-sm md:text-base [&>p]:mb-4"
+          dangerouslySetInnerHTML={{ __html: bottomDescription }}
+        />
+      )}
     </>
   );
 };
