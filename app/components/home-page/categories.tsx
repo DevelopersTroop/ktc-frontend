@@ -37,25 +37,6 @@ export const Categories = () => {
           </Link>
         ))}
       </div>
-
-      <div className="mt-8">
-        <Link
-          href={"collections/product-category/tires"}
-          className="group hover:scale-110 transition-all duration-300 text-center flex flex-col items-center"
-        >
-          <h2 className="font-semibold text-xl group-hover:text-primary transition-all duration-300">
-            {"Don't see what you're looking for?"}
-          </h2>
-          <img
-            src={`/images/categories/${13}.webp`}
-            alt={"Shop All Truck Parts"}
-            className="object-contain w-[217px] h-[145px]"
-          />
-          <h3 className="font-semibold text-xl group-hover:text-primary transition-all duration-300">
-            {"Shop All Truck Parts"}
-          </h3>
-        </Link>
-      </div>
     </div>
   );
 };

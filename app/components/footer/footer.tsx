@@ -4,10 +4,13 @@ import { useAppDispatch } from "@/app/globalRedux/store";
 import { Button } from "@/components/ui/button";
 import { Facebook, Instagram, MailCheck, Twitter, Youtube } from "lucide-react";
 import Link from "next/link";
+import FAQs from "./faq";
 
 export default function Footer() {
   const dispatch = useAppDispatch();
   return (
+    <>
+    <FAQs />
     <footer className="bg-white pt-12 pb-6">
       <div className="container mx-auto px-4">
         <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -215,5 +218,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    </>
   );
 }
