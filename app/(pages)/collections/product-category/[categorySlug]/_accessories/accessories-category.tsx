@@ -16,15 +16,29 @@ import AccessoriesCard from "./accessories-card";
 
 type ProductsPageProps = {
   page?: number;
+  topDescription?: string;
+  bottomDescription?: string;
 };
 
-const AccessoriesCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
+const AccessoriesCategory: React.FC<ProductsPageProps> = ({
+  page = 1,
+  topDescription,
+  bottomDescription,
+}) => {
   const searchParams = useSearchParams();
   const { filters } = useFilterSync();
-  const { data, isLoading: loading } = useGetProductListQuery(wrapAccessoriesFilter(filters, Number.isNaN(page) ? 1 : page));
+  const { data, isLoading: loading } = useGetProductListQuery(
+    wrapAccessoriesFilter(filters, Number.isNaN(page) ? 1 : page)
+  );
 
   return (
     <>
+      {topDescription && (
+        <div
+          className="container mx-auto px-4 my-6 text-center max-w-4xl text-gray-700 leading-relaxed text-sm md:text-base [&>p]:mb-4"
+          dangerouslySetInnerHTML={{ __html: topDescription }}
+        />
+      )}
       <div className="mx-auto flex w-full max-w-[1450px] flex-col gap-6 px-4 py-6 md:flex-row">
         <div className="w-full flex flex-row gap-2 justify-between md:hidden">
           <SidebarFilters>
@@ -93,6 +107,12 @@ const AccessoriesCategory: React.FC<ProductsPageProps> = ({ page = 1 }) => {
           </>
         )}
       </div>
+      {bottomDescription && (
+        <div
+          className="container mx-auto px-4 my-4"
+          dangerouslySetInnerHTML={{ __html: bottomDescription }}
+        />
+      )}
     </>
   );
 };

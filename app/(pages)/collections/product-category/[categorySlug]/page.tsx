@@ -10,15 +10,55 @@ const Collection = async ({
 }) => {
   const { categorySlug, page } = await params;
 
+  let categoryDetails = null;
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/categories/details-by-slug/${categorySlug}`,
+      { cache: "no-store" }
+    );
+    const data = await res.json();
+    if (data?.statusCode === 200) {
+      categoryDetails = data.data.category;
+    }
+  } catch (error) {
+    console.error("Error fetching category details:", error);
+  }
+
+  const topDescription = categoryDetails?.topDescription || "";
+  const bottomDescription = categoryDetails?.bottomDescription || "";
+
   let collection = <></>;
   if (categorySlug === "wheels") {
-    collection = <WheelsCategory page={Number(page)} />;
+    collection = (
+      <WheelsCategory
+        page={Number(page)}
+        topDescription={topDescription}
+        bottomDescription={bottomDescription}
+      />
+    );
   } else if (categorySlug === "tires") {
-    collection = <TireCategory page={Number(page)} />;
+    collection = (
+      <TireCategory
+        page={Number(page)}
+        topDescription={topDescription}
+        bottomDescription={bottomDescription}
+      />
+    );
   } else if (categorySlug === "suspension") {
-    collection = <SuspensionCategory />;
+    collection = (
+      <SuspensionCategory
+        topDescription={topDescription}
+        bottomDescription={bottomDescription}
+      />
+    );
   } else if (categorySlug === "accessories") {
-    collection = <AccessoriesCategory page={Number(page)} />;
+    collection = (
+      <AccessoriesCategory
+        page={Number(page)}
+        topDescription={topDescription}
+        bottomDescription={bottomDescription}
+      />
+    );
   }
 
   return collection;
