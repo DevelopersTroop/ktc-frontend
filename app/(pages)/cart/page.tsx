@@ -10,8 +10,11 @@ import {
   useAppDispatch,
   useTypedSelector,
 } from "@/app/globalRedux/store";
+import { triggerGaBeginCheckoutEvent } from "@/app/utils/analytics";
 import { calculateCartTotal } from "@/app/utils/price";
 import { useWishlist } from "@/hooks/useWishlist";
+import { getProductImage } from "@/lib/utils";
+import { TCartProduct } from "@/types/cart";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -19,19 +22,32 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { useSelector } from "react-redux";
 import Quantity from "./_components/quantity";
 import EmptyCart from "./empty-cart";
-import { TCartProduct } from "@/types/cart";
-import { getProductImage } from "@/lib/utils";
-import { triggerGaBeginCheckoutEvent } from "@/app/utils/analytics";
+import { trackEvent } from "@/lib/tracker";
+import useAuth from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
+
 const Cart = () => {
   const { saveAllProductFromCart } = useWishlist();
   const [isShippingProtectionChecked, setIsShippingProtectionChecked] =
     useState<boolean>(false);
   const shippingProtectionCost = 65.0;
+  const { user } = useAuth();
+  const router = useRouter();
 
   const cart = useSelector((state: RootState) => state.persisted.cart);
   const cartProducts = useTypedSelector(
     (state) => state.persisted.cart.products
   );
+
+  const isSaveEmailShown = useSelector(
+    (state: RootState) => state.persisted.saveEmail // Get save email state from Redux
+  );
+
+  useEffect(() => {
+    if (!isSaveEmailShown?.saveEmailShown && !user) {
+      router.push("/cart/email");
+    }
+  }, [isSaveEmailShown, user, router]);
 
   const subTotalCost = Number(
     calculateCartTotal(cart.products).replace(/,/g, "")
@@ -135,9 +151,12 @@ const Cart = () => {
                           </p>
                           <div className="block flex-1 text-end md:hidden">
                             <button
-                              onClick={() =>
-                                removeCartProduct(product.cartSerial)
-                              }
+                              onClick={() => {
+                                removeCartProduct(product.cartSerial);
+                                trackEvent("remove_from_cart", {
+                                  productId: product._id,
+                                });
+                              }}
                               className="text-lg text-primary"
                             >
                               Remove
@@ -185,9 +204,13 @@ const Cart = () => {
 
                               <div className="hidden md:block">
                                 <button
-                                  onClick={() =>
-                                    removeCartProduct(product.cartSerial)
-                                  }
+                                  onClick={() => {
+                                    removeCartProduct(product.cartSerial);
+
+                                    trackEvent("remove_from_cart", {
+                                      productId: product._id,
+                                    });
+                                  }}
                                   className="text-xl text-primary"
                                 >
                                   Remove

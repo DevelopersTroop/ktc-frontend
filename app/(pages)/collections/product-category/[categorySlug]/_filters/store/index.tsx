@@ -1,7 +1,7 @@
 "use client";
 import debounce from "lodash/debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type Filters = Record<string, string>;
 
@@ -11,7 +11,10 @@ export const useFilterSync = () => {
   const pathname = usePathname();
 
   const [localFilters, setLocalFilters] = useState<Filters>({});
-	console.log("TCL: useFilterSync -> localFilters", localFilters)
+  console.log("TCL: useFilterSync -> localFilters", localFilters);
+
+  // Use ref to track if we're syncing from URL to avoid circular updates
+  const isSyncingFromURL = useRef(false);
 
   /**
    * ✅ Extract only your "filter keys"
@@ -29,23 +32,30 @@ export const useFilterSync = () => {
 
   // ✅ Sync local state with URL for only managed filters
   useEffect(() => {
+    isSyncingFromURL.current = true;
     setLocalFilters(parsedFilters);
+    // Reset flag after state update completes
+    setTimeout(() => {
+      isSyncingFromURL.current = false;
+    }, 0);
   }, [parsedFilters]);
 
   /**
-   * ✅ Debounced query updater
-   * - Starts with existing URL params
-   * - Removes only managed filters
-   * - Re-adds updated filters
+   * ✅ Debounced query updater - using useRef to maintain stable reference
    */
-  const updateQueryParams = useMemo(
-    () =>
-      debounce((filters: Filters) => {
+  const updateQueryParamsRef = useRef(
+    debounce(
+      (
+        filters: Filters,
+        currentSearchParams: URLSearchParams,
+        currentPathname: string,
+        currentParsedFilters: Filters
+      ) => {
         // 1️⃣ start with full query (so we keep cartPackage, cartSerial, etc.)
-        const params = new URLSearchParams(searchParams.toString());
+        const params = new URLSearchParams(currentSearchParams.toString());
 
         // 2️⃣ remove all keys we manage (clean slate for filters)
-        Object.keys(parsedFilters).forEach((key) => params.delete(key));
+        Object.keys(currentParsedFilters).forEach((key) => params.delete(key));
 
         // 3️⃣ add updated filters
         Object.entries(filters).forEach(([key, value]) => {
@@ -54,22 +64,32 @@ export const useFilterSync = () => {
 
         // 4️⃣ build final URL
         const queryString = params.toString();
-        const url = queryString ? `${pathname}?${queryString}` : pathname;
+        const url = queryString
+          ? `${currentPathname}?${queryString}`
+          : currentPathname;
 
         router.replace(url, { scroll: false });
-      }, 150),
-    [router, pathname, searchParams, parsedFilters],
+      },
+      150
+    )
   );
 
-  // ✅ Cleanup debounce
+  // ✅ Cleanup debounce on unmount
   useEffect(() => {
-    return () => updateQueryParams.cancel();
-  }, [updateQueryParams]);
+    return () => updateQueryParamsRef.current.cancel();
+  }, []);
 
-  // ✅ Auto-update URL when filters change
+  // ✅ Auto-update URL when filters change (but not when syncing from URL)
   useEffect(() => {
-    updateQueryParams(localFilters);
-  }, [localFilters, updateQueryParams]);
+    if (!isSyncingFromURL.current) {
+      updateQueryParamsRef.current(
+        localFilters,
+        searchParams,
+        pathname,
+        parsedFilters
+      );
+    }
+  }, [localFilters, searchParams, pathname, parsedFilters]);
 
   // ✅ Toggle logic
   const toggleFilterValue = useCallback(
@@ -96,7 +116,7 @@ export const useFilterSync = () => {
         return updated;
       });
     },
-    [],
+    []
   );
 
   // ✅ For search field / inputs

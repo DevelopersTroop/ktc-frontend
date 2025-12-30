@@ -23,6 +23,7 @@ import { OrderConfirmation } from "./OrderConfirmation";
 import { OrderSummary } from "./OrderSummary";
 import { PaymentData, PaymentInfo } from "./PaymentInfo";
 import { ShippingInfo } from "./ShippingInfo";
+import { trackEvent } from "@/lib/tracker";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -125,7 +126,7 @@ export const FinalStep: React.FC = () => {
           throw new Error("Invalid response from payment verification");
         }
 
-        const result = response.data;
+        const result = response.data as { order: TOrder; payment: any };
         console.log("TCL: verifyPayment -> result", result);
 
         if (result?.order) {
@@ -139,6 +140,10 @@ export const FinalStep: React.FC = () => {
           dispatch(updateOrderSuccessData(result.order));
           setPaymentData(result.payment);
           triggerGaPurchaseEvent(result.order);
+          trackEvent("checkout_complete", {
+            order_id: result.order.orderId,
+            payment_id: result.payment._id,
+          });
           toast.success("Order Placed Successfully");
           // dispatch(emptyCart());
           dispatch(revokeCouponCode());
