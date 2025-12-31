@@ -205,7 +205,7 @@ const Page = () => {
                 </Form>
               )}
             </Formik>
-            <div className='flex gap-5 items-center justify-center'>
+            <div className='flex gap-6 items-center justify-center'>
               <FacebookAuth />
               <GoogleAuth />
             </div>
