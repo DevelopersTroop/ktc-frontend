@@ -1,10 +1,11 @@
 import { useGetProductListQuery } from "@/app/globalRedux/api/product";
 import { useDebounce } from "@/hooks/use-debounce";
+import { trackEvent } from "@/lib/tracker";
 import { getProductImage } from "@/lib/utils";
 // import { getProductThumbnail, isCustomProduct, isCustomWheel } from "@/app/utils/product";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 const SearchSuggestion = ({
   setOpen,
@@ -26,6 +27,12 @@ const SearchSuggestion = ({
       refetchOnMountOrArgChange: true,
     }
   );
+
+  useEffect(() => {
+    trackEvent("search", {
+      query: debouncedSearch,
+    });
+  }, [debouncedSearch]);
 
   return (
     <>

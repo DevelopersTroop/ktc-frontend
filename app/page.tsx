@@ -19,7 +19,7 @@ const page = () => {
       <WheelsGallery />
       <TodaysDeals />
       <HomeBlogList />
-      <BannerAndPoster/>  
+      <BannerAndPoster />
       <WheelsSection />
       <ViewGallery />
       <SuspensionBrands />
@@ -27,6 +27,5 @@ const page = () => {
     </div>
   );
 };
-
 
 export default page;

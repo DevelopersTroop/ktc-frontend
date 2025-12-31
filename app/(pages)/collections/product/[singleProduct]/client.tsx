@@ -1,17 +1,42 @@
-"use client"
+"use client";
 import { useGetProductDetailsQuery } from "@/app/globalRedux/api/product";
 import Container from "@/app/ui/container/container";
 import Accessory from "./_accessory/accessory";
 import Tire from "./_tire/tire";
 import Wheels from "./_wheels/wheels";
 import "./single-product.css";
+import { useEffect, useRef } from "react";
+import { trackEvent } from "@/lib/tracker";
+import { getPrice } from "@/app/utils/price";
 
-const SingleProductClient: React.FC<{ singleProduct: string }> = ({ singleProduct }) => {
-  const { data } = useGetProductDetailsQuery({ slug: singleProduct as string, params: {} });
-
+const SingleProductClient: React.FC<{ singleProduct: string }> = ({
+  singleProduct,
+}) => {
+  const { data } = useGetProductDetailsQuery({
+    slug: singleProduct as string,
+    params: {},
+  });
   const categoryId = data?.product?.categoryId;
+  const analyticsSend = useRef(false);
+
+  useEffect(() => {
+    // 2. Check the .current property
+    if (analyticsSend.current) return;
+
+    // 3. Ensure product data is loaded before tracking
+    if (data?.product) {
+      trackEvent("product_view", {
+        productId: data.product._id,
+        productName: data.product.title, // Good practice to include name for marketing logs
+      });
+
+      // 4. Update the .current property to true
+      analyticsSend.current = true;
+    }
+  }, [data?.product]); // Dependency ensures this runs when data arrives
+
   if (!data?.product) {
-    return null
+    return null;
   }
 
   let productBasedOnCategory = <></>;
