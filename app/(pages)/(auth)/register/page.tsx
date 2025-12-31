@@ -14,6 +14,8 @@ import {
 } from "@/app/globalRedux/features/user/user-slice";
 import { userRegister } from "./register";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import GoogleAuth from "@/components/shared/GoogleAuth";
+import FacebookAuth from "@/components/shared/FacebookAuth";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -239,6 +241,17 @@ const Page = () => {
                 </Form>
               )}
             </Formik>
+            <div className='flex flex-col'>
+              <p className='text-center flex text-white gap-2 justify-center items-center mt-5'>
+                <hr className='border-t w-20' />
+                Or <hr className='border-t w-20' />
+              </p>
+
+              <div className='flex gap-5 items-center justify-center'>
+                <GoogleAuth />
+                <FacebookAuth />
+              </div>
+            </div>
             <div className='flex my-4 justify-end items-center gap-1'>
               <div className='w-full'>
                 <hr className='border-t border-gray-200' />
