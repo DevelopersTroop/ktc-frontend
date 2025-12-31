@@ -218,7 +218,7 @@ const Page = () => {
                   {"Don't have an account?"}
                 </Link>
               </p>
-              <div className='w-full'>
+              <div className='w-full '>
                 <hr className='border-t border-gray-200' />
               </div>
             </div>
