@@ -11,7 +11,7 @@ import {
 } from "@/app/globalRedux/features/user/user-slice";
 import { apiBaseUrl } from "@/app/utils/api";
 
-export default function LoginPage() {
+export default function GoogleAuth() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
