@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Search, X } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import SearchSuggestion from "./search-suggestion";
+import { trackEvent } from "@/lib/tracker";
 
 interface HeaderSearchButtonProps {
   isHomepage: boolean;
@@ -52,7 +53,9 @@ const HeaderSearchButton: React.FC<HeaderSearchButtonProps> = ({
     const trimmed = data.search.trim();
     if (!trimmed) return;
     setOpen(true); // ✅ open overlay on actual submit
-    console.log("Search submitted:", trimmed);
+    trackEvent("search", {
+      query: trimmed,
+    });
   };
 
   return (

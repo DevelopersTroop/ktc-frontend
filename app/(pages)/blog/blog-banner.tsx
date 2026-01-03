@@ -2,43 +2,39 @@ import Container from "@/app/ui/container/container";
 
 // This component renders a hero banner for the "In-Stock Steering Wheel" section.
 const BlogBanner = () => {
+  // Define inline styles for the background image of the banner
+  const bannerImg = {
+    backgroundImage: `url("/images/banner/Blog.webp")`,
+    backgroundPosition: "80% 100%",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+  };
 
-    // Define inline styles for the background image of the banner
-    const bannerImg = {
-        backgroundImage: `url("/images/banner/Blog.webp")`,
-        backgroundPosition: "80% 100%",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-    };
-
-    return (
-        // Outer container for the banner with full width and fixed height
-        <div className="w-full relative h-[150px] sm:h-[280px]" style={bannerImg} >
-            {/* Dark gradient overlay for better text visibility */}
-            <div className="absolute left-0 top-0 w-full h-full bg-gradient-to-r from-black/90 to-black/0"></div>
-            {/* Using the Container component to wrap the content */}
-            <Container>
-                {/* Flex container for positioning text content */}
-                <div className="flex flex-col gap-2 justify-center -top-[11px] items-start self-stretch relative h-[150px] sm:h-[280px]">
-
-                    
-                    {/* Main title: "In-Stock Steering Wheel" */}
-                    <h1 className="text-2xl min-[400px]:text-[32px] sm:text-5xl xl:text-7xl text-white">
-                        <span className="text-white font-bold uppercase [text-shadow:2px_2px_4px_black]">
-                            Blogs
-                        </span>
-                    </h1>
-                    <h5 className="text-xl text-white">
-                        <span className="text-white text-base sm:text-2xl font-normal [text-shadow:2px_2px_4px_black]">
-                            {"What's new at Amani Forged"}
-                        </span>
-                    </h5>
-                    {/* Subtitle: "Find Your Perfect Steering Wheel..." */}
-
-                </div>
-            </Container>
+  return (
+    // Outer container for the banner with full width and fixed height
+    <div className="w-full relative h-[150px] sm:h-[280px]" style={bannerImg}>
+      {/* Dark gradient overlay for better text visibility */}
+      <div className="absolute left-0 top-0 w-full h-full bg-gradient-to-r from-black/90 to-black/0"></div>
+      {/* Using the Container component to wrap the content */}
+      <Container>
+        {/* Flex container for positioning text content */}
+        <div className="flex flex-col gap-2 justify-center -top-[11px] items-start self-stretch relative h-[150px] sm:h-[280px]">
+          {/* Main title: "In-Stock Steering Wheel" */}
+          <h1 className="text-2xl min-[400px]:text-[32px] sm:text-5xl xl:text-7xl text-white">
+            <span className="text-white font-bold uppercase [text-shadow:2px_2px_4px_black]">
+              Blogs
+            </span>
+          </h1>
+          <h5 className="text-xl text-white">
+            <span className="text-white text-base sm:text-2xl font-normal [text-shadow:2px_2px_4px_black]">
+              {"What's new at Wheel Tire USA"}
+            </span>
+          </h5>
+          {/* Subtitle: "Find Your Perfect Steering Wheel..." */}
         </div>
-    );
+      </Container>
+    </div>
+  );
 };
 
 export default BlogBanner;

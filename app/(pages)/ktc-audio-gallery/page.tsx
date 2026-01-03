@@ -1,10 +1,31 @@
 "use client";
+import { metaDataHelper } from "@/app/utils/metadata";
+import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
 import React, { useState } from "react";
 import SidebarFilters from "../collections/product-category/[categorySlug]/_filters/mobile-filters/sidebar-filters";
+import { CreateGalleryModal } from "./components/CreateGalleryModal";
 import GalleryFilters from "./components/filters/gallery-filters";
 import Gallery from "./components/gallery";
-import { Button } from "@/components/ui/button";
-import { CreateGalleryModal } from "./components/CreateGalleryModal";
+
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    return {
+      ...metaDataHelper({
+        title: `KTC Audio Gallery - Wheel Tire USA`,
+        description: "",
+      }),
+      alternates: {
+        canonical: `https://wheeltireusa.com/ktc-audio-gallery`,
+      },
+    };
+  } catch (error) {
+    // Return default metadata in case of error
+    return {
+      title: "Error",
+    };
+  }
+}
 
 const KtcAudioGalleryPage: React.FC = () => {
   const [open, setOpen] = useState(false);

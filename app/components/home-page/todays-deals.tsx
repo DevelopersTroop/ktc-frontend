@@ -1,22 +1,17 @@
 "use client";
 
-import { useFilterSync } from "@/app/(pages)/collections/product-category/[categorySlug]/_filters/store";
 import { useGetProductListQuery } from "@/app/globalRedux/api/product";
-import { wrapWheelFilters } from "@/hooks/wheelService";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, Zoom } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/zoom"; // 👈 Import skeleton
+import { Autoplay, Navigation, Zoom } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import SkeletonCard from "./SkeletonCard";
 
 const TodaysDeals = () => {
-  const { filters } = useFilterSync();
-  const parsedFilter = wrapWheelFilters(filters, 1, {});
   const { data, isLoading } = useGetProductListQuery({});
-  console.log("TCL: TodaysDeals -> data", data);
 
   return (
     <div className="max-w-[1350px] p-4 mx-auto py-10">

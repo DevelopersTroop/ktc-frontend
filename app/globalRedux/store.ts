@@ -48,6 +48,7 @@ const presistingReducer = combineReducers({
   checkout: checkoutReducer,
   package: packageReducer,
   newsletterModal: newsletterModalReducer,
+  saveEmail: cartProductSaveEmailReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, presistingReducer);
@@ -60,7 +61,6 @@ const rootReducer = combineReducers({
   yearMakeModelModal: yearMakeModelModalReducer,
   inStockProduct: inStockProductReducer,
   menu: menuReducer,
-  saveEmail: cartProductSaveEmailReducer,
   wheel: wheelReducer,
   tire: tireReducer,
   accessories: accessoriesReducer,

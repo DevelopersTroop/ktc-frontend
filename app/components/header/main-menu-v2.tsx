@@ -241,9 +241,9 @@ after:transition-transform after:duration-300"
         ))}
       </ul>
 
-      <a href="tel:+1 (303) 695-6305" className="flex gap-2">
+      <a href="tel:+1 (813) 812-5257" className="flex gap-2">
         <span className="text-gray-300">Call us:</span>
-        +1 (303) 695-6305
+        +1 (813) 812-5257
       </a>
     </nav>
   );

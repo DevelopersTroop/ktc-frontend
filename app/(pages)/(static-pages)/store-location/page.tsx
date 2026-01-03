@@ -1,7 +1,26 @@
-"use client";
 import Breadcrumb from "@/app/ui/breadcrumb/breadcrumb";
 import Item from "@/app/ui/breadcrumb/item";
+import { metaDataHelper } from "@/app/utils/metadata";
 import React from "react";
+
+export async function generateMetadata() {
+  try {
+    return {
+      ...metaDataHelper({
+        title: `Store Location - Wheel Tire USA`,
+        description: "",
+      }),
+      alternates: {
+        canonical: `https://wheeltireusa.com/store-location`,
+      },
+    };
+  } catch (error) {
+    // Return default metadata in case of error
+    return {
+      title: "Error",
+    };
+  }
+}
 
 const StoreLocation: React.FC = () => {
   return (
