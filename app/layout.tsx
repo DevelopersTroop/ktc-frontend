@@ -29,6 +29,9 @@ export const metadata: Metadata = {
   title: "Wheel Tire USA",
   description:
     "At WheelTireUSA, our goal is simple: deliver the best wheels, tires, and vehicle accessories with service you can rely on. We’re passionate about helping drivers upgrade their vehicles with confidence — whether it’s for style, performance, safety, or all three.",
+  openGraph: {
+    images: ["/images/logo.png"],
+  },
 };
 
 export default function RootLayout({
