@@ -1,8 +1,10 @@
 import { addToCart } from "@/app/globalRedux/features/cart/cart-slice";
+import { addPackage } from "@/app/globalRedux/features/package";
 import store, {
   useAppDispatch,
   useTypedSelector,
 } from "@/app/globalRedux/store";
+import { triggerGaAddToCart } from "@/app/utils/analytics";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import useYmm from "@/hooks/use-ymm";
 import { TInventoryItem } from "@/types/product";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useState } from "react";
@@ -18,9 +21,6 @@ import { v4 as uuidv4 } from "uuid";
 import { WheelContext } from "./context/WheelProvider";
 import QuantityInput from "./quantity-input";
 import { YmmSelector } from "./ymm";
-import useYmm from "@/hooks/use-ymm";
-import { addPackage } from "@/app/globalRedux/features/package";
-import { triggerGaAddToCart } from "@/app/utils/analytics";
 
 type NormalActionButtonProps = {
   setIsStaggered: React.Dispatch<React.SetStateAction<boolean>>;

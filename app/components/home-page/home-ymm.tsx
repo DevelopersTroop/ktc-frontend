@@ -1,6 +1,14 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import useYmm from "@/hooks/use-ymm";
 import { cn } from "@/lib/utils";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 const HomeYmm = () => {
     const {
@@ -30,29 +38,184 @@ const HomeYmm = () => {
         year, make, model, bodyType, subModel
     } = useYmm();
 
-    return (<>
-        <div className="w-full p-4">
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    isFirstRender.current = false;
+  }, []);
+
+  const handleOpenChange = (key: string) => (open: boolean) => {
+    if (open) {
+      setActiveDropdown(key);
+    } else {
+      setActiveDropdown((prev) => (prev === key ? null : prev));
+    }
+  };
+
+  useEffect(() => {
+    if (isFirstRender.current) return;
+    let timeoutId: NodeJS.Timeout;
+    if (
+      year &&
+      !isMakeLoading &&
+      !isMakeDisabled &&
+      (makes?.length ?? 0) > 0 &&
+      (!make || make === "__DEFAULT_MAKE__")
+    ) {
+      timeoutId = setTimeout(() => {
+        if (containerRef.current?.offsetParent) {
+          setActiveDropdown("make");
+        }
+      }, 200);
+    }
+    return () => clearTimeout(timeoutId);
+  }, [year, isMakeLoading, isMakeDisabled, makes?.length, make]);
+
+  useEffect(() => {
+    if (isFirstRender.current) return;
+    let timeoutId: NodeJS.Timeout;
+    if (
+      make &&
+      !isModelLoading &&
+      !isModelDisabled &&
+      (models?.length ?? 0) > 0 &&
+      (!model || model === "__DEFAULT_MODEL__")
+    ) {
+      timeoutId = setTimeout(() => {
+        if (containerRef.current?.offsetParent) {
+          setActiveDropdown("model");
+        }
+      }, 200);
+    }
+    return () => clearTimeout(timeoutId);
+  }, [make, isModelLoading, isModelDisabled, models?.length, model]);
+
+  useEffect(() => {
+    if (isFirstRender.current) return;
+    let timeoutId: NodeJS.Timeout;
+    if (
+      model &&
+      !isBodyTypeLoading &&
+      !isBodyTypeDisabled &&
+      (bodyTypes?.length ?? 0) > 0 &&
+      (!bodyType || bodyType === "__DEFAULT_BODYTYPE__")
+    ) {
+      timeoutId = setTimeout(() => {
+        if (containerRef.current?.offsetParent) {
+          setActiveDropdown("bodyType");
+        }
+      }, 200);
+    }
+    return () => clearTimeout(timeoutId);
+  }, [model, isBodyTypeLoading, isBodyTypeDisabled, bodyTypes?.length, bodyType]);
+
+  useEffect(() => {
+    if (isFirstRender.current) return;
+    let timeoutId: NodeJS.Timeout;
+    if (
+      bodyType &&
+      !isSubmodelLoading &&
+      !isSubmodelDisabled &&
+      (subModels?.length ?? 0) > 0 &&
+      (!subModel?.SubModel || subModel?.SubModel === "__DEFAULT_SUBMODEL__")
+    ) {
+      timeoutId = setTimeout(() => {
+        if (containerRef.current?.offsetParent) {
+          setActiveDropdown("subModel");
+        }
+      }, 200);
+    }
+    return () => clearTimeout(timeoutId);
+  }, [bodyType, isSubmodelLoading, isSubmodelDisabled, subModels?.length, subModel?.SubModel]);
+
+  return (
+    <>
+      <div ref={containerRef} className="w-full p-4">
             <div className="w-full flex flex-col md:flex-row gap-4 mt-4">
-                <select disabled={isYearDisabled} value={year} onChange={onYearChange} className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
-                    <option value="">{isYearLoading ? "Loading..." : "Year"}</option>
-                    {years?.map(year => <option key={year} value={year}>{year}</option>)}
-                </select>
-                <select disabled={isMakeDisabled} value={make} onChange={onMakeChange} className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
-                    <option value="">{isMakeLoading ? "Loading..." : "Make"}</option>
-                    {makes?.map(make => <option key={make} value={make}>{make}</option>)}
-                </select>
-                <select disabled={isModelDisabled} value={model} onChange={onModelChange} className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
-                    <option value="">{isModelLoading ? "Loading..." : "Model"}</option>
-                    {models?.map(model => <option key={model} value={model}>{model}</option>)}
-                </select>
-                <select disabled={isBodyTypeDisabled} value={bodyType} onChange={onBodyTypeChange} className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
-                    <option value="">{isBodyTypeLoading ? "Loading..." : "Body Type"}</option>
-                    {bodyTypes?.map(bodyType => <option key={bodyType} value={bodyType}>{bodyType}</option>)}
-                </select>
-                <select disabled={isSubmodelDisabled} value={subModel?.SubModel ?? ""} onChange={onSubModelChange} className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
-                    <option value="">{isSubmodelLoading ? "Loading..." : "Submodel"}</option>
-                    {subModels?.map(subModel => <option key={subModel.SubModel} value={subModel.SubModel}>{subModel.SubModel}</option>)}
-                </select>
+                <div className="w-full">
+                    <Select onValueChange={onYearChange} value={year || undefined} disabled={isYearDisabled} >
+                        <SelectTrigger className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
+                            <SelectValue placeholder={isYearLoading ? "Loading..." : "Year"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {years?.map((y) => (
+                                <SelectItem key={`year-${y}`} value={y}>
+                                    {y}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="w-full">
+                    <Select open={activeDropdown === "make"} onOpenChange={handleOpenChange("make")} onValueChange={onMakeChange} value={make || "__DEFAULT_MAKE__"} disabled={isMakeDisabled} >
+                        <SelectTrigger className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
+                            <SelectValue placeholder={isMakeLoading ? "Loading..." : "Make"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="__DEFAULT_MAKE__" className="hidden" disabled>
+                                {isMakeLoading ? "Loading..." : "Make"}
+                            </SelectItem>
+                            {makes?.map((m) => (
+                                <SelectItem key={`make-${m}`} value={m}>
+                                    {m}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="w-full">
+                    <Select open={activeDropdown === "model"} onOpenChange={handleOpenChange("model")} onValueChange={onModelChange} value={model || "__DEFAULT_MODEL__"} disabled={isModelDisabled} >
+                        <SelectTrigger className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
+                            <SelectValue placeholder={isModelLoading ? "Loading..." : "Model"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="__DEFAULT_MODEL__" className="hidden" disabled>
+                                {isModelLoading ? "Loading..." : "Model"}
+                            </SelectItem>
+                            {models?.map((mdl) => (
+                                <SelectItem key={`model-${mdl}`} value={mdl}>
+                                    {mdl}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="w-full">
+                    <Select open={activeDropdown === "bodyType"} onOpenChange={handleOpenChange("bodyType")} onValueChange={onBodyTypeChange} value={bodyType || "__DEFAULT_BODYTYPE__"} disabled={isBodyTypeDisabled} >
+                        <SelectTrigger className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
+                            <SelectValue placeholder={isBodyTypeLoading ? "Loading..." : "Body Type"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="__DEFAULT_BODYTYPE__" className="hidden" disabled>
+                                {isBodyTypeLoading ? "Loading..." : "Body Type"}
+                            </SelectItem>
+                            {bodyTypes?.map((bt) => (
+                                <SelectItem key={`bodyType-${bt}`} value={bt}>
+                                    {bt}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="w-full">
+                    <Select open={activeDropdown === "subModel"} onOpenChange={handleOpenChange("subModel")} onValueChange={onSubModelChange} value={subModel?.SubModel || "__DEFAULT_SUBMODEL__"} disabled={isSubmodelDisabled} >
+                        <SelectTrigger className="w-full p-2 rounded bg-white text-xl text-black disabled:opacity-50">
+                            <SelectValue placeholder={isSubmodelLoading ? "Loading..." : "Submodel"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="__DEFAULT_SUBMODEL__" className="hidden" disabled>
+                                {isSubmodelLoading ? "Loading..." : "Submodel"}
+                            </SelectItem>
+                            {subModels?.map((sm) => (
+                                <SelectItem key={`subModel-${sm.SubModel}`} value={sm.SubModel}>
+                                    {sm.SubModel}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
             </div>
         </div>
         <div className="w-full p-4">
