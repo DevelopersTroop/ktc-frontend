@@ -13,6 +13,7 @@ import TopHeader from "./components/header/topheader";
 import StoreProvider from "./globalRedux/store-provider";
 import "./globals.css";
 import AnalyticsTracker from "@/components/CustomAnalyticsTracker";
+import StickyVehicleSelector from "./components/home-page/header-ymm";
 // import AnalyticsTracker from "@/components/CustomAnalyticsTracker";
 
 const geistSans = Geist({
@@ -80,6 +81,7 @@ export default function RootLayout({
             <TopHeaderOne />
             <TopHeader />
             <Header />
+            <StickyVehicleSelector />
             <DiscountBanner />
             <main className="flex-1">{children}</main>
             <Footer />

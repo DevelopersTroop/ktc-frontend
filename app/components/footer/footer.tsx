@@ -2,8 +2,70 @@
 import { openNewsletterModal } from "@/app/globalRedux/features/newsletter-modal/newsletter-modal-slice";
 import { useAppDispatch } from "@/app/globalRedux/store";
 import { Button } from "@/components/ui/button";
-import { Facebook, Instagram, MailCheck, Twitter, Youtube } from "lucide-react";
+import {
+  Facebook,
+  Instagram,
+  MailCheck,
+  StarIcon,
+  Twitter,
+  Youtube,
+} from "lucide-react";
 import Link from "next/link";
+
+const popularSearches = [
+  {
+    label: "Concave Wheels",
+    link: "/collections/product-category/wheels?brand_desc=Alloy+Ion",
+  },
+  {
+    label: "Chrome Wheels",
+    link: "/collections/product-category/wheels?finish=Chrome",
+  },
+  {
+    label: "Black Chrome Wheels",
+    link: "/collections/product-category/wheels?finish=Black+Chrome",
+  },
+  {
+    label: "Black Wheels",
+    link: "/collections/product-category/wheels?finish=Black",
+  },
+  {
+    label: "White Wheels",
+    link: "/collections/product-category/wheels?finish=White",
+  },
+  {
+    label: "Bronzed Wheels",
+    link: "/collections/product-category/wheels?finish=Bronze",
+  },
+  {
+    label: "Forged Wheels",
+    link: "/collections/product-category/wheels?q=forged",
+  },
+  {
+    label: "Flow Formed Wheels",
+    link: "/collections/product-category/wheels?q=flow-form",
+  },
+  {
+    label: "Classic Wheels",
+    link: "/collections/product-category/wheels?q=classic",
+  },
+  {
+    label: "Offroad Wheels",
+    link: "/collections/product-category/wheels?q=offroad",
+  },
+  {
+    label: "Mercedes Wheels",
+    link: "/collections/product-category/wheels?q=mercedes",
+  },
+  {
+    label: "BMW Wheels",
+    link: "/collections/product-category/wheels?q=bmw",
+  },
+  {
+    label: "Cadillac Escalade Wheels",
+    link: "/collections/product-category/wheels?q=Cadillac+Escalade",
+  },
+];
 
 export default function Footer() {
   const dispatch = useAppDispatch();
@@ -12,6 +74,17 @@ export default function Footer() {
       {/* <FAQs /> */}
       <footer className="bg-white pt-12 pb-6">
         <div className="container mx-auto px-4">
+          <div className="my-6 text-center flex items-center justify-center gap-2 uppercase font-semibold flex-wrap">
+            <div className="flex items-center max-w-fit gap-1 justify-center">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <StarIcon className="fill-primary stroke-primary" key={i} />
+              ))}{" "}
+            </div>
+            <p>
+              5 OUT OF 5 STARS OF 150 REVIEWS FROM FACEBOOK , GOOGLE &
+              trustpilot
+            </p>
+          </div>
           <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <h3 className="text-gray-700 text-2xl font-semibold mb-4">
@@ -58,52 +131,18 @@ export default function Footer() {
 
             <div>
               <h3 className="text-gray-700 text-2xl font-semibold mb-4">
-                Information
+                Popular Searches
               </h3>
               <div className="space-y-2">
-                <Link
-                  href="#"
-                  className="block text-gray-600 hover:text-gray-900"
-                >
-                  Terms of service
-                </Link>
-                <Link
-                  href="#"
-                  className="block text-gray-600 hover:text-gray-900"
-                >
-                  Shipping Policy
-                </Link>
-                <Link
-                  href="#"
-                  className="block text-gray-600 hover:text-gray-900"
-                >
-                  Refund policy
-                </Link>
-                <Link
-                  href="#"
-                  className="block text-gray-600 hover:text-gray-900"
-                >
-                  Privacy policy
-                </Link>
-                <Link
-                  href="/contact"
-                  className="block text-gray-600 hover:text-gray-900"
-                >
-                  Contact Us
-                </Link>
-                <Link
-                  href="/about"
-                  className="block text-gray-600 hover:text-gray-900"
-                >
-                  About Us
-                </Link>
-
-                <Link
-                  href="/blog"
-                  className="block text-gray-600 hover:text-gray-900"
-                >
-                  Blogs
-                </Link>
+                {popularSearches.map((p) => (
+                  <Link
+                    key={p.link}
+                    href="#"
+                    className="block text-gray-600 hover:text-gray-900"
+                  >
+                    {p.label}
+                  </Link>
+                ))}
               </div>
             </div>
 

@@ -3,7 +3,7 @@ import HomeBlogList from "./components/home-page/blog-list";
 import { Categories } from "./components/home-page/categories";
 import HeroSection from "./components/home-page/hero-section";
 import SuspensionBrands from "./components/home-page/suspension-brands";
-import SuspensionSection from "./components/home-page/suspension-section";
+import TireCategories from "./components/home-page/tire-category";
 import TodaysDeals from "./components/home-page/todays-deals";
 import ViewGallery from "./components/home-page/view-gallery";
 import WheelCategories from "./components/home-page/wheel-categories";
@@ -16,6 +16,7 @@ const page = () => {
       <HeroSection />
       <Categories />
       <WheelCategories />
+      <TireCategories />
       <WheelsGallery />
       <TodaysDeals />
       <HomeBlogList />
@@ -23,7 +24,6 @@ const page = () => {
       <WheelsSection />
       <ViewGallery />
       <SuspensionBrands />
-      <SuspensionSection />
     </div>
   );
 };
