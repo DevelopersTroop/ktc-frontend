@@ -351,6 +351,10 @@ const navMenus: NavMenu[] = [
         label: "Affiliate Program",
         href: "/affiliates",
       },
+      {
+        label: "Calculator",
+        href: "/calculator",
+      },
     ],
   },
 ];

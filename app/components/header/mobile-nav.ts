@@ -256,6 +256,10 @@ const mobileNavMenus: NavMenu[] = [
       },
     ],
   },
+  {
+    label: "Calculator",
+    href: "/calculator",
+  },
 ];
 
 export default mobileNavMenus;
