@@ -224,6 +224,7 @@ const StickyVehicleSelector = () => {
           {/* Find Button */}
           <button
             onClick={onSubmit}
+            hidden={isMobileOpen}
             disabled={isDisabledSubmit}
             className="bg-red-600 hover:bg-red-700 text-white px-6 py-4 font-bold uppercase text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
@@ -233,8 +234,8 @@ const StickyVehicleSelector = () => {
 
         {/* Expandable Content */}
         <div
-          className={`overflow-hidden transition-all duration-300 ${
-            isMobileOpen ? "max-h-96" : "max-h-0"
+          className={`overflow-hidden transition-all duration-300 h-full ${
+            isMobileOpen ? "max-h-full" : "max-h-0"
           }`}
         >
           <div className="bg-gray-700 p-4 space-y-3">
@@ -351,13 +352,22 @@ const StickyVehicleSelector = () => {
             </div>
 
             {/* Reset Button */}
-            <button
-              onClick={handleReset}
-              className="w-full bg-white hover:bg-gray-100 text-red-600 px-4 py-2 flex items-center justify-center gap-2 font-bold uppercase text-sm transition-colors"
-            >
-              <RotateCcw className="w-4 h-4" />
-              Reset
-            </button>
+            <div className="w-full flex items-center">
+              <button
+                onClick={handleReset}
+                className=" bg-white w-full hover:bg-gray-100 text-red-600 px-4 py-4 flex items-center justify-center gap-2 font-bold uppercase text-sm transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Reset
+              </button>
+              <button
+                onClick={onSubmit}
+                disabled={isDisabledSubmit}
+                className="bg-red-600 hover:bg-red-700 text-white px-6 py-4 font-bold uppercase text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full"
+              >
+                Find
+              </button>
+            </div>
           </div>
         </div>
       </div>
