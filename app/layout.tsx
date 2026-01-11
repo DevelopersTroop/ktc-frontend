@@ -14,6 +14,7 @@ import StoreProvider from "./globalRedux/store-provider";
 import "./globals.css";
 import AnalyticsTracker from "@/components/CustomAnalyticsTracker";
 import StickyVehicleSelector from "./components/home-page/header-ymm";
+import { CallNow } from "@/components/CallNow";
 // import AnalyticsTracker from "@/components/CustomAnalyticsTracker";
 
 const geistSans = Geist({
@@ -95,6 +96,7 @@ export default function RootLayout({
           src="//code.tidio.co/ylns3q2pbrzhwklnx08n2v5oezbmhf7g.js"
           strategy="afterInteractive"
         /> */}
+        <CallNow />
       </body>
     </html>
   );
