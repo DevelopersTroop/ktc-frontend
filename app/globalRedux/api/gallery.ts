@@ -1,60 +1,7 @@
 import { TPaginatedResponse } from "@/types/response";
 import { baseApi } from "./base";
 import { successMessage } from "@/lib/toast";
-
-export interface IGallery {
-  _id: string;
-  title: string;
-  galleryImages?: string[];
-  name?: string;
-  email?: string;
-  item_image?: string;
-  slug: string;
-  subtitle: string;
-  description: string;
-  shortDescription: string;
-  thumbnail: string;
-  wheelProduct: string;
-  tireProduct: string;
-  suspensionProduct: string;
-  rubbing: boolean;
-  trimming: boolean;
-  frontWheelSpacers: string;
-  rearWheelSpacers: string;
-  stance: string;
-  wheelTitle: string;
-  wheelFront: string;
-  wheelFrontOffset: string;
-  wheelFrontBackspacing: string;
-  wheelRear: string;
-  wheelRearOffset: string;
-  wheelRearBackspacing: string;
-  tireTitle: string;
-  tireFront: string;
-  tireRear: string;
-  suspensionBrand: string;
-  suspension: string;
-  wheelDiameter: string;
-  wheelWidth: string;
-  tireHeight: string;
-  tireWidth: string;
-  wheelOffset: string;
-  spacers: string;
-  wheelBrand: string;
-  wheelModel: string;
-  tireBrand: string;
-  tireModel: string;
-  createdBy: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
-  deletedBy: null | string;
-  isDelete: boolean;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-}
+import { IGallery, IGalleryFormData } from "@/types/gallery";
 
 export interface FilterItem {
   value: string;
@@ -115,7 +62,7 @@ export const gallery = baseApi.injectEndpoints({
       },
     }),
 
-    createGallery: builder.mutation<any, Record<string, any>>({
+    createGallery: builder.mutation<any, IGalleryFormData>({
       query: (data) => ({
         url: "/galleries",
         method: "POST",

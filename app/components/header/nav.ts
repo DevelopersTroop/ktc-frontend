@@ -355,6 +355,10 @@ const navMenus: NavMenu[] = [
         label: "Calculator",
         href: "/calculator",
       },
+      {
+        label: "Gallery",
+        href: "/gallery",
+      },
     ],
   },
 ];

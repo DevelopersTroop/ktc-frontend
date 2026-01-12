@@ -10,12 +10,13 @@ import {
 } from "@/app/globalRedux/api/file";
 import { errorMessage } from "@/lib/toast";
 import { normalizeImageUrl } from "@/lib/utils";
+import { s3BucketUrl } from "@/app/utils/api";
 
-type ImageUploaderProps = {
+type SingleImageUploaderProps<T extends Record<string, any>> = {
   title: string;
-  field: string;
-  values: Record<string, any>;
-  setFieldValue: (field: any, value: any) => void;
+  field: keyof T;
+  values: T;
+  setFieldValue: React.Dispatch<React.SetStateAction<T>>;
   handleUpdate?: (args: any) => void;
   payload?: any;
 };
@@ -23,14 +24,15 @@ type ImageUploaderProps = {
 /**
  * ✅ Single File Upload Component
  */
-export const SingleImageUploader: React.FC<ImageUploaderProps> = ({
+export const SingleImageUploader = <T extends Record<string, any>>({
   title,
   field,
   values,
   setFieldValue,
   handleUpdate,
   payload,
-}) => {
+}: SingleImageUploaderProps<T>) => {
+  console.log("TCL: values", values);
   const [fileUploading, setFileUploading] = useState(false);
   const [fileRemoving, setFileRemoving] = useState(false);
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -45,7 +47,7 @@ export const SingleImageUploader: React.FC<ImageUploaderProps> = ({
     const maxSize = 10 * 1024 * 1024;
     const ext = inputFile.name.split(".").pop()?.toLowerCase();
 
-    if (!["png", "jpg", "jpeg", "webp"].includes(ext!)) {
+    if (!ext || !["png", "jpg", "jpeg", "webp"].includes(ext)) {
       errorMessage("Only .png, .jpg, .webp, or .jpeg files are supported");
       if (fileRef.current) fileRef.current.value = "";
       return;
@@ -64,8 +66,8 @@ export const SingleImageUploader: React.FC<ImageUploaderProps> = ({
       console.log("TCL: handleFileChange -> res", res);
       const item_image = res?.files?.[0]?.path;
 
-      const newValues = { ...payload?.data, [field]: item_image };
       if (handleUpdate) {
+        const newValues = { ...payload?.data, [field]: item_image };
         handleUpdate({
           id: payload?.id,
           loggedInUser: payload?.loggedInUser,
@@ -73,7 +75,7 @@ export const SingleImageUploader: React.FC<ImageUploaderProps> = ({
         });
       }
 
-      setFieldValue(field, item_image);
+      setFieldValue((prev) => ({ ...prev, [field]: item_image }));
     } catch (error) {
       errorMessage("Upload failed");
     } finally {
@@ -86,8 +88,8 @@ export const SingleImageUploader: React.FC<ImageUploaderProps> = ({
     try {
       await removeFile({ path: file }).unwrap();
 
-      const newValues = { ...payload?.data, [field]: null };
       if (handleUpdate) {
+        const newValues = { ...payload?.data, [field]: null };
         handleUpdate({
           id: payload?.id,
           loggedInUser: payload?.loggedInUser,
@@ -95,7 +97,7 @@ export const SingleImageUploader: React.FC<ImageUploaderProps> = ({
         });
       }
 
-      setFieldValue(field, null);
+      setFieldValue((prev) => ({ ...prev, [field]: null }));
     } catch (error) {
       errorMessage("Delete failed");
     } finally {
@@ -109,14 +111,14 @@ export const SingleImageUploader: React.FC<ImageUploaderProps> = ({
       {values?.[field] ? (
         <div className="mt-2 relative w-32 h-32">
           <img
-            src={normalizeImageUrl(values[field])}
+            src={s3BucketUrl + values[field]}
             alt="Preview"
             className="w-32 h-32 object-cover rounded-md"
           />
           <button
             type="button"
             className="absolute top-0 right-0 bg-red-600 text-white p-1 rounded-full"
-            onClick={() => handleFileDelete(values[field])}
+            onClick={() => handleFileDelete(values[field] as string)}
           >
             {fileRemoving ? (
               <BiLoaderAlt size={20} className="animate-spin text-white" />
@@ -153,21 +155,21 @@ export const SingleImageUploader: React.FC<ImageUploaderProps> = ({
 /**
  * ✅ Multiple File Upload Component
  */
-type MultipleImageUploaderProps = {
+type MultipleImageUploaderProps<T extends Record<string, any>> = {
   title: string;
-  field: string;
-  values: Record<string, any>;
-  setFieldValue: (field: string, value: any) => void;
+  field: keyof T;
+  values: T;
+  setFieldValue: React.Dispatch<React.SetStateAction<T>>;
   className?: string;
 };
 
-export const MultipleImageUploader: React.FC<MultipleImageUploaderProps> = ({
+export const MultipleImageUploader = <T extends Record<string, any>>({
   title,
   field,
   values,
   setFieldValue,
   className,
-}) => {
+}: MultipleImageUploaderProps<T>) => {
   const [fileUploading, setFileUploading] = useState(false);
   const [fileRemovingMap, setFileRemovingMap] = useState<
     Record<string, boolean>
@@ -187,7 +189,7 @@ export const MultipleImageUploader: React.FC<MultipleImageUploaderProps> = ({
 
     for (const file of Array.from(inputFiles)) {
       const ext = file.name.split(".").pop()?.toLowerCase();
-      if (!["png", "jpg", "jpeg", "webp"].includes(ext!)) {
+      if (!ext || !["png", "jpg", "jpeg", "webp"].includes(ext)) {
         errorMessage("Only .png, .jpg, .jpeg, .webp files are supported");
         return;
       }
@@ -201,8 +203,13 @@ export const MultipleImageUploader: React.FC<MultipleImageUploaderProps> = ({
     setFileUploading(true);
     try {
       const res = await uploadFile(formData).unwrap();
-      const newImages = res?.data?.files?.map((f: any) => f.path) || [];
-      setFieldValue(field, [...(values?.[field] || []), ...newImages]);
+      const newImages = res?.files?.map((f: any) => f.path) || [];
+      console.log("TCL: newImages", newImages);
+
+      setFieldValue((prev) => {
+        const currentImages = (prev[field] as string[]) || [];
+        return { ...prev, [field]: [...currentImages, ...newImages] };
+      });
     } catch (error) {
       errorMessage("Upload failed");
     } finally {
@@ -214,10 +221,14 @@ export const MultipleImageUploader: React.FC<MultipleImageUploaderProps> = ({
     setFileRemovingMap((prev) => ({ ...prev, [fileToDelete]: true }));
     try {
       await removeFile({ path: fileToDelete }).unwrap();
-      setFieldValue(
-        field,
-        values?.[field]?.filter((f: string) => f !== fileToDelete)
-      );
+
+      setFieldValue((prev) => {
+        const currentImages = (prev[field] as string[]) || [];
+        const updatedFiles = currentImages.filter(
+          (f: string) => f !== fileToDelete
+        );
+        return { ...prev, [field]: updatedFiles };
+      });
     } catch (error) {
       errorMessage("Delete failed");
     } finally {
@@ -225,11 +236,13 @@ export const MultipleImageUploader: React.FC<MultipleImageUploaderProps> = ({
     }
   };
 
+  const currentImages = (values[field] as string[]) || [];
+
   return (
     <div className="my-4">
       <label className="text-sm font-medium">{title}</label>
       <div className="flex flex-wrap gap-2 mt-2">
-        {values?.[field]?.map((file: string, index: number) => (
+        {currentImages.map((file: string, index: number) => (
           <div key={index} className="relative w-24 h-24">
             <img
               src={normalizeImageUrl(file)}

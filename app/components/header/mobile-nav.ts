@@ -218,9 +218,13 @@ const mobileNavMenus: NavMenu[] = [
   },
   {
     meagMenu: false,
-    label: "Support",
+    label: "Resource",
     href: "/contact-us",
     children: [
+      {
+        label: "Calculator",
+        href: "/calculator",
+      },
       {
         label: "About Us",
         href: "/about",
@@ -255,10 +259,6 @@ const mobileNavMenus: NavMenu[] = [
         href: "/affiliates",
       },
     ],
-  },
-  {
-    label: "Calculator",
-    href: "/calculator",
   },
 ];
 

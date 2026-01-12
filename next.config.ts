@@ -47,6 +47,10 @@ const nextConfig: NextConfig = {
         hostname: "customwheeloffset.com",
         protocol: "https",
       },
+      {
+        hostname: "ktc-stage-s3.s3.us-east-1.amazonaws.com",
+        protocol: "https",
+      },
     ],
   },
 };

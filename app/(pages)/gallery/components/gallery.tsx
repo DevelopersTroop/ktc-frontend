@@ -42,7 +42,7 @@ const Gallery: React.FC = () => {
               <div className="p-2">
                 <Breadcrumb>
                   <Item href={"/"}>Home</Item>
-                  <Item href={"/"}>ktc-audio-gallery</Item>
+                  <Item href={"/gallery"}>Gallery</Item>
                 </Breadcrumb>
               </div>
               {/* <GalleryTopFilter /> */}

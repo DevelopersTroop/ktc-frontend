@@ -11,7 +11,6 @@ export function normalizeImageUrl(
   url: string | undefined,
   notAvailableImage?: string
 ): string {
-  console.log("url", typeof url);
   if (!url || url === "") {
     return notAvailableImage ?? "/not-available.webp";
   }
