@@ -30,13 +30,13 @@ const Newsletter = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [couponCode, setCouponCode] = useState<string | null>(null);
   const isOpen = useSelector(
-    (state: RootState) => state.persisted.newsletterModal.isOpen
+    (state: RootState) => state.persisted.newsletterModal.isOpen,
   );
   const isNewsLetterSubmitted = useTypedSelector(
-    (state) => state.persisted.newsletterModal.isSubmitted
+    (state) => state.persisted.newsletterModal.isSubmitted,
   );
   const newsLetterModalClosingTimeStamp = useTypedSelector(
-    (state) => state.persisted.newsletterModal.closingTimeStamp
+    (state) => state.persisted.newsletterModal.closingTimeStamp,
   );
 
   useEffect(() => {
@@ -119,11 +119,10 @@ const Newsletter = () => {
                 ) : (
                   <>
                     <div className="text-center leading-[1.3] text-2xl md:text-[27px] font-extrabold text-gray-300 uppercase">
-                      Unlock Exclusive Savings!
+                      Get 5% Off Your First Order!
                     </div>
                     <div className="text-center text-gray-200 font-semibold text-base tracking-wide py-2.5">
-                      Sign up now and enjoy a 5% discount on your first Amani
-                      Forged order.
+                      Sign up to receive your exclusive discount instantly.
                     </div>
                     <div>
                       <Formik
@@ -149,7 +148,7 @@ const Newsletter = () => {
                                   "coupon_retrived_using_newsletter",
                                   {
                                     coupon_code: data.data.coupon.code,
-                                  }
+                                  },
                                 );
                                 setIsSuccess(true);
                                 dispatch(setIsNewsLetterSubmitted(true));
