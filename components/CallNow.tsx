@@ -69,14 +69,14 @@ export const CallNow = () => {
       </div>
 
       <a
-        href="tel:18663447857"
+        href="tel:18138125257"
         className="fixed bottom-[10%] right-3 bg-primary z-20 flex lg:hidden items-center px-2 py-1 rounded-full gap-2 text-white font-semibold max-[553px]:h-[60px] max-[553px]:w-[60px] max-[553px]:right-5 justify-center w-[60px] h-[60px]"
       >
         <div className="flex items-center gap-1">
           <PhoneCall strokeWidth={2} size={18} />
           <p className="sr-only">Call us:</p>
         </div>
-        <span className="sr-only">1 (866) 344-7857</span>
+        <span className="sr-only">+1 (813) 812-5257</span>
       </a>
     </>
   );
