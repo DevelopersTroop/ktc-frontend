@@ -22,7 +22,7 @@ export const ClientLoadingSkeleton: React.FC = () => {
             <div className="flex gap-4">
                 <div className="flex items-center gap-2">
                     <UserCircle size={18} />
-                    <span>Amani Forged</span>
+                    <span>Wheel Tire USA</span>
                 </div>
                 <div className="bg-gray-200 animate-color-pulse h-4 w-24 rounded"></div>
                 <div className="flex items-center gap-1">

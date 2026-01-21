@@ -39,7 +39,7 @@ export const Client: React.FC<{ slug: string }> = ({ slug }) => {
             <div className="flex gap-2 md:gap-4 flex-wrap text-sm md:text-base">
               <div className="flex items-center gap-1 md:gap-2">
                 <UserCircle size={16} className="md:w-[18px] md:h-[18px]" />
-                <span>Amani Forged</span>
+                <span>Wheel Tire USA</span>
               </div>
               <p>{format(new Date(data.post.updatedAt), "PP")}</p>
               <p className="flex items-center gap-1">
@@ -68,7 +68,10 @@ export const Client: React.FC<{ slug: string }> = ({ slug }) => {
           </div>
         )}
         <div className="col-span-12 lg:col-span-4">
-          <BlogPageSidebar relatedProducts={data?.post?.relatedProducts} isLoading={isLoading} />
+          <BlogPageSidebar
+            relatedProducts={data?.post?.relatedProducts}
+            isLoading={isLoading}
+          />
         </div>
       </div>
     </Container>

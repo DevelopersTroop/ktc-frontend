@@ -1,7 +1,36 @@
+import { metaDataHelper } from "@/app/utils/metadata";
 import AccessoriesCategory from "./_accessories/accessories-category";
 import SuspensionCategory from "./_suspension/suspension-category";
 import TireCategory from "./_tire/tire-category";
 import WheelsCategory from "./_wheels/wheels-category";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ categorySlug: string }>;
+}): Promise<Metadata> {
+  try {
+    const { categorySlug } = await params;
+    const categoryCase = `${categorySlug[0].toUpperCase()}${categorySlug.slice(
+      1
+    )}`;
+    return {
+      ...metaDataHelper({
+        title: `${categoryCase} - Wheel Tire USA`,
+        description: "",
+      }),
+      alternates: {
+        canonical: `https://wheeltireusa.com/collections/product-category/${categorySlug}`,
+      },
+    };
+  } catch (error) {
+    // Return default metadata in case of error
+    return {
+      title: "Error",
+    };
+  }
+}
 
 const Collection = async ({
   params,

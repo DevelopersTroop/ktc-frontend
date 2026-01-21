@@ -5,9 +5,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   images: {
     remotePatterns: [
       {
@@ -44,6 +41,14 @@ const nextConfig: NextConfig = {
       },
       {
         hostname: "ktc-staging.s3.us-east-2.amazonaws.com",
+        protocol: "https",
+      },
+      {
+        hostname: "customwheeloffset.com",
+        protocol: "https",
+      },
+      {
+        hostname: "ktc-stage-s3.s3.us-east-1.amazonaws.com",
         protocol: "https",
       },
     ],

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Form,
@@ -52,6 +52,34 @@ const AddMyTruckYMMFilters = () => {
 
   const auth = useAuth()
   const [isSaved, setIsSaved] = useState(false);
+  const [openMake, setOpenMake] = useState(false);
+  const [openModel, setOpenModel] = useState(false);
+  const [openBodyType, setOpenBodyType] = useState(false);
+  const [openSubModel, setOpenSubModel] = useState(false);
+
+  useEffect(() => {
+    if (year && !isMakeLoading && !isMakeDisabled && (makes?.length ?? 0) > 0 && !make) {
+      setOpenMake(true);
+    }
+  }, [year, isMakeLoading, isMakeDisabled, makes?.length]);
+
+  useEffect(() => {
+    if (make && !isModelLoading && !isModelDisabled && (models?.length ?? 0) > 0 && !model) {
+      setOpenModel(true);
+    }
+  }, [make, isModelLoading, isModelDisabled, models?.length]);
+
+  useEffect(() => {
+    if (model && !isBodyTypeLoading && !isBodyTypeDisabled && (bodyTypes?.length ?? 0) > 0 && !bodyType) {
+      setOpenBodyType(true);
+    }
+  }, [model, isBodyTypeLoading, isBodyTypeDisabled, bodyTypes?.length]);
+
+  useEffect(() => {
+    if (bodyType && !isSubmodelLoading && !isSubmodelDisabled && (subModels?.length ?? 0) > 0 && !subModel?.SubModel) {
+      setOpenSubModel(true);
+    }
+  }, [bodyType, isSubmodelLoading, isSubmodelDisabled, subModels?.length, subModel?.SubModel]);
 
   const saveVehicle = async () => {
     const metaRes = await fetch(`${apiBaseUrl}/auth/meta`, {
@@ -89,42 +117,92 @@ const AddMyTruckYMMFilters = () => {
       <div className="w-full flex flex-col gap-4 mt-4">
         <div className="w-full flex flex-row gap-2 items-center">
           <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Year</h2>
-          <select disabled={isYearDisabled} value={year} onChange={onYearChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
-            <option value="">{isYearLoading ? "Loading..." : "Year"}</option>
-            {years?.map(year => <option key={year} value={year}>{year}</option>)}
-          </select>
+          <div className="w-full">
+            <Select onValueChange={onYearChange} value={year || undefined} disabled={isYearDisabled} >
+              <SelectTrigger className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
+                <SelectValue placeholder={isYearLoading ? "Loading..." : "Year"} />
+              </SelectTrigger>
+              <SelectContent>
+                {years?.map((y) => (
+                  <SelectItem key={`year-${y}`} value={y}>
+                    {y}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <div className="w-full flex flex-row gap-2 items-center">
           <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Make</h2>
-          <select disabled={isMakeDisabled} value={make} onChange={onMakeChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
-            <option value="">{isMakeLoading ? "Loading..." : "Make"}</option>
-            {makes?.map(make => <option key={make} value={make}>{make}</option>)}
-          </select>
+          <div className="w-full">
+            <Select open={openMake} onOpenChange={setOpenMake} onValueChange={onMakeChange} value={make || undefined} disabled={isMakeDisabled} >
+              <SelectTrigger className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
+                <SelectValue placeholder={isMakeLoading ? "Loading..." : "Make"} />
+              </SelectTrigger>
+              <SelectContent>
+                {makes?.map((m) => (
+                  <SelectItem key={`make-${m}`} value={m}>
+                    {m}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <div className="w-full flex flex-row gap-2 items-center">
           <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Model</h2>
-          <select disabled={isModelDisabled} value={model} onChange={onModelChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
-            <option value="">{isModelLoading ? "Loading..." : "Model"}</option>
-            {models?.map(model => <option key={model} value={model}>{model}</option>)}
-          </select>
+          <div className="w-full">
+            <Select open={openModel} onOpenChange={setOpenModel} onValueChange={onModelChange} value={model || undefined} disabled={isModelDisabled} >
+              <SelectTrigger className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
+                <SelectValue placeholder={isModelLoading ? "Loading..." : "Model"} />
+              </SelectTrigger>
+              <SelectContent>
+                {models?.map((mdl) => (
+                  <SelectItem key={`model-${mdl}`} value={mdl}>
+                    {mdl}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <div className="w-full flex flex-row gap-2 items-center">
           <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Body Type</h2>
-          <select disabled={isBodyTypeDisabled} value={bodyType} onChange={onBodyTypeChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
-            <option value="">{isBodyTypeLoading ? "Loading..." : "Body Type"}</option>
-            {bodyTypes?.map(bodyType => <option key={bodyType} value={bodyType}>{bodyType}</option>)}
-          </select>
+          <div className="w-full">
+            <Select open={openBodyType} onOpenChange={setOpenBodyType} onValueChange={onBodyTypeChange} value={bodyType || undefined} disabled={isBodyTypeDisabled} >
+              <SelectTrigger className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
+                <SelectValue placeholder={isBodyTypeLoading ? "Loading..." : "Body Type"} />
+              </SelectTrigger>
+              <SelectContent>
+                {bodyTypes?.map((bt) => (
+                  <SelectItem key={`bodyType-${bt}`} value={bt}>
+                    {bt}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <div className="w-full flex flex-row gap-2 items-center">
           <h2 className="hidden min-[400px]:block min-[400px]:w-28 text-base font-semibold text-btext">Sub Model</h2>
-          <select disabled={isSubmodelDisabled} value={subModel?.SubModel ?? ""} onChange={onSubModelChange} className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
-            <option value="">{isSubmodelLoading ? "Loading..." : "Submodel"}</option>
-            {subModels?.map(subModel => <option key={subModel.SubModel} value={subModel.SubModel}>{subModel.SubModel}</option>)}
-          </select>
+          <div className="w-full">
+            <Select open={openSubModel} onOpenChange={setOpenSubModel} onValueChange={onSubModelChange} value={subModel?.SubModel} disabled={isSubmodelDisabled} >
+              <SelectTrigger className="w-full p-2 rounded border border-gray-300 bg-white text-base text-black disabled:opacity-50">
+                <SelectValue placeholder={isSubmodelLoading ? "Loading..." : "Submodel"} />
+              </SelectTrigger>
+              <SelectContent>
+                {subModels?.map((sm) => (
+                  <SelectItem key={`subModel-${sm.SubModel}`} value={sm.SubModel}>
+                    {sm.SubModel}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
     </div>

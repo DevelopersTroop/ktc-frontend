@@ -23,15 +23,15 @@ export async function generateMetadata({
     return metaDataHelper({
       title: `${
         post?.metaTitle ? post?.metaTitle : post?.title
-      } - KTC Audio`, // Set page title based on product name.
+      } - Wheel Tire USA`, // Set page title based on product name.
       description: post?.metaDescription ? post?.metaDescription : post?.title, // Set meta description from product data.
       openGraph: {
-        title: `${post?.metaTitle} - KTC Audio`,
+        title: `${post?.metaTitle} - Wheel Tire USA`,
         description: post?.metaDescription,
-        url: `https://amaniforged.com/collections/product/${slug}`,
+        url: `https://wheeltireusa.com/collections/product/${slug}`,
       },
       alternates: {
-        canonical: `https://amaniforged.com/collections/product/${slug}`,
+        canonical: `https://wheeltireusa.com/collections/product/${slug}`,
       },
     });
   } catch (error) {

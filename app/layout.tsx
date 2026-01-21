@@ -13,6 +13,8 @@ import TopHeader from "./components/header/topheader";
 import StoreProvider from "./globalRedux/store-provider";
 import "./globals.css";
 import AnalyticsTracker from "@/components/CustomAnalyticsTracker";
+import StickyVehicleSelector from "./components/home-page/header-ymm";
+import { CallNow } from "@/components/CallNow";
 // import AnalyticsTracker from "@/components/CustomAnalyticsTracker";
 
 const geistSans = Geist({
@@ -29,6 +31,9 @@ export const metadata: Metadata = {
   title: "Wheel Tire USA",
   description:
     "At WheelTireUSA, our goal is simple: deliver the best wheels, tires, and vehicle accessories with service you can rely on. We’re passionate about helping drivers upgrade their vehicles with confidence — whether it’s for style, performance, safety, or all three.",
+  openGraph: {
+    images: ["/images/logo.png"],
+  },
 };
 
 export default function RootLayout({
@@ -77,6 +82,7 @@ export default function RootLayout({
             <TopHeaderOne />
             <TopHeader />
             <Header />
+            <StickyVehicleSelector />
             <DiscountBanner />
             <main className="flex-1">{children}</main>
             <Footer />
@@ -90,6 +96,7 @@ export default function RootLayout({
           src="//code.tidio.co/ylns3q2pbrzhwklnx08n2v5oezbmhf7g.js"
           strategy="afterInteractive"
         /> */}
+        <CallNow />
       </body>
     </html>
   );

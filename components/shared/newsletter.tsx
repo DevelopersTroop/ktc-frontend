@@ -10,9 +10,19 @@ import { apiBaseUrl } from "@/app/utils/api";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Field, Form, Formik } from "formik";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+
+// Validation schema
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  phone: Yup.string()
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
+    .required("Phone number is required"),
+});
 
 const Newsletter = () => {
   const dispatch = useDispatch();
@@ -20,13 +30,13 @@ const Newsletter = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [couponCode, setCouponCode] = useState<string | null>(null);
   const isOpen = useSelector(
-    (state: RootState) => state.persisted.newsletterModal.isOpen
+    (state: RootState) => state.persisted.newsletterModal.isOpen,
   );
   const isNewsLetterSubmitted = useTypedSelector(
-    (state) => state.persisted.newsletterModal.isSubmitted
+    (state) => state.persisted.newsletterModal.isSubmitted,
   );
   const newsLetterModalClosingTimeStamp = useTypedSelector(
-    (state) => state.persisted.newsletterModal.closingTimeStamp
+    (state) => state.persisted.newsletterModal.closingTimeStamp,
   );
 
   useEffect(() => {
@@ -109,15 +119,15 @@ const Newsletter = () => {
                 ) : (
                   <>
                     <div className="text-center leading-[1.3] text-2xl md:text-[27px] font-extrabold text-gray-300 uppercase">
-                      Unlock Exclusive Savings!
+                      Get 5% Off Your First Order!
                     </div>
                     <div className="text-center text-gray-200 font-semibold text-base tracking-wide py-2.5">
-                      Sign up now and enjoy a 5% discount on your first Amani
-                      Forged order.
+                      Sign up to receive your exclusive discount instantly.
                     </div>
                     <div>
                       <Formik
-                        initialValues={{ email: "" }}
+                        initialValues={{ email: "", phone: "" }}
+                        validationSchema={validationSchema}
                         onSubmit={(values, { setFieldError }) => {
                           setIsSubmitting(true);
                           fetch(`${apiBaseUrl}/subscriptions`, {
@@ -125,7 +135,10 @@ const Newsletter = () => {
                             headers: {
                               "Content-Type": "application/json",
                             },
-                            body: JSON.stringify({ email: values.email }),
+                            body: JSON.stringify({
+                              email: values.email,
+                              phone: values.phone,
+                            }),
                           })
                             .then((res) => res.json())
                             .then((data) => {
@@ -135,7 +148,7 @@ const Newsletter = () => {
                                   "coupon_retrived_using_newsletter",
                                   {
                                     coupon_code: data.data.coupon.code,
-                                  }
+                                  },
                                 );
                                 setIsSuccess(true);
                                 dispatch(setIsNewsLetterSubmitted(true));
@@ -146,19 +159,33 @@ const Newsletter = () => {
                             .finally(() => setIsSubmitting(false));
                         }}
                       >
-                        {({ errors }) => (
+                        {({ errors, touched }) => (
                           <Form>
-                            {errors.email && (
-                              <div className="text-red-500 mb-2">
-                                {errors.email}
-                              </div>
-                            )}
                             <Field
                               className="border focus:outline-none border-btext p-3 w-full"
                               type="email"
                               name="email"
                               placeholder="E-mail Address"
                             />
+                            {errors.email && touched.email && (
+                              <div className="text-red-500 text-sm mt-1">
+                                {errors.email}
+                              </div>
+                            )}
+
+                            <Field
+                              className="border focus:outline-none border-btext p-3 w-full mt-2"
+                              type="tel"
+                              name="phone"
+                              placeholder="Phone number (10 digits)"
+                              maxLength={10}
+                            />
+                            {errors.phone && touched.phone && (
+                              <div className="text-red-500 text-sm mt-1">
+                                {errors.phone}
+                              </div>
+                            )}
+
                             <button
                               type="submit"
                               className="py-2 md:py-3.5 border border-primary px-8 bg-primary rounded-xl text-white font-semibold transition duration-300 ease-in-out mt-4 w-full uppercase hover:bg-white hover:border-black hover:text-black"

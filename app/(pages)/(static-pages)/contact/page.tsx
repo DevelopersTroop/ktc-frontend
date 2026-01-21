@@ -1,4 +1,24 @@
+import { metaDataHelper } from "@/app/utils/metadata";
 import React from "react";
+
+export async function generateMetadata() {
+  try {
+    return {
+      ...metaDataHelper({
+        title: `Contact us - Wheel Tire USA`,
+        description: "",
+      }),
+      alternates: {
+        canonical: `https://wheeltireusa.com/contact`,
+      },
+    };
+  } catch (error) {
+    // Return default metadata in case of error
+    return {
+      title: "Error",
+    };
+  }
+}
 
 const Contact: React.FC = () => {
   return (
@@ -20,8 +40,8 @@ const Contact: React.FC = () => {
 
       <div className="w-full max-w-[1030px] flex flex-col lg:flex-row justify-between items-start px-0 lg:px-16 ">
         {/* Left Section */}
-        <div className="flex flex-col gap-5 w-full lg:w-[40%] text-sm px-8 pt-12 pb-16 shadow">
-          <div className="flex flex-col md:flex-row items-center text-center md:text-start gap-3 border-b pb-4">
+        <div className="flex flex-col gap-5 w-full lg:w-[40%] text-sm px-8  pb-16 shadow">
+          {/* <div className="flex flex-col md:flex-row items-center text-center md:text-start gap-3 border-b pb-4">
             <div className="bg-red-500 w-8 h-8 md:w-6 md:h-6 lg:w-8 lg:h-6 rounded-full"></div>
             <div>
               <h4 className="font-normal">Our location</h4>
@@ -29,7 +49,7 @@ const Contact: React.FC = () => {
                 KTC AUDIO 2193 S. CHAMBERS RD AURORA, CO. 80014
               </p>
             </div>
-          </div>
+          </div> */}
           <div className="flex flex-col md:flex-row items-center text-center md:text-start gap-3 border-b pb-4">
             <div className="bg-red-500 w-8 h-8 md:w-6 md:h-6 lg:w-6 lg:h-6 rounded-full"></div>
             <div>
@@ -41,20 +61,20 @@ const Contact: React.FC = () => {
             <div className="bg-red-500 w-8 h-8 md:w-6 md:h-6 lg:w-6 lg:h-6 rounded-full"></div>
             <div>
               <h4 className="font-normal">Email address</h4>
-              <p className="text-gray-500">info@ktcaudio.com</p>
+              <p className="text-gray-500">info@wheeltireusa.com</p>
             </div>
           </div>
           <div className="flex flex-col md:flex-row items-center text-center md:text-start gap-3 border-b pb-4">
             <div className="bg-red-500 w-8 h-8 md:w-6 md:h-6 lg:w-6 lg:h-6 rounded-full"></div>
             <div>
               <h4 className="font-normal">Working hours</h4>
-              <p className="text-gray-500">Mon-Sat 10:00pm - 7:00pm</p>
+              <p className="text-gray-500">Mon-Sat 9:00am - 7:00pm</p>
             </div>
           </div>
         </div>
 
         {/* Right Section */}
-        <div className="bg-white rounded-md p-6 mt-6 w-full lg:w-[60%]">
+        <div className="bg-white rounded-md px-6 w-full lg:w-[60%]">
           <form>
             <div className="w-full flex flex-col md:flex-row gap-2">
               <div className=" w-full mb-4">

@@ -12,19 +12,24 @@ import StaticImage from "@/components/ui/static-image";
 import { metaDataHelper } from "@/app/utils/metadata";
 
 // Metadata for the page
-export const metadata = metaDataHelper({
-    title: "Amani Forged Financing Available for All Custom Orders",
-    keywords: "",
-    description: "Get the wheels you want today with Amani Forged financing. Affordable monthly payments make customizing your ride easier than ever.",
-    openGraph: {
-        title: "Amani Forged Financing Available for All Custom Orders",
-        description: "Get the wheels you want today with Amani Forged financing. Affordable monthly payments make customizing your ride easier than ever.",
-
-    },
-    alternates: {
-        canonical: "https://amaniforged.com/financing"
-    }
-})
+export async function generateMetadata() {
+  try {
+    return {
+      ...metaDataHelper({
+        title: `Financing - Wheel Tire USA`,
+        description: "",
+      }),
+      alternates: {
+        canonical: `https://wheeltireusa.com/financing`,
+      },
+    };
+  } catch (error) {
+    // Return default metadata in case of error
+    return {
+      title: "Error",
+    };
+  }
+}
 
 // Component to render the Financing page
 const Financing = () => {
@@ -106,17 +111,15 @@ const Financing = () => {
             We will be happy to answer any questions you may have.
           </p>
           <div className="text-center w-[166px] h-14 ">
-            <Link href="/contact-us" >
-            <button
-              className={`w-full h-full flex gap-2 items-center border border-[#210203] text-[#210203] text-lg font-semibold px-6 rounded-lg hover:bg-[#F7F7F7]`}
-            >
-              <FaPhone className="text-lg text-[#210203]" />
-              <span
-                className="inline-block whitespace-nowrap"
+            <Link href="/contact-us">
+              <button
+                className={`w-full h-full flex gap-2 items-center border border-[#210203] text-[#210203] text-lg font-semibold px-6 rounded-lg hover:bg-[#F7F7F7]`}
               >
-                Contact Us
-              </span>
-            </button>
+                <FaPhone className="text-lg text-[#210203]" />
+                <span className="inline-block whitespace-nowrap">
+                  Contact Us
+                </span>
+              </button>
             </Link>
           </div>
         </div>
